@@ -1,7 +1,7 @@
 # IS23-AM40
 ## Members 
 - Francesco Di Giore  (francesco.digiore@mail.polimi.it) @Digioref
-- Filippo Maria Bertossi () @filippobertossi
+- Filippo Maria Bertossi (filippomaria.bertossiòmail.polimi.it) @filippobertossi
 - Marco Brambillasca (marcoandrea.brambillasca@mail.polimi.it) @MarcoBrambillasca
 - Daniele Di Giorgio (daniele2.digiorgio@mail.polimi.it) @DanieleDiGiorgio
 
