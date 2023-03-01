@@ -7,6 +7,6 @@
 
 ## Project Status
 
-| Project Module | Status | Current | Comment |
+| Project Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
 | UML | 🔴 | 0 % |
