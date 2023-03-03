@@ -22,6 +22,6 @@
 | Socket | 🔴 | 0 % |
 | Multiple Matches | 🔴 | 0 % |
 | Persistency | 🔴 | 0 % |
-| connections' resilience | 🔴 | 0 % |
+| Connections' Resilience | 🔴 | 0 % |
 | Chat | 🔴 | 0 % |
 
