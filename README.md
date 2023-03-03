@@ -14,3 +14,14 @@
 | Project Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
 | UML | 🔴 | 0 % |
+| Basic Rules | 🔴 | 0 % |
+| Complete Rules | 🔴 | 0 % |
+| TUI | 🔴 | 0 % |
+| GUI | 🔴 | 0 % |
+| RMI | 🔴 | 0 % |
+| Socket | 🔴 | 0 % |
+| Multiple Matches | 🔴 | 0 % |
+| Persistency | 🔴 | 0 % |
+| connections' resilience | 🔴 | 0 % |
+| Chat | 🔴 | 0 % |
+
