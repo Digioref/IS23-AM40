@@ -6,7 +6,7 @@
   filippomaria.bertossi@mail.polimi.it
 - 10730677 Marco Brambillasca [@MarcoBrambillasca](https://github.com/MarcoBrambillasca) -- 
   marcoandrea.brambillasca@mail.polimi.it
-- Daniele Di Giorgio [@DanieleDiGiorgio](https://github.com/DanieleDiGiorgio) -- 
+- 10668044 Daniele Di Giorgio [@DanieleDiGiorgio](https://github.com/DanieleDiGiorgio) -- 
   daniele2.digiorgio@mail.polimi.it
 
 ## Project Status
