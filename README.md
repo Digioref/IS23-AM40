@@ -13,7 +13,7 @@
 
 | Project Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
-| UML | :yellow_circle: | 0 % |
+| UML | :yellow_circle: | 60 % |
 | Basic Rules | 🔴 | 0 % |
 | Complete Rules | 🔴 | 0 % |
 | TUI | 🔴 | 0 % |
