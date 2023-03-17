@@ -100,7 +100,6 @@ public class Model {
         }
     }
 
-
     public void assignComGoal() {
         Random rand = new Random();
         currentComGoals.add(commonGoals.get(rand.nextInt(commonGoals.size())));
@@ -110,6 +109,8 @@ public class Model {
         } while (commonGoals.indexOf(currentComGoals.get(0)) == x);
         currentComGoals.add(commonGoals.get(x));
     }
+
+
 
     public int getNumPlayer() {
         return numPlayer;
