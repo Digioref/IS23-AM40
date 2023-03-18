@@ -22,7 +22,9 @@ public class Model {
     }
 
     public void addPlayer (Player p) {
-        players.get(players.size() - 1).setNext(p);
+        if (players.size() != 0) {
+            players.get(players.size() - 1).setNext(p);
+        }
         players.add(p);
         if (players.size() == numPlayer) {
             players.get(numPlayer - 1).setNext(players.get(0));

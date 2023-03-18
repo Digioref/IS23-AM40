@@ -11,12 +11,22 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Represents the game board form which the players pick the Tiles
+ */
 public class Board {
+    /**
+     * A map that maps the positions in the board to a tile
+     */
     private Map<Position, Tile> grid;
-
+    /**
+     * A JsonObject that is used in the parsing of a json file, used to construct the personal goals
+     */
     private static JsonObject configs = null;
 
+    /**
+     * A static block which converts a json file into the json object configs
+     */
     static {
         JSONParser jsonParser = new JSONParser();
         try (FileReader reader = new FileReader("PositionsBoard")) {
@@ -30,6 +40,10 @@ public class Board {
         }
     }
 
+    /**
+     * The constructor which builds the instance of the class according to the positions in the json file
+     * @param num number of players
+     */
     public Board(int num) {
         grid = new HashMap<>();
         switch (num) {
@@ -69,12 +83,21 @@ public class Board {
         }
     }
 
+    /**
+     * Picks a tile from the bag b and puts it in a position on the board
+     * @param b bag
+     */
     public void config(Bag b) {
         for (Position pos : grid.keySet()) {
             grid.put(pos, b.pick());
         }
     }
 
+    /**
+     * A tile is picked form the board (it's removed form the board)
+     * @param pos a position in the board
+     * @return the tile picked
+     */
     public Tile pick(Position pos) {
         if (grid.containsKey(pos) && grid.get(pos) != null) {
             Tile t = grid.get(pos);
@@ -84,6 +107,10 @@ public class Board {
         return null;
     }
 
+    /**
+     * Removes the remaining tiles from the board in order to reconfig it later
+     * @param b bag
+     */
     public void remove(Bag b) {
         for (Position pos : grid.keySet()) {
             if (grid.get(pos) != null) {
@@ -93,10 +120,18 @@ public class Board {
         }
     }
 
+    /**
+     * Returns the map representing the board
+     * @return map representing the board
+     */
     public Map<Position, Tile> getGrid() {
         return grid;
     }
 
+    /**
+     * Sets the map according to the parameter
+     * @param grid a map representing a board
+     */
     public void setGrid(Map<Position, Tile> grid) {
         this.grid = grid;
     }

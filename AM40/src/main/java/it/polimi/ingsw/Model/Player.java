@@ -11,11 +11,10 @@ public class Player {
     private PersonalGoal personalGoal;
     private  Player next;
 
-    public Player(String nickname, Player next) {
+    public Player(String nickname) {
         this.nickname = nickname;
         currentScore = 0;
         finalScore = 0;
-        this.next = next;
     }
 
     public void pickTile(Position pos) {
@@ -52,6 +51,11 @@ public class Player {
         for (CommonGoal commonGoal : commgoal) {
             currentScore += commonGoal.check(bookshelf);
         }
+    }
+
+
+    public String getNickname() {
+        return nickname;
     }
 
     public Player getNext() {
