@@ -46,6 +46,7 @@ public class Bookshelf {
         return 6-bookshelf.get(col).getSize();
     }
 
+    //method to get the color of tile
     private String tileColor(int x,int y){
         if (bookshelf.get(x).getSize()<y){
             return "out_of_limit";
@@ -95,6 +96,14 @@ public class Bookshelf {
                     }
                 }
             }
+        }
+        return result;
+    }
+
+    public ArrayList<Column> getColumns(){
+        ArrayList<Column> result = new ArrayList<Column>();
+        for(int i=0;i<5;i++){
+            result.add(bookshelf.get(i));
         }
         return result;
     }

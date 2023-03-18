@@ -3,11 +3,11 @@ import java.util.ArrayList;
 
 public class Column {
     private ArrayList<Tile> column;
-    private ArrayList<int> mark;
+    private ArrayList<Integer> mark;
 
     public Column(){
         this.column = new ArrayList<Tile>();
-        this.mark = new ArrayList<int>();
+        this.mark = new ArrayList<Integer>();
     }
 
     public boolean addTile(Tile newTile){
@@ -40,7 +40,7 @@ public class Column {
     }
 
     public String getColor(int pos){
-        return column.get(pos).getColor();
+        return (column.get(pos).getColor().name());
     }
 
     public int getSize(){
