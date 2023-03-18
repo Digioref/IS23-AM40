@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"it.polimi.ingsw"},{"l":"it.polimi.ingsw.Model"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"it.polimi.ingsw"},{"l":"it.polimi.ingsw.Model"},{"l":"it.polimi.ingsw.Test"}];updateSearchResults();

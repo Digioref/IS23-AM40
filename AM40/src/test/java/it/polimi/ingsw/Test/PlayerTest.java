@@ -5,7 +5,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 /**
- * It tests the Player class
+ * Tests the Player class
  */
 public class PlayerTest {
   /**
