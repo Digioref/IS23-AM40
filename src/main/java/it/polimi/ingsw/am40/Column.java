@@ -26,6 +26,7 @@ public class Column {
         return column;
     }
 
+
     public boolean isFull(){
         if(column.size()<6){
             return false;
@@ -40,6 +41,9 @@ public class Column {
     }
 
     public String getColor(int pos){
+        if(pos>=column.size()){
+            return "exceeded_high";
+        }
         return (column.get(pos).getColor().name());
     }
 

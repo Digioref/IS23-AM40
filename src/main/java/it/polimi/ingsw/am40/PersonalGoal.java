@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.am40;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,22 +11,22 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 
 public class PersonalGoal {
 
     private ArrayList<Position> pos;
     private ArrayList<TileColor> color;
-    private static JsonArray PersGoals = null;
+    private static JSONArray PersGoals = null;
 
     static {
         JSONParser jsonParser = new JSONParser();
         try (FileReader reader = new FileReader("PersonalGoals")) {
             Object obj = jsonParser.parse(reader);
-            PersGoals = (JsonArray) obj;
+            PersGoals = (JSONArray) obj;
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -37,15 +37,15 @@ public class PersonalGoal {
     }
 
     public PersonalGoal (int i) {
-        JsonObject a = (JsonObject) PersGoals.get(i);
-        JsonArray obj1 = (JsonArray) a.get("position");
-        JsonArray obj2 = (JsonArray) a.get("color");
+        JSONObject a = (JSONObject) PersGoals.get(i);
+        JSONArray obj1 = (JSONArray) a.get("position");
+        JSONArray obj2 = (JSONArray) a.get("color");
 
         pos = new ArrayList<>(6);
         color = new ArrayList<>(6);
 
         for (Object obj : obj1) {
-            JsonObject t = (JsonObject) obj;
+            JSONObject t = (JSONObject) obj;
             String t1 = t.get("x").toString();
             int x = Integer.parseInt(t1);
             pos.get(0).setX(x);
@@ -55,7 +55,7 @@ public class PersonalGoal {
         }
         int j = 0;
         for (Object obj : obj2) {
-            JsonObject t = (JsonObject) obj;
+            JSONObject t = (JSONObject) obj;
             String x = t.get("Color").toString();
             switch (x) {
                 case "Yellow":
@@ -76,10 +76,16 @@ public class PersonalGoal {
 
     public int calcScore(Bookshelf b) {
         int t = 0;
+        int x =0;
+        int y =0;
         for (int i = 0; i < pos.size(); i++) {
-            if (b.getColumns().get(pos.get(i).getX()).get(pos.get(i).getY()).getColor().equals(color.get(i))) {
+            x=getPos().get(i).getX();
+            y=getPos().get(i).getY();
+            //method getColor(int pos) defined in Class Column return string
+            if (b.getColumns().get(x).getColor(y).equals(color.get(i).name())) {
                 t++;
             }
+            //b.get(x).getColor(y)
         }
         switch (t) {
             case 1:

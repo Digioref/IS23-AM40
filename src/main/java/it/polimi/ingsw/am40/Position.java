@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.am40;
 
 import java.util.Objects;
 

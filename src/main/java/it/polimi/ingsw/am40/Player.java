@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.am40;
 
 import java.util.ArrayList;
 public class Player {
@@ -36,9 +36,10 @@ public class Player {
         bookshelf = new Bookshelf();
     }
 
-    public void placeInBookshelf(Column col) {
+    //col is an int instead of Column
+    public void placeInBookshelf(int col) {
         for (int i = 0; i < tilesPicked.size(); i++) {
-            bookshelf.add(tilesPicked.get(i), col);
+            bookshelf.addTile(tilesPicked.get(i), col);
         }
     }
 
@@ -54,7 +55,7 @@ public class Player {
 
     public void updateCurrScore (ArrayList<CommonGoal> commgoal) {
         for (int i = 0; i < commgoal.size(); i++) {
-           currentScore += commgoal.get(i).calcScore();
+           currentScore += commgoal.get(i).check(bookshelf);
         }
     }
     public void addCurrentScore(int s) {
