@@ -4,6 +4,6 @@ module it.polimi.ingsw.am40 {
     requires json.simple;
 
 
-    opens it.polimi.ingsw.am40 to javafx.fxml;
-    exports it.polimi.ingsw.am40;
+    opens it.polimi.ingsw.am40.model to javafx.fxml;
+    exports it.polimi.ingsw.am40.model;
 }
