@@ -11,13 +11,26 @@ import org.json.simple.parser.ParseException;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
-
+/**
+ * Represents the Personal Goal of the game
+ */
 public class PersonalGoal {
-
+    /**
+     * An array of positions representing the positions where, in the personal goal card, there are specific tiles (colors)
+     */
     private ArrayList<Position> pos;
+    /**
+     * An array of colours representing the colours of the tiles in the specific positions contained in the array pos
+     */
     private ArrayList<TileColor> color;
+    /**
+     * A Json Array used to build the instance of the class
+     */
     private static JsonArray PersGoals;
 
+    /**
+     * A static block of code used to transform a provided Json file to the Json array PersGoals
+     */
     static {
         JSONParser jsonParser = new JSONParser();
         try (FileReader reader = new FileReader("PersonalGoals")) {
@@ -32,6 +45,10 @@ public class PersonalGoal {
         }
     }
 
+    /**
+     * The constructor which uses the Json Array to build a specific personal goal according to the specific features in the Json file
+     * @param i
+     */
     public PersonalGoal (int i) {
         JsonObject a = (JsonObject) PersGoals.get(i);
         JsonArray obj1 = (JsonArray) a.get("position");
@@ -70,6 +87,11 @@ public class PersonalGoal {
         }
     }
 
+    /**
+     * Returns the score obtained by achieving parts of the personal goal
+     * @param b the bookshelf of the player to check
+     * @return an int representing the score obtained
+     */
     public int calcScore(Bookshelf b) {
         int t = 0;
         for (int i = 0; i < pos.size(); i++) {
@@ -97,18 +119,34 @@ public class PersonalGoal {
         return s;
     }
 
+    /**
+     * Returns the array of the specific positions of the personal goal
+     * @return the feature pos
+     */
     public ArrayList<Position> getPos() {
         return pos;
     }
 
+    /**
+     * Sets the array pos to the provided one
+     * @param pos a provided array of positions
+     */
     public void setPos(ArrayList<Position> pos) {
         this.pos = pos;
     }
 
+    /**
+     * Returns the specific colours of the personal goal
+     * @return the feature color
+     */
     public ArrayList<TileColor> getColor() {
         return color;
     }
 
+    /**
+     * Sets the aaray of colours to the provided one
+     * @param color the provided array of colours
+     */
     public void setColor(ArrayList<TileColor> color) {
         this.color = color;
     }
