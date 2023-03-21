@@ -16,8 +16,8 @@ public class Bookshelf {
      */
     public Bookshelf(){
         Column newAdd;
-        this.bookshelf = new ArrayList<>();
-        for(int i=0; i<5;i++){
+        this.bookshelf = new ArrayList<>(5);
+        for(int i = 0; i < 5; i++){
             newAdd = new Column();
             bookshelf.add(newAdd);
         }
@@ -51,7 +51,7 @@ public class Bookshelf {
      * @param col column where to insert the tile
      */
     public void addTile(Tile newTile, int col){
-        if(bookshelf.get(col).isFull() || newTile==null || col>=5 || col <0){
+        if (!(bookshelf.get(col).isFull() || newTile == null || col >= 5 || col < 0)){
             bookshelf.get(col).addTile(newTile);
         }
     }
@@ -150,12 +150,17 @@ public class Bookshelf {
      * Returns an array of columns of the bookshelf
      * @return an array of columns
      */
+    /*
     public ArrayList<Column> getColumns(){
         ArrayList<Column> result = new ArrayList<>();
         for(int i=0;i<5;i++){
             result.add(bookshelf.get(i));
         }
         return result;
+    }
+*/
+    public ArrayList<Column> getBookshelf() {
+        return bookshelf;
     }
 
     /**
@@ -165,7 +170,18 @@ public class Bookshelf {
      * @return a tile
      */
     public Tile getTile(int i, int j) {
-        return bookshelf.get(i).getTile(j);
+        if (!bookshelf.isEmpty()) {
+            return bookshelf.get(i).getTile(j);
+        } else {
+            return null;
+        }
+
     }
 
+    @Override
+    public String toString() {
+        return "Bookshelf{" +
+                "bookshelf=" + bookshelf +
+                '}';
+    }
 }

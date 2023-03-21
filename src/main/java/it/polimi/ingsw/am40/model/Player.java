@@ -40,6 +40,17 @@ public class Player {
     private  Player next;
 
     /**
+     *  The player has completed the first common goal
+     */
+    private boolean doneCG1;
+
+    /**
+     *  The player has completed the second common goal
+     */
+    private boolean doneCG2;
+
+
+    /**
      * Constructor which assigns the nickname, and sets to 0 both current score and final score
      * @param nickname
      */
@@ -48,6 +59,8 @@ public class Player {
         currentScore = 0;
         finalScore = 0;
         this.tilesPicked = new ArrayList<>();
+        doneCG1 = false;
+        doneCG2 = false;
     }
 
     /**
@@ -108,8 +121,26 @@ public class Player {
      * @param commgoal the array of common goals that are actually in game
      */
     public void updateCurrScore (ArrayList<CommonGoal> commgoal) {
+
+        int score;
+        /*
         for (CommonGoal commonGoal : commgoal) {
             currentScore += commonGoal.check(bookshelf);
+        }
+        */
+        if (!doneCG1) {
+            score = commgoal.get(0).check(bookshelf);
+            currentScore += score;
+            if (score != 0) {
+                doneCG1 = true;
+            }
+        }
+        if (!doneCG2) {
+            score = commgoal.get(1).check(bookshelf);
+            currentScore += score;
+            if (score != 0) {
+                doneCG2 = true;
+            }
         }
     }
 

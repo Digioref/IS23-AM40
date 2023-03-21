@@ -20,8 +20,8 @@ public class Column {
      * Constructor which sets to null both column and mark arrays
      */
     public Column(){
-        this.column = new ArrayList<>();
-        this.mark = new ArrayList<>();
+        this.column = new ArrayList<>(6);
+        this.mark = new ArrayList<>(6);
     }
 
     /**
@@ -30,9 +30,9 @@ public class Column {
      * @return true if the tile is added, false otherwise
      */
     public boolean addTile(Tile newTile){
-        if(column == null || newTile ==null){
+        if(newTile == null){
             return false;
-        } else if (column.size()==6) {
+        } else if (column.size() == 6) {
             return false;
         }
         column.add(newTile);
@@ -96,7 +96,18 @@ public class Column {
      * @return tile in position i
      */
     public Tile getTile (int i) {
-        return column.get(i);
+        if (!column.isEmpty() && i < column.size()) {
+            return column.get(i);
+        } else {
+            return null;
+        }
     }
 
+    @Override
+    public String toString() {
+        return "Column{" +
+                "column=" + column +
+                ", mark=" + mark +
+                '}';
+    }
 }

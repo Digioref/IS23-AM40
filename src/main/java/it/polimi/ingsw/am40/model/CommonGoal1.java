@@ -2,8 +2,10 @@ package it.polimi.ingsw.am40.model;
 
 public class CommonGoal1 extends CommonGoal {
     public CommonGoal1(int numPlayer) {
-        super();
+        commgoaltok = new CommonGoalToken(numPlayer);
     }
+
+
 
     /**
      * Checks if there are 2 squares of 2x2 sixe with all 8 tiles with the same color
@@ -20,6 +22,7 @@ public class CommonGoal1 extends CommonGoal {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
                 if (b.getTile(i,j) != null) {
+
                     if (b.getTile(i, j).equals(b.getTile(i + 1, j)) && b.getTile(i, j).equals(b.getTile(i, j + 1)) && b.getTile(i, j).equals(b.getTile(i + 1, j + 1))) {
                         if (count == 0) {
                             count++;
@@ -42,4 +45,3 @@ public class CommonGoal1 extends CommonGoal {
         return 0;
     }
 }
-

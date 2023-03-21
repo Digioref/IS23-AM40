@@ -2,8 +2,8 @@ package it.polimi.ingsw.am40.model;
 
 public class CommonGoal9 extends CommonGoal {
 
-    public CommonGoal9(int x) {
-        commgoaltok = new CommonGoalToken(x);
+    public CommonGoal9(int numPlayer) {
+        commgoaltok = new CommonGoalToken(numPlayer);
     }
 
     public int check (Bookshelf bookshelf){

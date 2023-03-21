@@ -77,4 +77,13 @@ public class Tile {
     public void setPos(Position pos) {
         this.pos = pos;
     }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "color=" + color +
+                ", type=" + type +
+                ", pos=" + pos +
+                '}';
+    }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class CommonGoal5 extends CommonGoal {
     public CommonGoal5(int numPlayer) {
-        super();
+        commgoaltok = new CommonGoalToken(numPlayer);
     }
 
     /**
@@ -18,7 +18,7 @@ public class CommonGoal5 extends CommonGoal {
         ArrayList<Tile> differentTiles = new ArrayList<Tile>(); // array dove salvo i tile diversi
 
         for (int i = 0; i < 5; i++) {
-            if (bookshelf.getColumns().get(i).getColumn().size() == 6) { // controllo solo quelli con la colonna piena
+            if (bookshelf.getBookshelf().get(i).getColumn().size() == 6) { // controllo solo quelli con la colonna piena
                 for (int j = 0; j < 6; j++) {
                     if (!differentTiles.contains(bookshelf.getTile(i,j))) { // aggiungo solo se non è già contrnuto ?? l'uguaglianza la controlla con .equals?? secondo me si
                         differentTiles.add(bookshelf.getTile(i,j));
@@ -35,5 +35,6 @@ public class CommonGoal5 extends CommonGoal {
             return 0;
         }
     }
+
 
 }

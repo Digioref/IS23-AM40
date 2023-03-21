@@ -1,9 +1,9 @@
 package it.polimi.ingsw.am40.model;
 
-public class CommonGoal12 extends CommonGoal {
+public class CommonGoal12 extends CommonGoal { // NON FUNZIONA METTERE CONTROLLI SU NULL E CONTROLLARE
 
-    public CommonGoal12(int x) {
-        commgoaltok = new CommonGoalToken(x);
+    public CommonGoal12(int numPlayer) {
+        commgoaltok = new CommonGoalToken(numPlayer);
     }
 
     public int check (Bookshelf bookshelf){

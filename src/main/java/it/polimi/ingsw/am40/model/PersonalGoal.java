@@ -86,7 +86,7 @@ public class PersonalGoal {
     public int calcScore(Bookshelf b) {
         int t = 0;
         for (int i = 0; i < pos.size(); i++) {
-            if (b.getColumns().get(pos.get(i).getX()).getColor(pos.get(i).getY()).equals(color.get(i))) {
+            if (b.getBookshelf().get(pos.get(i).getX()).getColor(pos.get(i).getY()).equals(color.get(i))) {
                 t++;
             }
         }

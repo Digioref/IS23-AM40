@@ -2,7 +2,7 @@ package it.polimi.ingsw.am40.model;
 
 public class CommonGoal6 extends CommonGoal {
     public CommonGoal6(int numPlayer) {
-        super();
+        commgoaltok = new CommonGoalToken(numPlayer);
     }
 
     /**
@@ -36,3 +36,4 @@ public class CommonGoal6 extends CommonGoal {
         }
     }
 }
+
