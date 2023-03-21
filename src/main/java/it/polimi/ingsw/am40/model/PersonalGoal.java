@@ -25,66 +25,56 @@ public class PersonalGoal {
     private ArrayList<TileColor> color;
 
     /**
-     * A Json Array used to build the instance of the class
+     * Constructor that builds the class using a json file and an index k
+     * @param k number of the personal goal chosen
      */
-    private static JSONArray PersGoals = null;
-
-    /**
-     * A static block of code used to transform a provided Json file to the Json array PersGoals
-     */
-    static {
-        JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("PersonalGoals")) {
-            Object obj = jsonParser.parse(reader);
-            PersGoals = (JSONArray) obj;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * The constructor which uses the Json Array to build a specific personal goal according to the specific features in the Json file
-     * @param i
-     */
-    public PersonalGoal (int i) {
-        JSONObject a = (JSONObject) PersGoals.get(i);
-        JSONArray obj1 = (JSONArray) a.get("position");
-        JSONArray obj2 = (JSONArray) a.get("color");
-
+    public PersonalGoal(int k) {
         pos = new ArrayList<>(6);
         color = new ArrayList<>(6);
 
-        for (Object obj : obj1) {
-            JSONObject t = (JSONObject) obj;
-            String t1 = t.get("x").toString();
-            int x = Integer.parseInt(t1);
-            pos.get(0).setX(x);
-            String t2 = t.get("y").toString();
-            int y = Integer.parseInt(t2);
-            pos.get(0).setY(y);
-        }
-        int j = 0;
-        for (Object obj : obj2) {
-            JSONObject t = (JSONObject) obj;
-            String x = t.get("Color").toString();
-            switch (x) {
-                case "Yellow":
-                    color.set(j, TileColor.YELLOW);
-                case "White":
-                    color.set(j, TileColor.WHITE);
-                case "Blue":
-                    color.set(j, TileColor.BLUE);
-                case "Green":
-                    color.set(j, TileColor.GREEN);
-                case "Cyan":
-                    color.set(j, TileColor.CYAN);
-                case "Violet":
-                    color.set(j, TileColor.VIOLET);
+
+        JSONParser jsonParser = new JSONParser();
+        FileReader reader;
+        try {
+            reader = new FileReader("PersonalGoals.json");
+            JSONObject persGoals = (JSONObject) jsonParser.parse(reader);
+
+            JSONArray array = (JSONArray) persGoals.get("PersonalGoals");
+            JSONObject o = (JSONObject) array.get(k);
+
+            JSONArray obj1 = (JSONArray) o.get("position");
+            JSONArray obj2 = (JSONArray) o.get("color");
+
+
+            for (Object obj : obj1) {
+                JSONObject t = (JSONObject) obj;
+                String t1 = t.get("x").toString();
+                int x = Integer.parseInt(t1);
+                String t2 = t.get("y").toString();
+                int y = Integer.parseInt(t2);
+                Position p = new Position(x, y);
+                pos.add(p);
             }
+            for (Object obj : obj2) {
+                JSONObject t = (JSONObject) obj;
+                String x = t.get("Color").toString();
+                switch (x) {
+                    case "Yellow":
+                        color.add(TileColor.YELLOW);
+                    case "White":
+                        color.add(TileColor.WHITE);
+                    case "Blue":
+                        color.add(TileColor.BLUE);
+                    case "Green":
+                        color.add(TileColor.GREEN);
+                    case "Cyan":
+                        color.add(TileColor.CYAN);
+                    case "Violet":
+                        color.add(TileColor.VIOLET);
+                }
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
         }
     }
 
@@ -95,15 +85,10 @@ public class PersonalGoal {
      */
     public int calcScore(Bookshelf b) {
         int t = 0;
-        int x =0;
-        int y =0;
         for (int i = 0; i < pos.size(); i++) {
-            x=getPos().get(i).getX();
-            y=getPos().get(i).getY();
-            //method getColor(int pos) defined in Class Column return string
-            if (b.getColumns().get(x).getColor(y).equals(color.get(i).name())) {
+            if (b.getColumns().get(pos.get(i).getX()).getColor(pos.get(i).getY()).equals(color.get(i))) {
+                t++;
             }
-            //b.get(x).getColor(y)
         }
         int s;
         switch (t) {

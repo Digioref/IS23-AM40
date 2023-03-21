@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="it.polimi.ingsw.am40.model.TileTest" time="0.003" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="19"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/daniele/IdeaProjects/IS23-AM40/target/test-classes:/home/daniele/.m2/repository/org/openjfx/javafx-controls/19/javafx-controls-19.jar:/home/daniele/.m2/repository/org/openjfx/javafx-graphics/19/javafx-graphics-19.jar:/home/daniele/.m2/repository/org/openjfx/javafx-fxml/19/javafx-fxml-19.jar:/home/daniele/.m2/repository/org/openjfx/javafx-base/19.0.2.1/javafx-base-19.0.2.1.jar:/home/daniele/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.1/junit-jupiter-engine-5.9.1.jar:/home/daniele/.m2/repository/org/junit/platform/junit-platform-engine/1.9.1/junit-platform-engine-1.9.1.jar:/home/daniele/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/daniele/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.1/junit-jupiter-api-5.9.1.jar:/home/daniele/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/daniele/.m2/repository/org/junit/platform/junit-platform-commons/1.9.1/junit-platform-commons-1.9.1.jar:"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="19"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/home/daniele/.jdks/openjdk-19.0.2/lib"/>
+    <property name="sun.java.command" value="org.apache.maven.surefire.booter.ForkedBooter /home/daniele/IdeaProjects/IS23-AM40/target/surefire 2023-03-20T21-31-16_679-jvmRun1 surefire-20230320213116835_1tmp surefire_0-20230320213116835_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/daniele/IdeaProjects/IS23-AM40/target/test-classes:/home/daniele/.m2/repository/org/openjfx/javafx-controls/19/javafx-controls-19.jar:/home/daniele/.m2/repository/org/openjfx/javafx-graphics/19/javafx-graphics-19.jar:/home/daniele/.m2/repository/org/openjfx/javafx-fxml/19/javafx-fxml-19.jar:/home/daniele/.m2/repository/org/openjfx/javafx-base/19.0.2.1/javafx-base-19.0.2.1.jar:/home/daniele/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.1/junit-jupiter-engine-5.9.1.jar:/home/daniele/.m2/repository/org/junit/platform/junit-platform-engine/1.9.1/junit-platform-engine-1.9.1.jar:/home/daniele/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/daniele/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.1/junit-jupiter-api-5.9.1.jar:/home/daniele/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/daniele/.m2/repository/org/junit/platform/junit-platform-commons/1.9.1/junit-platform-commons-1.9.1.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/daniele"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="jdk.module.path" value="/home/daniele/IdeaProjects/IS23-AM40/target/classes:/home/daniele/.m2/repository/org/openjfx/javafx-controls/19/javafx-controls-19-linux.jar:/home/daniele/.m2/repository/org/openjfx/javafx-fxml/19/javafx-fxml-19-linux.jar:/home/daniele/.m2/repository/org/openjfx/javafx-graphics/19.0.2.1/javafx-graphics-19.0.2.1-win.jar:/home/daniele/.m2/repository/org/openjfx/javafx-base/19.0.2.1/javafx-base-19.0.2.1-linux.jar:/home/daniele/.m2/repository/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar"/>
+    <property name="java.version.date" value="2023-01-17"/>
+    <property name="java.home" value="/home/daniele/.jdks/openjdk-19.0.2"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/daniele/IdeaProjects/IS23-AM40"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/home/daniele/.m2/repository/org/apache/maven/surefire/surefire-booter/3.0.0/surefire-booter-3.0.0.jar:/home/daniele/.m2/repository/org/apache/maven/surefire/surefire-api/3.0.0/surefire-api-3.0.0.jar:/home/daniele/.m2/repository/org/apache/maven/surefire/surefire-extensions-spi/3.0.0/surefire-extensions-spi-3.0.0.jar:/home/daniele/.m2/repository/org/apache/maven/surefire/surefire-logger-api/3.0.0/surefire-logger-api-3.0.0.jar:/home/daniele/.m2/repository/org/apache/maven/surefire/surefire-shared-utils/3.0.0/surefire-shared-utils-3.0.0.jar:/home/daniele/IdeaProjects/IS23-AM40/target/test-classes:/home/daniele/.m2/repository/org/openjfx/javafx-controls/19/javafx-controls-19.jar:/home/daniele/.m2/repository/org/openjfx/javafx-graphics/19/javafx-graphics-19.jar:/home/daniele/.m2/repository/org/openjfx/javafx-fxml/19/javafx-fxml-19.jar:/home/daniele/.m2/repository/org/openjfx/javafx-base/19.0.2.1/javafx-base-19.0.2.1.jar:/home/daniele/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.1/junit-jupiter-engine-5.9.1.jar:/home/daniele/.m2/repository/org/junit/platform/junit-platform-engine/1.9.1/junit-platform-engine-1.9.1.jar:/home/daniele/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/daniele/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.1/junit-jupiter-api-5.9.1.jar:/home/daniele/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/daniele/.m2/repository/org/junit/platform/junit-platform-commons/1.9.1/junit-platform-commons-1.9.1.jar:/home/daniele/.m2/repository/org/apache/maven/surefire/surefire-junit-platform/3.0.0/surefire-junit-platform-3.0.0.jar:/home/daniele/.m2/repository/org/apache/maven/surefire/common-java5/3.0.0/common-java5-3.0.0.jar:/home/daniele/.m2/repository/org/junit/platform/junit-platform-launcher/1.9.1/junit-platform-launcher-1.9.1.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="19.0.2+7-44"/>
+    <property name="user.name" value="daniele"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="5.19.0-35-generic"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/daniele/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="idea.version" value="2022.3.3"/>
+    <property name="java.version" value="19.0.2"/>
+    <property name="user.dir" value="/home/daniele/IdeaProjects/IS23-AM40"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="19.0.2+7-44"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="63.0"/>
+  </properties>
+  <testcase name="Test" classname="it.polimi.ingsw.am40.model.TileTest" time="0.001"/>
+</testsuite>

@@ -68,4 +68,15 @@ public class Position {
     public void setY(int y) {
         this.y = y;
     }
+
+    public String getKey() {
+        return buildKey(this.x, this.y);
+    }
+
+    public static String getKey(int x, int y) {
+        return buildKey(x, y);
+    }
+    private static String buildKey (int x, int y) {
+        return ("(" + x + "," + y + ")");
+    }
 }

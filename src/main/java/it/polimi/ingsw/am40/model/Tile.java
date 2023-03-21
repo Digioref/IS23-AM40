@@ -13,6 +13,8 @@ public class Tile {
      */
     private TileType type;
 
+    private Position pos;
+
     /**
      * Constructor which builds the tile assigning colour and type
      * @param color a colour
@@ -66,5 +68,13 @@ public class Tile {
      */
     public void setType(TileType type) {
         this.type = type;
+    }
+
+    public Position getPos() {
+        return pos;
+    }
+
+    public void setPos(Position pos) {
+        this.pos = pos;
     }
 }

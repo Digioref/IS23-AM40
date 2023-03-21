@@ -1,6 +1,8 @@
 package it.polimi.ingsw.am40.model;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Represents the Bag which contains all the game Tiles
@@ -15,7 +17,7 @@ public class Bag {
      * Default constructor, which sets the availableTiles array to null
      */
     public Bag() {
-        this.availableTiles = null;
+        this.availableTiles = new ArrayList<>();
     }
 
     /**

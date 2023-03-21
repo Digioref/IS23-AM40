@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"it.polimi.ingsw.am40","l":"it.polimi.ingsw.am40.model"}];updateSearchResults();

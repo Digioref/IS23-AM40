@@ -1,15 +1,15 @@
 package it.polimi.ingsw.am40.model;
-import it.polimi.ingsw.am40.model.*;
-import org.junit.*;
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests the Position class
  */
 public class PositionTest {
     /**
-    Tests class constructor, set and get methods, and overrided equals method
+     Tests class constructor, set and get methods, and overrided equals method
      */
     @Test
     public void Test () {

@@ -9,7 +9,7 @@ public class Player {
     /**
      * The nickname of the player used to be identified during the game
      */
-    private String nickname;
+    private final String nickname;
     /**
      * An array containing the tiles selected and picked by the player
      */
@@ -47,6 +47,7 @@ public class Player {
         this.nickname = nickname;
         currentScore = 0;
         finalScore = 0;
+        this.tilesPicked = new ArrayList<>();
     }
 
     /**
@@ -54,8 +55,8 @@ public class Player {
      * @param pos
      */
     public void pickTile(Position pos) {
-        if (board.getGrid().containsKey(pos)) {
-            tilesPicked.add(board.pick(pos));
+        if (board.getGrid().containsKey(pos.getKey())) {
+            tilesPicked.add(board.pick(pos.getKey()));
         }
     }
 
