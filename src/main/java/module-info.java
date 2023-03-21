@@ -6,5 +6,7 @@ module it.polimi.ingsw.am40{
 
     opens it.polimi.ingsw.am40.model to javafx.fxml;
     exports it.polimi.ingsw.am40.model;
+    exports it.polimi.ingsw.am40.app;
+    opens it.polimi.ingsw.am40.app to javafx.fxml;
 
 }
