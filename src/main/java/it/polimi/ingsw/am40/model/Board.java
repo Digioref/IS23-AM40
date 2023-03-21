@@ -45,9 +45,7 @@ public class Board {
                 Position p = new Position(Integer.parseInt(t1), Integer.parseInt(t2));
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
                 grid.put(p.getKey(), tile);
-                for (String pos : grid.keySet()) {
-                    System.out.println(pos);
-                }
+                    System.out.println(p.getKey());
 
 
             }
