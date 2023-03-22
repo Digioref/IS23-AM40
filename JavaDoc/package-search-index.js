@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"it.polimi.ingsw.am40","l":"it.polimi.ingsw.am40.controller"},{"m":"it.polimi.ingsw.am40","l":"it.polimi.ingsw.am40.model"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"it.polimi.ingsw.am40","l":"it.polimi.ingsw.am40.app"},{"m":"it.polimi.ingsw.am40","l":"it.polimi.ingsw.am40.controller"},{"m":"it.polimi.ingsw.am40","l":"it.polimi.ingsw.am40.model"}];updateSearchResults();
