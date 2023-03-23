@@ -312,4 +312,12 @@ public class Game {
     public Board getBoard() {
         return board;
     }
+
+    public Bag getBag() {
+        return bag;
+    }
+
+    public void setBag(Bag bag) {
+        this.bag = bag;
+    }
 }

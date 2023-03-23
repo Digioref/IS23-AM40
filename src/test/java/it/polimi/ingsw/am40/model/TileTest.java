@@ -25,6 +25,21 @@ public class TileTest {
         assertNotEquals(p1.getType(), p2.getType());
         assertNotEquals(true, p1.equals(p2));
         assertFalse(p2.equals(p1));
+    }
 
+    /**
+     * Tests get and set position, and the toString
+     */
+    @Test
+    public void Test2() {
+        Tile t1 = new Tile(TileColor.GREEN, TileType.CATS);
+        Position p = new Position(1,3);
+        t1.setPos(p);
+        String s = t1.toString();
+        assertEquals(1, t1.getPos().getX());
+        assertEquals(3, t1.getPos().getY());
+        assertNotEquals(1, t1.getPos().getY());
+        assertNotEquals(3, t1.getPos().getX());
+        assertEquals("Tile { color = GREEN, type = CATS, pos = (1,3) }", t1.toString());
     }
 }

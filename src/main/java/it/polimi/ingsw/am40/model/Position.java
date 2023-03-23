@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am40.model;
 
+import java.util.ArrayList;
+
 /**
  * Represents the position of a Tile in the bookshelf or in the board
  */
@@ -78,5 +80,24 @@ public class Position {
     }
     private static String buildKey (int x, int y) {
         return ("(" + x + "," + y + ")");
+    }
+
+    public void convertKey(String s) {
+        ArrayList<Integer> arr = new ArrayList<>();
+        for (int i = 0; i< s.length(); i++) {
+            if ((s.charAt(i) != '(') && (s.charAt(i) != ',') && (s.charAt(i) != ')')) {
+                if (s.charAt(i) == '-') {
+                    String s1 = '-' + String.valueOf(s.charAt(i+1));
+                    arr.add(Integer.parseInt(s1));
+                    i++;
+                }
+                else {
+                    String s1 = String.valueOf(s.charAt(i));
+                    arr.add(Integer.parseInt(s1));
+                }
+            }
+        }
+        setX(arr.get(0));
+        setY(arr.get(1));
     }
 }

@@ -23,6 +23,7 @@ public class Tile {
     public Tile(TileColor color, TileType type) {
         this.color = color;
         this.type = type;
+        this.pos = new Position(-20, -20);
     }
 
     /**
@@ -80,10 +81,10 @@ public class Tile {
 
     @Override
     public String toString() {
-        return "Tile{" +
-                "color=" + color +
-                ", type=" + type +
-                ", pos=" + pos +
-                '}';
+        return "Tile { " +
+                "color = " + color +
+                ", type = " + type +
+                ", pos = " + pos.getKey() +
+                " }";
     }
 }
