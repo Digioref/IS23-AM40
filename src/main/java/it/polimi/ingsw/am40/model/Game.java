@@ -10,7 +10,7 @@ public class Game {
     /**
      * Number of players in game
      */
-    private int numPlayer;
+    private int numPlayers;
     /**
      * Array of the players in game
      */
@@ -54,10 +54,10 @@ public class Game {
 
     /**
      * Constructor which builds the class assigning the number of players and creating the array of players
-     * @param numPlayer number of players
+     * @param numPlayers number of players
      */
-    public Game(int numPlayer) {
-        this.numPlayer = numPlayer;
+    public Game(int numPlayers) {
+        this.numPlayers = numPlayers;
         players = new ArrayList<>();
     }
 
@@ -71,8 +71,8 @@ public class Game {
             players.get(players.size() - 1).setNext(p);
         }
         players.add(p);
-        if (players.size() == numPlayer) {
-            players.get(numPlayer - 1).setNext(players.get(0));
+        if (players.size() == numPlayers) {
+            players.get(numPlayers - 1).setNext(players.get(0));
         }
     }
 
@@ -83,7 +83,7 @@ public class Game {
         commonGoals = new ArrayList<>(12);
         currentComGoals = new ArrayList<>(2);
         bag = new Bag();
-        board = new Board(numPlayer);
+        board = new Board(numPlayers);
         endToken = new EndToken();
 
         createTiles();
@@ -132,18 +132,18 @@ public class Game {
      * Creates the 12 common goals
      */
     public void createComGoals() {
-        commonGoals.add(new CommonGoal1(numPlayer));
-        commonGoals.add(new CommonGoal2(numPlayer));
-        commonGoals.add(new CommonGoal3(numPlayer));
-        commonGoals.add(new CommonGoal4(numPlayer));
-        commonGoals.add(new CommonGoal5(numPlayer));
-        commonGoals.add(new CommonGoal6(numPlayer));
-        commonGoals.add(new CommonGoal7(numPlayer));
-        commonGoals.add(new CommonGoal8(numPlayer));
-        commonGoals.add(new CommonGoal9(numPlayer));
-        commonGoals.add(new CommonGoal10(numPlayer));
-        commonGoals.add(new CommonGoal11(numPlayer));
-        commonGoals.add(new CommonGoal12(numPlayer));
+        commonGoals.add(new CommonGoal1(numPlayers));
+        commonGoals.add(new CommonGoal2(numPlayers));
+        commonGoals.add(new CommonGoal3(numPlayers));
+        commonGoals.add(new CommonGoal4(numPlayers));
+        commonGoals.add(new CommonGoal5(numPlayers));
+        commonGoals.add(new CommonGoal6(numPlayers));
+        commonGoals.add(new CommonGoal7(numPlayers));
+        commonGoals.add(new CommonGoal8(numPlayers));
+        commonGoals.add(new CommonGoal9(numPlayers));
+        commonGoals.add(new CommonGoal10(numPlayers));
+        commonGoals.add(new CommonGoal11(numPlayers));
+        commonGoals.add(new CommonGoal12(numPlayers));
     }
 
     /**
