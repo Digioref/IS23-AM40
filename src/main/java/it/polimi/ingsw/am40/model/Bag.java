@@ -14,19 +14,22 @@ public class Bag {
     private ArrayList<Tile> availableTiles;
 
     /**
-     * Default constructor, which sets the availableTiles array to null
+     * Default constructor, which creates the availableTiles array
      */
     public Bag() {
         this.availableTiles = new ArrayList<>();
     }
 
     /**
-     * Selects a tile randomly from the availabletiles Array
+     * Selects a tile randomly from the availableTiles Array
      * @return tile from the bag
      */
     public Tile pick() {
         Random rand = new Random();
-        return availableTiles.remove(rand.nextInt(availableTiles.size()));
+        if (!(availableTiles.isEmpty())) {
+            return availableTiles.remove(rand.nextInt(availableTiles.size()));
+        }
+        return null;
     }
 
     /**

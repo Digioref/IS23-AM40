@@ -44,10 +44,8 @@ public class Board {
                 String t2 = t.get("y").toString();
                 Position p = new Position(Integer.parseInt(t1), Integer.parseInt(t2));
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
+                tile.setPos(p);
                 grid.put(p.getKey(), tile);
-                    System.out.println(p.getKey());
-
-
             }
 
         } catch (IOException | ParseException e) {
@@ -61,7 +59,14 @@ public class Board {
      */
     public void config(Bag b) {
         for (String pos : grid.keySet()) {
-            grid.put(pos, b.pick());
+          //  Position p = new Position(-20, -20);
+          //  p.convertKey(pos);
+          //  grid.put(pos, b.pick());
+          //  grid.get(pos).setPos(p);
+
+            Tile t = b.pick();
+            t.setPos(grid.get(pos).getPos());
+            grid.put(pos, t);
         }
     }
 
@@ -71,9 +76,9 @@ public class Board {
      * @return the tile picked
      */
     public Tile pick(String pos) {
-        if (grid.containsKey(pos) && grid.get(pos) != null) {
+        if (grid.containsKey(pos) && grid.get(pos).getType() != TileType.EMPTY) {
             Tile t = grid.get(pos);
-            grid.put(pos, null);
+            grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY));
             return t;
         }
         return null;
@@ -85,9 +90,9 @@ public class Board {
      */
     public void remove(Bag b) {
         for (String pos : grid.keySet()) {
-            if (grid.get(pos) != null) {
+            if (grid.get(pos).getType() != TileType.EMPTY) {
                 b.insert(grid.get(pos));
-                grid.put(pos, null);
+                grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY));
             }
         }
     }
