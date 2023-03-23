@@ -13,7 +13,7 @@ public class CommonGoal1 extends CommonGoal {
      * @return the score if it finds the squares, else it returns 0
      */
     @Override
-    public int check (Bookshelf b) {
+    public int check (Bookshelf b) { // ok
         int count = 0;
 
         int x = 0; // coordinates of the bottom left tile of the first square find
