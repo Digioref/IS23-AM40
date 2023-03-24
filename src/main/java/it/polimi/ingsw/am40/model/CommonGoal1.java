@@ -7,8 +7,6 @@ public class CommonGoal1 extends CommonGoal {
         commgoaltok = new CommonGoalToken(numPlayer);
     }
 
-
-
     /**
      * Checks if there are 2 squares of 2x2 sixe with all 8 tiles with the same color
      * @param b bookshelf of the player
@@ -53,7 +51,7 @@ public class CommonGoal1 extends CommonGoal {
     }
 
     public boolean ovrelaps(int x1, int y1, int x2, int y2) { // return true if the two squares do overlap
-        return x1 + 1 == x2 && (y1 == y2 + 1 || y1 == y2 || y1 + 1 == y2);
+        return x1 <= x2 + 1 && x2 <= x1 + 1 && y1 <= y2 + 1 && y1 + 1 >= y2;
     }
 
 }
