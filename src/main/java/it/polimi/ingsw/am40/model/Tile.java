@@ -25,6 +25,11 @@ public class Tile {
         this.type = type;
         this.pos = new Position(-20, -20);
     }
+    public void Tile(TileColor color, TileType type, Position pos){
+        this.color = color;
+        this.type = type;
+        this.pos = pos;
+    }
 
     /**
      * Override of the method equals, it compares two tile according to the colour

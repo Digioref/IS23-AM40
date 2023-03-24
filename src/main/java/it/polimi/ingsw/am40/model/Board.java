@@ -1,6 +1,7 @@
 
 package it.polimi.ingsw.am40.model;
 
+import javafx.geometry.Pos;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -9,6 +10,7 @@ import org.json.simple.JSONObject;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ public class Board {
      * A map that maps the positions in the board to a tile
      */
     private Map<String, Tile> grid;
+    private ArrayList<Position> pickableTile;
 
 
 
@@ -29,6 +32,7 @@ public class Board {
      */
     public Board(int num) {
         grid = new HashMap<>();
+        pickableTile = new ArrayList<Position>();
 
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
@@ -46,6 +50,9 @@ public class Board {
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
                 tile.setPos(p);
                 grid.put(p.getKey(), tile);
+                    System.out.println(p.getKey());
+
+
             }
 
         } catch (IOException | ParseException e) {
@@ -111,5 +118,85 @@ public class Board {
      */
     public void setGrid(Map<String, Tile> grid) {
         this.grid = grid;
+    }
+
+    public void setSideFreeTile(){
+        for(Tile tile : grid.values()){
+            if(checkFreeSide(tile.getPos())>0){
+                pickableTile.add(tile.getPos());
+            }
+        }
+    }
+
+
+    public int checkFreeSide(Position pos){
+        Position next = new Position();
+        int res = 0;
+        next.setNext(1,0);
+        if(isFree(next)){
+            res=res+1;
+        }
+        next.setNext(0,1);
+        if(isFree(next)){
+            res=res+1;
+        }
+        next.setNext(-1,0);
+        if(isFree(next)){
+            res=res+1;
+        }
+        next.setNext(0,-1);
+        if(isFree(next)){
+            res=res+1;
+        }
+        return res;
+    }
+
+
+
+    private boolean isFree(Position pos) {
+        if(!(grid.containsKey(pos.getKey()))){
+            return false;
+        }
+        if (grid.containsKey(pos.getKey())) {
+            if (grid.get(pos.getKey()) != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void updatePickable(Position pos){
+        for(Position t : pickableTile){
+            if(t!=null){
+                if(!(isPickable(pos,t))){
+                    pickableTile.remove(t);
+                }
+            }
+        }
+    }
+
+    private boolean isPickable(Position pos, Position t){
+        int diffX = pos.getX()-t.getX();
+        int diffY = pos.getY()-t.getY();
+        if(diffY>1 || diffY <-1){
+            return false;
+        }
+        if(diffX>1 || diffX <-1){
+            return false;
+        }
+        return true;
+    }
+
+    public void clearPickable(){
+        pickableTile.clear();
+    }
+
+    public boolean needRefill(){
+        for(Tile tile : grid.values()){
+            if(checkFreeSide(tile.getPos())>0){
+                return false;
+            }
+        }
+        return true;
     }
 }

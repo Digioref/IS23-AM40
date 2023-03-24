@@ -15,6 +15,9 @@ public class Position {
      */
     private int y;
 
+    public Position(){
+
+    }
     /**
      * Constructor which builds the class according to the provided x and y
      * @param x a x coordinate
@@ -99,5 +102,10 @@ public class Position {
         }
         setX(arr.get(0));
         setY(arr.get(1));
+    }
+
+    public void setNext(int offX, int offY){
+        this.x = x + offX;
+        this.y = y + offY;
     }
 }
