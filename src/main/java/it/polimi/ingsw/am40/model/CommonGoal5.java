@@ -15,19 +15,21 @@ public class CommonGoal5 extends CommonGoal {
     @Override
     public int check(Bookshelf bookshelf) {
         int count = 0;
-        ArrayList<Tile> differentTiles = new ArrayList<Tile>(); // array dove salvo i tile diversi
+        ArrayList<Tile> differentTiles = new ArrayList<Tile>(); // array where I save all the different Tiles
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5 && count < 3; i++) {
             if (bookshelf.getBookshelf().get(i).getColumn().size() == 6) { // controllo solo quelli con la colonna piena
+                differentTiles.clear();
                 for (int j = 0; j < 6; j++) {
                     if (!differentTiles.contains(bookshelf.getTile(i,j))) { // aggiungo solo se non è già contrnuto ?? l'uguaglianza la controlla con .equals?? secondo me si
                         differentTiles.add(bookshelf.getTile(i,j));
                     }
                 }
+                if (differentTiles.size() < 4) {
+                    count++;
+                }
             }
-            if (differentTiles.size() < 4) {
-                count++;
-            }
+
         }
         if (count == 3) {
             return commgoaltok.updateScore();

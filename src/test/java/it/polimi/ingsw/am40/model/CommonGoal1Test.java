@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am40.model;
 
 import it.polimi.ingsw.am40.model.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -36,40 +37,19 @@ public class CommonGoal1Test {
             }
         }
 
-/*
-        b.addTile(t1,0);
-        b.addTile(t1,1);
-        b.addTile(t1,2);
-        b.addTile(t1,3);
-        b.addTile(t1,4);
-*/
-
-
-
-
-        /*
-        b.addTile(t1,0);
-        b.addTile(t1,0);
-        b.addTile(t1,1);
-        b.addTile(t1,1);
-        b.addTile(t1,0);
-        b.addTile(t1,0);
-        b.addTile(t1,1);
-        b.addTile(t1,1);
-
-         */
-
-
-        //System.out.println(b.getBookshelf().get(0).getColumn().get(0).getColor().toString());
-        //System.out.println(b.getBookshelf());
-
-
-
-
-        //CommonGoal1 c1 = new CommonGoal1(2);
-        CommonGoal3 c1 = new CommonGoal3(2);
+        CommonGoal1 c1 = new CommonGoal1(2);
+        CommonGoal2 c2 = new CommonGoal2(2);
+        CommonGoal3 c3 = new CommonGoal3(2);
+        CommonGoal4 c4 = new CommonGoal4(2);
+        CommonGoal5 c5 = new CommonGoal5(2);
+        CommonGoal6 c6 = new CommonGoal6(2);
         assertEquals(8, c1.check(bookshelf));
-        assertEquals(4, c1.check(bookshelf));
+        assertEquals(0, c2.check(bookshelf));
+        assertEquals(8, c3.check(bookshelf));
+        assertEquals(8, c4.check(bookshelf));
+        assertEquals(8, c5.check(bookshelf));
+        assertEquals(0, c6.check(bookshelf));
+
 
 
 

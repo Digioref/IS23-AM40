@@ -29,7 +29,7 @@ public class CommonGoal6 extends CommonGoal {
                 count++;
             }
         }
-        if (count == 0) {
+        if (count == 2) {
             return commgoaltok.updateScore();
         } else {
             return 0;
