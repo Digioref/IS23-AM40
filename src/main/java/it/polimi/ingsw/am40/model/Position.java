@@ -104,8 +104,34 @@ public class Position {
         setY(arr.get(1));
     }
 
-    public void setNext(int offX, int offY){
-        this.x = x + offX;
-        this.y = y + offY;
+
+    /**
+     * set a position at distance of one in only one direction
+     * @param pos starting position
+     * @param type int for select the correct offest
+     */
+    public void setNext(Position pos,int type){
+        copyPos(pos);
+        switch(type){
+            case 1: this.x=x+1;
+                    break;
+            case 2: this.x=x-1;
+                break;
+            case 3: this.y=y+1;
+                break;
+            case 4: this.y=y-1;
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * copy the x and y of a given position
+     * @param pos position to be copied
+     */
+    public void copyPos(Position pos){
+        this.x= pos.getX();
+        this.y= pos.getY();
     }
 }

@@ -120,6 +120,10 @@ public class Board {
         this.grid = grid;
     }
 
+    /**
+     * add the tiles with at least one free side to the array of the tile eligible to be picked
+     *
+     */
     public void setSideFreeTile(){
         for(Tile tile : grid.values()){
             if(checkFreeSide(tile.getPos())>0){
@@ -128,32 +132,31 @@ public class Board {
         }
     }
 
-
+    /**
+     * return the number of free side of a tile in a given position
+     * @param pos a parameter stating the position of a tile in the board
+     * @return an int representig how many free side the specific tile have, it can only be a value between 0 and 4
+     */
     public int checkFreeSide(Position pos){
         Position next = new Position();
         int res = 0;
-        next.setNext(1,0);
-        if(isFree(next)){
-            res=res+1;
-        }
-        next.setNext(0,1);
-        if(isFree(next)){
-            res=res+1;
-        }
-        next.setNext(-1,0);
-        if(isFree(next)){
-            res=res+1;
-        }
-        next.setNext(0,-1);
-        if(isFree(next)){
-            res=res+1;
+        for(int i=1;i<5;i++){
+            next.setNext(pos,i);
+            if(isFree(next)){
+                res=res+1;
+            }
         }
         return res;
     }
 
 
-
+    /**
+     *
+     * @param pos a parameter stating the position of a tile in the board
+     * @return a boolean stating if at the position given the board is free (true) or contains a tile (false)
+     */
     private boolean isFree(Position pos) {
+        //if the key obtained from the position
         if(!(grid.containsKey(pos.getKey()))){
             return false;
         }
@@ -165,6 +168,12 @@ public class Board {
         return true;
     }
 
+    /**
+     * method that can be call after the selection of one tile, it updates the array of
+     * tiles that can be picked with only the adjacent one and removes all the tiles in
+     * the array that are not eligible to be picked after
+     * @param pos position of the tile picked
+     */
     public void updatePickable(Position pos){
         for(Position t : pickableTile){
             if(t!=null){
@@ -175,6 +184,12 @@ public class Board {
         }
     }
 
+    /**
+     *
+     * @param pos position of the tile picked
+     * @param t position of another tile present in th arraylist tilesPickable
+     * @return a boolean that states if a tile in a specific position can be picked (only up,down,right and left at distance one)
+     */
     private boolean isPickable(Position pos, Position t){
         int diffX = pos.getX()-t.getX();
         int diffY = pos.getY()-t.getY();
@@ -184,13 +199,24 @@ public class Board {
         if(diffX>1 || diffX <-1){
             return false;
         }
+        if(diffX!=0 && diffY !=0){
+            return false;
+        }
         return true;
     }
 
+    /**
+     *
+     * clear the arrayList of the available tiles at the end of the round
+     */
     public void clearPickable(){
         pickableTile.clear();
     }
 
+    /**
+     * check if at least one tile in the board have not all of its side free
+     * @return a boolean that states if a refill of the board is necessary
+     */
     public boolean needRefill(){
         for(Tile tile : grid.values()){
             if(checkFreeSide(tile.getPos())>0){
