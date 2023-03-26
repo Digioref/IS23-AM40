@@ -1,0 +1,40 @@
+{
+  "CommonGoals": [
+    {"bookshelf" : [
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]}
+    ],
+      "asserts": [
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8}
+      ]
+    },
+    {"bookshelf" : [
+      {"row": [{"col" : "y"}, {"col" : "w"}, {"col" : "w"}, {"col" : "w"}, {"col" : "y"}]},
+      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
+      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
+      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "g"}]},
+      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]}
+    ],
+      "asserts": [
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  0}
+      ]
+    }
+    ]
+}
