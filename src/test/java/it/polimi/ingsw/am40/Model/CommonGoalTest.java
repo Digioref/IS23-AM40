@@ -1,21 +1,18 @@
-package it.polimi.ingsw.am40.model;
+package it.polimi.ingsw.am40.Model;
 
-import it.polimi.ingsw.am40.model.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class CommonGoal1Test {
+public class CommonGoalTest {
 
     @Test
     public void Test() { // GREEN, WHITE, YELLOW, BLUE, CYAN, VIOLET

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.am40.app;
+package it.polimi.ingsw.am40.App;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
