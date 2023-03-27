@@ -7,10 +7,11 @@ public class CommonGoal12 extends CommonGoal { // NON FUNZIONA METTERE CONTROLLI
     }
 
     public int check (Bookshelf bookshelf){
+
         int count=0;
 
-        for(int i=0; i<4;i++){
-            if(bookshelf.getTile(i,i).equals(bookshelf.getTile(i+1,i+1)))
+        for (int i = 0; i < 4; i++) {
+            if (bookshelf.getTile(i,i).equals(bookshelf.getTile(i+1,i+1)))
                 count++;
         }
         if(count == 5)

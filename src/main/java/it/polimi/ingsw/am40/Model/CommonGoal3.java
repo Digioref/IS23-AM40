@@ -68,6 +68,43 @@ public class CommonGoal3 extends CommonGoal {
                 figure.remove(count);
                 return;
             }
+        } else if (prevTile.equals(b.getTile(x,y)) && figure.contains(tile) && count == 3) {
+            if (x < 4) {
+                tile = new TileCoo(x + 1,y,b.getTile(x + 1,y));
+                if (b.getTile(x,y).equals(b.getTile(x + 1,y)) && !figure.contains(tile)) {
+                    figure.add(tile);
+                    tmp = new ArrayList<>(figure);
+                    possibleGroups.add(tmp);
+                    figure.remove(count);
+                }
+            }
+            if (x > 0) {
+                tile = new TileCoo(x - 1,y,b.getTile(x - 1,y));
+                if (b.getTile(x,y).equals(b.getTile(x - 1,y)) && !figure.contains(tile)) {
+                    figure.add(tile);
+                    tmp = new ArrayList<>(figure);
+                    possibleGroups.add(tmp);
+                    figure.remove(count);
+                }
+            }
+            if (y < 5) {
+                tile = new TileCoo(x,y + 1,b.getTile(x,y + 1));
+                if (b.getTile(x,y).equals(b.getTile(x,y + 1)) && !figure.contains(tile)) {
+                    figure.add(tile);
+                    tmp = new ArrayList<>(figure);
+                    possibleGroups.add(tmp);
+                    figure.remove(count);
+                }
+            }
+            if (y > 0) {
+                tile = new TileCoo(x,y - 1,b.getTile(x,y - 1));
+                if (b.getTile(x,y).equals(b.getTile(x,y - 1)) && !figure.contains(tile)) {
+                    figure.add(tile);
+                    tmp = new ArrayList<>(figure);
+                    possibleGroups.add(tmp);
+                    figure.remove(count);
+                }
+            }
         }
         return;
     }
