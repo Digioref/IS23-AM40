@@ -15,7 +15,12 @@
         {"ass" :  8},
         {"ass" :  8},
         {"ass" :  0},
-        {"ass" :  8}
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0}
       ]
     },
     {"bookshelf" : [
@@ -32,6 +37,103 @@
         {"ass" :  0},
         {"ass" :  8},
         {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  0}
+      ]
+    },
+    {"bookshelf" : [
+      {"row": [{"col" : "y"}, {"col" : "w"}, {"col" : "w"}, {"col" : "y"}, {"col" : "y"}]},
+      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
+      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
+      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "g"}]},
+      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]}
+    ],
+      "asserts": [
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  0}
+      ]
+    },
+    {"bookshelf" : [
+      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "w"}, {"col" : "w"}, {"col" : "y"}]},
+      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "w"}]},
+      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}]},
+      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]}
+    ],
+      "asserts": [
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  0}
+      ]
+    },
+    {"bookshelf" : [
+      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "g"}, {"col" : "w"}, {"col" : "y"}]},
+      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "w"}]},
+      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}]},
+      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]}
+    ],
+      "asserts": [
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  0}
+      ]
+    },
+    {"bookshelf" : [
+      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "w"}, {"col" : "g"}, {"col" : "y"}]},
+      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
+      {"row": [{"col" : "w"}, {"col" : "g"}, {"col" : "w"}, {"col" : "w"}, {"col" : "g"}]},
+      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "w"}, {"col" : "g"}, {"col" : "g"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}]},
+      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}]}
+    ],
+      "asserts": [
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  8},
+        {"ass" :  0},
         {"ass" :  0},
         {"ass" :  0}
       ]

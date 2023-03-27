@@ -7,7 +7,8 @@ public class CommonGoal11 extends CommonGoal {
     }
 
     public int check (Bookshelf bookshelf){
-        int count=0;
+
+        int count = 1;
 
         for(int i=0; i<4;i++){
             if (bookshelf.getTile(i,i) != null) {
@@ -18,7 +19,7 @@ public class CommonGoal11 extends CommonGoal {
         if(count == 5)
             return commgoaltok.updateScore();
 
-        count = 0;
+        count = 1;
 
         for(int i=0; i<4;i++){
             if (bookshelf.getTile(i,i+1) != null) {
@@ -29,7 +30,7 @@ public class CommonGoal11 extends CommonGoal {
         if(count == 5)
             return commgoaltok.updateScore();
 
-        count = 0;
+        count = 1;
 
         for(int i=0; i<4;i++){
             if (bookshelf.getTile(i, 4 - i) != null) {
@@ -37,18 +38,19 @@ public class CommonGoal11 extends CommonGoal {
                     count++;
             }
         }
-        if(count == 5)
+        if (count == 5)
             return commgoaltok.updateScore();
 
-        count = 0;
+        count = 1;
 
-        for(int i=0; i<4;i++){
+        for (int i = 0; i < 4; i++) {
             if (bookshelf.getTile(i, 5 - i) != null) {
-                if (bookshelf.getTile(i, 5 - i).equals(bookshelf.getTile(i + 1, i - 2)))
+                if (bookshelf.getTile(i, 5 - i).equals(bookshelf.getTile(i + 1, 4 - i))) {
                     count++;
+                }
             }
         }
-        if(count == 5)
+        if (count == 5)
             return commgoaltok.updateScore();
 
         return 0;
