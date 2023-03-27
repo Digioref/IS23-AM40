@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am40.Model;
 
 import it.polimi.ingsw.am40.Network.IGameObserver;
+import it.polimi.ingsw.am40.Network.VirtualView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -53,6 +54,8 @@ public class Game implements IGame {
      * The player who is carrying out his turn
      */
     private Player currentPlayer;
+
+    private ArrayList<VirtualView> observers = new ArrayList<>();
 
     /**
      * Constructor which builds the class assigning the number of players and creating the array of players
@@ -195,14 +198,6 @@ public class Game implements IGame {
     }
 
     /**
-     * Returns the current player
-     * @return the feature current player
-     */
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    /**
      * Sets the current player to the next player
      * @return false if the game has ended and the last player who did the turn was the one at the right of the first player, true otherwise
      */
@@ -214,12 +209,26 @@ public class Game implements IGame {
         return true;
 
     }
+
     public boolean checkEndGame () {
         if (endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer)) {
             setHasEnded(true);
             return true;
         }
         return false;
+    }
+    public void updatePickableTiles (Position pos) {
+        board.updatePickable(pos);
+        currentPlayer.getSelectedPositions().add(pos);
+        notifyObservers(1);
+    }
+
+    /**
+     * Removes the tiles picked by player p
+     */
+    public void removeSelectedTiles() {
+        currentPlayer.clearSelected();
+        notifyObservers(1);
     }
 
     /**
@@ -229,13 +238,7 @@ public class Game implements IGame {
         for (Position p : currentPlayer.getSelectedPositions()) {
             currentPlayer.pickTile(p);
         }
-    }
-
-    /**
-     * Removes the tiles picked by player p
-     */
-    public void removeSelectedTiles() {
-        currentPlayer.clearSelected();
+        notifyObservers(2);
     }
 
     /**
@@ -245,6 +248,7 @@ public class Game implements IGame {
      */
     public void setOrder (ArrayList<Tile> t) {
         currentPlayer.selectOrder(t);
+        notifyObservers(3);
     }
 
     /**
@@ -256,27 +260,22 @@ public class Game implements IGame {
             currentPlayer.placeInBookshelf(c);
             currentPlayer.updateCurrScore(currentComGoals);
             endToken.updateScore(currentPlayer);
+            currentPlayer.updateHiddenScore();
+            notifyObservers(4);
     }
 
     /**
      * Calculates the score of each player at the end of the game
-     * @return the score achieved by each player, using an arraylist
      */
-    public ArrayList<Integer> endGame() {
+    public void endGame() {
         ArrayList<Integer> score = new ArrayList<>(numPlayers);
         if (checkEndGame()) {
             for (Player p : players) {
                 p.calculateScore();
                 score.add(p.getFinalScore());
             }
-            return score;
         }
-        return null;
-    }
-
-    public void updatePickableTiles (Position pos) {
-        board.updatePickable(pos);
-        currentPlayer.getSelectedPositions().add(pos);
+        notifyObservers(5);
     }
 
     public boolean controlRefill () {
@@ -285,6 +284,7 @@ public class Game implements IGame {
 
     public void startTurn () {
         board.setSideFreeTile();
+        notifyObservers(0);
     }
 
     public boolean endTurn () {
@@ -294,6 +294,7 @@ public class Game implements IGame {
         }
         return nextPlayer();
    }
+
     /**
      * Returns true if the game has started
      * @return true if the game has started, false otherwise
@@ -301,7 +302,6 @@ public class Game implements IGame {
     public boolean HasStarted() {
         return hasStarted;
     }
-
     /**
      * Sets the feature hasStarted to the provided one
      * @param hasStarted a provided boolean
@@ -326,6 +326,14 @@ public class Game implements IGame {
         this.hasEnded = hasEnded;
     }
 
+    /**
+     * Returns the current player
+     * @return the feature current player
+     */
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     public ArrayList<Player> getPlayers() {
         return players;
     }
@@ -342,12 +350,45 @@ public class Game implements IGame {
         this.bag = bag;
     }
 
-    public void register(IGameObserver IGameObserver) {
-
+    public void register(VirtualView virtualView) {
+        observers.add(virtualView);
     }
 
-    public void unregister(IGameObserver IGameObserver) {}
+    public void unregister(VirtualView virtualView) {
+        observers.remove(virtualView);
+    }
 
-    public void notifyObserver() {}
+    public void notifyObservers(int i) {
+        switch (i) {
+            case 0:
+                for (VirtualView v : observers) {
+                    ArrayList<Bookshelf> b = new ArrayList<>();
+                    v.receiveBoard(board);
+                    if (currentPlayer.getNickname().equals(v.getNickname())) {
+                        v.receiveAllowedPositions(board.getPickableTiles());
+                    }
+                    v.receiveCurrentPlayer(currentPlayer);
+                    v.receiveCommonGoals(currentComGoals);
+                    for (Player p : players) {
+                        if (p.getNickname().equals(v.getNickname())) {
+                            v.receiveCurrentScore(p.getCurrentScore());
+                            v.receiveHiddenScore(p.getHiddenScore());
+                            v.receivePersonalGoal(p.getPersonalGoal());
+                        }
+                        b.add(p.getBookshelf());
+                    }
+                    v.receiveListBookshelves(b);
+                    v.receiveListPlayers(players);
+                    v.receiveNumPlayers(numPlayers);
+
+                };
+
+            case 1:
+
+
+
+        }
+
+    }
 
 }

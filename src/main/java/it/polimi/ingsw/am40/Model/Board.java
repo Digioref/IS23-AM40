@@ -49,7 +49,7 @@ public class Board {
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
                 tile.setPos(p);
                 grid.put(p.getKey(), tile);
-                    System.out.println(p.getKey());
+                // System.out.println(p.getKey());
 
 
             }
@@ -160,7 +160,7 @@ public class Board {
             return false;
         }
         if (grid.containsKey(pos.getKey())) {
-            if (grid.get(pos.getKey()) != null) {
+            if (grid.get(pos.getKey()).getColor() != TileColor.NOCOLOR && grid.get(pos.getKey()).getType() != TileType.EMPTY) {
                 return false;
             }
         }
@@ -223,5 +223,9 @@ public class Board {
             }
         }
         return true;
+    }
+
+    public ArrayList<Position> getPickableTiles() {
+        return pickableTiles;
     }
 }

@@ -50,9 +50,12 @@ public class Lobby {
         for (ClientHandler cl : activePlayers) {
             g.addPlayer(new Player(cl.getNickname()));
             cl.setController(c);
+            g.register(cl.getVirtualViewInstance());
         }
         numPlayers = 0;
         activePlayers.clear();
+        g.configureGame();
+        g.startGame();
     }
 
 }

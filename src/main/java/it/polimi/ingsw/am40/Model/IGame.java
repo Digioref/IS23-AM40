@@ -1,11 +1,12 @@
 package it.polimi.ingsw.am40.Model;
 
-import it.polimi.ingsw.am40.Network.IGameObserver;
+import it.polimi.ingsw.am40.Network.VirtualView;
 
 public interface IGame {
-    public void register(IGameObserver IGameObserver);
+    public void register(VirtualView virtualView);
 
-    public void unregister(IGameObserver IGameObserver);
+    public void unregister(VirtualView virtualView);
 
-    public void notifyObserver();
+    public void notifyObservers(int i);
 }
+

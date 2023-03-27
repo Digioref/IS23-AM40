@@ -30,6 +30,13 @@ public class GameController {
 
     public void insert(VirtualView v, int c) {
         game.insertInBookshelf(c);
+        boolean b = game.endTurn();
+        if (!b) {
+            game.endGame();
+        }
+        else {
+            game.startTurn();
+        }
     }
 
 

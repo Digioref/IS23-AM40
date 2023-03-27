@@ -51,6 +51,7 @@ public class Player {
     private boolean doneCG2;
 
     private ArrayList<Position> selectedPositions;
+    private int hiddenScore;
 
 
     /**
@@ -145,6 +146,10 @@ public class Player {
                 doneCG2 = true;
             }
         }
+    }
+
+    public void updateHiddenScore() {
+        hiddenScore = currentScore + personalGoal.calcScore(bookshelf);
     }
 
     /**
@@ -249,5 +254,11 @@ public class Player {
 
     public void clearSelected() {
         selectedPositions.clear();
+        board.getPickableTiles().clear();
+        board.setSideFreeTile();
+    }
+
+    public int getHiddenScore() {
+        return hiddenScore;
     }
 }
