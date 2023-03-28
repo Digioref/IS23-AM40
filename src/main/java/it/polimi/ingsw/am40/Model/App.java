@@ -4,7 +4,7 @@ import it.polimi.ingsw.am40.Controller.Controller;
 public class App
 {
     public static void main( String[] args ) {
-
+/*
         int numPlayers = 3;
         Game game = new Game(numPlayers);
         Player p1 = new Player("io");
@@ -27,6 +27,8 @@ public class App
         System.out.println(game.getCurrentPlayer().getNickname());
         controller.changePlayer();
         System.out.println(game.getCurrentPlayer().getNickname());
-
+*/
     }
+
+
 }

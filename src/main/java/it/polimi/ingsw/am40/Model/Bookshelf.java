@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am40.Model;
 
+import javafx.geometry.Pos;
+
 import java.util.ArrayList;
 
 /**
@@ -52,7 +54,10 @@ public class Bookshelf {
      */
     public void addTile(Tile newTile, int col){
         if (!(bookshelf.get(col).isFull() || newTile == null || col >= 5 || col < 0)){
+            Position pos = new Position(col-1,bookshelf.get(col).getSize()-1);
+            newTile.setPos(pos);
             bookshelf.get(col).addTile(newTile);
+
         }
     }
 
@@ -146,19 +151,6 @@ public class Bookshelf {
         return result;
     }
 
-    /**
-     * Returns an array of columns of the bookshelf
-     * @return an array of columns
-     */
-    /*
-    public ArrayList<Column> getColumns(){
-        ArrayList<Column> result = new ArrayList<>();
-        for(int i=0;i<5;i++){
-            result.add(bookshelf.get(i));
-        }
-        return result;
-    }
-*/
     public ArrayList<Column> getBookshelf() {
         return bookshelf;
     }

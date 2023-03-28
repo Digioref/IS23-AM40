@@ -26,6 +26,7 @@ public class ClientHandler {
 
 
     public String getNickname() {
+        return "return";
     }
 
     public Controller getController() {
