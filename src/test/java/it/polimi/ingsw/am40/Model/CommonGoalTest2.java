@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class CommonGoalTest {
+public class CommonGoalTest2 {
 
     @Test
     public void Test() { // GREEN, WHITE, YELLOW, BLUE, CYAN, VIOLET
@@ -22,7 +22,7 @@ public class CommonGoalTest {
         FileReader reader;
 
         try {
-            reader = new FileReader("CommonGoals.json");
+            reader = new FileReader("CommonGoals2.json");
             JSONObject commonGoals = (JSONObject) jsonParser.parse(reader);
 
             JSONArray array = (JSONArray) commonGoals.get("CommonGoals");
@@ -38,44 +38,32 @@ public class CommonGoalTest {
                 JSONArray obj1 = (JSONArray) o.get("bookshelf");
                 JSONArray obj2 = (JSONArray) o.get("asserts");
 
-
-                for (Object obj : obj1) {
-                    JSONObject tRow = (JSONObject) obj;
-                    JSONArray objRow = (JSONArray) tRow.get("row");
+                for (int j = 5; j >= 0; j--) {
                     row = new ArrayList<>(5);
-
-                    for (Object objCol : objRow) {
-                        JSONObject tcol = (JSONObject) objCol;
-                        String var = tcol.get("col").toString();
-
-                        switch (var) {
-                            case "y" -> {
+                    for (int col = 0; col < 5; col++) {
+                        String tile = obj1.get(5*j+col).toString();
+                        switch (tile) {
+                            case "Y" -> {
                                 row.add(new Tile(TileColor.YELLOW, TileType.CATS));
                             }
-                            case "w" -> {
+                            case "W" -> {
                                 row.add(new Tile(TileColor.WHITE, TileType.CATS));
                             }
-                            case "b" -> {
+                            case "B" -> {
                                 row.add(new Tile(TileColor.BLUE, TileType.CATS));
                             }
-                            case "g" -> {
+                            case "G" -> {
                                 row.add(new Tile(TileColor.GREEN, TileType.CATS));
                             }
-                            case "c" -> {
+                            case "C" -> {
                                 row.add(new Tile(TileColor.CYAN, TileType.CATS));
                             }
-                            case "v" -> {
+                            case "V" -> {
                                 row.add(new Tile(TileColor.VIOLET, TileType.CATS));
                             }
                         }
                     }
-                    book.add(0, row); // becouse I want to insert the rows from the last to the first
-                }
-                for (Object obj : obj2) {
-                    JSONObject t = (JSONObject) obj;
-                    String x = t.get("ass").toString();
-                    int val = Integer.parseInt(x);
-                    asserts.add(val);
+                    book.add(5-j, row);
                 }
 
                 Bookshelf bookshelf = new Bookshelf();
@@ -100,6 +88,11 @@ public class CommonGoalTest {
                 CommonGoal12 c12 = new CommonGoal12(2);
 
                 System.out.println("i: " + i);
+                System.out.println(obj2.size());
+
+                for (Object value : obj2) {
+                    asserts.add(Integer.parseInt(value.toString()));
+                }
 
                 assertEquals((int) asserts.get(0), c1.check(bookshelf));
                 assertEquals((int) asserts.get(1), c2.check(bookshelf));
@@ -123,7 +116,7 @@ public class CommonGoalTest {
     }
 
     @Test
-    public void Test_2() { // GREEN, WHITE, YELLOW, BLUE, CYAN, VIOLET
+    public void Test2() { // we have to do some test without the json to test the empty cells
 
         Bookshelf bookshelf = new Bookshelf();
         Tile g = new Tile(TileColor.GREEN, TileType.CATS); // colors: GREEN, WHITE, YELLOW, BLUE, CYAN, VIOLET, NOCOLOR;
