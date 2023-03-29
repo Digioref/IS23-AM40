@@ -7,6 +7,6 @@ public interface IGame {
 
     public void unregister(VirtualView virtualView);
 
-    public void notifyObservers(int i);
+    public void notifyObservers(TurnPhase turnPhase);
 }
 

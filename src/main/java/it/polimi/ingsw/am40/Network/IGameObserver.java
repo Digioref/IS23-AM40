@@ -18,7 +18,8 @@ public interface IGameObserver {
     public void receiveCurrentPlayer(Player player);
     public void receiveCurrentScore(int currentScore);
     public void receiveHiddenScore(int hiddenScore);
-    public void receiveDoneOrder();
+    public void receiveDoneOrder(ArrayList<Tile> array);
     public void receiveFinalScore(int finalScore);
+    public void receivePickedTiles(ArrayList<Tile> array);
 
 }

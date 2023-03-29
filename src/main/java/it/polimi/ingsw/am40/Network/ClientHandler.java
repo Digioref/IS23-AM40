@@ -16,6 +16,11 @@ public class ClientHandler {
         this.socket = socket;
     }
 
+    public void send(String s) {
+
+    }
+    public void receive() {}
+
     public VirtualView getVirtualViewInstance() {
         return this.virtualView;
     }
