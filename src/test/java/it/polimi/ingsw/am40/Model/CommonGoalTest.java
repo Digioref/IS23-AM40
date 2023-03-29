@@ -105,16 +105,6 @@ public class CommonGoalTest {
                 CommonGoal11 c11 = new CommonGoal11(2);
                 CommonGoal12 c12 = new CommonGoal12(2);
 
-        /*
-        System.out.println("1: " + c1.check(bookshelf));
-        System.out.println("2: " + c2.check(bookshelf));
-        System.out.println("3: " + c3.check(bookshelf));
-        System.out.println("4: " + c4.check(bookshelf));
-        System.out.println("5: " + c5.check(bookshelf));
-        System.out.println("6: " + c6.check(bookshelf));
-        System.out.println("8: " + c8.check(bookshelf));
-        */
-
                 System.out.println("i: " + i);
 
                 assertEquals((int) asserts.get(0), c1.check(bookshelf));
@@ -128,7 +118,7 @@ public class CommonGoalTest {
                 assertEquals((int) asserts.get(8), c9.check(bookshelf));
                 assertEquals((int) asserts.get(9), c10.check(bookshelf));
                 assertEquals((int) asserts.get(10), c11.check(bookshelf));
-                //assertEquals((int)asserts.get(11), c12.check(bookshelf));
+                assertEquals((int) asserts.get(11), c12.check(bookshelf));
 
             }
 
@@ -170,6 +160,7 @@ public class CommonGoalTest {
         CommonGoal4 c4 = new CommonGoal4(2);
         CommonGoal5 c5 = new CommonGoal5(2);
         CommonGoal6 c6 = new CommonGoal6(2);
+
         assertEquals(8, c1.check(bookshelf));
         assertEquals(0, c2.check(bookshelf));
         assertEquals(8, c3.check(bookshelf));

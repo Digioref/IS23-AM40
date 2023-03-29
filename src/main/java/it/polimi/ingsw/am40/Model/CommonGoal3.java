@@ -14,9 +14,8 @@ public class CommonGoal3 extends CommonGoal {
      */
 
     private int count = 0;
-    private ArrayList<TileCoo> figure = new ArrayList<>();
-    private ArrayList<ArrayList<TileCoo>> possibleGroups = new ArrayList<>();
-
+    private ArrayList<Tile> figure = new ArrayList<>();
+    private ArrayList<ArrayList<Tile>> possibleGroups = new ArrayList<>();
     @Override
     public int check(Bookshelf bookshelf) {
 
@@ -37,12 +36,22 @@ public class CommonGoal3 extends CommonGoal {
         return 0;
 
     }
+
+    public boolean contain(ArrayList<Tile> list, Tile tile) {
+        for (Tile value : list) {
+            if (value.equals(tile) && value.getPos().equals(tile.getPos())) {
+                return true;
+            }
+        }
+        return false;
+    }
     public void groups(Bookshelf b, int x, int y, Tile prevTile) {
 
-        TileCoo tile = new TileCoo(x,y,b.getTile(x,y));
-        ArrayList<TileCoo> tmp;
+        Tile var = b.getTile(x,y);
+        Tile tile = new Tile(var.getColor(), var.getType(), var.getPos());
+        ArrayList<Tile> tmp;
 
-        if (prevTile.equals(b.getTile(x,y)) && !figure.contains(tile)) {
+        if (prevTile.equals(tile) && !contain(figure,tile)) {
             count++;
             figure.add(tile);
             if (count == 4) {
@@ -52,26 +61,26 @@ public class CommonGoal3 extends CommonGoal {
                 figure.remove(count);
                 return;
             } else {
-                if (x < 4) {
+                if (x < 4 && b.getTile(x + 1, y) != null) {
                     groups(b, x + 1, y, b.getTile(x, y));
                 }
-                if (x > 0) {
+                if (x > 0 && b.getTile(x - 1, y) != null) {
                     groups(b, x - 1, y, b.getTile(x, y));
                 }
-                if (y < 5) {
+                if (y < 5 && b.getTile(x, y + 1) != null) {
                     groups(b, x, y + 1, b.getTile(x, y));
                 }
-                if (y > 0) {
+                if (y > 0 && b.getTile(x, y - 1) != null) {
                     groups(b, x, y - 1, b.getTile(x, y));
                 }
                 count--;
                 figure.remove(count);
                 return;
             }
-        } else if (prevTile.equals(b.getTile(x,y)) && figure.contains(tile) && count == 3) {
+        } else if (prevTile.equals(b.getTile(x,y)) && contain(figure,tile) && count == 3) {
             if (x < 4) {
-                tile = new TileCoo(x + 1,y,b.getTile(x + 1,y));
-                if (b.getTile(x,y).equals(b.getTile(x + 1,y)) && !figure.contains(tile)) {
+                tile = b.getTile(x+1,y);
+                if (b.getTile(x,y).equals(tile) && !contain(figure,tile)) {
                     figure.add(tile);
                     tmp = new ArrayList<>(figure);
                     possibleGroups.add(tmp);
@@ -79,8 +88,8 @@ public class CommonGoal3 extends CommonGoal {
                 }
             }
             if (x > 0) {
-                tile = new TileCoo(x - 1,y,b.getTile(x - 1,y));
-                if (b.getTile(x,y).equals(b.getTile(x - 1,y)) && !figure.contains(tile)) {
+                tile = b.getTile(x - 1,y);
+                if (b.getTile(x,y).equals(tile) && !contain(figure,tile)) {
                     figure.add(tile);
                     tmp = new ArrayList<>(figure);
                     possibleGroups.add(tmp);
@@ -88,8 +97,8 @@ public class CommonGoal3 extends CommonGoal {
                 }
             }
             if (y < 5) {
-                tile = new TileCoo(x,y + 1,b.getTile(x,y + 1));
-                if (b.getTile(x,y).equals(b.getTile(x,y + 1)) && !figure.contains(tile)) {
+                tile = b.getTile(x,y + 1);
+                if (b.getTile(x,y).equals(tile) && !contain(figure,tile)) {
                     figure.add(tile);
                     tmp = new ArrayList<>(figure);
                     possibleGroups.add(tmp);
@@ -97,8 +106,8 @@ public class CommonGoal3 extends CommonGoal {
                 }
             }
             if (y > 0) {
-                tile = new TileCoo(x,y - 1,b.getTile(x,y - 1));
-                if (b.getTile(x,y).equals(b.getTile(x,y - 1)) && !figure.contains(tile)) {
+                tile = b.getTile(x,y - 1);
+                if (b.getTile(x,y).equals(tile) && !contain(figure,tile)) {
                     figure.add(tile);
                     tmp = new ArrayList<>(figure);
                     possibleGroups.add(tmp);
@@ -106,42 +115,34 @@ public class CommonGoal3 extends CommonGoal {
                 }
             }
         }
-        return;
     }
-
-    public boolean overlap(ArrayList<TileCoo> figure1, ArrayList<TileCoo> figure2) {
+    public boolean overlap(ArrayList<Tile> figure1, ArrayList<Tile> figure2) {
 
         //if (!figure1.isEmpty() && !figure2.isEmpty()) {
-            if (!figure1.get(0).getTile().equals(figure2.get(0).getTile())) { // if they have different color they can not overlap
-                return false;
-            }
+        if (!figure1.get(0).equals(figure2.get(0))) { // if they have different color they can not overlap
+            return false;
+        }
 
-            for (int i = 0; i < figure1.size(); i++) {
-                for (int j = 0; j < figure2.size(); j++) {
-                    if (sameCoo(figure1.get(i), figure2.get(j))) {
-                        return true;
-                    }
+        for (int i = 0; i < figure1.size(); i++) {
+            for (int j = 0; j < figure2.size(); j++) {
+                if (figure1.get(i).getPos().equals(figure2.get(j).getPos())) {
+                    return true;
                 }
             }
+        }
         //}
 
         return false;
 
     }
 
-    public boolean overlap(ArrayList<TileCoo> figure1, ArrayList<TileCoo> figure2, ArrayList<TileCoo> figure3, ArrayList<TileCoo> figure4) {
+    public boolean overlap(ArrayList<Tile> figure1, ArrayList<Tile> figure2, ArrayList<Tile> figure3, ArrayList<Tile> figure4) {
 
         if (!overlap(figure1, figure2) && !overlap(figure1, figure3) && !overlap(figure1, figure4) && !overlap(figure2, figure3) && !overlap(figure2, figure4) && !overlap(figure3, figure4)) {
             return false;
         }
 
         return true;
-
-    }
-
-    public boolean sameCoo(TileCoo t1, TileCoo t2) {
-
-        return t1.getX() == t2.getX() && t1.getY() == t2.getY();
 
     }
     public boolean fourFigures() {
@@ -160,45 +161,6 @@ public class CommonGoal3 extends CommonGoal {
             }
         }
         return  false;
-    }
-
-}
-
-class TileCoo {
-    private int x;
-    private int y;
-    private Tile tile;
-
-    public TileCoo(int x, int y, Tile tile) {
-        this.x = x;
-        this.y = y;
-        this.tile = tile;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public Tile getTile() {
-        return tile;
-    }
-
-    @Override
-    public String toString() {
-        return "x = " + x +
-                ", y = " + y;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TileCoo tileCoo = (TileCoo) o;
-        return x == tileCoo.x && y == tileCoo.y;
     }
 
 }

@@ -25,10 +25,16 @@ public class Tile {
         this.type = type;
         this.pos = new Position(-20, -20);
     }
-    public void Tile(TileColor color, TileType type, Position pos){
+    public Tile(TileColor color, TileType type, Position pos){
         this.color = color;
         this.type = type;
         this.pos = pos;
+    }
+
+    public Tile(TileColor color, TileType type, int x, int y){
+        this.color = color;
+        this.type = type;
+        this.pos = new Position(x,y);
     }
 
     /**

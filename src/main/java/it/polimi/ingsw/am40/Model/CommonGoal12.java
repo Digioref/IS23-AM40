@@ -8,42 +8,26 @@ public class CommonGoal12 extends CommonGoal { // NON FUNZIONA METTERE CONTROLLI
 
     public int check (Bookshelf bookshelf){
 
-        int count=0;
-
-        for (int i = 0; i < 4; i++) {
-            if (bookshelf.getTile(i,i).equals(bookshelf.getTile(i+1,i+1)))
-                count++;
+        int count = 0;
+        if (bookshelf.getBookshelf().size() == 5) {
+            for (int i = 0; i < 5; i++) {
+                if (bookshelf.getBookshelf().get(i).getSize() == i + 1) {
+                    count++;
+                }
+            }
+            if (count == 5) {
+                return commgoaltok.updateScore();
+            }
+            count = 0;
+            for (int i = 0; i < 5; i++) {
+                if (bookshelf.getBookshelf().get(i).getSize() == 5 - i) {
+                    count++;
+                }
+            }
+            if (count == 5) {
+                return commgoaltok.updateScore();
+            }
         }
-        if(count == 5)
-            return commgoaltok.updateScore();
-
-        count=0;
-
-        for(int i=0; i<4;i++){
-            if(bookshelf.getTile(i,i+1).equals(bookshelf.getTile(i+1,i+2)))
-                count++;
-        }
-        if(count == 5)
-            return commgoaltok.updateScore();
-
-        count = 0;
-
-        for(int i=5; i>1;i--){
-            if(bookshelf.getTile(i,i).equals(bookshelf.getTile(i,i-1)))
-                count++;
-        }
-        if(count == 5)
-            return commgoaltok.updateScore();
-
-        count = 0;
-
-        for(int i=5; i>1;i--){
-            if(bookshelf.getTile(i,i).equals(bookshelf.getTile(i-1,i-2)))
-                count++;
-        }
-        if(count == 5)
-            return commgoaltok.updateScore();
-
         return 0;
     }
 

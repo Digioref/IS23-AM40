@@ -53,7 +53,10 @@ public class Column {
      * @return true if the column is full, false otherwise
      */
     public boolean isFull(){
-        return column.size() >= 6;
+        if (column != null) {
+            return column.size() >= 6;
+        }
+        return false;
     }
 
     /**

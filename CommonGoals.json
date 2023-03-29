@@ -137,6 +137,45 @@
         {"ass" :  0},
         {"ass" :  0}
       ]
+    },
+    {"bookshelf" : [],
+      "asserts": [
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0}
+      ]
+    },
+    {"bookshelf" : [
+      {"row": []},
+      {"row": [{"col" : "y"}]},
+      {"row": [{"col" : "w"}, {"col" : "g"}]},
+      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "w"}]},
+      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
+      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}]}
+    ],
+      "asserts": [
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  8},
+        {"ass" :  0},
+        {"ass" :  0},
+        {"ass" :  8}
+      ]
     }
     ]
 }

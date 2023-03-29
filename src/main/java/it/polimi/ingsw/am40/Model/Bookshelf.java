@@ -31,7 +31,10 @@ public class Bookshelf {
      * @return true if the column is full, false otherwise
      */
     public boolean isFull(int col){
-        return bookshelf.get(col).isFull();
+        if (bookshelf != null && col >= 0 && col < bookshelf.size()) {
+            return bookshelf.get(col).isFull();
+        }
+        return false;
     }
 
     /**
@@ -54,10 +57,7 @@ public class Bookshelf {
      */
     public void addTile(Tile newTile, int col){
         if (!(bookshelf.get(col).isFull() || newTile == null || col >= 5 || col < 0)){
-            Position pos = new Position(col-1,bookshelf.get(col).getSize()-1);
-            newTile.setPos(pos);
-            bookshelf.get(col).addTile(newTile);
-
+            bookshelf.get(col).addTile( new Tile(newTile.getColor(), newTile.getType(), new Position(col,bookshelf.get(col).getSize())) );
         }
     }
 
@@ -91,7 +91,7 @@ public class Bookshelf {
      * @return int value of the mark
      */
     private int markTile(int x,int y){
-        if (bookshelf.get(x).getSize()<y){
+        if (bookshelf.get(x).getSize() < y){
             return -1;
         }
         return bookshelf.get(x).getMark(y);

@@ -15,18 +15,20 @@ public class CommonGoal6 extends CommonGoal {
         int count = 0;
         int equal;
         for (int j = 0; j < 6 && count < 2; j++) {
-            equal = 0;
-            for (int i = 1; i < 5 && equal == 0; i++) {
-                if (bookshelf.getTile(i,j) != null) { // forse non serve ma controllo che la cella non sia vuota
-                    for (int k = 0; k < i && equal == 0; k++) {
-                        if (bookshelf.getTile(i, j).equals(bookshelf.getTile(k, j))) { // se trovo due celle uguali esco
-                            equal = 1;
+            if (bookshelf.isFull(j)) {
+                equal = 0;
+                for (int i = 1; i < 5 && equal == 0; i++) {
+                    if (bookshelf.getTile(i, j) != null) { // forse non serve ma controllo che la cella non sia vuota
+                        for (int k = 0; k < i && equal == 0; k++) {
+                            if (bookshelf.getTile(i, j).equals(bookshelf.getTile(k, j))) { // se trovo due celle uguali esco
+                                equal = 1;
+                            }
                         }
                     }
                 }
-            }
-            if (equal == 0) {
-                count++;
+                if (equal == 0) {
+                    count++;
+                }
             }
         }
         if (count == 2) {

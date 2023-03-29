@@ -4,6 +4,7 @@ package it.polimi.ingsw.am40.Model;
  * An abstract class representing the common goal of the game
  */
 public abstract class CommonGoal {
+
     /**
      * The token of the common goal, It represents the score of the goal
      */
