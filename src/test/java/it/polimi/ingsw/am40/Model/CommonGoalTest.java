@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class CommonGoalTest2 {
+public class CommonGoalTest {
 
     @Test
     public void Test() { // GREEN, WHITE, YELLOW, BLUE, CYAN, VIOLET
@@ -77,9 +77,10 @@ public class CommonGoalTest2 {
                     asserts.add(Integer.parseInt(value.toString()));
                 }
 
-                ArrayList<CommonGoalAll> cg = new ArrayList<>(12);
+                ArrayList<CommonGoal> cg = new ArrayList<>(12);
                 for (int j = 0; j < 12; j++) {
-                    cg.add(new CommonGoalAll(j+1, 2));
+                    cg.add(new CommonGoal(j+1, 2));
+                    //System.out.println("cg: " + (j+1));
                     assertEquals((int) asserts.get(j), cg.get(j).check(bookshelf));
                 }
 
@@ -152,9 +153,10 @@ public class CommonGoalTest2 {
                     asserts.add(Integer.parseInt(value.toString()));
                 }
 
-                ArrayList<CommonGoalAll> cg = new ArrayList<>(12);
+                ArrayList<CommonGoal> cg = new ArrayList<>(12);
                 for (int j = 0; j < 12; j++) {
-                    cg.add(new CommonGoalAll(j+1, 2));
+                    cg.add(new CommonGoal(j+1, 2));
+                    //System.out.println("cg: " + (j+1));
                     assertEquals((int) asserts.get(j), cg.get(j).check(bookshelf));
                 }
 
