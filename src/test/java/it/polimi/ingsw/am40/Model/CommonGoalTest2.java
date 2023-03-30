@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +21,7 @@ public class CommonGoalTest2 {
         FileReader reader;
 
         try {
-            reader = new FileReader("CommonGoals2.json");
+            reader = new FileReader("CommonGoals.json");
             JSONObject commonGoals = (JSONObject) jsonParser.parse(reader);
 
             JSONArray array = (JSONArray) commonGoals.get("CommonGoals");
@@ -74,38 +73,17 @@ public class CommonGoalTest2 {
                     }
                 }
 
-                CommonGoal1 c1 = new CommonGoal1(2);
-                CommonGoal2 c2 = new CommonGoal2(2);
-                CommonGoal3 c3 = new CommonGoal3(2);
-                CommonGoal4 c4 = new CommonGoal4(2);
-                CommonGoal5 c5 = new CommonGoal5(2);
-                CommonGoal6 c6 = new CommonGoal6(2);
-                CommonGoal7 c7 = new CommonGoal7(2);
-                CommonGoal8 c8 = new CommonGoal8(2);
-                CommonGoal9 c9 = new CommonGoal9(2);
-                CommonGoal10 c10 = new CommonGoal10(2);
-                CommonGoal11 c11 = new CommonGoal11(2);
-                CommonGoal12 c12 = new CommonGoal12(2);
-
-                System.out.println("i: " + i);
-                System.out.println(obj2.size());
-
                 for (Object value : obj2) {
                     asserts.add(Integer.parseInt(value.toString()));
                 }
 
-                assertEquals((int) asserts.get(0), c1.check(bookshelf));
-                assertEquals((int) asserts.get(1), c2.check(bookshelf));
-                assertEquals((int) asserts.get(2), c3.check(bookshelf));
-                assertEquals((int) asserts.get(3), c4.check(bookshelf));
-                assertEquals((int) asserts.get(4), c5.check(bookshelf));
-                assertEquals((int) asserts.get(5), c6.check(bookshelf));
-                assertEquals((int) asserts.get(6), c7.check(bookshelf));
-                assertEquals((int) asserts.get(7), c8.check(bookshelf));
-                assertEquals((int) asserts.get(8), c9.check(bookshelf));
-                assertEquals((int) asserts.get(9), c10.check(bookshelf));
-                assertEquals((int) asserts.get(10), c11.check(bookshelf));
-                assertEquals((int) asserts.get(11), c12.check(bookshelf));
+                ArrayList<CommonGoalAll> cg = new ArrayList<>(12);
+                for (int j = 0; j < 12; j++) {
+                    cg.add(new CommonGoalAll(j+1, 2));
+                    assertEquals((int) asserts.get(j), cg.get(j).check(bookshelf));
+                }
+
+                System.out.println("i: " + i);
 
             }
 
@@ -168,39 +146,17 @@ public class CommonGoalTest2 {
                     }
                 }
 
-                CommonGoal1 c1 = new CommonGoal1(2);
-                CommonGoal2 c2 = new CommonGoal2(2);
-                CommonGoal3 c3 = new CommonGoal3(2);
-                CommonGoal4 c4 = new CommonGoal4(2);
-                CommonGoal5 c5 = new CommonGoal5(2);
-                CommonGoal6 c6 = new CommonGoal6(2);
-                CommonGoal7 c7 = new CommonGoal7(2);
-                CommonGoal8 c8 = new CommonGoal8(2);
-                CommonGoal9 c9 = new CommonGoal9(2);
-                CommonGoal10 c10 = new CommonGoal10(2);
-                CommonGoal11 c11 = new CommonGoal11(2);
-                CommonGoal12 c12 = new CommonGoal12(2);
-
                 System.out.println("i: " + i);
-                System.out.println(obj2.size());
 
                 for (Object value : obj2) {
                     asserts.add(Integer.parseInt(value.toString()));
                 }
 
-
-                assertEquals((int) asserts.get(0), c1.check(bookshelf));
-                assertEquals((int) asserts.get(1), c2.check(bookshelf));
-                assertEquals((int) asserts.get(2), c3.check(bookshelf));
-                assertEquals((int) asserts.get(3), c4.check(bookshelf));
-                assertEquals((int) asserts.get(4), c5.check(bookshelf));
-                assertEquals((int) asserts.get(5), c6.check(bookshelf));
-                assertEquals((int) asserts.get(6), c7.check(bookshelf));
-                assertEquals((int) asserts.get(7), c8.check(bookshelf));
-                assertEquals((int) asserts.get(8), c9.check(bookshelf));
-                assertEquals((int) asserts.get(9), c10.check(bookshelf));
-                assertEquals((int) asserts.get(10), c11.check(bookshelf));
-                assertEquals((int) asserts.get(11), c12.check(bookshelf));
+                ArrayList<CommonGoalAll> cg = new ArrayList<>(12);
+                for (int j = 0; j < 12; j++) {
+                    cg.add(new CommonGoalAll(j+1, 2));
+                    assertEquals((int) asserts.get(j), cg.get(j).check(bookshelf));
+                }
 
             }
 
