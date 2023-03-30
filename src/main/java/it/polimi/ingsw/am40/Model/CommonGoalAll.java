@@ -327,7 +327,7 @@ public class CommonGoalAll {
      */
     public int check5(Bookshelf bookshelf) {
         int count = 0;
-        ArrayList<Tile> differentTiles = new ArrayList<Tile>(); // array where I save all the different Tiles
+        ArrayList<Tile> differentTiles = new ArrayList<>(); // array where I save all the different Tiles
 
         for (int i = 0; i < 5 && count < 3; i++) {
             if (bookshelf.getBookshelf().get(i).getColumn().size() == 6) { // controllo solo quelli con la colonna piena
