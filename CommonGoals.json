@@ -1,181 +1,70 @@
 {
   "CommonGoals": [
-    {"bookshelf" : [
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]}
-    ],
-      "asserts": [
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0}
-      ]
+    {
+      "bookshelf": [
+        "G", "G", "G", "G", "G",
+        "G", "G", "G", "G", "G",
+        "G", "G", "G", "G", "G",
+        "G", "G", "G", "G", "G",
+        "G", "G", "G", "G", "G",
+        "G", "G", "G", "G", "G"
+      ],
+      "asserts": [  8, 0, 8, 8, 8, 0, 8, 8, 8, 8, 8, 0  ]
     },
-    {"bookshelf" : [
-      {"row": [{"col" : "y"}, {"col" : "w"}, {"col" : "w"}, {"col" : "w"}, {"col" : "y"}]},
-      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
-      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
-      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "g"}]},
-      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]}
-    ],
-      "asserts": [
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  0}
-      ]
+    {
+      "bookshelf": [
+        "Y", "W", "W", "W", "Y",
+        "Y", "G", "G", "Y", "Y",
+        "Y", "G", "G", "G", "G",
+        "G", "Y", "G", "Y", "Y",
+        "G", "G", "G", "Y", "G",
+        "G", "Y", "G", "G", "G"
+      ],
+      "asserts": [  0, 0, 0, 8, 8, 0, 8, 0, 8, 8, 0, 0  ]
     },
-    {"bookshelf" : [
-      {"row": [{"col" : "y"}, {"col" : "w"}, {"col" : "w"}, {"col" : "y"}, {"col" : "y"}]},
-      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
-      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
-      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "g"}]},
-      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]}
-    ],
-      "asserts": [
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  0}
-      ]
+    {
+      "bookshelf": [
+        "Y", "W", "W", "Y", "Y",
+        "Y", "G", "G", "Y", "Y",
+        "Y", "G", "G", "G", "G",
+        "G", "Y", "G", "Y", "Y",
+        "G", "G", "G", "Y", "G",
+        "G", "Y", "G", "G", "G"
+      ],
+      "asserts": [  0, 0, 8, 8, 8, 0, 8, 0, 8, 8, 0, 0  ]
     },
-    {"bookshelf" : [
-      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "w"}, {"col" : "w"}, {"col" : "y"}]},
-      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "w"}]},
-      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}]},
-      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]}
-    ],
-      "asserts": [
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  0}
-      ]
+    {
+      "bookshelf": [
+        "Y", "G", "W", "W", "Y",
+        "Y", "G", "G", "Y", "Y",
+        "G", "G", "G", "G", "W",
+        "Y", "Y", "G", "Y", "Y",
+        "G", "G", "G", "G", "Y",
+        "G", "Y", "G", "G", "G"
+      ],
+      "asserts": [  8, 0, 8, 8, 8, 0, 8, 0, 8, 8, 0, 0  ]
     },
-    {"bookshelf" : [
-      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "g"}, {"col" : "w"}, {"col" : "y"}]},
-      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "w"}]},
-      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "g"}, {"col" : "y"}, {"col" : "y"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}]},
-      {"row": [{"col" : "g"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]}
-    ],
-      "asserts": [
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  0}
-      ]
+    {
+      "bookshelf": [
+        "Y", "Y", "G", "W", "Y",
+        "Y", "G", "G", "Y", "Y",
+        "G", "G", "G", "G", "W",
+        "Y", "Y", "G", "Y", "Y",
+        "G", "G", "G", "G", "Y",
+        "G", "Y", "G", "G", "G"
+      ],
+      "asserts": [  8, 0, 0, 8, 8, 0, 8, 0, 8, 8, 0, 0  ]
     },
-    {"bookshelf" : [
-      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "w"}, {"col" : "g"}, {"col" : "y"}]},
-      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
-      {"row": [{"col" : "w"}, {"col" : "g"}, {"col" : "w"}, {"col" : "w"}, {"col" : "g"}]},
-      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "w"}, {"col" : "g"}, {"col" : "g"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}]},
-      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}]}
-    ],
-      "asserts": [
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0}
-      ]
-    },
-    {"bookshelf" : [],
-      "asserts": [
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0}
-      ]
-    },
-    {"bookshelf" : [
-      {"row": []},
-      {"row": [{"col" : "y"}]},
-      {"row": [{"col" : "w"}, {"col" : "g"}]},
-      {"row": [{"col" : "y"}, {"col" : "g"}, {"col" : "w"}]},
-      {"row": [{"col" : "g"}, {"col" : "g"}, {"col" : "g"}, {"col" : "g"}]},
-      {"row": [{"col" : "y"}, {"col" : "y"}, {"col" : "g"}, {"col" : "g"}, {"col" : "y"}]}
-    ],
-      "asserts": [
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  8},
-        {"ass" :  0},
-        {"ass" :  0},
-        {"ass" :  8}
-      ]
+    {
+      "bookshelf": [
+        "Y", "Y", "W", "G", "Y",
+        "Y", "G", "G", "G", "G",
+        "W", "G", "W", "W", "G",
+        "Y", "G", "W", "G", "G",
+        "G", "G", "G", "G", "Y",
+        "Y", "Y", "G", "G", "Y"
+      ],
+      "asserts": [  0, 0, 8, 8, 8, 0, 8, 8, 8, 0, 0, 0  ]
     }
-    ]
+  ]
 }
