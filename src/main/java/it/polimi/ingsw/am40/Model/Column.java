@@ -9,6 +9,7 @@ public class Column {
      * Array of Tiles contained in the column
      */
     private ArrayList<Tile> column;
+    private static int DIM = 6;
     /**
      * Mark as ArrayList of integer is used in the process of checking adjacency
      * If a position of mark is set to zero, the default case, it means that the tile in the same position is not marked, and it can be counted as adjacent in the check
@@ -30,9 +31,9 @@ public class Column {
      * @return true if the tile is added, false otherwise
      */
     public boolean addTile(Tile newTile){
-        if(newTile == null){
+        if(newTile == null || newTile.getColor().equals(TileColor.NOCOLOR)){
             return false;
-        } else if (column.size() == 6) {
+        } else if (column.size() == DIM) {
             return false;
         }
         column.add(newTile);

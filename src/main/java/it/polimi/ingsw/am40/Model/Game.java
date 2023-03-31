@@ -143,7 +143,8 @@ public class Game implements IGame {
     /**
      * Creates the 12 common goals
      */
-    public void createComGoals() {
+    public void createComGoals() { // we don't need it
+        /*
         commonGoals.add(new CommonGoal1(numPlayers));
         commonGoals.add(new CommonGoal2(numPlayers));
         commonGoals.add(new CommonGoal3(numPlayers));
@@ -156,6 +157,7 @@ public class Game implements IGame {
         commonGoals.add(new CommonGoal10(numPlayers));
         commonGoals.add(new CommonGoal11(numPlayers));
         commonGoals.add(new CommonGoal12(numPlayers));
+        */
     }
 
     /**
