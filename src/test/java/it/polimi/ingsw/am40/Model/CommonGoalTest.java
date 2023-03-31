@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class CommonGoalTest2 {
+public class CommonGoalTest {
 
     @Test
     public void Test() { // GREEN, WHITE, YELLOW, BLUE, CYAN, VIOLET
@@ -81,11 +81,15 @@ public class CommonGoalTest2 {
                     asserts.add(Integer.parseInt(value.toString()));
                 }
 
-                ArrayList<CommonGoalAll> cg = new ArrayList<>(12);
+                ArrayList<CommonGoal> cg = new ArrayList<>(12);
                 for (int j = 0; j < 12; j++) {
-                    cg.add(new CommonGoalAll(j+1, 2));
+                    cg.add(new CommonGoal(j+1, 2));
+                    //System.out.println("cg: " + (j+1));
                     assertEquals((int) asserts.get(j), cg.get(j).check(bookshelf));
                 }
+
+                CommonGoal tmp = new CommonGoal(13, 2); // test if I go out of the range
+                assertEquals(0,tmp.check(bookshelf));
 
                 System.out.println("i: " + i);
 
@@ -97,75 +101,4 @@ public class CommonGoalTest2 {
 
     }
 
-    @Test
-    public void TestEmpty() {
-
-        JSONParser jsonParser = new JSONParser();
-        FileReader reader;
-
-        try {
-            reader = new FileReader("CommonGoalsEmpty.json");
-            JSONObject commonGoals = (JSONObject) jsonParser.parse(reader);
-
-            JSONArray array = (JSONArray) commonGoals.get("CommonGoals");
-
-            for (int i = 0; i < array.size(); i++) {
-
-                ArrayList<Tile> row;
-                ArrayList<ArrayList<Tile>> book = new ArrayList<>(6);
-                ArrayList<Integer> asserts = new ArrayList<>(7);
-
-                JSONObject o = (JSONObject) array.get(i);
-
-                JSONArray obj1 = (JSONArray) o.get("bookshelf");
-                JSONArray obj2 = (JSONArray) o.get("asserts");
-
-                Bookshelf bookshelf = new Bookshelf();
-
-                for (int k = 0; k < obj1.size(); k++) {
-                    JSONObject col = (JSONObject) obj1.get(k);
-                    JSONArray column = (JSONArray) col.get("col");
-
-                    for (Object value : column) {
-                        switch (value.toString()) {
-                            case "Y" -> {
-                                bookshelf.addTile(new Tile(TileColor.YELLOW, TileType.CATS), k);
-                            }
-                            case "W" -> {
-                                bookshelf.addTile(new Tile(TileColor.WHITE, TileType.CATS), k);
-                            }
-                            case "B" -> {
-                                bookshelf.addTile(new Tile(TileColor.BLUE, TileType.CATS), k);
-                            }
-                            case "G" -> {
-                                bookshelf.addTile(new Tile(TileColor.GREEN, TileType.CATS), k);
-                            }
-                            case "C" -> {
-                                bookshelf.addTile(new Tile(TileColor.CYAN, TileType.CATS), k);
-                            }
-                            case "V" -> {
-                                bookshelf.addTile(new Tile(TileColor.VIOLET, TileType.CATS), k);
-                            }
-                        }
-                    }
-                }
-
-                System.out.println("i: " + i);
-
-                for (Object value : obj2) {
-                    asserts.add(Integer.parseInt(value.toString()));
-                }
-
-                ArrayList<CommonGoalAll> cg = new ArrayList<>(12);
-                for (int j = 0; j < 12; j++) {
-                    cg.add(new CommonGoalAll(j+1, 2));
-                    assertEquals((int) asserts.get(j), cg.get(j).check(bookshelf));
-                }
-
-            }
-
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-    }
 }

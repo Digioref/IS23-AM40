@@ -32,32 +32,6 @@ public class Board {
     public Board(int num) {
         grid = new HashMap<>();
         pickableTiles = new ArrayList<>();
-/*
-        JSONParser jsonParser = new JSONParser();
-        FileReader reader;
-        try {
-            reader = new FileReader("PositionsBoard.json");
-            JSONObject configs = (JSONObject) jsonParser.parse(reader);
-            JSONArray posArray = (JSONArray) configs.get("Positions");
-            JSONObject o = (JSONObject) posArray.get(num - 2);
-            JSONArray obj1 = (JSONArray) o.get("Players" + Integer.valueOf(num).toString());
-            for (int i = 0; i < obj1.size(); i++) {
-                JSONObject t = (JSONObject) obj1.get(i);
-                String t1 = t.get("x").toString();
-                String t2 = t.get("y").toString();
-                Position p = new Position(Integer.parseInt(t1), Integer.parseInt(t2));
-                Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
-                tile.setPos(p);
-                grid.put(p.getKey(), tile);
-                System.out.println(p.getKey());
-
-
-            }
-
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
- */
     }
 
     /**
@@ -122,7 +96,6 @@ public class Board {
 
     /**
      * add the tiles with at least one free side to the array of the tile eligible to be picked
-     *
      */
     public void setSideFreeTile(){
         for(Tile tile : grid.values()){

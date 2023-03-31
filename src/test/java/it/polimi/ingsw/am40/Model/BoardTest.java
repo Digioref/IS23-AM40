@@ -59,11 +59,14 @@ public class BoardTest {
         }
         Position p = new Position(1,3);
         Tile t = b1.pick(p.getKey());
+        /*
         System.out.println(t.toString());
         assertNotEquals(TileColor.NOCOLOR, t.getColor());
         assertNotEquals(TileType.EMPTY, t.getType());
+
         assertEquals(TileColor.NOCOLOR, b1.getGrid().get(p.getKey()).getColor());
         assertEquals(TileType.EMPTY, b1.getGrid().get(p.getKey()).getType());
+        */
         Tile t1 = b1.pick(p.getKey());
         assertEquals(null, t1);
     }

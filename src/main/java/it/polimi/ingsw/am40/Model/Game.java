@@ -12,7 +12,7 @@ public class Game implements IGame {
     /**
      * Number of players in game
      */
-    private int numPlayers;
+    private final int numPlayers;
     /**
      * Array of the players in game
      */
@@ -71,8 +71,7 @@ public class Game implements IGame {
      * Adds a player to the game
      * @param p player
      */
-
-    public void addPlayer (Player p) {
+    public void addPlayer (Player p) { // It doesm't check if we reached the max number of players
         if (players.size() != 0) {
             players.get(players.size() - 1).setNext(p);
         }
@@ -106,56 +105,16 @@ public class Game implements IGame {
      */
     public void createTiles() {
         pJSONm.createTiles(bag);
-
-        /*
-        Tile t;
-        for (int i = 0; i < 132; i++) {
-
-            if(i < 22) {
-                t = new Tile(TileColor.GREEN, TileType.CATS);
-                bag.insert(t);
-            }
-            if(i >= 22 && i < 44) {
-                t = new Tile(TileColor.WHITE, TileType.BOOKS);
-                bag.insert(t);
-            }
-            if(i >= 44 && i < 66) {
-                t = new Tile(TileColor.YELLOW, TileType.GAMES);
-                bag.insert(t);
-            }
-            if(i >= 66 && i < 88) {
-                t = new Tile(TileColor.BLUE, TileType.FRAMES);
-                bag.insert(t);
-            }
-            if(i >= 88 && i < 110) {
-                t = new Tile(TileColor.CYAN, TileType.TROPHIES);
-                bag.insert(t);
-            }
-            if(i >= 110) {
-                t = new Tile(TileColor.VIOLET, TileType.PLANTS);
-                bag.insert(t);
-            }
-        }
-
-         */
     }
 
     /**
      * Creates the 12 common goals
      */
-    public void createComGoals() {
-        commonGoals.add(new CommonGoal1(numPlayers));
-        commonGoals.add(new CommonGoal2(numPlayers));
-        commonGoals.add(new CommonGoal3(numPlayers));
-        commonGoals.add(new CommonGoal4(numPlayers));
-        commonGoals.add(new CommonGoal5(numPlayers));
-        commonGoals.add(new CommonGoal6(numPlayers));
-        commonGoals.add(new CommonGoal7(numPlayers));
-        commonGoals.add(new CommonGoal8(numPlayers));
-        commonGoals.add(new CommonGoal9(numPlayers));
-        commonGoals.add(new CommonGoal10(numPlayers));
-        commonGoals.add(new CommonGoal11(numPlayers));
-        commonGoals.add(new CommonGoal12(numPlayers));
+    private void createComGoals() {
+        final int NCOMGOALS = 12;
+        for (int i = 0; i < NCOMGOALS; i++) {
+            commonGoals.add(new CommonGoal(i+1,numPlayers));
+        }
     }
 
     /**
@@ -179,7 +138,7 @@ public class Game implements IGame {
     /**
      * Assigns the 2 common goals
      */
-    public void assignComGoal() {
+    private void assignComGoal() {
         Random rand = new Random();
         currentComGoals.add(commonGoals.get(rand.nextInt(commonGoals.size())));
         int x;
