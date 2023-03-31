@@ -22,6 +22,7 @@ public class ServerMain {
             hostName = ReadHostFromJSON();
             portNumber = ReadPortFromJSON();
         }
+
         gameServer = new GameServer(hostName, portNumber);
         Thread thread = new Thread(gameServer);
         thread.start();
