@@ -36,13 +36,14 @@ public class GameServer implements Runnable {
                 clientSocket = serverSocket.accept();
                 System.out.println("Accepted!");
                 ClientHandler c = new ClientHandler(clientSocket);
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-                out.println("Give nickname: ");
-                out.flush();
-                Scanner in = new Scanner(clientSocket.getInputStream());
-                c.setNickname(in.nextLine());
+//                PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+//                out.println("Give nickname: ");
+//                out.flush();
+//                Scanner in = new Scanner(clientSocket.getInputStream());
+//                c.setNickname(in.nextLine());
+                c.setLobby(lobby);
                 executor.submit(c);
-                lobby.addQueue(c);
+//                lobby.addQueue(c);
             } catch (IOException e) {
                 e.printStackTrace();
                 break;

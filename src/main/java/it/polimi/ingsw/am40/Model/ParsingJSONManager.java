@@ -1,5 +1,8 @@
 package it.polimi.ingsw.am40.Model;
 
+import it.polimi.ingsw.am40.Network.Commands.*;
+import it.polimi.ingsw.am40.Network.ICommand;
+import it.polimi.ingsw.am40.Network.MessageAdapter;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -131,6 +134,39 @@ public class ParsingJSONManager {
                         tile.setType(TileType.PLANTS);
                 }
                 b.insert(tile);
+            }
+
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void configureCommands(Map<String, ICommand> map) {
+        JSONParser jsonParser = new JSONParser();
+        FileReader reader;
+        try {
+            reader = new FileReader("Commands.json");
+            JSONObject configs = (JSONObject) jsonParser.parse(reader);
+            JSONArray posArray = (JSONArray) configs.get("Commands");
+            for (int i = 0; i < posArray.size(); i++) {
+                JSONObject t = (JSONObject) posArray.get(i);
+                String t1 = t.get("Command" + i).toString();
+                switch(t1) {
+                    case "login":
+                        map.put("login", new Login());
+                    case "help":
+                        map.put("help", new Help());
+                    case "quit":
+                        map.put("quit", new Quit());
+                    case "select":
+                        map.put("select", new Select());
+                    case "pick":
+                        map.put("pick", new Pick());
+                    case "order":
+                        map.put("order", new Order());
+                    case "insert":
+                        map.put("insert", new Insert());
+                }
             }
 
         } catch (IOException | ParseException e) {

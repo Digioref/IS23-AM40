@@ -11,7 +11,7 @@ public class BagTest {
     /**
      * Tests the constructor
      */
-    @Before
+    @Test
     public void Test1() {
         Bag b = new Bag();
         assertEquals(0, b.getAvailableTiles().size());
@@ -37,7 +37,7 @@ public class BagTest {
     }
 
     /**
-     * Test the pick method
+     * Tests the pick method
      */
     @Test
     void Test3() {
