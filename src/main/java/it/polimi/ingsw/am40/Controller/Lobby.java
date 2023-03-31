@@ -7,7 +7,7 @@ import it.polimi.ingsw.am40.Network.ClientHandler;
 import java.util.ArrayList;
 import java.util.Queue;
 
-public class Lobby {
+public class Lobby implements Runnable {
     private int numPlayers;
     private Queue<ClientHandler> queue;
     private ArrayList<ClientHandler> activePlayers;
