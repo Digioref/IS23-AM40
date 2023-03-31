@@ -52,6 +52,7 @@ public class Player {
 
     private ArrayList<Position> selectedPositions;
     private int hiddenScore;
+    private ParsingJSONManager pJSONm;
 
 
     /**
@@ -65,6 +66,7 @@ public class Player {
         this.tilesPicked = new ArrayList<>();
         doneCG1 = false;
         doneCG2 = false;
+        pJSONm = new ParsingJSONManager();
     }
 
     /**
@@ -242,6 +244,7 @@ public class Player {
      */
     public void setPersonalGoal(int i) {
         this.personalGoal = new PersonalGoal(i);
+        pJSONm.createPersonalGoals(personalGoal, i);
     }
 
     public ArrayList<Position> getSelectedPositions() {

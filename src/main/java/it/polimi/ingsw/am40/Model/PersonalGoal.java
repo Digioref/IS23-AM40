@@ -30,8 +30,7 @@ public class PersonalGoal {
     public PersonalGoal(int k) {
         pos = new ArrayList<>(6);
         color = new ArrayList<>(6);
-
-
+/*
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
         try {
@@ -75,6 +74,7 @@ public class PersonalGoal {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+ */
     }
 
     /**
@@ -140,4 +140,6 @@ public class PersonalGoal {
     public void setColor(ArrayList<TileColor> color) {
         this.color = color;
     }
+
+
 }

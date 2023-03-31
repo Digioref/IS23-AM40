@@ -32,7 +32,7 @@ public class Board {
     public Board(int num) {
         grid = new HashMap<>();
         pickableTiles = new ArrayList<>();
-
+/*
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
         try {
@@ -49,7 +49,7 @@ public class Board {
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
                 tile.setPos(p);
                 grid.put(p.getKey(), tile);
-                // System.out.println(p.getKey());
+                System.out.println(p.getKey());
 
 
             }
@@ -57,6 +57,7 @@ public class Board {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+ */
     }
 
     /**
@@ -228,4 +229,5 @@ public class Board {
     public ArrayList<Position> getPickableTiles() {
         return pickableTiles;
     }
+
 }

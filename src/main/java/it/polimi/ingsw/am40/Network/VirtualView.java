@@ -78,12 +78,17 @@ public class VirtualView implements  IGameObserver{
     }
 
     @Override
-    public void receiveDoneOrder() {
+    public void receiveDoneOrder(ArrayList<Tile> array) {
 
     }
 
     @Override
     public void receiveFinalScore(int finalScore) {
+
+    }
+
+    @Override
+    public void receivePickedTiles(ArrayList<Tile> array) {
 
     }
 

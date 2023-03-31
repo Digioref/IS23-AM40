@@ -1,0 +1,7 @@
+{
+  "Server" : {
+      "HostName":  "MyShelfie",
+      "PortNumber":  "1234"
+  }
+
+}
