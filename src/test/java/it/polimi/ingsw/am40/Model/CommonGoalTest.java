@@ -84,6 +84,9 @@ public class CommonGoalTest {
                     assertEquals((int) asserts.get(j), cg.get(j).check(bookshelf));
                 }
 
+                CommonGoal tmp = new CommonGoal(13, 2); // test if I go out of the range
+                assertEquals(0,tmp.check(bookshelf));
+
                 System.out.println("i: " + i);
 
             }

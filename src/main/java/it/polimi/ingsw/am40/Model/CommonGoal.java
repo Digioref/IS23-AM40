@@ -6,7 +6,6 @@ public class CommonGoal {
 
     private final int num;
     private final CommonGoalToken commgoaltok;
-
     private final int NROW = 6;
     private final int NCOL = 5;
 
