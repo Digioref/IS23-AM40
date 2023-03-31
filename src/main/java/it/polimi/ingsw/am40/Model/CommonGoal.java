@@ -2,18 +2,46 @@ package it.polimi.ingsw.am40.Model;
 
 import java.util.ArrayList;
 
+/**
+ * Class that can generate one of the 12 commonGoals
+ */
 public class CommonGoal {
 
+    /**
+     * The number of the commonGoal selected
+     */
     private final int num;
+
+    /**
+     * The token of the specific commonGoal, it keeps track of the points to give to the players
+     */
     private final CommonGoalToken commgoaltok;
+
+    /**
+     * number of rows of the bookshelf
+     */
     private final int NROW = 6;
+
+    /**
+     * number of columns of the bookshelf
+     */
     private final int NCOL = 5;
 
+    /**
+     * constructor
+     * @param num the number of the commonGoal choosen, goes 1 to 12
+     * @param numPlayer number of player of the match
+     */
     public CommonGoal(int num, int numPlayer) {
         this.num = num;
         this.commgoaltok = new CommonGoalToken(numPlayer);
     }
 
+    /**
+     * checks if the commonGoal is completed in a bookshelf
+     * @param bookshelf the bookshelf of the player
+     * @return the points for the player
+     */
     public int check(Bookshelf bookshelf) {
         switch (num) {
             case 1 -> {
@@ -56,7 +84,7 @@ public class CommonGoal {
         return 0;
     }
 
-    public int check1 (Bookshelf b) {
+    private int check1 (Bookshelf b) {
 
         ArrayList<Tile> fullSquares = new ArrayList<>();
 
@@ -89,7 +117,7 @@ public class CommonGoal {
      * @param b bookshelf reference
      * @return true if there is a square, else false
      */
-    public boolean sameColors(int x, int y, Bookshelf b) {
+    private boolean sameColors(int x, int y, Bookshelf b) {
         if (b.getTile(x,y) != null) {
             return b.getTile(x, y).equals(b.getTile(x + 1, y)) && b.getTile(x, y).equals(b.getTile(x, y + 1)) && b.getTile(x, y).equals(b.getTile(x + 1, y + 1));
         }
@@ -97,7 +125,7 @@ public class CommonGoal {
     }
 
 
-    public boolean overlaps(Position pos1, Position pos2) { // return true if the two squares do overlap
+    private boolean overlaps(Position pos1, Position pos2) { // return true if the two squares do overlap
         int x1, x2, y1, y2;
         x1 = pos1.getX();
         y1 = pos1.getY();
@@ -111,7 +139,7 @@ public class CommonGoal {
      * @param b bookshelf of the player
      * @return the score if the condition is verified, else it returns 0
      */
-    public int check2 (Bookshelf b) {
+    private int check2 (Bookshelf b) {
 
         final int TARGET = 2;
         int count = 0;
@@ -148,7 +176,7 @@ public class CommonGoal {
      * @param bookshelf bookshelf of the player
      * @return the score if the condition is verified, else it returns 0
      */
-    public int check3(Bookshelf bookshelf) {
+    private int check3(Bookshelf bookshelf) {
 
         //possibleGroups.clear();
 
@@ -168,7 +196,7 @@ public class CommonGoal {
 
     }
 
-    public boolean contain(ArrayList<Tile> list, Tile tile) {
+    private boolean contain(ArrayList<Tile> list, Tile tile) {
         for (Tile value : list) {
             if (value.equals(tile) && value.getPos().equals(tile.getPos())) {
                 return true;
@@ -176,7 +204,7 @@ public class CommonGoal {
         }
         return false;
     }
-    public void groups(Bookshelf b, int x, int y, Tile prevTile) {
+    private void groups(Bookshelf b, int x, int y, Tile prevTile) {
 
         Tile var = b.getTile(x,y);
         Tile tile = new Tile(var.getColor(), var.getType(), var.getPos());
@@ -246,7 +274,7 @@ public class CommonGoal {
             }
         }
     }
-    public boolean overlap(ArrayList<Tile> figure1, ArrayList<Tile> figure2) {
+    private boolean overlap(ArrayList<Tile> figure1, ArrayList<Tile> figure2) {
 
         if (!figure1.get(0).equals(figure2.get(0))) { // if they have different color they can not overlap
             return false;
@@ -264,12 +292,12 @@ public class CommonGoal {
 
     }
 
-    public boolean overlap(ArrayList<Tile> f1, ArrayList<Tile> f2, ArrayList<Tile> f3, ArrayList<Tile> f4) {
+    private boolean overlap(ArrayList<Tile> f1, ArrayList<Tile> f2, ArrayList<Tile> f3, ArrayList<Tile> f4) {
 
         return overlap(f1, f2) || overlap(f1, f3) || overlap(f1, f4) || overlap(f2, f3) || overlap(f2, f4) || overlap(f3, f4);
 
     }
-    public boolean fourFigures() {
+    private boolean fourFigures() {
 
         if (possibleGroups.size() >= 4) {
             for (int i = 0; i < possibleGroups.size() - 3; i++) {
@@ -292,7 +320,7 @@ public class CommonGoal {
      * @param bookshelf bookshelf of the player
      * @return the score if the condition is verified, else it returns 0
      */
-    public int check4(Bookshelf bookshelf) { // check due tiles vicini in qualunque posizione
+    private int check4(Bookshelf bookshelf) { // check due tiles vicini in qualunque posizione
 
         int count = 0;
         final int TARGET = 6;
@@ -330,7 +358,7 @@ public class CommonGoal {
      * @param bookshelf bookshelf of the player
      * @return the score if the condition is verified, else it returns 0
      */
-    public int check5(Bookshelf bookshelf) {
+    private int check5(Bookshelf bookshelf) {
         int count = 0;
         final int TARGET = 3;
         ArrayList<Tile> differentTiles = new ArrayList<Tile>(); // array where I save all the different Tiles
@@ -361,7 +389,7 @@ public class CommonGoal {
      * @param bookshelf bookshelf of the player
      * @return the score if the condition is verified, else it returns 0
      */
-    public int check6(Bookshelf bookshelf) {
+    private int check6(Bookshelf bookshelf) {
         int count = 0;
         int equal;
         final int TARGET = 2;
@@ -390,7 +418,7 @@ public class CommonGoal {
         }
     }
 
-    public int check7(Bookshelf bookshelf) {
+    private int check7(Bookshelf bookshelf) {
         ArrayList<TileColor> differentColours = new ArrayList<>();
 
         // precheck che ci siano almeno 4 tile in ciascuna colonna, .get restituisce la colonna
@@ -417,7 +445,7 @@ public class CommonGoal {
      * @param bookshelf bookshelf of the player
      * @return the score if the condition is verified, else it returns 0
      */
-    public int check8(Bookshelf bookshelf) { // commongoal 8
+    private int check8(Bookshelf bookshelf) { // commongoal 8
 
         if (bookshelf.getTile(0,0) != null) {
             if (bookshelf.getTile(0, 0).equals(bookshelf.getTile(0, NROW-1))) { // controllare se il tile è vuoto tile.getcolor cosa rotorna, fare bene il .equals
@@ -431,7 +459,7 @@ public class CommonGoal {
         return 0;
     }
 
-    public int check9(Bookshelf bookshelf){
+    private int check9(Bookshelf bookshelf){
         int[] numcolour = {0,0,0,0,0,0};
         int maxColors = 0;
         final int TARGET = 5;
@@ -456,7 +484,7 @@ public class CommonGoal {
         return 0;
     }
 
-    public int check10(Bookshelf bookshelf){
+    private int check10(Bookshelf bookshelf){
         for(int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
                 if (bookshelf.getTile(i,j) != null) {
@@ -474,7 +502,7 @@ public class CommonGoal {
         return 0;
     }
 
-    public int check11(Bookshelf bookshelf){
+    private int check11(Bookshelf bookshelf){
 
         int count = 1;
 
@@ -524,7 +552,7 @@ public class CommonGoal {
         return 0;
     }
 
-    public int check12(Bookshelf bookshelf){
+    private int check12(Bookshelf bookshelf){
 
         int count = 0;
         final int TARGET = 5;

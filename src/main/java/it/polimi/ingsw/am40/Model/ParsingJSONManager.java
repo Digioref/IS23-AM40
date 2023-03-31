@@ -14,6 +14,11 @@ import java.util.Map;
 
 public class ParsingJSONManager {
 
+    /**
+     * It fills the board with nocolor tiles
+     * @param map the board
+     * @param num number of players
+     */
     public void createBoard (Map<String, Tile> map, int num) {
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
@@ -22,7 +27,7 @@ public class ParsingJSONManager {
             JSONObject configs = (JSONObject) jsonParser.parse(reader);
             JSONArray posArray = (JSONArray) configs.get("Positions");
             JSONObject o = (JSONObject) posArray.get(num - 2);
-            JSONArray obj1 = (JSONArray) o.get("Players" + Integer.valueOf(num).toString());
+            JSONArray obj1 = (JSONArray) o.get("Players" + Integer.valueOf(num).toString()); // I think it is redundant, you don't need to specify the position in the array and also the name of the elementt, you need just one of the two info
             for (int i = 0; i < obj1.size(); i++) {
                 JSONObject t = (JSONObject) obj1.get(i);
                 String t1 = t.get("x").toString();
