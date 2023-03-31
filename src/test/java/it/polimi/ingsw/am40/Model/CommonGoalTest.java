@@ -60,6 +60,10 @@ public class CommonGoalTest {
                             case "V" -> {
                                 row.add(new Tile(TileColor.VIOLET, TileType.CATS));
                             }
+                            case "-" -> {
+                                row.add(new Tile(TileColor.NOCOLOR, TileType.EMPTY));
+                            }
+
                         }
                     }
                     book.add(5-j, row);
