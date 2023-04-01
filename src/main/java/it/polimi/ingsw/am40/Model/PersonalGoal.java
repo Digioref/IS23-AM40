@@ -141,5 +141,13 @@ public class PersonalGoal {
         this.color = color;
     }
 
+    @Override
+    public String toString() {
 
+        for (int i = 0; i < pos.size(); i++) {
+            System.out.println(pos.get(i) + " " + color.get(i));
+        }
+
+        return "PersonalGoal";
+    }
 }
