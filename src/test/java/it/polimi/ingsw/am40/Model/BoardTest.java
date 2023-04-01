@@ -103,7 +103,7 @@ public class BoardTest {
     }
 
     /**
-     * Tests the methods related
+     * Tests the methods related to pickable tiles
      */
     @Test
     void Test5() {
@@ -114,6 +114,10 @@ public class BoardTest {
         b1.config(b);
         for (String s: b1.getGrid().keySet()) {
             System.out.println(b1.getGrid().get(s).toString());
+        }
+        b1.setSideFreeTile();
+        for (Position p: b1.getPickableTiles()) {
+            System.out.println(p.getKey());
         }
     }
 }

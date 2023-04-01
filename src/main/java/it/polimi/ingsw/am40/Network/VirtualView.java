@@ -3,6 +3,7 @@ package it.polimi.ingsw.am40.Network;
 import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.Model.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class VirtualView implements  IGameObserver{
@@ -64,7 +65,11 @@ public class VirtualView implements  IGameObserver{
 
     @Override
     public void receiveCurrentPlayer(Player player) {
-
+        try {
+            clientHandler.sendMessage("It's your turn!");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

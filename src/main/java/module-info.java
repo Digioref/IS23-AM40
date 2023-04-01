@@ -8,5 +8,7 @@ module it.polimi.ingsw.am40{
     exports it.polimi.ingsw.am40.Model;
     exports it.polimi.ingsw.am40.App;
     opens it.polimi.ingsw.am40.App to javafx.fxml;
+    exports it.polimi.ingsw.am40.CLI;
+    opens it.polimi.ingsw.am40.CLI to javafx.fxml;
 
 }

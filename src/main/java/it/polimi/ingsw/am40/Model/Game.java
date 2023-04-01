@@ -54,7 +54,7 @@ public class Game implements IGame {
      */
     private Player currentPlayer;
 
-    private ArrayList<VirtualView> observers = new ArrayList<>();
+    private ArrayList<VirtualView> observers;
     private ParsingJSONManager pJSONm;
     private TurnPhase turn;
 
@@ -67,6 +67,7 @@ public class Game implements IGame {
         players = new ArrayList<>();
         pJSONm = new ParsingJSONManager();
         turn = TurnPhase.START;
+        observers = new ArrayList<>();
     }
 
     /**
@@ -232,7 +233,7 @@ public class Game implements IGame {
             endToken.updateScore(currentPlayer);
             currentPlayer.updateHiddenScore();
             notifyObservers(turn);
-           setTurn(TurnPhase.START);
+            setTurn(TurnPhase.START);
     }
 
     /**
@@ -359,6 +360,7 @@ public class Game implements IGame {
                     v.receiveListPlayers(players);
                     v.receiveNumPlayers(numPlayers);
                 };
+                break;
 
             case SELECTION:
                 for (VirtualView v : observers) {
@@ -366,6 +368,7 @@ public class Game implements IGame {
                         v.receiveAllowedPositions(board.getPickableTiles());
                     }
                 };
+                break;
 
             case PICK:
                 for (VirtualView v : observers) {
@@ -374,6 +377,7 @@ public class Game implements IGame {
                         v.receivePickedTiles(currentPlayer.getTilesPicked());
                     }
                 };
+                break;
 
             case ORDER:
                 for (VirtualView v : observers) {
@@ -381,6 +385,7 @@ public class Game implements IGame {
                         v.receiveDoneOrder(currentPlayer.getTilesPicked());
                     }
                 };
+                break;
 
             case INSERT:
                 for (VirtualView v : observers) {
@@ -394,6 +399,7 @@ public class Game implements IGame {
                     }
                     v.receiveListBookshelves(b);
                 };
+                break;
 
             case ENDGAME:
                 for (VirtualView v : observers) {
@@ -403,6 +409,7 @@ public class Game implements IGame {
                         }
                     }
                 };
+                break;
 
         }
 
