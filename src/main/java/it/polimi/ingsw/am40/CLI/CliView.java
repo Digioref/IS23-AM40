@@ -1,9 +1,6 @@
 package it.polimi.ingsw.am40.CLI;
 
-import it.polimi.ingsw.am40.Model.Bookshelf;
-import it.polimi.ingsw.am40.Model.Game;
-import it.polimi.ingsw.am40.Model.Position;
-import it.polimi.ingsw.am40.Model.Tile;
+import it.polimi.ingsw.am40.Model.*;
 
 public class CliView {
 
@@ -66,4 +63,11 @@ public class CliView {
         }
         System.out.println();
     }
+
+    public void showCurrentPlayer(Game game) {
+
+        System.out.println(game.getCurrentPlayer().getNickname() + "\n");
+
+    }
+
 }

@@ -4,8 +4,6 @@ import it.polimi.ingsw.am40.CLI.CliView;
 import org.junit.jupiter.api.Test;
 
 public class CliTest {
-
-
     @Test
     public void Test() {
 
@@ -21,6 +19,8 @@ public class CliTest {
         game1.configureGame();
         game1.createTiles();
         game1.startGame();
+
+        cli.showCurrentPlayer(game1);
 
         cli.showBoard(game1);
 
@@ -39,6 +39,12 @@ public class CliTest {
         cli.showCurrentBookshelf(game1);
 
         cli.showBoardPickable(game1);
+
+        game1.nextPlayer();
+
+        System.out.println(game1.getCurrentPlayer().getPersonalGoal().toString());
+
+
 
     }
 }
