@@ -338,7 +338,7 @@ public class Game implements IGame {
     public void notifyObservers(TurnPhase turnPhase) {
 
         switch (turnPhase) {
-            case START:
+            case START -> {
                 for (VirtualView v : observers) {
                     ArrayList<Bookshelf> b = new ArrayList<>();
                     v.receiveBoard(board);
@@ -359,30 +359,37 @@ public class Game implements IGame {
                     v.receiveListPlayers(players);
                     v.receiveNumPlayers(numPlayers);
                 };
+            }
 
-            case SELECTION:
+            case SELECTION -> {
                 for (VirtualView v : observers) {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveAllowedPositions(board.getPickableTiles());
                     }
-                };
+                }
+                ;
+            }
 
-            case PICK:
+            case PICK -> {
                 for (VirtualView v : observers) {
                     v.receiveBoard(board);
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receivePickedTiles(currentPlayer.getTilesPicked());
                     }
-                };
+                }
+                ;
+            }
 
-            case ORDER:
+            case ORDER -> {
                 for (VirtualView v : observers) {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveDoneOrder(currentPlayer.getTilesPicked());
                     }
-                };
+                }
+                ;
+            }
 
-            case INSERT:
+            case INSERT -> {
                 for (VirtualView v : observers) {
                     ArrayList<Bookshelf> b = new ArrayList<>();
                     for (Player p : players) {
@@ -393,16 +400,20 @@ public class Game implements IGame {
                         b.add(p.getBookshelf());
                     }
                     v.receiveListBookshelves(b);
-                };
+                }
+                ;
+            }
 
-            case ENDGAME:
+            case ENDGAME -> {
                 for (VirtualView v : observers) {
                     for (Player p : players) {
                         if (p.getNickname().equals(v.getNickname())) {
                             v.receiveFinalScore(p.getFinalScore());
                         }
                     }
-                };
+                }
+                ;
+            }
 
         }
 

@@ -66,6 +66,7 @@ public class Player {
         doneCG1 = false;
         doneCG2 = false;
         pJSONm = new ParsingJSONManager();
+        selectedPositions = new ArrayList<>();
     }
 
     /**

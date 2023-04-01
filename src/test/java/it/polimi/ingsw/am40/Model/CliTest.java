@@ -7,6 +7,8 @@ public class CliTest {
     @Test
     public void Test() {
 
+
+
         CliView cli = new CliView();
         Game game1 = new Game(2);
 
@@ -40,9 +42,19 @@ public class CliTest {
 
         cli.showBoardPickable(game1);
 
-        game1.nextPlayer();
+        cli.showSelectedTiles(game1);
 
-        System.out.println(game1.getCurrentPlayer().getPersonalGoal().toString());
+        game1.getCurrentPlayer().pickTile(new Position(-3,-1));
+
+        cli.showSelectedTiles(game1);
+
+        game1.getCurrentPlayer().pickTile(new Position(-3,0));
+
+        game1.updatePickableTiles(new Position(-3,-1));
+
+        cli.showSelectedTiles(game1);
+
+        cli.showBoardPickable(game1);
 
 
 

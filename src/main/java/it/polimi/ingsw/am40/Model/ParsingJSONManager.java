@@ -74,17 +74,17 @@ public class ParsingJSONManager {
                 JSONObject t = (JSONObject) obj;
                 String x = t.get("Color").toString();
                 switch (x) {
-                    case "Yellow":
+                    case "Yellow" ->
                         pg.getColor().add(TileColor.YELLOW);
-                    case "White":
+                    case "White" ->
                         pg.getColor().add(TileColor.WHITE);
-                    case "Blue":
+                    case "Blue" ->
                         pg.getColor().add(TileColor.BLUE);
-                    case "Green":
+                    case "Green" ->
                         pg.getColor().add(TileColor.GREEN);
-                    case "Cyan":
+                    case "Cyan" ->
                         pg.getColor().add(TileColor.CYAN);
-                    case "Violet":
+                    case "Violet" ->
                         pg.getColor().add(TileColor.VIOLET);
                 }
             }
@@ -158,19 +158,19 @@ public class ParsingJSONManager {
                 JSONObject t = (JSONObject) posArray.get(i);
                 String t1 = t.get("Command" + i).toString();
                 switch(t1) {
-                    case "login":
+                    case "login" ->
                         map.put("login", new Login());
-                    case "help":
+                    case "help" ->
                         map.put("help", new Help());
-                    case "quit":
+                    case "quit" ->
                         map.put("quit", new Quit());
-                    case "select":
+                    case "select" ->
                         map.put("select", new Select());
-                    case "pick":
+                    case "pick" ->
                         map.put("pick", new Pick());
-                    case "order":
+                    case "order" ->
                         map.put("order", new Order());
-                    case "insert":
+                    case "insert" ->
                         map.put("insert", new Insert());
                 }
             }

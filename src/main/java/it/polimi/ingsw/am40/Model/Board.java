@@ -148,13 +148,11 @@ public class Board {
      * @param pos position of the tile picked
      */
     public void updatePickable(Position pos){
-//        System.out.println("board");
-        for(Position t : pickableTiles){
-            System.out.println("qui2");
-            if(t!=null){
-                System.out.println("qui");
-                if(!(isPickable(pos,t))){
-                    pickableTiles.remove(t);
+        for (int i = 0; i < pickableTiles.size(); i++) {
+            if (pickableTiles.get(i) != null) {
+                if(!(isPickable(pos,pickableTiles.get(i)))){
+                    pickableTiles.remove(pickableTiles.get(i));
+                    i--;
                 }
             }
         }
@@ -169,13 +167,13 @@ public class Board {
     private boolean isPickable(Position pos, Position t){
         int diffX = pos.getX()-t.getX();
         int diffY = pos.getY()-t.getY();
-        if(diffY>1 || diffY <-1){
+        if(diffY>1 || diffY <-1) {
             return false;
         }
-        if(diffX>1 || diffX <-1){
+        if(diffX>1 || diffX <-1) {
             return false;
         }
-        if(diffX!=0 && diffY !=0){
+        if(diffX!=0 && diffY !=0) {
             return false;
         }
         return true;
