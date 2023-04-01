@@ -56,6 +56,7 @@ public class Game implements IGame {
 
     private ArrayList<VirtualView> observers = new ArrayList<>();
     private ParsingJSONManager pJSONm;
+    private TurnPhase turn;
 
     /**
      * Constructor which builds the class assigning the number of players and creating the array of players
@@ -65,6 +66,7 @@ public class Game implements IGame {
         this.numPlayers = numPlayers;
         players = new ArrayList<>();
         pJSONm = new ParsingJSONManager();
+        turn = TurnPhase.START;
     }
 
     /**
@@ -186,7 +188,7 @@ public class Game implements IGame {
     public void updatePickableTiles (Position pos) {
         board.updatePickable(pos);
         currentPlayer.getSelectedPositions().add(pos);
-        notifyObservers(TurnPhase.SELECTION);
+        notifyObservers(turn);
     }
 
     /**
@@ -194,7 +196,7 @@ public class Game implements IGame {
      */
     public void removeSelectedTiles() {
         currentPlayer.clearSelected();
-        notifyObservers(TurnPhase.SELECTION);
+        notifyObservers(turn);
     }
 
     /**
@@ -204,7 +206,8 @@ public class Game implements IGame {
         for (Position p : currentPlayer.getSelectedPositions()) {
             currentPlayer.pickTile(p);
         }
-        notifyObservers(TurnPhase.PICK);
+        notifyObservers(turn);
+        setTurn(TurnPhase.ORDER);
     }
 
     /**
@@ -214,7 +217,8 @@ public class Game implements IGame {
      */
     public void setOrder (ArrayList<Tile> t) {
         currentPlayer.selectOrder(t);
-        notifyObservers(TurnPhase.ORDER);
+        notifyObservers(turn);
+        setTurn(TurnPhase.INSERT);
     }
 
     /**
@@ -227,7 +231,8 @@ public class Game implements IGame {
             currentPlayer.updateCurrScore(currentComGoals);
             endToken.updateScore(currentPlayer);
             currentPlayer.updateHiddenScore();
-            notifyObservers(TurnPhase.INSERT);
+            notifyObservers(turn);
+           setTurn(TurnPhase.START);
     }
 
     /**
@@ -241,7 +246,7 @@ public class Game implements IGame {
                 score.add(p.getFinalScore());
             }
         }
-        notifyObservers(TurnPhase.ENDGAME);
+        notifyObservers(turn);
     }
 
     public boolean controlRefill () {
@@ -250,7 +255,8 @@ public class Game implements IGame {
 
     public void startTurn () {
         board.setSideFreeTile();
-        notifyObservers(TurnPhase.START);
+        notifyObservers(turn);
+        setTurn(TurnPhase.SELECTION);
     }
 
     public boolean endTurn () {
@@ -258,6 +264,7 @@ public class Game implements IGame {
             board.remove(bag);
             board.config(bag);
         }
+        turn = TurnPhase.START;
         return nextPlayer();
    }
 
@@ -314,6 +321,10 @@ public class Game implements IGame {
 
     public void setBag(Bag bag) {
         this.bag = bag;
+    }
+
+    public void setTurn(TurnPhase turn) {
+        this.turn = turn;
     }
 
     public void register(VirtualView virtualView) {
@@ -396,5 +407,4 @@ public class Game implements IGame {
         }
 
     }
-
 }

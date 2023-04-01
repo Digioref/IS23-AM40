@@ -17,6 +17,7 @@ public class GameController {
     }
 
     public void pickTiles(VirtualView v) {
+        game.setTurn(TurnPhase.PICK);
         game.pickTiles();
     }
 
@@ -32,6 +33,7 @@ public class GameController {
         game.insertInBookshelf(c);
         boolean b = game.endTurn();
         if (!b) {
+            game.setTurn(TurnPhase.ENDGAME);
             game.endGame();
         }
         else {
