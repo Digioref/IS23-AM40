@@ -15,9 +15,7 @@ public class Position {
      */
     private int y;
 
-    public Position(){
-
-    }
+    public Position(){}
     /**
      * Constructor which builds the class according to the provided x and y
      * @param x a x coordinate
@@ -113,13 +111,17 @@ public class Position {
     public void setNext(Position pos,int type){
         copyPos(pos);
         switch(type){
-            case 1: this.x=x+1;
-                    break;
-            case 2: this.x=x-1;
+            case 1:
+                this.x=x+1;
                 break;
-            case 3: this.y=y+1;
+            case 2:
+                this.x=x-1;
                 break;
-            case 4: this.y=y-1;
+            case 3:
+                this.y=y+1;
+                break;
+            case 4:
+                this.y=y-1;
                 break;
             default:
                 break;

@@ -8,9 +8,22 @@ import java.io.IOException;
 public class Help implements ICommand {
 
     @Override
-    public void execute(ClientHandler c) throws IOException {
+    public void execute(ClientHandler c, String[] comm) throws IOException {
         for (String s: c.getMessAd().getCommands().keySet()) {
-            c.sendMessage("- " + s);
+            switch(s) {
+                case "select":
+                    c.sendMessage("- " + s + " [int] [int]");
+                    break;
+                case "order":
+                    c.sendMessage("- " + s + " [int] (at least)");
+                    break;
+                case "insert":
+                    c.sendMessage("- " + s + " [int]");
+                    break;
+                default:
+                    c.sendMessage("- " + s);
+                    break;
+            }
         }
     }
 }

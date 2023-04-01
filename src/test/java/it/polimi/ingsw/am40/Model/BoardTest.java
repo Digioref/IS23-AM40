@@ -28,9 +28,9 @@ public class BoardTest {
      */
     @Test
     void Test2() {
-        Board b1 = new Board(4);
         Game g = new Game(4);
         g.configureGame();
+        Board b1 = g.getBoard();
         Bag b = g.getBag();
         b1.config(b);
         for (String s: b1.getGrid().keySet()) {
@@ -46,9 +46,9 @@ public class BoardTest {
      */
     @Test
     void Test3() {
-        Board b1 = new Board(4);
         Game g = new Game(4);
         g.configureGame();
+        Board b1 = g.getBoard();
         Bag b = g.getBag();
         b1.config(b);
         for (String s: b1.getGrid().keySet()) {
@@ -76,9 +76,9 @@ public class BoardTest {
      */
     @Test
     void Test4() {
-        Board b1 = new Board(4);
         Game g = new Game(4);
         g.configureGame();
+        Board b1 = g.getBoard();
         Bag b = g.getBag();
         Tile t1 = b.pick();
         Tile t2 = b.pick();
@@ -100,5 +100,20 @@ public class BoardTest {
         }
         assertNotEquals(oldsize, b.getAvailableTiles().size());
         assertEquals(oldsize + 2, b.getAvailableTiles().size());
+    }
+
+    /**
+     * Tests the methods related
+     */
+    @Test
+    void Test5() {
+        Game g = new Game(4);
+        g.configureGame();
+        Board b1 = g.getBoard();
+        Bag b = g.getBag();
+        b1.config(b);
+        for (String s: b1.getGrid().keySet()) {
+            System.out.println(b1.getGrid().get(s).toString());
+        }
     }
 }

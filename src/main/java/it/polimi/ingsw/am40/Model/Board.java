@@ -148,8 +148,11 @@ public class Board {
      * @param pos position of the tile picked
      */
     public void updatePickable(Position pos){
+//        System.out.println("board");
         for(Position t : pickableTiles){
+            System.out.println("qui2");
             if(t!=null){
+                System.out.println("qui");
                 if(!(isPickable(pos,t))){
                     pickableTiles.remove(t);
                 }

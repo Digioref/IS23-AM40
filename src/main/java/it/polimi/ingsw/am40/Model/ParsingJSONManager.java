@@ -39,7 +39,7 @@ public class ParsingJSONManager {
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
                 tile.setPos(p);
                 map.put(p.getKey(), tile);
-                // System.out.println(p.getKey());
+//                 System.out.println(p.getKey());
             }
 
         } catch (IOException | ParseException e) {
@@ -76,16 +76,22 @@ public class ParsingJSONManager {
                 switch (x) {
                     case "Yellow":
                         pg.getColor().add(TileColor.YELLOW);
+                        break;
                     case "White":
                         pg.getColor().add(TileColor.WHITE);
+                        break;
                     case "Blue":
                         pg.getColor().add(TileColor.BLUE);
+                        break;
                     case "Green":
                         pg.getColor().add(TileColor.GREEN);
+                        break;
                     case "Cyan":
                         pg.getColor().add(TileColor.CYAN);
+                        break;
                     case "Violet":
                         pg.getColor().add(TileColor.VIOLET);
+                        break;
                 }
             }
         } catch (IOException | ParseException e) {
@@ -108,30 +114,42 @@ public class ParsingJSONManager {
                 switch (t1) {
                     case "yellow":
                         tile.setColor(TileColor.YELLOW);
+                        break;
                     case "white":
                         tile.setColor(TileColor.WHITE);
+                        break;
                     case "blue":
                         tile.setColor(TileColor.BLUE);
+                        break;
                     case "green":
                         tile.setColor(TileColor.GREEN);
+                        break;
                     case "cyan":
                         tile.setColor(TileColor.CYAN);
+                        break;
                     case "violet":
                         tile.setColor(TileColor.VIOLET);
+                        break;
                 }
                 switch (t2) {
                     case "cats":
                         tile.setType(TileType.CATS);
+                        break;
                     case "books":
                         tile.setType(TileType.BOOKS);
+                        break;
                     case "games":
                         tile.setType(TileType.GAMES);
+                        break;
                     case "frames":
                         tile.setType(TileType.FRAMES);
+                        break;
                     case "trophies":
                         tile.setType(TileType.TROPHIES);
+                        break;
                     case "plants":
                         tile.setType(TileType.PLANTS);
+                        break;
                 }
                 b.insert(tile);
             }
@@ -154,18 +172,31 @@ public class ParsingJSONManager {
                 switch(t1) {
                     case "login":
                         map.put("login", new Login());
+                        break;
                     case "help":
                         map.put("help", new Help());
+                        break;
                     case "quit":
                         map.put("quit", new Quit());
+                        break;
                     case "select":
                         map.put("select", new Select());
+                        break;
                     case "pick":
                         map.put("pick", new Pick());
+                        break;
                     case "order":
                         map.put("order", new Order());
+                        break;
                     case "insert":
                         map.put("insert", new Insert());
+                        break;
+                    case "confirm":
+                        map.put("confirm", new Confirm());
+                        break;
+                    case "remove":
+                        map.put("remove", new Remove());
+                        break;
                 }
             }
 

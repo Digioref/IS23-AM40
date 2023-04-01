@@ -2,11 +2,13 @@ package it.polimi.ingsw.am40.Network;
 
 import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.Controller.Lobby;
+import it.polimi.ingsw.am40.Model.Position;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -149,5 +151,24 @@ public class ClientHandler implements Runnable {
 
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
+    }
+
+    public void executeComannd(ActionType at, ArrayList<Integer> arr) {
+        switch(at) {
+            case SELECT:
+                Position p = new Position(arr.get(0), arr.get(1));
+                controller.getGameController().selectTile(virtualView, p);
+            case CONFIRM:
+                controller.getGameController().confirmSelection(virtualView);
+            case REMOVE:
+                controller.getGameController().notConfirmSelection(virtualView);
+            case PICK:
+                controller.getGameController().pickTiles(virtualView);
+            case ORDER:
+                controller.getGameController().order(virtualView, arr);
+            case INSERT:
+                controller.getGameController().insert(virtualView, arr.get(0));
+
+        }
     }
 }

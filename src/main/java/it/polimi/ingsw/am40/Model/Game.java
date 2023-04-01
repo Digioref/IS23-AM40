@@ -103,6 +103,21 @@ public class Game implements IGame {
     }
 
     /**
+     * Starts the game, choosing the first player, assigning common goals and personal goals and configuring the board
+     */
+    public void startGame() {
+        Random rand = new Random();
+        firstPlayer = players.get(rand.nextInt(players.size()));
+        currentPlayer = firstPlayer;
+        board.config(bag);
+        assignComGoal();
+        assignPersonalGoal();
+        setHasStarted(true);
+        setHasEnded(false);
+        startTurn();
+    }
+
+    /**
      * Creates the tiles of the game
      */
     public void createTiles() {
@@ -148,21 +163,6 @@ public class Game implements IGame {
             x = rand.nextInt(commonGoals.size());
         } while (commonGoals.indexOf(currentComGoals.get(0)) == x);
         currentComGoals.add(commonGoals.get(x));
-    }
-
-    /**
-     * Starts the game, choosing the first player, assigning common goals and personal goals and configuring the board
-     */
-    public void startGame() {
-        Random rand = new Random();
-        firstPlayer = players.get(rand.nextInt(players.size()));
-        currentPlayer = firstPlayer;
-        board.config(bag);
-        assignComGoal();
-        assignPersonalGoal();
-        setHasStarted(true);
-        setHasEnded(false);
-        startTurn();
     }
 
     /**
@@ -215,7 +215,7 @@ public class Game implements IGame {
      *
      * @param t array of tiles that specifies the order of the tiles selected
      */
-    public void setOrder (ArrayList<Tile> t) {
+    public void setOrder (ArrayList<Integer> t) {
         currentPlayer.selectOrder(t);
         notifyObservers(turn);
         setTurn(TurnPhase.INSERT);
