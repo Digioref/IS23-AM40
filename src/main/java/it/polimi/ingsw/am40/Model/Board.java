@@ -99,7 +99,6 @@ public class Board {
      */
     public void setSideFreeTile(){
         for(Tile tile : grid.values()){
-            System.out.println(tile);
             if(checkFreeSide(tile.getPos())>0){
                 pickableTiles.add(tile.getPos());
             }
