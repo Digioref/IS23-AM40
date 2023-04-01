@@ -21,13 +21,15 @@ public class MessageAdapter {
     }
 
     public void parserMessage (ClientHandler c, String message) throws IOException {
-        Pattern pattern = Pattern.compile("^([a-zA-Z]+)||([a-zA-Z]+)( +([0-9]+)*)$");
-        Matcher match = pattern.matcher(message);
-        match.find();
-        String command = match.group(1);
-        if (commands.containsKey(command.toLowerCase())) {
-            ICommand cmd = commands.get(command.toLowerCase());
-            cmd.execute(c);
+//        Pattern pattern = Pattern.compile("^([a-zA-Z]+)|(([a-zA-Z]+)( +([0-9]+)*))$");
+//        Pattern pattern = Pattern.compile("[a-zA-Z0-9]+");
+//        Matcher match = pattern.matcher(message);
+//        match.find();
+//        String command = match.group(0);
+        String[] command = message.split("\\s");
+        if (commands.containsKey(command[0].toLowerCase())) {
+            ICommand cmd = commands.get(command[0].toLowerCase());
+            cmd.execute(c, command);
         }
         else {
             c.sendMessage("Unknown command");

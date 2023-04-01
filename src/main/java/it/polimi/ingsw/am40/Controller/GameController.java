@@ -13,19 +13,20 @@ public class GameController {
     }
 
     public void selectTile(VirtualView v, Position p) {
+//        System.out.println("contr");
         game.updatePickableTiles(p);
     }
 
     public void pickTiles(VirtualView v) {
-        game.setTurn(TurnPhase.PICK);
         game.pickTiles();
     }
 
     public void notConfirmSelection(VirtualView v) {
         game.removeSelectedTiles();
     }
+    public void confirmSelection(VirtualView v) { game.setTurn(TurnPhase.PICK);}
 
-    public void order(VirtualView v, ArrayList<Tile> arr) {
+    public void order(VirtualView v, ArrayList<Integer> arr) {
         game.setOrder(arr);
     }
 

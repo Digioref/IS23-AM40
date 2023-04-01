@@ -8,7 +8,7 @@ import java.io.IOException;
 public class Quit implements ICommand {
 
     @Override
-    public void execute(ClientHandler c) throws IOException {
+    public void execute(ClientHandler c, String[] comm) throws IOException {
         c.sendMessage("Bye Bye");
     }
 }

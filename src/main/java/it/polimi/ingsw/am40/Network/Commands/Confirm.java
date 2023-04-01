@@ -6,10 +6,9 @@ import it.polimi.ingsw.am40.Network.ICommand;
 
 import java.io.IOException;
 
-public class Pick implements ICommand {
-
+public class Confirm implements ICommand {
     @Override
     public void execute(ClientHandler c, String[] comm) throws IOException {
-        c.executeComannd(ActionType.PICK, null);
+        c.executeComannd(ActionType.CONFIRM, null);
     }
 }

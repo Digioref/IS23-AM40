@@ -66,6 +66,7 @@ public class Lobby implements Runnable {
     }
 
     public void create() {
+        System.out.println("Creating game...");
         Game g = new Game(numPlayers);
         Controller c = new Controller(g);
         for (ClientHandler cl : activePlayers) {

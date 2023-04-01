@@ -1,7 +1,6 @@
 package it.polimi.ingsw.am40.Model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Represents the player of the game
@@ -109,10 +108,13 @@ public class Player {
      * @param at an array of tiles, equals to the tilesArray, but with eventually a different order of the tiles
      */
 
-    public void selectOrder(ArrayList<Tile> at) {
-        for (int i = 0; i < tilesPicked.size(); i++) {
-            tilesPicked.set(i, at.get(i));
+    public void selectOrder(ArrayList<Integer> at) {
+        ArrayList<Tile> arr = new ArrayList<>();
+        for (Integer i: at) {
+            arr.add(tilesPicked.get(i));
         }
+        tilesPicked.clear();
+        tilesPicked.addAll(arr);
     }
 
     /**
