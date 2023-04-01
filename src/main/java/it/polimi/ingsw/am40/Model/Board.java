@@ -99,6 +99,7 @@ public class Board {
      */
     public void setSideFreeTile(){
         for(Tile tile : grid.values()){
+            System.out.println(tile);
             if(checkFreeSide(tile.getPos())>0){
                 pickableTiles.add(tile.getPos());
             }
@@ -113,10 +114,10 @@ public class Board {
     public int checkFreeSide(Position pos){
         Position next = new Position();
         int res = 0;
-        for(int i=1;i<5;i++){
+        for (int i = 1; i < 5; i++) {
             next.setNext(pos,i);
             if(isFree(next)){
-                res=res+1;
+                res = res + 1;
             }
         }
         return res;
@@ -131,7 +132,7 @@ public class Board {
     private boolean isFree(Position pos) {
         //if the key obtained from the position
         if(!(grid.containsKey(pos.getKey()))){
-            return false;
+            return true;
         }
         if (grid.containsKey(pos.getKey())) {
             if (grid.get(pos.getKey()).getColor() != TileColor.NOCOLOR && grid.get(pos.getKey()).getType() != TileType.EMPTY) {

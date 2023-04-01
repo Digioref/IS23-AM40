@@ -39,7 +39,7 @@ public class ParsingJSONManager {
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
                 tile.setPos(p);
                 map.put(p.getKey(), tile);
-//                 System.out.println(p.getKey());
+                // System.out.println(p.getKey());
             }
 
         } catch (IOException | ParseException e) {
