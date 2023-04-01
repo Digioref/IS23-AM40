@@ -22,13 +22,25 @@ public class CliTest {
 
         Bookshelf b = game1.getCurrentPlayer().getBookshelf();
 
+        for (int row = 4; row > -5; row--) {
+            for (int col = -4; col < 5; col++) {
+                Position pos = new Position(col, row);
+                if (game1.getBoard().getGrid().get(pos.getKey()) != null) {
+                    System.out.printf(game1.getBoard().getGrid().get(pos.getKey()).print());
+                } else {
+                    System.out.printf("\u001B[40m  \u001B[0m");
+                }
+            }
+            System.out.printf("\n");
+        }
+
 
         for (int row = 5; row >= 0; row--) {
             for (int col = 0; col < 5; col++) {
                 if (b.getTile(col, row) != null) {
                     System.out.printf(b.getTile(col, row).print());
                 } else {
-                    System.out.printf("\u001B[30m0\u001B[0m ");
+                    System.out.printf(" ");
                 }
             }
             System.out.printf("\n");
@@ -50,14 +62,29 @@ public class CliTest {
 
         for (int row = 5; row >= 0; row--) {
             for (int col = 0; col < 5; col++) {
+                System.out.printf("\u001B[40m \u001B[0m");
                 if (b.getTile(col, row) != null) {
                     System.out.printf(b.getTile(col, row).print());
                 } else {
-                    System.out.printf("\u001B[30m0\u001B[0m ");
+                    System.out.printf("\u001B[40m  \u001B[0m");
                 }
             }
             System.out.printf("\n");
         }
+
+        for (int row = 4; row > -5; row--) {
+            for (int col = -4; col < 5; col++) {
+                Position pos = new Position(col, row);
+                if (game1.getBoard().getGrid().get(pos.getKey()) != null) {
+                    System.out.printf(game1.getBoard().getGrid().get(pos.getKey()).print());
+                } else {
+                    System.out.printf("\u001B[40m  \u001B[0m");
+                }
+            }
+            System.out.printf("\n");
+        }
+
+
 
 
 

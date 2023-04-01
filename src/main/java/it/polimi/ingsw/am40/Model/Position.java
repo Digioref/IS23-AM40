@@ -81,7 +81,7 @@ public class Position {
     public static String getKey(int x, int y) {
         return buildKey(x, y);
     }
-    private static String buildKey (int x, int y) {
+    private static String buildKey(int x, int y) {
         return ("(" + x + "," + y + ")");
     }
 

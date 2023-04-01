@@ -24,6 +24,14 @@ public class Tile {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+    public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
+    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
     /**
      * Constructor which builds the tile assigning colour and type
@@ -102,22 +110,22 @@ public class Tile {
 
     public String print() {
         if (color.equals(TileColor.GREEN)) {
-            return ANSI_GREEN + "G " + ANSI_RESET;
+            return ANSI_BLACK_BACKGROUND + ANSI_GREEN + "G " + ANSI_RESET;
         }
         if (color.equals(TileColor.WHITE)) {
-            return ANSI_WHITE + "W " + ANSI_RESET;
+            return ANSI_BLACK_BACKGROUND + ANSI_WHITE + "W " + ANSI_RESET;
         }
         if (color.equals(TileColor.YELLOW)) {
-            return ANSI_YELLOW + "Y " + ANSI_RESET;
+            return ANSI_BLACK_BACKGROUND + ANSI_YELLOW + "Y " + ANSI_RESET;
         }
         if (color.equals(TileColor.BLUE)) {
-            return ANSI_BLUE + "B " + ANSI_RESET;
+            return ANSI_BLACK_BACKGROUND + ANSI_BLUE + "B " + ANSI_RESET;
         }
         if (color.equals(TileColor.CYAN)) {
-            return ANSI_CYAN + "C " + ANSI_RESET;
+            return ANSI_BLACK_BACKGROUND + ANSI_CYAN + "C " + ANSI_RESET;
         }
         if (color.equals(TileColor.VIOLET)) {
-            return ANSI_PURPLE + "V " + ANSI_RESET;
+            return ANSI_BLACK_BACKGROUND + ANSI_PURPLE + "V " + ANSI_RESET;
         }
         else return "X ";
 
