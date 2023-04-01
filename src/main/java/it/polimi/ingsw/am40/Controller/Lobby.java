@@ -3,6 +3,7 @@ package it.polimi.ingsw.am40.Controller;
 import it.polimi.ingsw.am40.Model.Game;
 import it.polimi.ingsw.am40.Model.Player;
 import it.polimi.ingsw.am40.Network.ClientHandler;
+import it.polimi.ingsw.am40.Network.VirtualView;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -72,6 +73,8 @@ public class Lobby implements Runnable {
         for (ClientHandler cl : activePlayers) {
             g.addPlayer(new Player(cl.getNickname()));
             cl.setController(c);
+            VirtualView v = new VirtualView(cl.getNickname(), cl, c);
+            cl.setVirtualView(v);
             g.register(cl.getVirtualViewInstance());
         }
         numPlayers = 0;

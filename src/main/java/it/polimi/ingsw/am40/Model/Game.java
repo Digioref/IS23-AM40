@@ -66,7 +66,6 @@ public class Game implements IGame {
         this.numPlayers = numPlayers;
         players = new ArrayList<>();
         pJSONm = new ParsingJSONManager();
-        turn = TurnPhase.START;
         observers = new ArrayList<>();
     }
 
@@ -74,7 +73,7 @@ public class Game implements IGame {
      * Adds a player to the game
      * @param p player
      */
-    public void addPlayer (Player p) { // It doesm't check if we reached the max number of players
+    public void addPlayer (Player p) { // It doesn't check if we reached the max number of players
         if (players.size() != 0) {
             players.get(players.size() - 1).setNext(p);
         }
@@ -115,6 +114,7 @@ public class Game implements IGame {
         assignPersonalGoal();
         setHasStarted(true);
         setHasEnded(false);
+        turn = TurnPhase.START;
         startTurn();
     }
 
@@ -255,7 +255,13 @@ public class Game implements IGame {
     }
 
     public void startTurn () {
+        System.out.println("print wrong");
         board.setSideFreeTile();
+        for (VirtualView v: observers) {
+            if (currentPlayer.getNickname().equals(v.getNickname())) {
+                v.receiveCurrentPlayer(currentPlayer);
+            }
+        }
         notifyObservers(turn);
         setTurn(TurnPhase.SELECTION);
     }
@@ -346,7 +352,7 @@ public class Game implements IGame {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveAllowedPositions(board.getPickableTiles());
                     }
-                    v.receiveCurrentPlayer(currentPlayer);
+//                    v.receiveCurrentPlayer(currentPlayer);
                     v.receiveCommonGoals(currentComGoals);
                     for (Player p : players) {
                         if (p.getNickname().equals(v.getNickname())) {
@@ -363,6 +369,7 @@ public class Game implements IGame {
                 break;
 
             case SELECTION:
+                System.out.println("qui");
                 for (VirtualView v : observers) {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveAllowedPositions(board.getPickableTiles());

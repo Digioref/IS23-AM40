@@ -158,17 +158,27 @@ public class ClientHandler implements Runnable {
             case SELECT:
                 Position p = new Position(arr.get(0), arr.get(1));
                 controller.getGameController().selectTile(virtualView, p);
+                break;
             case CONFIRM:
                 controller.getGameController().confirmSelection(virtualView);
+                break;
             case REMOVE:
                 controller.getGameController().notConfirmSelection(virtualView);
+                break;
             case PICK:
                 controller.getGameController().pickTiles(virtualView);
+                break;
             case ORDER:
                 controller.getGameController().order(virtualView, arr);
+                break;
             case INSERT:
                 controller.getGameController().insert(virtualView, arr.get(0));
+                break;
 
         }
+    }
+
+    public void setVirtualView(VirtualView v) {
+        this.virtualView = v;
     }
 }
