@@ -110,19 +110,13 @@ public class Position {
      * @param pos starting position
      * @param type int for select the correct offest
      */
-    public void setNext(Position pos,int type){
+    public void setNext(Position pos, int type) {
         copyPos(pos);
         switch(type){
-            case 1: this.x=x+1;
-                    break;
-            case 2: this.x=x-1;
-                break;
-            case 3: this.y=y+1;
-                break;
-            case 4: this.y=y-1;
-                break;
-            default:
-                break;
+            case 1 -> this.x = x+1;
+            case 2 -> this.x = x-1;
+            case 3 -> this.y = y+1;
+            case 4 -> this.y = y-1;
         }
     }
 

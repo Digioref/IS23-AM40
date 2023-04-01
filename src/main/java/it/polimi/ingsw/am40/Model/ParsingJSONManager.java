@@ -106,31 +106,37 @@ public class ParsingJSONManager {
                 String t2 = t.get("type").toString();
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
                 switch (t1) {
-                    case "yellow":
+                    case "yellow" -> {
                         tile.setColor(TileColor.YELLOW);
-                    case "white":
+                    }
+                    case "white" -> {
                         tile.setColor(TileColor.WHITE);
-                    case "blue":
+                    }
+                    case "blue" -> {
                         tile.setColor(TileColor.BLUE);
-                    case "green":
+                    }
+                    case "green" -> {
                         tile.setColor(TileColor.GREEN);
-                    case "cyan":
+                    }
+                    case "cyan" -> {
                         tile.setColor(TileColor.CYAN);
-                    case "violet":
+                    }
+                    case "violet" -> {
                         tile.setColor(TileColor.VIOLET);
+                    }
                 }
                 switch (t2) {
-                    case "cats":
+                    case "cats" ->
                         tile.setType(TileType.CATS);
-                    case "books":
+                    case "books" ->
                         tile.setType(TileType.BOOKS);
-                    case "games":
+                    case "games" ->
                         tile.setType(TileType.GAMES);
-                    case "frames":
+                    case "frames" ->
                         tile.setType(TileType.FRAMES);
-                    case "trophies":
+                    case "trophies" ->
                         tile.setType(TileType.TROPHIES);
-                    case "plants":
+                    case "plants" ->
                         tile.setType(TileType.PLANTS);
                 }
                 b.insert(tile);

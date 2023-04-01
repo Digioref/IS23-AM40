@@ -110,22 +110,22 @@ public class Tile {
 
     public String print() {
         if (color.equals(TileColor.GREEN)) {
-            return ANSI_BLACK_BACKGROUND + ANSI_GREEN + "G " + ANSI_RESET;
+            return ANSI_GREEN + "G " + ANSI_RESET;
         }
         if (color.equals(TileColor.WHITE)) {
-            return ANSI_BLACK_BACKGROUND + ANSI_WHITE + "W " + ANSI_RESET;
+            return ANSI_WHITE + "W " + ANSI_RESET;
         }
         if (color.equals(TileColor.YELLOW)) {
-            return ANSI_BLACK_BACKGROUND + ANSI_YELLOW + "Y " + ANSI_RESET;
+            return ANSI_YELLOW + "Y " + ANSI_RESET;
         }
         if (color.equals(TileColor.BLUE)) {
-            return ANSI_BLACK_BACKGROUND + ANSI_BLUE + "B " + ANSI_RESET;
+            return ANSI_BLUE + "B " + ANSI_RESET;
         }
         if (color.equals(TileColor.CYAN)) {
-            return ANSI_BLACK_BACKGROUND + ANSI_CYAN + "C " + ANSI_RESET;
+            return ANSI_CYAN + "C " + ANSI_RESET;
         }
         if (color.equals(TileColor.VIOLET)) {
-            return ANSI_BLACK_BACKGROUND + ANSI_PURPLE + "V " + ANSI_RESET;
+            return ANSI_PURPLE + "V " + ANSI_RESET;
         }
         else return "X ";
 
