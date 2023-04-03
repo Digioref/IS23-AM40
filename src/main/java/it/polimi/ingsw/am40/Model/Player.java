@@ -62,6 +62,7 @@ public class Player {
         this.nickname = nickname;
         currentScore = 0;
         finalScore = 0;
+        hiddenScore = 0;
         this.tilesPicked = new ArrayList<>();
         doneCG1 = false;
         doneCG2 = false;
@@ -99,7 +100,9 @@ public class Player {
      */
 
     public void placeInBookshelf(int col) {
+        System.out.println("qui3");
         for (Tile tile : tilesPicked) {
+            System.out.println(tile.toString());
             bookshelf.addTile(tile, col);
         }
     }
@@ -112,10 +115,13 @@ public class Player {
     public void selectOrder(ArrayList<Integer> at) {
         ArrayList<Tile> arr = new ArrayList<>();
         for (Integer i: at) {
-            arr.add(tilesPicked.get(i));
+            arr.add(tilesPicked.get(i - 1));
         }
         tilesPicked.clear();
         tilesPicked.addAll(arr);
+        for (Tile t : tilesPicked) {
+            System.out.println(t.toString());
+        }
     }
 
     /**

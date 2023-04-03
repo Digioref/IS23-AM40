@@ -6,7 +6,6 @@ import it.polimi.ingsw.am40.Model.Position;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,12 +22,14 @@ public class ClientHandler implements Runnable {
     private boolean logged;
     private MessageAdapter messAd;
     private Lobby lobby;
+    private boolean isPlaying;
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
         logged = false;
         messAd = new MessageAdapter();
         lobby = new Lobby();
+        isPlaying = false;
     }
 
     public void sendMessage(String s) throws IOException {
@@ -153,32 +154,41 @@ public class ClientHandler implements Runnable {
         this.numPlayers = numPlayers;
     }
 
-    public void executeComannd(ActionType at, ArrayList<Integer> arr) {
-        switch(at) {
-            case SELECT:
-                Position p = new Position(arr.get(0), arr.get(1));
-                controller.getGameController().selectTile(virtualView, p);
-                break;
-            case CONFIRM:
-                controller.getGameController().confirmSelection(virtualView);
-                break;
-            case REMOVE:
-                controller.getGameController().notConfirmSelection(virtualView);
-                break;
-            case PICK:
-                controller.getGameController().pickTiles(virtualView);
-                break;
-            case ORDER:
-                controller.getGameController().order(virtualView, arr);
-                break;
-            case INSERT:
-                controller.getGameController().insert(virtualView, arr.get(0));
-                break;
+    public void executeCommand(ActionType at, ArrayList<Integer> arr) {
+        if (isPlaying) {
+            switch(at) {
+                case SELECT:
+                    Position p = new Position(arr.get(0), arr.get(1));
+                    controller.getGameController().selectTile(virtualView, p);
+                    break;
+                case REMOVE:
+                    controller.getGameController().notConfirmSelection(virtualView);
+                    break;
+                case PICK:
+                    controller.getGameController().pickTiles(virtualView);
+                    break;
+                case ORDER:
+                    controller.getGameController().order(virtualView, arr);
+                    break;
+                case INSERT:
+                    controller.getGameController().insert(virtualView, arr.get(0));
+                    break;
 
+            }
+        } else {
+            try {
+                sendMessage("You are not playing in any game yet!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void setVirtualView(VirtualView v) {
         this.virtualView = v;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
     }
 }

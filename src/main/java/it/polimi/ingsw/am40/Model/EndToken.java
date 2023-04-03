@@ -18,7 +18,7 @@ public class EndToken {
      */
     public EndToken() {
         end = false;
-        player = null;
+        player = new Player("DEFAULT");
     }
 
     /**
@@ -35,9 +35,9 @@ public class EndToken {
      * @param p player
      */
     public void updateScore (Player p) {
-        if (player == null && !end && check(p)) {
+        if (player.getNickname().equals("DEFAULT") && !end && check(p)) {
             p.addCurrentScore(1);
-            player = p;
+            setPlayer(p);
             end = true;
         }
     }

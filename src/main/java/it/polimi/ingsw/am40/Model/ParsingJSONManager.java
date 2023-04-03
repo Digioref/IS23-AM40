@@ -191,9 +191,6 @@ public class ParsingJSONManager {
                     case "insert":
                         map.put("insert", new Insert());
                         break;
-                    case "confirm":
-                        map.put("confirm", new Confirm());
-                        break;
                     case "remove":
                         map.put("remove", new Remove());
                         break;

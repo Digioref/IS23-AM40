@@ -10,6 +10,6 @@ public class Remove implements ICommand {
 
     @Override
     public void execute(ClientHandler c, String[] comm) throws IOException {
-        c.executeComannd(ActionType.REMOVE, null);
+        c.executeCommand(ActionType.REMOVE, null);
     }
 }

@@ -75,6 +75,7 @@ public class Lobby implements Runnable {
             cl.setController(c);
             VirtualView v = new VirtualView(cl.getNickname(), cl, c);
             cl.setVirtualView(v);
+            cl.setPlaying(true);
             g.register(cl.getVirtualViewInstance());
         }
         numPlayers = 0;

@@ -100,4 +100,8 @@ public class VirtualView implements  IGameObserver{
     public String getNickname() {
         return nickname;
     }
+
+    public ClientHandler getClientHandler() {
+        return clientHandler;
+    }
 }

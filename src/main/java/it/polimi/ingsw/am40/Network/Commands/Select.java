@@ -21,7 +21,7 @@ public class Select implements ICommand {
             ArrayList<Integer> arr = new ArrayList<>();
             arr.add(x);
             arr.add(y);
-            c.executeComannd(ActionType.SELECT, arr);
+            c.executeCommand(ActionType.SELECT, arr);
         }
     }
 }

@@ -18,7 +18,7 @@ public class Order implements ICommand {
             for (int i = 1; i < comm.length ; i++) {
                 arr.add(Integer.parseInt(comm[i]));
             }
-            c.executeComannd(ActionType.ORDER, arr);
+            c.executeCommand(ActionType.ORDER, arr);
         }
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.am40.Model;
 
 import it.polimi.ingsw.am40.Network.VirtualView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -187,9 +188,21 @@ public class Game implements IGame {
         return false;
     }
     public void updatePickableTiles (Position pos) {
-        board.updatePickable(pos);
-        currentPlayer.getSelectedPositions().add(pos);
-        notifyObservers(turn);
+        if (board.getPickableTiles().contains(pos)) {
+            board.updatePickable(pos);
+            currentPlayer.getSelectedPositions().add(pos);
+            notifyObservers(turn);
+        } else {
+            for (VirtualView v : observers) {
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    try {
+                        v.getClientHandler().sendMessage("It can't be selected!");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -217,9 +230,23 @@ public class Game implements IGame {
      * @param t array of tiles that specifies the order of the tiles selected
      */
     public void setOrder (ArrayList<Integer> t) {
-        currentPlayer.selectOrder(t);
-        notifyObservers(turn);
-        setTurn(TurnPhase.INSERT);
+//        System.out.println("qui");
+        if (t.size() == currentPlayer.getTilesPicked().size()) {
+            currentPlayer.selectOrder(t);
+            notifyObservers(turn);
+            setTurn(TurnPhase.INSERT);
+        } else {
+            for (VirtualView v: observers) {
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    try {
+                        v.getClientHandler().sendMessage("The number of tiles picked is more than the number of tiles specified in the order!");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+
     }
 
     /**
@@ -228,12 +255,14 @@ public class Game implements IGame {
      * @param c column of player p's bookshelf
      */
     public void insertInBookshelf (int c) {
-            currentPlayer.placeInBookshelf(c);
-            currentPlayer.updateCurrScore(currentComGoals);
-            endToken.updateScore(currentPlayer);
-            currentPlayer.updateHiddenScore();
-            notifyObservers(turn);
-            setTurn(TurnPhase.START);
+        System.out.println("qui2");
+        currentPlayer.placeInBookshelf(c);
+        currentPlayer.updateCurrScore(currentComGoals);
+        endToken.updateScore(currentPlayer);
+        System.out.println("qui4");
+        currentPlayer.updateHiddenScore();
+        notifyObservers(turn);
+        setTurn(TurnPhase.START);
     }
 
     /**
@@ -255,7 +284,8 @@ public class Game implements IGame {
     }
 
     public void startTurn () {
-        System.out.println("print wrong");
+//        System.out.println("print wrong");
+        board.clearPickable();
         board.setSideFreeTile();
         for (VirtualView v: observers) {
             if (currentPlayer.getNickname().equals(v.getNickname())) {
@@ -369,7 +399,7 @@ public class Game implements IGame {
                 break;
 
             case SELECTION:
-                System.out.println("qui");
+//                System.out.println("qui");
                 for (VirtualView v : observers) {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveAllowedPositions(board.getPickableTiles());

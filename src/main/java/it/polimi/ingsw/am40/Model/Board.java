@@ -59,7 +59,9 @@ public class Board {
     public Tile pick(String pos) {
         if (grid.containsKey(pos) && grid.get(pos).getType() != TileType.EMPTY) {
             Tile t = grid.get(pos);
-            grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY));
+            Position p = new Position(-20, -20);
+            p.convertKey(pos);
+            grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY, p));
             return t;
         }
         return null;
@@ -73,7 +75,9 @@ public class Board {
         for (String pos : grid.keySet()) {
             if (grid.get(pos).getType() != TileType.EMPTY) {
                 b.insert(grid.get(pos));
-                grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY));
+                Position p = new Position(-20, -20);
+                p.convertKey(pos);
+                grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY, p));
             }
         }
     }
@@ -99,7 +103,7 @@ public class Board {
      */
     public void setSideFreeTile(){
         for(Tile tile : grid.values()){
-            if(checkFreeSide(tile.getPos())>0){
+            if(checkFreeSide(tile.getPos())>0 && !(tile.getColor().equals(TileColor.NOCOLOR)) ){
                 pickableTiles.add(tile.getPos());
                 System.out.println(tile);
             }

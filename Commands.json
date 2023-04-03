@@ -7,7 +7,6 @@
    {"Command4": "pick"},
    {"Command5": "order"},
    {"Command6": "insert"},
-   {"Command7": "confirm"},
-   {"Command8": "remove"}
+   {"Command7": "remove"}
  ]
 }

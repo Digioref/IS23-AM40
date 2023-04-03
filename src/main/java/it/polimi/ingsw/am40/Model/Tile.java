@@ -4,6 +4,7 @@ package it.polimi.ingsw.am40.Model;
  * Represents the tiles in the game
  */
 public class Tile {
+    private final static int DEFAULTINVALIDPOSITION = -20;
     /**
      * The colour of the tile
      */
@@ -41,7 +42,7 @@ public class Tile {
     public Tile(TileColor color, TileType type) {
         this.color = color;
         this.type = type;
-        this.pos = new Position(-20, -20);
+        this.pos = new Position(DEFAULTINVALIDPOSITION, DEFAULTINVALIDPOSITION);
     }
     public Tile(TileColor color, TileType type, Position pos){
         this.color = color;
@@ -138,5 +139,9 @@ public class Tile {
                 ", type = " + type +
                 ", pos = " + pos.getKey() +
                 " }";
+    }
+
+    public boolean isInvalid() {
+        return ((pos.getX() == DEFAULTINVALIDPOSITION) && (pos.getY() == DEFAULTINVALIDPOSITION));
     }
 }
