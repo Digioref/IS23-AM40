@@ -75,7 +75,7 @@ public class Player {
      * @param pos
      */
     public void pickTile(Position pos) {
-        if (board.getGrid().containsKey(pos.getKey())) {
+        if (board.getGrid().containsKey(pos.getKey()) && selectedPositions.contains(pos)) {
             tilesPicked.add(board.pick(pos.getKey()));
         }
     }

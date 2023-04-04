@@ -16,9 +16,14 @@ public class Order implements ICommand {
         else {
             ArrayList<Integer> arr = new ArrayList<>();
             for (int i = 1; i < comm.length ; i++) {
-                arr.add(Integer.parseInt(comm[i]));
+                if (Integer.parseInt(comm[i]) < comm.length) {
+                    arr.add(Integer.parseInt(comm[i]));
+                    c.executeCommand(ActionType.ORDER, arr);
+                } else {
+                    c.sendMessage("A number of the order is too high!");
+                    return;
+                }
             }
-            c.executeCommand(ActionType.ORDER, arr);
         }
     }
 }

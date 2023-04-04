@@ -164,7 +164,7 @@ public class PersonalGoal {
     public String toString() {
 
         for (int i = 0; i < pos.size(); i++) {
-            System.out.println(pos.get(i) + " " + color.get(i));
+            System.out.println(pos.get(i).getKey() + " " + color.get(i));
         }
 
         return "PersonalGoal";

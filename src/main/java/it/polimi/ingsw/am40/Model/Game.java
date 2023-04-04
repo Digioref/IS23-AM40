@@ -230,7 +230,6 @@ public class Game implements IGame {
      * @param t array of tiles that specifies the order of the tiles selected
      */
     public void setOrder (ArrayList<Integer> t) {
-//        System.out.println("qui");
         if (t.size() == currentPlayer.getTilesPicked().size()) {
             currentPlayer.selectOrder(t);
             notifyObservers(turn);
