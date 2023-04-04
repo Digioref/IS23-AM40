@@ -183,82 +183,182 @@ public class CliView {
 
     public void showCommonGoals(Game game) {
 
-        int ch = 8800;
-        char notEqual = (char) ch;
-
         int cg;
 
         for (CommonGoal x : game.getCurrentComGoals()) {
 
             cg = x.getNum();
+            if (game.getCurrentComGoals().indexOf(x) == 0) {
+                System.out.println("First CommonGoal:");
+            } else {
+                System.out.println("Second CommonGoal: ");
+            }
 
             switch (cg) {
                 case 1 -> {
                     // CG 1
-                    System.out.println(color.whiteBg() + color.black() + " =  = " + color.rst() + color.red() + " x2" + color.rst());
-                    System.out.println(color.whiteBg() + color.black() + " =  = " + color.rst() + "\n");
+                    for (int i = 0; i < 4; i++) {
+                        printEqual();
+                        if (i == 1) {
+                            System.out.println(color.red() + " x2" + color.rst());
+                        }
+                    }
+                    System.out.println();
+                    System.out.println("Two groups each containing 4 tiles of the same type in a 2x2 square.\n" +
+                            "The tiles of one square can be different from those of the other square.\n");
                 }
                 case 2 -> {
                     // CG 2
                     for (int i = 0; i < 6; i++) {
-                        System.out.print(color.whiteBg() + color.black() + " " + notEqual + " " + color.rst());
+                        printNotEqual();
                         if (i == 2) {
                             System.out.print(color.red() + " x2" + color.rst());
                         }
                         System.out.println();
                     }
+                    System.out.println("Two columns each formed by 6 different types of tiles.");
                     System.out.println();
                 }
                 case 3 -> {
                     // CG 3
                     for (int i = 0; i < 4; i++) {
-                        System.out.print(color.whiteBg() + color.black() + " = " + color.rst());
+                        printEqual();
                         if (i == 1) {
                             System.out.print(color.red() + " x4" + color.rst());
                         }
                         System.out.println();
                     }
+                    System.out.println("Four groups each containing at least\n" +
+                            "4 tiles of the same type (not necessarily in the depicted shape).\n" +
+                            "The tiles of one group can be different from those of another group.");
                     System.out.println();
                 }
                 case 4 -> {
                     // CG 4
-                    System.out.println(color.whiteBg() + color.black() + " = " + color.rst() + color.red() + " x6" + color.rst());
-                    System.out.println(color.whiteBg() + color.black() + " = " + color.rst() + "\n");
+                    printEqual();
+                    System.out.println(color.red() + " x6" + color.rst());
+                    printEqual();
+                    System.out.println();
+                    System.out.println("Six groups each containing at least\n" +
+                            "2 tiles of the same type (not necessarily in the depicted shape).\n" +
+                            "The tiles of one group can be different from those of another group.\n");
                 }
                 case 5 -> {
                     // CG 5
                     for (int i = 0; i < 6; i++) {
-                        System.out.print(color.whiteBg() + "   " + color.rst());
+                        printEmpty();
                         if (i == 2) {
-                            System.out.print(color.red() + " x3  MAX 3 " + color.whiteBg() + color.black() + " " + notEqual + " " + color.rst());
+                            System.out.print(color.red() + " x3  MAX 3 ");
+                            printNotEqual();
                         }
                         System.out.println();
                     }
+                    System.out.println("Three columns each formed by 6 tiles of maximum three different types. \n" +
+                            "One column can show the same or a different combination of another column.");
                     System.out.println();
                 }
                 case 6 -> {
                     // CG 6
                     for (int i = 0; i < 5; i++) {
-                        System.out.print(color.whiteBg() + color.black() + " " + notEqual + " " + color.rst());
+                        printNotEqual();
                     }
                     System.out.println(color.red() + " x2" + color.rst() + "\n");
+                    System.out.println("Two lines each formed by 5 different types of tiles." +
+                            "One line can show the same or a different combination of the other line.\n");
+                }
+                case 7 -> {
+                    for (int i = 0; i < 5; i++) {
+                        printEmpty();
+                    }
+                    System.out.print(color.red() + " x4  MAX 3 ");
+                    printNotEqual();
+                    System.out.println();
+                    System.out.println("Four lines each formed by 5 tiles of maximum three different types. \n" +
+                            "One line can show the same or a different combination of another line.\n");
+                }
+                case 8 -> {
+                    printEqual();
+                    System.out.print("         ");
+                    printEqual();
+                    System.out.print("\n\n\n\n\n");
+                    printEqual();
+                    System.out.print("         ");
+                    printEqual();
+                    System.out.println();
+                    System.out.println("Four tiles of the same type in the four corners of the bookshelf.\n");
+
+                }
+                case 9 -> {
+                    System.out.print("  ");
+                    for (int i = 0; i < 8; i++) {
+                        printEqual();
+                        System.out.print("  ");
+                        if (i == 1 || i == 4 || i == 7) {
+                            System.out.println("\n");
+                        }
+                    }
+                    System.out.println("Eight tiles of the same type. \n" +
+                            "There’s no restriction about the position of these tiles.");
+                    System.out.println();
+                }
+                case 10 -> {
+                    for (int i = 0; i < 9; i++) {
+                        if (i%2 == 0) {
+                            printEqual();
+                        } else {
+                            System.out.print("   ");
+                        }
+                        if (i%3 == 2) {
+                            System.out.println();
+                        }
+                    }
+                    System.out.println("Five tiles of the same type forming an X.");
+                    System.out.println();
                 }
                 case 11 -> {
                     // CG 11
-                    System.out.println(color.whiteBg() + color.black() + " = " + color.rst());
-                    System.out.println("   " + color.whiteBg() + color.black() + " = " + color.rst());
-                    System.out.println("      " + color.whiteBg() + color.black() + " = " + color.rst());
-                    System.out.println("         " + color.whiteBg() + color.black() + " = " + color.rst());
-                    System.out.println("            " + color.whiteBg() + color.black() + " = " + color.rst() + "\n");
+                    for (int i = 0; i < 5; i++) {
+                        for (int j = 0; j < i; j++) {
+                            System.out.print("   ");
+                        }
+                        printEqual();
+                        System.out.println();
+                    }
+                    System.out.println("Five tiles of the same type forming a diagonal.");
+                    System.out.println();
+                }
+                case 12 -> {
+                    for (int i = 0; i < 5; i++) {
+                        for (int j = 0; j < i+1; j++) {
+                            printEmpty();
+                        }
+                        System.out.println();
+                    }
+                    System.out.println("Five columns of increasing or decreasing height. \n" +
+                            "Starting from the first column on the left or on the right, \n" +
+                            "each next column must be made of exactly one more tile. \n" +
+                            "Tiles can be of any type.");
+                    System.out.println();
                 }
                 default -> {
-                    System.out.println("Still working on the commonGoal num " + cg + "\n");
+                    System.out.println(color.red() + "You choose the common goal number " + cg + " but you should have a number from 1 to 12...\n" + color.rst());
                 }
             }
 
         }
+    }
 
+    private void printEqual() {
+        System.out.print(color.whiteBg() + color.black() + " = " + color.rst());
+    }
 
+    private void printNotEqual() {
+        int ch = 8800;
+        char notEqual = (char) ch;
+        System.out.print(color.whiteBg() + color.black() + " " + notEqual + " " + color.rst());
+    }
 
+    private void printEmpty() {
+        System.out.print(color.whiteBg() + "   " + color.rst());
     }
 }
