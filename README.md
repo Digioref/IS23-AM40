@@ -13,9 +13,9 @@
 
 | Project Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
-| UML | :yellow_circle: | 60 % |
-| Basic Rules | 🔴 | 0 % |
-| Complete Rules | 🔴 | 0 % |
+| UML | :green_circle: | 85 % |
+| Basic Rules | :green_circle: | 75 % |
+| Complete Rules | :green_circle | 75 % |
 | CLI | 🔴 | 0 % |
 | GUI | 🔴 | 0 % |
 | RMI | 🔴 | 0 % |
@@ -24,4 +24,16 @@
 | Persistency | 🔴 | 0 % |
 | Connections' Resilience | 🔴 | 0 % |
 | Chat | 🔴 | 0 % |
+
+| Test Basic Rules | :green_circle: | 75 % |
+| Test Complete Rules | :green_circle | 75 % |
+| Test CLI | 🔴 | 0 % |
+| Test GUI | 🔴 | 0 % |
+| Test RMI | 🔴 | 0 % |
+| Test Socket | 🔴 | 0 % |
+| Test Multiple Matches | 🔴 | 0 % |
+| Test Persistency | 🔴 | 0 % |
+| Test Connections' Resilience | 🔴 | 0 % |
+| Test Chat | 🔴 | 0 % |
+
 
