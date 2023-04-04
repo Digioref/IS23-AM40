@@ -115,7 +115,6 @@ public class Tile {
             return col.purple() + "V " + col.rst();
         }
         else return col.black() + "X " + col.rst();
-
     }
 
     @Override
