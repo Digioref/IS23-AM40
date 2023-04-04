@@ -16,7 +16,7 @@
 | UML | :yellow_circle: | 60 % |
 | Basic Rules | 🔴 | 0 % |
 | Complete Rules | 🔴 | 0 % |
-| TUI | 🔴 | 0 % |
+| CLI | 🔴 | 0 % |
 | GUI | 🔴 | 0 % |
 | RMI | 🔴 | 0 % |
 | Socket | 🔴 | 0 % |

@@ -128,4 +128,9 @@ public class Position {
         this.x= pos.getX();
         this.y= pos.getY();
     }
+
+    @Override
+    public String toString() {
+        return "(x=" + x + ",y=" + y + ")";
+    }
 }
