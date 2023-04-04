@@ -155,7 +155,7 @@ public class Board {
     public void updatePickable(Position pos){
         for (int i = 0; i < pickableTiles.size(); i++) {
             if (pickableTiles.get(i) != null) {
-                if (!(isPickable(pos, pickableTiles.get(i)))) {
+                if (!(isPickable(pos, pickableTiles.get(i))) || pos.equals(pickableTiles.get(i))) {
                     System.out.println(pickableTiles.remove(pickableTiles.get(i)));
                     i--;
                 }

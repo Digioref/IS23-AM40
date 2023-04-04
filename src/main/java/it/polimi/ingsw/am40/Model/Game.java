@@ -220,6 +220,7 @@ public class Game implements IGame {
         for (Position p : currentPlayer.getSelectedPositions()) {
             currentPlayer.pickTile(p);
         }
+        currentPlayer.getSelectedPositions().clear();
         notifyObservers(turn);
         setTurn(TurnPhase.ORDER);
     }
@@ -449,5 +450,9 @@ public class Game implements IGame {
 
         }
 
+    }
+
+    public ArrayList<CommonGoal> getCurrentComGoals() {
+        return currentComGoals;
     }
 }

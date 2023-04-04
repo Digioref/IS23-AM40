@@ -37,6 +37,10 @@ public class CommonGoal {
         this.commgoaltok = new CommonGoalToken(numPlayer);
     }
 
+    public int getNum() {
+        return num;
+    }
+
     /**
      * checks if the commonGoal is completed in a bookshelf
      * @param bookshelf the bookshelf of the player
