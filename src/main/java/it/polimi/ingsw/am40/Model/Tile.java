@@ -127,7 +127,7 @@ public class Tile {
         if (color.equals(TileColor.VIOLET)) {
             return ANSI_PURPLE + "V " + ANSI_RESET;
         }
-        else return "X ";
+        else return ANSI_BLACK + "X " + ANSI_RESET;
 
     }
 

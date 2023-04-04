@@ -26,18 +26,6 @@ public class CliTest {
 
         cli.showBoard(game1);
 
-        game1.getCurrentPlayer().getBookshelf().addTile(new Tile(TileColor.GREEN, TileType.CATS), 0);
-        game1.getCurrentPlayer().getBookshelf().addTile(new Tile(TileColor.GREEN, TileType.CATS), 0);
-        game1.getCurrentPlayer().getBookshelf().addTile(new Tile(TileColor.GREEN, TileType.CATS), 0);
-
-        game1.getCurrentPlayer().getBookshelf().addTile(new Tile(TileColor.WHITE, TileType.CATS), 1);
-        game1.getCurrentPlayer().getBookshelf().addTile(new Tile(TileColor.GREEN, TileType.CATS), 2);
-        game1.getCurrentPlayer().getBookshelf().addTile(new Tile(TileColor.BLUE, TileType.CATS), 3);
-
-        game1.getCurrentPlayer().getBookshelf().addTile(new Tile(TileColor.YELLOW, TileType.CATS), 3);
-        game1.getCurrentPlayer().getBookshelf().addTile(new Tile(TileColor.CYAN, TileType.CATS), 3);
-        game1.getCurrentPlayer().getBookshelf().addTile(new Tile(TileColor.GREEN, TileType.CATS), 3);
-
         cli.showCurrentBookshelf(game1);
 
         cli.showBoardPickable(game1);
@@ -45,16 +33,25 @@ public class CliTest {
         cli.showSelectedTiles(game1);
 
         game1.getCurrentPlayer().pickTile(new Position(-3,-1));
-
-        cli.showSelectedTiles(game1);
-
-        game1.getCurrentPlayer().pickTile(new Position(-3,0));
-
         game1.updatePickableTiles(new Position(-3,-1));
 
         cli.showSelectedTiles(game1);
 
         cli.showBoardPickable(game1);
+
+        game1.getCurrentPlayer().pickTile(new Position(-3,0));
+        game1.updatePickableTiles(new Position(-3,0));
+
+        cli.showSelectedTiles(game1);
+
+        cli.showBoardPickable(game1);
+
+        game1.getCurrentPlayer().placeInBookshelf(0);
+
+
+
+        cli.showCurrentBookshelf(game1);
+
 
 
 

@@ -41,6 +41,7 @@ public class CliView {
     }
 
     public void showBoardPickable(Game game) {
+        System.out.println("You can choose only the tiles with red background");
         for (int row = 4; row > -5; row--) {
             if (row >= 0) {
                 System.out.printf(" %d ", row);
@@ -101,12 +102,13 @@ public class CliView {
     }
 
     public void showSelectedTiles(Game game) {
+        System.out.println(game.getCurrentPlayer().getNickname() + " has selected the following Tiles");
         ArrayList<Tile> selectedTiles = game.getCurrentPlayer().getTilesPicked();
         if (selectedTiles.size() == 0) {
             System.out.println("No Tiles selected");
         }
         for (Tile tile : selectedTiles) {
-            System.out.printf(tile.print() + " " + tile.getPos().toString() + " ");
+            System.out.printf(tile.print() + tile.getPos().toString() + " ");
         }
         System.out.println();
         System.out.println();
