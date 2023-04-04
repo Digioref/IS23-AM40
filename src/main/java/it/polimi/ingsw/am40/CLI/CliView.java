@@ -111,4 +111,24 @@ public class CliView {
         System.out.println("\n");
     }
 
+    public void showPersonalGoal(Game game) {
+        System.out.println(game.getCurrentPlayer().getNickname() + " here you can see your personalGoal");
+        PersonalGoal pg = game.getCurrentPlayer().getPersonalGoal();
+        Bookshelf b = game.getCurrentPlayer().getBookshelf();
+        for (int row = 5; row >= 0; row--) {
+            for (int col = 0; col < 5; col++) {
+                System.out.printf(color.blackBg() + " " + color.rst());
+                if (b.getTile(col, row) != null && pg.getPos().contains(b.getTile(col, row).getPos())) {
+                    System.out.printf(color.blackBg());
+                    System.out.printf(b.getTile(col, row).print());
+                } else {
+                    System.out.printf(color.blackBg() + "  " + color.rst());
+                }
+            }
+            System.out.printf("\n");
+        }
+        System.out.println();
+
+    }
+
 }

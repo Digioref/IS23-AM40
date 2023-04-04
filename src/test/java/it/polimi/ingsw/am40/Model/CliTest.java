@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am40.Model;
-
-import it.polimi.ingsw.am40.CLI.CliView;
+import it.polimi.ingsw.am40.CLI.*;
 import org.junit.jupiter.api.Test;
 
 public class CliTest {
@@ -21,6 +20,7 @@ public class CliTest {
         game1.startGame();
 
         cli.showCurrentPlayer(game1);
+
 
         cli.showBoard(game1);
 
@@ -58,6 +58,8 @@ public class CliTest {
         game1.getCurrentPlayer().placeInBookshelf(0);
 
         cli.showCurrentBookshelf(game1);
+
+        cli.showPersonalGoal(game1);
 
 
 
