@@ -260,6 +260,7 @@ public class Player {
         return selectedPositions;
     }
 
+
     public void setSelectedPositions(ArrayList<Position> selectedPositions) {
         this.selectedPositions = selectedPositions;
     }

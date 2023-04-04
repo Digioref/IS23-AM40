@@ -6,10 +6,14 @@ import java.util.ArrayList;
 
 public class CliView {
 
+    private Game game;
     private Colors color = new Colors();
 
+    public CliView(Game game) {
+        this.game = game;
+    }
 
-    public void showBoard(Game game) {
+    public void showBoard() {
         for (int row = 4; row > -5; row--) {
             if (row >= 0) {
                 System.out.printf(" %d ", row);
@@ -39,7 +43,7 @@ public class CliView {
         System.out.println("\n");
     }
 
-    public void showBoardPickable(Game game) {
+    public void showBoardPickable() {
         System.out.println("You can choose only the tiles with red background");
         for (int row = 4; row > -5; row--) {
             if (row >= 0) {
@@ -76,7 +80,7 @@ public class CliView {
         System.out.println("\n");
     }
 
-    public void showCurrentBookshelf(Game game) {
+    public void showCurrentBookshelf() {
         System.out.println(game.getCurrentPlayer().getNickname() + "'s bookshelf");
         Bookshelf b = game.getCurrentPlayer().getBookshelf();
         for (int row = 5; row >= 0; row--) {
@@ -94,9 +98,9 @@ public class CliView {
         System.out.println();
     }
 
-    public void showAllBookshelfs(Game game) {
+    public void showAllBookshelfs() {
         System.out.println("Here you can see all the bookshelfs\n");
-        showCurrentBookshelf(game);
+        showCurrentBookshelf();
         for (Player p : game.getPlayers()) {
             if (!p.equals(game.getCurrentPlayer())) {
                 System.out.println(p.getNickname() + "'s bookshelf");
@@ -118,25 +122,42 @@ public class CliView {
         }
     }
 
-    public void showCurrentPlayer(Game game) {
+    public void showCurrentPlayer() {
 
         System.out.println(game.getCurrentPlayer().getNickname() + "\n");
 
     }
 
-    public void showSelectedTiles(Game game) {
-        System.out.println(game.getCurrentPlayer().getNickname() + " has selected the following Tiles");
+    public void showPickedTiles() {
         ArrayList<Tile> selectedTiles = game.getCurrentPlayer().getTilesPicked();
         if (selectedTiles.size() == 0) {
-            System.out.println("No Tiles selected");
+            System.out.println("You haven't picked Tiles yet\n");
+        } else {
+            System.out.println(game.getCurrentPlayer().getNickname() + " has picked the following Tiles");
+            for (Tile tile : selectedTiles) {
+                System.out.printf(tile.print() + tile.getPos().toString() + " ");
+            }
+            System.out.println("\n");
         }
-        for (Tile tile : selectedTiles) {
-            System.out.printf(tile.print() + tile.getPos().toString() + " ");
-        }
-        System.out.println("\n");
+
     }
 
-    public void showPersonalGoal(Game game) {
+    public void showSelectedTiles() {
+        ArrayList<Position> selectedTiles = game.getCurrentPlayer().getSelectedPositions();
+        if (selectedTiles.size() == 0) {
+            System.out.println("You haven't selected any Tile\n");
+        } else {
+            System.out.println(game.getCurrentPlayer().getNickname() + " has selected the following Tiles");
+            for (Position p : selectedTiles) {
+                Tile tile = game.getBoard().getGrid().get(p.getKey());
+                System.out.printf(tile.print() + tile.getPos().toString() + " ");
+            }
+            System.out.println("\n");
+        }
+
+    }
+
+    public void showPersonalGoal() {
         System.out.println(game.getCurrentPlayer().getNickname() + " here you can see your personalGoal");
         PersonalGoal pg = game.getCurrentPlayer().getPersonalGoal();
         Position pos;
@@ -181,7 +202,7 @@ public class CliView {
         System.out.println();
     }
 
-    public void showCommonGoals(Game game) {
+    public void showCommonGoals() {
 
         int cg;
 
