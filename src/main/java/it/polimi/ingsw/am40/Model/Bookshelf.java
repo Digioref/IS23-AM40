@@ -58,6 +58,7 @@ public class Bookshelf {
     public void addTile(Tile newTile, int col){
         if (!(bookshelf.get(col).isFull() || newTile == null || col >= 5 || col < 0)){
             bookshelf.get(col).addTile( new Tile(newTile.getColor(), newTile.getType(), new Position(col,bookshelf.get(col).getSize())) );
+            System.out.println(newTile.toString());
         }
     }
 

@@ -59,7 +59,9 @@ public class Board {
     public Tile pick(String pos) {
         if (grid.containsKey(pos) && grid.get(pos).getType() != TileType.EMPTY) {
             Tile t = grid.get(pos);
-            grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY));
+            Position p = new Position(-20, -20);
+            p.convertKey(pos);
+            grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY, p));
             return t;
         }
         return null;
@@ -73,7 +75,9 @@ public class Board {
         for (String pos : grid.keySet()) {
             if (grid.get(pos).getType() != TileType.EMPTY) {
                 b.insert(grid.get(pos));
-                grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY));
+                Position p = new Position(-20, -20);
+                p.convertKey(pos);
+                grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY, p));
             }
         }
     }
@@ -99,8 +103,9 @@ public class Board {
      */
     public void setSideFreeTile(){
         for(Tile tile : grid.values()){
-            if(checkFreeSide(tile.getPos())>0){
+            if(checkFreeSide(tile.getPos())>0 && !(tile.getColor().equals(TileColor.NOCOLOR)) ){
                 pickableTiles.add(tile.getPos());
+                System.out.println(tile);
             }
         }
     }
@@ -150,8 +155,8 @@ public class Board {
     public void updatePickable(Position pos){
         for (int i = 0; i < pickableTiles.size(); i++) {
             if (pickableTiles.get(i) != null) {
-                if(!(isPickable(pos,pickableTiles.get(i)))){
-                    pickableTiles.remove(pickableTiles.get(i));
+                if (!(isPickable(pos, pickableTiles.get(i)))) {
+                    System.out.println(pickableTiles.remove(pickableTiles.get(i)));
                     i--;
                 }
             }
@@ -167,13 +172,13 @@ public class Board {
     private boolean isPickable(Position pos, Position t){
         int diffX = pos.getX()-t.getX();
         int diffY = pos.getY()-t.getY();
-        if(diffY>1 || diffY <-1) {
+        if(diffY>1 || diffY <-1){
             return false;
         }
-        if(diffX>1 || diffX <-1) {
+        if(diffX>1 || diffX <-1){
             return false;
         }
-        if(diffX!=0 && diffY !=0) {
+        if(diffX!=0 && diffY !=0){
             return false;
         }
         return true;

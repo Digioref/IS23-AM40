@@ -3,6 +3,7 @@ package it.polimi.ingsw.am40.Controller;
 import it.polimi.ingsw.am40.Model.*;
 import it.polimi.ingsw.am40.Network.VirtualView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameController {
@@ -14,32 +15,75 @@ public class GameController {
 
     public void selectTile(VirtualView v, Position p) {
 //        System.out.println("contr");
-        game.updatePickableTiles(p);
+        if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
+            game.updatePickableTiles(p);
+        } else {
+            try {
+                v.getClientHandler().sendMessage("It's not your turn!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void pickTiles(VirtualView v) {
-        game.pickTiles();
+        game.setTurn(TurnPhase.PICK);
+        if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
+            game.pickTiles();
+        } else {
+            try {
+                v.getClientHandler().sendMessage("It's not your turn!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void notConfirmSelection(VirtualView v) {
-        game.removeSelectedTiles();
+        if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
+            game.removeSelectedTiles();
+        } else {
+            try {
+                v.getClientHandler().sendMessage("It's not your turn!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
-    public void confirmSelection(VirtualView v) { game.setTurn(TurnPhase.PICK);}
 
     public void order(VirtualView v, ArrayList<Integer> arr) {
-        game.setOrder(arr);
+        if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
+//            System.out.println("qui");
+            game.setOrder(arr);
+        } else {
+            try {
+                v.getClientHandler().sendMessage("It's not your turn!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void insert(VirtualView v, int c) {
-        game.insertInBookshelf(c);
-        boolean b = game.endTurn();
-        if (!b) {
-            game.setTurn(TurnPhase.ENDGAME);
-            game.endGame();
+        if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
+            System.out.println("qui");
+            game.insertInBookshelf(c);
+            boolean b = game.endTurn();
+            if (!b) {
+                game.setTurn(TurnPhase.ENDGAME);
+                game.endGame();
+            }
+            else {
+                game.startTurn();
+            }
+        } else {
+            try {
+                v.getClientHandler().sendMessage("It's not your turn!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-        else {
-            game.startTurn();
-        }
+
     }
 
 

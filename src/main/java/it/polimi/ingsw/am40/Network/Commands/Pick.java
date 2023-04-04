@@ -10,6 +10,6 @@ public class Pick implements ICommand {
 
     @Override
     public void execute(ClientHandler c, String[] comm) throws IOException {
-        c.executeComannd(ActionType.PICK, null);
+        c.executeCommand(ActionType.PICK, null);
     }
 }

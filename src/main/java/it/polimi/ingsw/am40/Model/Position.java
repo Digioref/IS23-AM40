@@ -81,7 +81,7 @@ public class Position {
     public static String getKey(int x, int y) {
         return buildKey(x, y);
     }
-    private static String buildKey(int x, int y) {
+    private static String buildKey (int x, int y) {
         return ("(" + x + "," + y + ")");
     }
 
@@ -110,7 +110,7 @@ public class Position {
      * @param pos starting position
      * @param type int for select the correct offest
      */
-    public void setNext(Position pos, int type) {
+    public void setNext(Position pos,int type){
         copyPos(pos);
         switch(type){
             case 1 -> this.x = x+1;

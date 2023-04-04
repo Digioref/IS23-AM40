@@ -21,8 +21,8 @@ public class Column {
      * Constructor which sets to null both column and mark arrays
      */
     public Column(){
-        this.column = new ArrayList<>(6);
-        this.mark = new ArrayList<>(6);
+        this.column = new ArrayList<>(DIM);
+        this.mark = new ArrayList<>(DIM);
     }
 
     /**
@@ -113,5 +113,9 @@ public class Column {
                 "column=" + column +
                 ", mark=" + mark +
                 '}';
+    }
+
+    public boolean isEmpty() {
+        return column.isEmpty();
     }
 }

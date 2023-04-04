@@ -16,7 +16,7 @@ public class Insert implements ICommand {
         else {
             ArrayList<Integer> arr = new ArrayList<>();
             arr.add(Integer.parseInt(comm[1]));
-            c.executeComannd(ActionType.INSERT, arr);
+            c.executeCommand(ActionType.INSERT, arr);
         }
     }
 }

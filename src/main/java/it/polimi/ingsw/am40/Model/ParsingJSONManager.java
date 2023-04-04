@@ -74,18 +74,24 @@ public class ParsingJSONManager {
                 JSONObject t = (JSONObject) obj;
                 String x = t.get("Color").toString();
                 switch (x) {
-                    case "Yellow" ->
+                    case "Yellow":
                         pg.getColor().add(TileColor.YELLOW);
-                    case "White" ->
+                        break;
+                    case "White":
                         pg.getColor().add(TileColor.WHITE);
-                    case "Blue" ->
+                        break;
+                    case "Blue":
                         pg.getColor().add(TileColor.BLUE);
-                    case "Green" ->
+                        break;
+                    case "Green":
                         pg.getColor().add(TileColor.GREEN);
-                    case "Cyan" ->
+                        break;
+                    case "Cyan":
                         pg.getColor().add(TileColor.CYAN);
-                    case "Violet" ->
+                        break;
+                    case "Violet":
                         pg.getColor().add(TileColor.VIOLET);
+                        break;
                 }
             }
         } catch (IOException | ParseException e) {
@@ -106,38 +112,44 @@ public class ParsingJSONManager {
                 String t2 = t.get("type").toString();
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
                 switch (t1) {
-                    case "yellow" -> {
+                    case "yellow":
                         tile.setColor(TileColor.YELLOW);
-                    }
-                    case "white" -> {
+                        break;
+                    case "white":
                         tile.setColor(TileColor.WHITE);
-                    }
-                    case "blue" -> {
+                        break;
+                    case "blue":
                         tile.setColor(TileColor.BLUE);
-                    }
-                    case "green" -> {
+                        break;
+                    case "green":
                         tile.setColor(TileColor.GREEN);
-                    }
-                    case "cyan" -> {
+                        break;
+                    case "cyan":
                         tile.setColor(TileColor.CYAN);
-                    }
-                    case "violet" -> {
+                        break;
+                    case "violet":
                         tile.setColor(TileColor.VIOLET);
-                    }
+                        break;
                 }
                 switch (t2) {
-                    case "cats" ->
+                    case "cats":
                         tile.setType(TileType.CATS);
-                    case "books" ->
+                        break;
+                    case "books":
                         tile.setType(TileType.BOOKS);
-                    case "games" ->
+                        break;
+                    case "games":
                         tile.setType(TileType.GAMES);
-                    case "frames" ->
+                        break;
+                    case "frames":
                         tile.setType(TileType.FRAMES);
-                    case "trophies" ->
+                        break;
+                    case "trophies":
                         tile.setType(TileType.TROPHIES);
-                    case "plants" ->
+                        break;
+                    case "plants":
                         tile.setType(TileType.PLANTS);
+                        break;
                 }
                 b.insert(tile);
             }
@@ -158,20 +170,30 @@ public class ParsingJSONManager {
                 JSONObject t = (JSONObject) posArray.get(i);
                 String t1 = t.get("Command" + i).toString();
                 switch(t1) {
-                    case "login" ->
+                    case "login":
                         map.put("login", new Login());
-                    case "help" ->
+                        break;
+                    case "help":
                         map.put("help", new Help());
-                    case "quit" ->
+                        break;
+                    case "quit":
                         map.put("quit", new Quit());
-                    case "select" ->
+                        break;
+                    case "select":
                         map.put("select", new Select());
-                    case "pick" ->
+                        break;
+                    case "pick":
                         map.put("pick", new Pick());
-                    case "order" ->
+                        break;
+                    case "order":
                         map.put("order", new Order());
-                    case "insert" ->
+                        break;
+                    case "insert":
                         map.put("insert", new Insert());
+                        break;
+                    case "remove":
+                        map.put("remove", new Remove());
+                        break;
                 }
             }
 
