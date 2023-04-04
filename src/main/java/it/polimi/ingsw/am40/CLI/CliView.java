@@ -36,8 +36,7 @@ public class CliView {
                 System.out.printf(" %d", i);
             }
         }
-        System.out.println();
-        System.out.println();
+        System.out.println("\n");
     }
 
     public void showBoardPickable(Game game) {
@@ -53,7 +52,7 @@ public class CliView {
                 Tile tile = game.getBoard().getGrid().get(pos.getKey());
                 if (tile != null) {
                     if (game.getBoard().getPickableTiles().contains(tile.getPos()) ) {
-                        System.out.printf(color.redBg());
+                        System.out.printf(color.rst());
                     } else {
                         System.out.printf(color.blackBg());
                     }
@@ -72,8 +71,7 @@ public class CliView {
                 System.out.printf(" %d", i);
             }
         }
-        System.out.println();
-        System.out.println();
+        System.out.println("\n");
     }
 
     public void showCurrentBookshelf(Game game) {
@@ -110,8 +108,7 @@ public class CliView {
         for (Tile tile : selectedTiles) {
             System.out.printf(tile.print() + tile.getPos().toString() + " ");
         }
-        System.out.println();
-        System.out.println();
+        System.out.println("\n");
     }
 
 }

@@ -7,8 +7,6 @@ public class CliTest {
     @Test
     public void Test() {
 
-
-
         CliView cli = new CliView();
         Game game1 = new Game(2);
 
@@ -42,13 +40,22 @@ public class CliTest {
         game1.getCurrentPlayer().pickTile(new Position(-3,0));
         game1.updatePickableTiles(new Position(-3,0));
 
+        /*
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        */
+
         cli.showSelectedTiles(game1);
 
         cli.showBoardPickable(game1);
+/*
+        game1.removeSelectedTiles();  // can't unselect the tiles picked
 
+        cli.showSelectedTiles(game1);
+
+        cli.showBoardPickable(game1);
+*/
         game1.getCurrentPlayer().placeInBookshelf(0);
-
-
 
         cli.showCurrentBookshelf(game1);
 
