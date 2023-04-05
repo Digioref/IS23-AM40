@@ -18,11 +18,7 @@ public class GameController {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
             game.updatePickableTiles(p);
         } else {
-            try {
-                v.getClientHandler().sendMessage("It's not your turn!");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            v.turnError();
         }
     }
 
@@ -31,11 +27,7 @@ public class GameController {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
             game.pickTiles();
         } else {
-            try {
-                v.getClientHandler().sendMessage("It's not your turn!");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            v.turnError();
         }
     }
 
@@ -43,11 +35,7 @@ public class GameController {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
             game.removeSelectedTiles();
         } else {
-            try {
-                v.getClientHandler().sendMessage("It's not your turn!");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            v.turnError();
         }
     }
 
@@ -56,11 +44,7 @@ public class GameController {
 //            System.out.println("qui");
             game.setOrder(arr);
         } else {
-            try {
-                v.getClientHandler().sendMessage("It's not your turn!");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            v.turnError();
         }
     }
 
@@ -77,11 +61,7 @@ public class GameController {
                 game.startTurn();
             }
         } else {
-            try {
-                v.getClientHandler().sendMessage("It's not your turn!");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            v.turnError();
         }
 
     }

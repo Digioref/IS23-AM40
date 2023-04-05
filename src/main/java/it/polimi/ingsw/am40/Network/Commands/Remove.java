@@ -5,11 +5,12 @@ import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.ICommand;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Remove implements ICommand {
 
     @Override
-    public void execute(ClientHandler c, String[] comm) throws IOException {
+    public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
         c.executeCommand(ActionType.REMOVE, null);
     }
 }

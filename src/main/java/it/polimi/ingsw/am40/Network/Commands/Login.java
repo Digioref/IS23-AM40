@@ -4,15 +4,15 @@ import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.ICommand;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Login implements ICommand {
 
     @Override
-    public void execute(ClientHandler c, String[] comm) throws IOException {
+    public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
         Scanner in = new Scanner(c.getSocket().getInputStream());
         if (!c.isLogged()) {
-
             String line;
             do {
                 c.sendMessage("Your nickname: ");

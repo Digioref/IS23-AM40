@@ -1,11 +1,12 @@
 package it.polimi.ingsw.am40.Client;
 
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class ClientMain {
     final static String hostName = "localhost";
@@ -18,16 +19,18 @@ public class ClientMain {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
             String userInput;
+            String line1 = in.readLine();
+            System.out.println("Received: " + line1);
             while (true) {
                 String line = in.readLine();
                 System.out.println("Received: " + line);
                 System.out.flush();
                 userInput = stdIn.readLine();
-                out.println(userInput);
+                JSONConverterCtoS jconv = new JSONConverterCtoS();
+                jconv.toJSON(userInput);
+                out.println(jconv.toString());
                 out.flush();
             }
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

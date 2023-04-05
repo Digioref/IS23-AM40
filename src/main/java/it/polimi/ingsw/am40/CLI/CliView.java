@@ -154,8 +154,9 @@ public class CliView {
             }
             System.out.println("\n");
         }
+    }
 
-    public void showPersonalGoal(Game game) {
+    public void showPersonalGoal() {
         System.out.println(game.getCurrentPlayer().getNickname() + " here you can see your personalGoal");
         PersonalGoal pg = game.getCurrentPlayer().getPersonalGoal();
         Position pos;

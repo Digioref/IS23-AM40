@@ -9,21 +9,16 @@ import java.util.ArrayList;
 
 public class Order implements ICommand {
     @Override
-    public void execute(ClientHandler c, String[] comm) throws IOException {
-        if (comm.length == 1) {
-            c.sendMessage("Incomplete command");
-        }
-        else {
+    public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
             ArrayList<Integer> arr = new ArrayList<>();
-            for (int i = 1; i < comm.length ; i++) {
-                if (Integer.parseInt(comm[i]) < comm.length) {
-                    arr.add(Integer.parseInt(comm[i]));
+            for (int i = 0; i < comm.size() ; i++) {
+                if (Integer.parseInt(comm.get(i)) <= comm.size()) {
+                    arr.add(Integer.parseInt(comm.get(i)));
                     c.executeCommand(ActionType.ORDER, arr);
                 } else {
                     c.sendMessage("A number of the order is too high!");
                     return;
                 }
             }
-        }
     }
 }
