@@ -52,9 +52,8 @@ public class GameController {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
             System.out.println("qui");
             game.insertInBookshelf(c);
-            boolean b = game.endTurn();
-            if (!b) {
-                game.setTurn(TurnPhase.ENDGAME);
+            game.endTurn();
+            if (game.getTurn() == TurnPhase.ENDGAME) {
                 game.endGame();
             }
             else {

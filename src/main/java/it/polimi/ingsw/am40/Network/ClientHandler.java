@@ -3,6 +3,7 @@ package it.polimi.ingsw.am40.Network;
 import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.Controller.Lobby;
 import it.polimi.ingsw.am40.Model.Position;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -109,6 +110,8 @@ public class ClientHandler implements Runnable {
             socket.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 

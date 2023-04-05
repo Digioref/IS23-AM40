@@ -116,12 +116,12 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     }
 
     @Override
-    public void removingError() {
+    public void removingTurnError() {
 
     }
 
     @Override
-    public void pickingError() {
+    public void pickingTurnError() {
 
     }
 
@@ -136,7 +136,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     }
 
     @Override
-    public void insertError() {
+    public void insertTurnError() {
 
     }
 

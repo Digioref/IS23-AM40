@@ -2,7 +2,6 @@ package it.polimi.ingsw.am40.Model;
 
 import it.polimi.ingsw.am40.Network.VirtualView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -169,19 +168,17 @@ public class Game implements IGame {
 
     /**
      * Sets the current player to the next player
-     * @return false if the game has ended and the last player who did the turn was the one at the right of the first player, true otherwise
      */
-    public boolean nextPlayer() {
-        if (checkEndGame() || turn != TurnPhase.INSERT) {
-            return false;
+    public void nextPlayer() {
+        if (checkEndGame() || turn != TurnPhase.ENDTURN) {
+            return;
         }
         currentPlayer = currentPlayer.getNext();
-        return true;
 
     }
 
     public boolean checkEndGame () {
-        if (endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer) && turn == TurnPhase.INSERT) {
+        if (endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer) && turn == TurnPhase.ENDTURN) {
             setHasEnded(true);
             return true;
         }
@@ -221,7 +218,7 @@ public class Game implements IGame {
         else {
             for (VirtualView v : observers) {
                 if (currentPlayer.getNickname().equals(v.getNickname())) {
-                    v.removingError();
+                    v.removingTurnError();
                 }
             }
         }
@@ -242,7 +239,7 @@ public class Game implements IGame {
         else {
             for (VirtualView v : observers) {
                 if (currentPlayer.getNickname().equals(v.getNickname())) {
-                    v.pickingError();
+                    v.pickingTurnError();
                 }
             }
         }
@@ -291,12 +288,12 @@ public class Game implements IGame {
             System.out.println("qui4");
             currentPlayer.updateHiddenScore();
             notifyObservers(turn);
-            setTurn(TurnPhase.START);
+            setTurn(TurnPhase.ENDTURN);
         }
         else {
             for (VirtualView v : observers) {
                 if (currentPlayer.getNickname().equals(v.getNickname())) {
-                    v.insertError();
+                    v.insertTurnError();
                 }
             }
         }
@@ -307,7 +304,7 @@ public class Game implements IGame {
      */
     public void endGame() {
         ArrayList<Integer> score = new ArrayList<>(numPlayers);
-        if (checkEndGame()) {
+        if (checkEndGame() && turn == TurnPhase.ENDGAME) {
             for (Player p : players) {
                 p.calculateScore();
                 score.add(p.getFinalScore());
@@ -333,13 +330,20 @@ public class Game implements IGame {
         setTurn(TurnPhase.SELECTION);
     }
 
-    public boolean endTurn () {
-        if (controlRefill()) {
-            board.remove(bag);
-            board.config(bag);
+    public void endTurn () {
+        if (turn == TurnPhase.ENDTURN) {
+            if (controlRefill()) {
+                board.remove(bag);
+                board.config(bag);
+            }
+            if (checkEndGame()){
+                setTurn(TurnPhase.ENDGAME);
+            }
+            else {
+                turn = TurnPhase.START;
+                nextPlayer();
+            }
         }
-        turn = TurnPhase.START;
-        return nextPlayer();
    }
 
     /**
@@ -491,5 +495,9 @@ public class Game implements IGame {
 
     public ArrayList<CommonGoal> getCurrentComGoals() {
         return currentComGoals;
+    }
+
+    public TurnPhase getTurn() {
+        return turn;
     }
 }
