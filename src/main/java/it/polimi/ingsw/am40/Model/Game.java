@@ -2,6 +2,7 @@ package it.polimi.ingsw.am40.Model;
 
 import it.polimi.ingsw.am40.Network.VirtualView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,7 +13,7 @@ public class Game implements IGame {
     /**
      * Number of players in game
      */
-    private int numPlayers;
+    private final int numPlayers;
     /**
      * Array of the players in game
      */
@@ -54,8 +55,9 @@ public class Game implements IGame {
      */
     private Player currentPlayer;
 
-    private ArrayList<VirtualView> observers = new ArrayList<>();
+    private ArrayList<VirtualView> observers;
     private ParsingJSONManager pJSONm;
+    private TurnPhase turn;
 
     /**
      * Constructor which builds the class assigning the number of players and creating the array of players
@@ -65,14 +67,14 @@ public class Game implements IGame {
         this.numPlayers = numPlayers;
         players = new ArrayList<>();
         pJSONm = new ParsingJSONManager();
+        observers = new ArrayList<>();
     }
 
     /**
      * Adds a player to the game
      * @param p player
      */
-
-    public void addPlayer (Player p) {
+    public void addPlayer (Player p) { // It doesn't check if we reached the max number of players
         if (players.size() != 0) {
             players.get(players.size() - 1).setNext(p);
         }
@@ -102,62 +104,36 @@ public class Game implements IGame {
     }
 
     /**
+     * Starts the game, choosing the first player, assigning common goals and personal goals and configuring the board
+     */
+    public void startGame() {
+        Random rand = new Random();
+        firstPlayer = players.get(rand.nextInt(players.size()));
+        currentPlayer = firstPlayer;
+        board.config(bag);
+        assignComGoal();
+        assignPersonalGoal();
+        setHasStarted(true);
+        setHasEnded(false);
+        turn = TurnPhase.START;
+        startTurn();
+    }
+
+    /**
      * Creates the tiles of the game
      */
     public void createTiles() {
         pJSONm.createTiles(bag);
-
-        /*
-        Tile t;
-        for (int i = 0; i < 132; i++) {
-
-            if(i < 22) {
-                t = new Tile(TileColor.GREEN, TileType.CATS);
-                bag.insert(t);
-            }
-            if(i >= 22 && i < 44) {
-                t = new Tile(TileColor.WHITE, TileType.BOOKS);
-                bag.insert(t);
-            }
-            if(i >= 44 && i < 66) {
-                t = new Tile(TileColor.YELLOW, TileType.GAMES);
-                bag.insert(t);
-            }
-            if(i >= 66 && i < 88) {
-                t = new Tile(TileColor.BLUE, TileType.FRAMES);
-                bag.insert(t);
-            }
-            if(i >= 88 && i < 110) {
-                t = new Tile(TileColor.CYAN, TileType.TROPHIES);
-                bag.insert(t);
-            }
-            if(i >= 110) {
-                t = new Tile(TileColor.VIOLET, TileType.PLANTS);
-                bag.insert(t);
-            }
-        }
-
-         */
     }
 
     /**
      * Creates the 12 common goals
      */
-    public void createComGoals() { // we don't need it
-        /*
-        commonGoals.add(new CommonGoal1(numPlayers));
-        commonGoals.add(new CommonGoal2(numPlayers));
-        commonGoals.add(new CommonGoal3(numPlayers));
-        commonGoals.add(new CommonGoal4(numPlayers));
-        commonGoals.add(new CommonGoal5(numPlayers));
-        commonGoals.add(new CommonGoal6(numPlayers));
-        commonGoals.add(new CommonGoal7(numPlayers));
-        commonGoals.add(new CommonGoal8(numPlayers));
-        commonGoals.add(new CommonGoal9(numPlayers));
-        commonGoals.add(new CommonGoal10(numPlayers));
-        commonGoals.add(new CommonGoal11(numPlayers));
-        commonGoals.add(new CommonGoal12(numPlayers));
-        */
+    private void createComGoals() {
+        final int NCOMGOALS = 12;
+        for (int i = 0; i < NCOMGOALS; i++) {
+            commonGoals.add(new CommonGoal(i+1,numPlayers));
+        }
     }
 
     /**
@@ -181,7 +157,7 @@ public class Game implements IGame {
     /**
      * Assigns the 2 common goals
      */
-    public void assignComGoal() {
+    private void assignComGoal() {
         Random rand = new Random();
         currentComGoals.add(commonGoals.get(rand.nextInt(commonGoals.size())));
         int x;
@@ -189,21 +165,6 @@ public class Game implements IGame {
             x = rand.nextInt(commonGoals.size());
         } while (commonGoals.indexOf(currentComGoals.get(0)) == x);
         currentComGoals.add(commonGoals.get(x));
-    }
-
-    /**
-     * Starts the game, choosing the first player, assigning common goals and personal goals and configuring the board
-     */
-    public void startGame() {
-        Random rand = new Random();
-        firstPlayer = players.get(rand.nextInt(players.size()));
-        currentPlayer = firstPlayer;
-        board.config(bag);
-        assignComGoal();
-        assignPersonalGoal();
-        setHasStarted(true);
-        setHasEnded(false);
-        startTurn();
     }
 
     /**
@@ -227,9 +188,21 @@ public class Game implements IGame {
         return false;
     }
     public void updatePickableTiles (Position pos) {
-        board.updatePickable(pos);
-        currentPlayer.getSelectedPositions().add(pos);
-        notifyObservers(TurnPhase.SELECTION);
+        if (board.getPickableTiles().contains(pos)) {
+            board.updatePickable(pos);
+            currentPlayer.getSelectedPositions().add(pos);
+            notifyObservers(turn);
+        } else {
+            for (VirtualView v : observers) {
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    try {
+                        v.getClientHandler().sendMessage("It can't be selected!");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -237,7 +210,7 @@ public class Game implements IGame {
      */
     public void removeSelectedTiles() {
         currentPlayer.clearSelected();
-        notifyObservers(TurnPhase.SELECTION);
+        notifyObservers(turn);
     }
 
     /**
@@ -247,7 +220,8 @@ public class Game implements IGame {
         for (Position p : currentPlayer.getSelectedPositions()) {
             currentPlayer.pickTile(p);
         }
-        notifyObservers(TurnPhase.PICK);
+        notifyObservers(turn);
+        setTurn(TurnPhase.ORDER);
     }
 
     /**
@@ -255,9 +229,23 @@ public class Game implements IGame {
      *
      * @param t array of tiles that specifies the order of the tiles selected
      */
-    public void setOrder (ArrayList<Tile> t) {
-        currentPlayer.selectOrder(t);
-        notifyObservers(TurnPhase.ORDER);
+    public void setOrder (ArrayList<Integer> t) {
+        if (t.size() == currentPlayer.getTilesPicked().size()) {
+            currentPlayer.selectOrder(t);
+            notifyObservers(turn);
+            setTurn(TurnPhase.INSERT);
+        } else {
+            for (VirtualView v: observers) {
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    try {
+                        v.getClientHandler().sendMessage("The number of tiles picked is more than the number of tiles specified in the order!");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+
     }
 
     /**
@@ -266,11 +254,14 @@ public class Game implements IGame {
      * @param c column of player p's bookshelf
      */
     public void insertInBookshelf (int c) {
-            currentPlayer.placeInBookshelf(c);
-            currentPlayer.updateCurrScore(currentComGoals);
-            endToken.updateScore(currentPlayer);
-            currentPlayer.updateHiddenScore();
-            notifyObservers(TurnPhase.INSERT);
+        System.out.println("qui2");
+        currentPlayer.placeInBookshelf(c);
+        currentPlayer.updateCurrScore(currentComGoals);
+        endToken.updateScore(currentPlayer);
+        System.out.println("qui4");
+        currentPlayer.updateHiddenScore();
+        notifyObservers(turn);
+        setTurn(TurnPhase.START);
     }
 
     /**
@@ -284,7 +275,7 @@ public class Game implements IGame {
                 score.add(p.getFinalScore());
             }
         }
-        notifyObservers(TurnPhase.ENDGAME);
+        notifyObservers(turn);
     }
 
     public boolean controlRefill () {
@@ -292,8 +283,16 @@ public class Game implements IGame {
     }
 
     public void startTurn () {
+//        System.out.println("print wrong");
+        board.clearPickable();
         board.setSideFreeTile();
-        notifyObservers(TurnPhase.START);
+        for (VirtualView v: observers) {
+            if (currentPlayer.getNickname().equals(v.getNickname())) {
+                v.receiveCurrentPlayer(currentPlayer);
+            }
+        }
+        notifyObservers(turn);
+        setTurn(TurnPhase.SELECTION);
     }
 
     public boolean endTurn () {
@@ -301,6 +300,7 @@ public class Game implements IGame {
             board.remove(bag);
             board.config(bag);
         }
+        turn = TurnPhase.START;
         return nextPlayer();
    }
 
@@ -359,6 +359,10 @@ public class Game implements IGame {
         this.bag = bag;
     }
 
+    public void setTurn(TurnPhase turn) {
+        this.turn = turn;
+    }
+
     public void register(VirtualView virtualView) {
         observers.add(virtualView);
     }
@@ -377,7 +381,7 @@ public class Game implements IGame {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveAllowedPositions(board.getPickableTiles());
                     }
-                    v.receiveCurrentPlayer(currentPlayer);
+//                    v.receiveCurrentPlayer(currentPlayer);
                     v.receiveCommonGoals(currentComGoals);
                     for (Player p : players) {
                         if (p.getNickname().equals(v.getNickname())) {
@@ -391,13 +395,16 @@ public class Game implements IGame {
                     v.receiveListPlayers(players);
                     v.receiveNumPlayers(numPlayers);
                 };
+                break;
 
             case SELECTION:
+//                System.out.println("qui");
                 for (VirtualView v : observers) {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveAllowedPositions(board.getPickableTiles());
                     }
                 };
+                break;
 
             case PICK:
                 for (VirtualView v : observers) {
@@ -406,6 +413,7 @@ public class Game implements IGame {
                         v.receivePickedTiles(currentPlayer.getTilesPicked());
                     }
                 };
+                break;
 
             case ORDER:
                 for (VirtualView v : observers) {
@@ -413,6 +421,7 @@ public class Game implements IGame {
                         v.receiveDoneOrder(currentPlayer.getTilesPicked());
                     }
                 };
+                break;
 
             case INSERT:
                 for (VirtualView v : observers) {
@@ -426,6 +435,7 @@ public class Game implements IGame {
                     }
                     v.receiveListBookshelves(b);
                 };
+                break;
 
             case ENDGAME:
                 for (VirtualView v : observers) {
@@ -435,9 +445,9 @@ public class Game implements IGame {
                         }
                     }
                 };
+                break;
 
         }
 
     }
-
 }

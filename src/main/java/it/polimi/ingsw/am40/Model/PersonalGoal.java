@@ -83,29 +83,48 @@ public class PersonalGoal {
      * @return an int representing the score obtained
      */
     public int calcScore(Bookshelf b) {
+        for (int i = 0; i < pos.size(); i++) {
+            System.out.println(color.get(i).toString() + " " + pos.get(i).getKey());
+        }
         int t = 0;
         for (int i = 0; i < pos.size(); i++) {
-            if (b.getBookshelf().get(pos.get(i).getX()).getColor(pos.get(i).getY()).equals(color.get(i))) {
-                t++;
+            Column c = b.getBookshelf().get(pos.get(i).getX());
+            System.out.println(c.toString());
+            System.out.println("qui5");
+            if (!(c.isEmpty())) {
+                if (pos.get(i).getY() < c.getSize()) {
+                    System.out.println("qui6");
+                    if (c.getColor(pos.get(i).getY()).equals(color.get(i))) {
+                        t++;
+                    }
+                }
             }
         }
         int s;
         switch (t) {
             case 1:
                 s = 1;
+                break;
             case 2:
                 s = 2;
+                break;
             case 3:
                 s = 4;
+                break;
             case 4:
                 s = 4;
+                break;
             case 5:
                 s = 9;
+                break;
             case 6:
                 s = 12;
+                break;
             default:
                 s = 0;
+                break;
         }
+        System.out.println("qui6");
         return s;
     }
 
@@ -141,5 +160,13 @@ public class PersonalGoal {
         this.color = color;
     }
 
+    @Override
+    public String toString() {
 
+        for (int i = 0; i < pos.size(); i++) {
+            System.out.println(pos.get(i).getKey() + " " + color.get(i));
+        }
+
+        return "PersonalGoal";
+    }
 }

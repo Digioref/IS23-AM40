@@ -32,32 +32,6 @@ public class Board {
     public Board(int num) {
         grid = new HashMap<>();
         pickableTiles = new ArrayList<>();
-/*
-        JSONParser jsonParser = new JSONParser();
-        FileReader reader;
-        try {
-            reader = new FileReader("PositionsBoard.json");
-            JSONObject configs = (JSONObject) jsonParser.parse(reader);
-            JSONArray posArray = (JSONArray) configs.get("Positions");
-            JSONObject o = (JSONObject) posArray.get(num - 2);
-            JSONArray obj1 = (JSONArray) o.get("Players" + Integer.valueOf(num).toString());
-            for (int i = 0; i < obj1.size(); i++) {
-                JSONObject t = (JSONObject) obj1.get(i);
-                String t1 = t.get("x").toString();
-                String t2 = t.get("y").toString();
-                Position p = new Position(Integer.parseInt(t1), Integer.parseInt(t2));
-                Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
-                tile.setPos(p);
-                grid.put(p.getKey(), tile);
-                System.out.println(p.getKey());
-
-
-            }
-
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
- */
     }
 
     /**
@@ -85,7 +59,9 @@ public class Board {
     public Tile pick(String pos) {
         if (grid.containsKey(pos) && grid.get(pos).getType() != TileType.EMPTY) {
             Tile t = grid.get(pos);
-            grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY));
+            Position p = new Position(-20, -20);
+            p.convertKey(pos);
+            grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY, p));
             return t;
         }
         return null;
@@ -99,7 +75,9 @@ public class Board {
         for (String pos : grid.keySet()) {
             if (grid.get(pos).getType() != TileType.EMPTY) {
                 b.insert(grid.get(pos));
-                grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY));
+                Position p = new Position(-20, -20);
+                p.convertKey(pos);
+                grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY, p));
             }
         }
     }
@@ -122,12 +100,12 @@ public class Board {
 
     /**
      * add the tiles with at least one free side to the array of the tile eligible to be picked
-     *
      */
     public void setSideFreeTile(){
         for(Tile tile : grid.values()){
-            if(checkFreeSide(tile.getPos())>0){
+            if(checkFreeSide(tile.getPos())>0 && !(tile.getColor().equals(TileColor.NOCOLOR)) ){
                 pickableTiles.add(tile.getPos());
+                System.out.println(tile);
             }
         }
     }
@@ -140,10 +118,10 @@ public class Board {
     public int checkFreeSide(Position pos){
         Position next = new Position();
         int res = 0;
-        for(int i=1;i<5;i++){
+        for (int i = 1; i < 5; i++) {
             next.setNext(pos,i);
             if(isFree(next)){
-                res=res+1;
+                res = res + 1;
             }
         }
         return res;
@@ -158,7 +136,7 @@ public class Board {
     private boolean isFree(Position pos) {
         //if the key obtained from the position
         if(!(grid.containsKey(pos.getKey()))){
-            return false;
+            return true;
         }
         if (grid.containsKey(pos.getKey())) {
             if (grid.get(pos.getKey()).getColor() != TileColor.NOCOLOR && grid.get(pos.getKey()).getType() != TileType.EMPTY) {
@@ -175,10 +153,11 @@ public class Board {
      * @param pos position of the tile picked
      */
     public void updatePickable(Position pos){
-        for(Position t : pickableTiles){
-            if(t!=null){
-                if(!(isPickable(pos,t))){
-                    pickableTiles.remove(t);
+        for (int i = 0; i < pickableTiles.size(); i++) {
+            if (pickableTiles.get(i) != null) {
+                if (!(isPickable(pos, pickableTiles.get(i)))) {
+                    System.out.println(pickableTiles.remove(pickableTiles.get(i)));
+                    i--;
                 }
             }
         }

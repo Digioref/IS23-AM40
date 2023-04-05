@@ -1,0 +1,12 @@
+{
+ "Commands": [
+   {"Command0": "login"},
+   {"Command1": "help"},
+   {"Command2": "quit"},
+   {"Command3": "select"},
+   {"Command4": "pick"},
+   {"Command5": "order"},
+   {"Command6": "insert"},
+   {"Command7": "remove"}
+ ]
+}

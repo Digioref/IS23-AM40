@@ -1,7 +1,6 @@
 package it.polimi.ingsw.am40.Model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Represents the player of the game
@@ -63,10 +62,12 @@ public class Player {
         this.nickname = nickname;
         currentScore = 0;
         finalScore = 0;
+        hiddenScore = 0;
         this.tilesPicked = new ArrayList<>();
         doneCG1 = false;
         doneCG2 = false;
         pJSONm = new ParsingJSONManager();
+        selectedPositions = new ArrayList<>();
     }
 
     /**
@@ -74,7 +75,7 @@ public class Player {
      * @param pos
      */
     public void pickTile(Position pos) {
-        if (board.getGrid().containsKey(pos.getKey())) {
+        if (board.getGrid().containsKey(pos.getKey()) && selectedPositions.contains(pos)) {
             tilesPicked.add(board.pick(pos.getKey()));
         }
     }
@@ -99,7 +100,9 @@ public class Player {
      */
 
     public void placeInBookshelf(int col) {
+        System.out.println("qui3");
         for (Tile tile : tilesPicked) {
+            System.out.println(tile.toString());
             bookshelf.addTile(tile, col);
         }
     }
@@ -109,9 +112,15 @@ public class Player {
      * @param at an array of tiles, equals to the tilesArray, but with eventually a different order of the tiles
      */
 
-    public void selectOrder(ArrayList<Tile> at) {
-        for (int i = 0; i < tilesPicked.size(); i++) {
-            tilesPicked.set(i, at.get(i));
+    public void selectOrder(ArrayList<Integer> at) {
+        ArrayList<Tile> arr = new ArrayList<>();
+        for (Integer i: at) {
+            arr.add(tilesPicked.get(i - 1));
+        }
+        tilesPicked.clear();
+        tilesPicked.addAll(arr);
+        for (Tile t : tilesPicked) {
+            System.out.println(t.toString());
         }
     }
 
@@ -264,4 +273,6 @@ public class Player {
     public int getHiddenScore() {
         return hiddenScore;
     }
+
+
 }
