@@ -255,11 +255,11 @@ public class Game implements IGame {
      * @param c column of player p's bookshelf
      */
     public void insertInBookshelf (int c) {
-        System.out.println("qui2");
+        //System.out.println("qui2");
         currentPlayer.placeInBookshelf(c);
         currentPlayer.updateCurrScore(currentComGoals);
         endToken.updateScore(currentPlayer);
-        System.out.println("qui4");
+        //System.out.println("qui4");
         currentPlayer.updateHiddenScore();
         notifyObservers(turn);
         setTurn(TurnPhase.START);

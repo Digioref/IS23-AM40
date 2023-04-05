@@ -100,9 +100,9 @@ public class Player {
      */
 
     public void placeInBookshelf(int col) {
-        System.out.println("qui3");
+        //System.out.println("qui3");
         for (Tile tile : tilesPicked) {
-            System.out.println(tile.toString());
+            //System.out.println(tile.toString());
             bookshelf.addTile(tile, col);
         }
     }
@@ -120,7 +120,7 @@ public class Player {
         tilesPicked.clear();
         tilesPicked.addAll(arr);
         for (Tile t : tilesPicked) {
-            System.out.println(t.toString());
+            //System.out.println(t.toString());
         }
     }
 
