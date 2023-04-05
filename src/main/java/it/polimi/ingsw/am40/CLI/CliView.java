@@ -40,7 +40,7 @@ public class CliView {
     }
 
     public void showBoardPickable(Game game) {
-        System.out.println("You can choose only the tiles with red background");
+        System.out.println("You can choose only the tiles with grey background");
         for (int row = 4; row > -5; row--) {
             if (row >= 0) {
                 System.out.printf(" %d ", row);

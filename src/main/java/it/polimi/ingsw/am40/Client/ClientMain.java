@@ -18,10 +18,13 @@ public class ClientMain {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
             String userInput;
-            while ((userInput = stdIn.readLine()) != null) {
-                out.println(userInput);
+            while (true) {
                 String line = in.readLine();
                 System.out.println("Received: " + line);
+                System.out.flush();
+                userInput = stdIn.readLine();
+                out.println(userInput);
+                out.flush();
             }
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
