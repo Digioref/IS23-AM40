@@ -28,7 +28,7 @@
 | Test Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
 | Test Basic Rules | :green_circle: | 75 % |
-| Test Complete Rules | :green_circle | 75 % |
+| Test Complete Rules | :green_circle: | 75 % |
 | Test CLI | :yellow_circle: | 20 % |
 | Test GUI | 🔴 | 0 % |
 | Test RMI | 🔴 | 0 % |
