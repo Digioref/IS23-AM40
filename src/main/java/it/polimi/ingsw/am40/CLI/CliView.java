@@ -27,24 +27,24 @@ public class CliView {
                     System.out.printf(color.blackBg());
                     System.out.printf(tile.print());
                 } else {
-                    System.out.printf(color.blackBg() + "  " + color.rst());
+                    System.out.printf(color.blackBg() + "   " + color.rst());
                 }
             }
             System.out.printf("\n");
         }
-        System.out.printf("  ");
+        System.out.printf("   ");
         for (int i = -4; i < 5; i++) {
             if (i < 0) {
-                System.out.printf("%d", i);
+                System.out.printf("%d ", i);
             } else {
-                System.out.printf(" %d", i);
+                System.out.printf(" %d ", i);
             }
         }
         System.out.println("\n");
     }
 
     public void showBoardPickable() {
-        System.out.println("You can choose only the tiles with red background");
+        System.out.println("You can choose only the tiles with the black letter");
         for (int row = 4; row > -5; row--) {
             if (row >= 0) {
                 System.out.printf(" %d ", row);
@@ -56,25 +56,25 @@ public class CliView {
                 Tile tile = game.getBoard().getGrid().get(pos.getKey());
                 if (tile != null) {
                     if (game.getBoard().getPickableTiles().contains(tile.getPos()) ) {
-                        System.out.printf(color.rst());
+                        System.out.printf(color.black());
+                        System.out.printf(tile.print());
                     } else if (game.getCurrentPlayer().getSelectedPositions().contains(tile.getPos())) {
-                        System.out.printf(color.redBg());
+                        System.out.printf(color.rst() + "   ");
                     } else {
-                        System.out.printf(color.blackBg());
+                        System.out.printf(tile.print());
                     }
-                    System.out.printf(tile.print());
                 } else {
-                    System.out.printf(color.blackBg() + "  " + color.rst());
+                    System.out.printf(color.blackBg() + "   " + color.rst());
                 }
             }
             System.out.printf("\n");
         }
-        System.out.printf("  ");
+        System.out.printf("   ");
         for (int i = -4; i < 5; i++) {
             if (i < 0) {
-                System.out.printf("%d", i);
+                System.out.printf("%d ", i);
             } else {
-                System.out.printf(" %d", i);
+                System.out.printf(" %d ", i);
             }
         }
         System.out.println("\n");
@@ -85,12 +85,11 @@ public class CliView {
         Bookshelf b = game.getCurrentPlayer().getBookshelf();
         for (int row = 5; row >= 0; row--) {
             for (int col = 0; col < 5; col++) {
-                System.out.printf(color.blackBg() + " " + color.rst());
                 if (b.getTile(col, row) != null) {
                     System.out.printf(color.blackBg());
                     System.out.printf(b.getTile(col, row).print());
                 } else {
-                    System.out.printf(color.blackBg() + "  " + color.rst());
+                    System.out.printf(color.blackBg() + "   " + color.rst());
                 }
             }
             System.out.printf("\n");
@@ -107,12 +106,11 @@ public class CliView {
                 Bookshelf b = p.getBookshelf();
                 for (int row = 5; row >= 0; row--) {
                     for (int col = 0; col < 5; col++) {
-                        System.out.printf(color.blackBg() + " " + color.rst());
                         if (b.getTile(col, row) != null) {
                             System.out.printf(color.blackBg());
                             System.out.printf(b.getTile(col, row).print());
                         } else {
-                            System.out.printf(color.blackBg() + "  " + color.rst());
+                            System.out.printf(color.blackBg() + "   " + color.rst());
                         }
                     }
                     System.out.printf("\n");
@@ -161,39 +159,27 @@ public class CliView {
         PersonalGoal pg = game.getCurrentPlayer().getPersonalGoal();
         Position pos;
         TileColor tmp;
+        Tile t;
         Bookshelf b = game.getCurrentPlayer().getBookshelf();
         int index;
         for (int row = 5; row >= 0; row--) {
             for (int col = 0; col < 5; col++) {
-                System.out.printf(color.blackBg() + " ");
+                //System.out.printf(color.blackBg() + " ");
                 pos = new Position(col, row);
                 index = pg.getPos().indexOf(pos);
                 if (b.getTile(col,row) != null) {
                     if (pg.getPos().contains(pos) && pg.getColor().get(index).equals(b.getTile(col, row).getColor())) {
-                        System.out.printf(color.redBg());
+                        System.out.printf(color.black());
                     } else if (pg.getPos().contains(pos) && !pg.getColor().get(index).equals(b.getTile(col, row).getColor())) {
-                        System.out.printf(color.rst());
-                    } else {
-                        System.out.printf(color.blackBg());
+                        System.out.printf(color.red());
                     }
                 }
                 if (pg.getPos().contains(pos)) {
                     tmp = pg.getColor().get(index);
-                    if (tmp.equals(TileColor.GREEN)) {
-                        System.out.printf(color.green() + "G " + color.rst());
-                    } else if (tmp.equals(TileColor.WHITE)) {
-                        System.out.printf(color.white() + "W " + color.rst());
-                    } else if (tmp.equals(TileColor.YELLOW)) {
-                        System.out.printf(color.yellow() + "Y " + color.rst());
-                    } else if (tmp.equals(TileColor.BLUE)) {
-                        System.out.printf(color.blue() + "B " + color.rst());
-                    } else if (tmp.equals(TileColor.CYAN)) {
-                        System.out.printf(color.cyan() + "C " + color.rst());
-                    } else if (tmp.equals(TileColor.VIOLET)) {
-                        System.out.printf(color.purple() + "V " + color.rst());
-                    } else System.out.printf(color.black() + "X " + color.rst());
+                    t = new Tile(tmp, TileType.CATS);
+                    System.out.print(t.print());
                 } else {
-                    System.out.printf(color.blackBg() + "  " + color.rst());
+                    System.out.printf(color.blackBg() + "   " + color.rst());
                 }
             }
             System.out.printf("\n");

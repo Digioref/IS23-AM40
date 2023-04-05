@@ -105,7 +105,7 @@ public class Board {
         for(Tile tile : grid.values()){
             if(checkFreeSide(tile.getPos())>0 && !(tile.getColor().equals(TileColor.NOCOLOR)) ){
                 pickableTiles.add(tile.getPos());
-                System.out.println(tile);
+                //System.out.println(tile);
             }
         }
     }
@@ -156,7 +156,8 @@ public class Board {
         for (int i = 0; i < pickableTiles.size(); i++) {
             if (pickableTiles.get(i) != null) {
                 if (!(isPickable(pos, pickableTiles.get(i))) || pos.equals(pickableTiles.get(i))) {
-                    System.out.println(pickableTiles.remove(pickableTiles.get(i)));
+                    pickableTiles.remove(pickableTiles.get(i));
+                    //System.out.println(pickableTiles.remove(pickableTiles.get(i)));
                     i--;
                 }
             }
