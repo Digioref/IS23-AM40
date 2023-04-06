@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am40.Controller;
 
+import it.polimi.ingsw.am40.Model.Board;
 import it.polimi.ingsw.am40.Model.Game;
 import it.polimi.ingsw.am40.Model.Player;
 import it.polimi.ingsw.am40.Model.Position;
@@ -21,22 +22,25 @@ class GameControllerTest {
         Position position;
         Player player;
         GameController gameController;
+        Board board;
     @BeforeEach
     void setup(){
         game1 = new Game(2);
         controller = new Controller(game1);
         socket = new Socket();
-        clientHandler = new ClientHandler(socket)
+        clientHandler = new ClientHandler(socket);
         virtualView = new VirtualView("pippo", clientHandler, controller);
         position = new Position(1,1);
         player = new Player("pippo");
         gameController = new GameController(game1);
+        board = new Board(2);
 
 
     }
     @Test
     void testSelectTile() {
         game1.addPlayer(player);
+
         gameController.selectTile(virtualView, position);
 
         // assertEquals(game1., true);
