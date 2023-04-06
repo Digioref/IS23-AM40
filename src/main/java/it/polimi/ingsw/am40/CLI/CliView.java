@@ -368,4 +368,42 @@ public class CliView {
     private void printEmpty() {
         System.out.print(color.whiteBg() + "   " + color.rst());
     }
+
+    public void showCurrentScore() {
+        int score;
+        System.out.println(color.blackBg() + " Current Score " + color.rst());
+        for (Player p : game.getPlayers()) {
+            score = p.getCurrentScore();
+            System.out.println(color.greenBg() + color.black() + " " + p.getNickname() + " " + score + " " + color.rst());
+        }
+        System.out.println();
+    }
+
+    public void showHiddenScore() {
+        int score;
+        score = game.getCurrentPlayer().getHiddenScore();
+        System.out.println(color.blackBg() + " " + game.getCurrentPlayer().getNickname() + " this is your score:" + color.blueBg() + color.black() + " " + score + " " + color.rst() + "\n");
+    }
+
+    public void showFinalScore() { // different color for the higher score, but if two have the same score I show both as winners, I should do the control on the winner, do I have this information?
+        int score;
+        int maxScore = 0;
+        System.out.println(color.blackBg() + " Final Score " + color.rst());
+        for (Player p : game.getPlayers()) {
+            score = p.getFinalScore();
+            if (score > maxScore) {
+                maxScore = score;
+            }
+        }
+        for (Player p : game.getPlayers()) {
+            score = p.getFinalScore();
+            if (score == maxScore) {
+                System.out.println(color.greenBg() + color.black() + " " + p.getNickname() + " " + score + " " + color.rst());
+            } else {
+                System.out.println(color.yellowBg() + color.black() + " " + p.getNickname() + " " + score + " " + color.rst());
+            }
+        }
+        System.out.println();
+    }
+
 }

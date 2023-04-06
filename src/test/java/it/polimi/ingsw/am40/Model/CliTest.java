@@ -25,6 +25,10 @@ public class CliTest {
 
         cli.showCurrentPlayer();
 
+        cli.showCurrentScore();
+        cli.showHiddenScore();
+        cli.showFinalScore();
+
         cli.showCommonGoals();
 
         cli.showBoard();
