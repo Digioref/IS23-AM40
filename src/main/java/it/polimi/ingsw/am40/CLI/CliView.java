@@ -152,7 +152,6 @@ public class CliView {
             }
             System.out.println("\n");
         }
-
     }
 
     public void showPersonalGoal() {
@@ -223,7 +222,6 @@ public class CliView {
                         }
                         System.out.println();
                     }
-                    System.out.println("Two columns each formed by 6 different types of tiles.");
                     System.out.println();
                 }
                 case 3 -> {

@@ -6,7 +6,7 @@ import it.polimi.ingsw.am40.Model.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class VirtualView implements  IGameObserver{
+public class VirtualView implements  IGameObserver, IGameErrorTurn{
 
     private String nickname;
     private ClientHandler clientHandler;
@@ -103,5 +103,45 @@ public class VirtualView implements  IGameObserver{
 
     public ClientHandler getClientHandler() {
         return clientHandler;
+    }
+
+    @Override
+    public void selectionTurnError() {
+
+    }
+
+    @Override
+    public void selectionError() {
+
+    }
+
+    @Override
+    public void removingTurnError() {
+
+    }
+
+    @Override
+    public void pickingTurnError() {
+
+    }
+
+    @Override
+    public void orderingTurnError() {
+
+    }
+
+    @Override
+    public void orderingError() {
+
+    }
+
+    @Override
+    public void insertTurnError() {
+
+    }
+
+    @Override
+    public void turnError() {
+
     }
 }

@@ -10,14 +10,14 @@ import java.util.ArrayList;
 public class Select implements ICommand {
 
     @Override
-    public void execute(ClientHandler c, String[] comm) throws IOException {
-        if (comm.length != 3) {
+    public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
+        if (comm.size() != 2) {
             c.sendMessage("Incomplete command");
         }
         else {
 //            System.out.println(("qui"));
-            int x = Integer.parseInt(comm[1]);
-            int y = Integer.parseInt(comm[2]);
+            int x = Integer.parseInt(comm.get(0));
+            int y = Integer.parseInt(comm.get(1));
             ArrayList<Integer> arr = new ArrayList<>();
             arr.add(x);
             arr.add(y);

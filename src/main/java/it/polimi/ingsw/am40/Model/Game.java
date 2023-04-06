@@ -2,7 +2,6 @@ package it.polimi.ingsw.am40.Model;
 
 import it.polimi.ingsw.am40.Network.VirtualView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -169,37 +168,40 @@ public class Game implements IGame {
 
     /**
      * Sets the current player to the next player
-     * @return false if the game has ended and the last player who did the turn was the one at the right of the first player, true otherwise
      */
-    public boolean nextPlayer() {
-        if (checkEndGame()) {
-            return false;
+    public void nextPlayer() {
+        if (checkEndGame() || turn != TurnPhase.ENDTURN) {
+            return;
         }
         currentPlayer = currentPlayer.getNext();
-        return true;
 
     }
 
     public boolean checkEndGame () {
-        if (endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer)) {
+        if (endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer) && turn == TurnPhase.ENDTURN) {
             setHasEnded(true);
             return true;
         }
         return false;
     }
     public void updatePickableTiles (Position pos) {
-        if (board.getPickableTiles().contains(pos)) {
-            board.updatePickable(pos);
-            currentPlayer.getSelectedPositions().add(pos);
-            notifyObservers(turn);
-        } else {
+        if (turn == TurnPhase.SELECTION) {
+            if (board.getPickableTiles().contains(pos)) {
+                board.updatePickable(pos);
+                currentPlayer.getSelectedPositions().add(pos);
+                notifyObservers(turn);
+            } else {
+                for (VirtualView v : observers) {
+                    if (currentPlayer.getNickname().equals(v.getNickname())) {
+                        v.selectionError();
+                    }
+                }
+            }
+        }
+        else {
             for (VirtualView v : observers) {
                 if (currentPlayer.getNickname().equals(v.getNickname())) {
-                    try {
-                        v.getClientHandler().sendMessage("It can't be selected!");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    v.selectionTurnError();
                 }
             }
         }
@@ -209,20 +211,38 @@ public class Game implements IGame {
      * Removes the tiles picked by player p
      */
     public void removeSelectedTiles() {
-        currentPlayer.clearSelected();
-        notifyObservers(turn);
+        if (turn == TurnPhase.SELECTION) {
+            currentPlayer.clearSelected();
+            notifyObservers(turn);
+        }
+        else {
+            for (VirtualView v : observers) {
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    v.removingTurnError();
+                }
+            }
+        }
     }
 
     /**
      * Selects the tiles according to the position in the array selectedPositions, which is in the player, and inserts it in the tilesPicked array of player p
      */
     public void pickTiles() {
-        for (Position p : currentPlayer.getSelectedPositions()) {
-            currentPlayer.pickTile(p);
+        if (turn == TurnPhase.PICK) {
+            for (Position p : currentPlayer.getSelectedPositions()) {
+                currentPlayer.pickTile(p);
+            }
+            currentPlayer.getSelectedPositions().clear();
+            notifyObservers(turn);
+            setTurn(TurnPhase.ORDER);
         }
-        currentPlayer.getSelectedPositions().clear();
-        notifyObservers(turn);
-        setTurn(TurnPhase.ORDER);
+        else {
+            for (VirtualView v : observers) {
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    v.pickingTurnError();
+                }
+            }
+        }
     }
 
     /**
@@ -231,18 +251,23 @@ public class Game implements IGame {
      * @param t array of tiles that specifies the order of the tiles selected
      */
     public void setOrder (ArrayList<Integer> t) {
-        if (t.size() == currentPlayer.getTilesPicked().size()) {
-            currentPlayer.selectOrder(t);
-            notifyObservers(turn);
-            setTurn(TurnPhase.INSERT);
-        } else {
-            for (VirtualView v: observers) {
-                if (currentPlayer.getNickname().equals(v.getNickname())) {
-                    try {
-                        v.getClientHandler().sendMessage("The number of tiles picked is more than the number of tiles specified in the order!");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+        if (turn == TurnPhase.ORDER) {
+            if (t.size() == currentPlayer.getTilesPicked().size()) {
+                currentPlayer.selectOrder(t);
+                notifyObservers(turn);
+                setTurn(TurnPhase.INSERT);
+            } else {
+                for (VirtualView v: observers) {
+                    if (currentPlayer.getNickname().equals(v.getNickname())) {
+                        v.orderingError();
                     }
+                }
+            }
+        }
+        else {
+            for (VirtualView v : observers) {
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    v.orderingTurnError();
                 }
             }
         }
@@ -255,14 +280,23 @@ public class Game implements IGame {
      * @param c column of player p's bookshelf
      */
     public void insertInBookshelf (int c) {
-        //System.out.println("qui2");
-        currentPlayer.placeInBookshelf(c);
-        currentPlayer.updateCurrScore(currentComGoals);
-        endToken.updateScore(currentPlayer);
-        //System.out.println("qui4");
-        currentPlayer.updateHiddenScore();
-        notifyObservers(turn);
-        setTurn(TurnPhase.START);
+        if (turn == TurnPhase.INSERT) {
+            System.out.println("qui2");
+            currentPlayer.placeInBookshelf(c);
+            currentPlayer.updateCurrScore(currentComGoals);
+            endToken.updateScore(currentPlayer);
+            System.out.println("qui4");
+            currentPlayer.updateHiddenScore();
+            notifyObservers(turn);
+            setTurn(TurnPhase.ENDTURN);
+        }
+        else {
+            for (VirtualView v : observers) {
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    v.insertTurnError();
+                }
+            }
+        }
     }
 
     /**
@@ -270,7 +304,7 @@ public class Game implements IGame {
      */
     public void endGame() {
         ArrayList<Integer> score = new ArrayList<>(numPlayers);
-        if (checkEndGame()) {
+        if (checkEndGame() && turn == TurnPhase.ENDGAME) {
             for (Player p : players) {
                 p.calculateScore();
                 score.add(p.getFinalScore());
@@ -296,13 +330,20 @@ public class Game implements IGame {
         setTurn(TurnPhase.SELECTION);
     }
 
-    public boolean endTurn () {
-        if (controlRefill()) {
-            board.remove(bag);
-            board.config(bag);
+    public void endTurn () {
+        if (turn == TurnPhase.ENDTURN) {
+            if (controlRefill()) {
+                board.remove(bag);
+                board.config(bag);
+            }
+            if (checkEndGame()){
+                setTurn(TurnPhase.ENDGAME);
+            }
+            else {
+                turn = TurnPhase.START;
+                nextPlayer();
+            }
         }
-        turn = TurnPhase.START;
-        return nextPlayer();
    }
 
     /**
@@ -454,5 +495,9 @@ public class Game implements IGame {
 
     public ArrayList<CommonGoal> getCurrentComGoals() {
         return currentComGoals;
+    }
+
+    public TurnPhase getTurn() {
+        return turn;
     }
 }
