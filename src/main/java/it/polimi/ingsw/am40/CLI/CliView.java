@@ -222,7 +222,7 @@ public class CliView {
                         }
                         System.out.println();
                     }
-                    System.out.println();
+                    System.out.println("Two columns each formed by 6 different types of tiles.\n");
                 }
                 case 3 -> {
                     // CG 3
@@ -235,8 +235,7 @@ public class CliView {
                     }
                     System.out.println("Four groups each containing at least\n" +
                             "4 tiles of the same type (not necessarily in the depicted shape).\n" +
-                            "The tiles of one group can be different from those of another group.");
-                    System.out.println();
+                            "The tiles of one group can be different from those of another group.\n");
                 }
                 case 4 -> {
                     // CG 4

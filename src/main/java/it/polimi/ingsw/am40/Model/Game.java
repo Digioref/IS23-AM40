@@ -170,6 +170,7 @@ public class Game implements IGame {
      * Sets the current player to the next player
      */
     public void nextPlayer() {
+        //System.out.println(turn);
         if (checkEndGame() || turn != TurnPhase.ENDTURN) {
             return;
         }
@@ -281,6 +282,7 @@ public class Game implements IGame {
      */
     public void insertInBookshelf (int c) {
         if (turn == TurnPhase.INSERT) {
+            setTurn(TurnPhase.ENDTURN);
             System.out.println("qui2");
             currentPlayer.placeInBookshelf(c);
             currentPlayer.updateCurrScore(currentComGoals);
@@ -288,7 +290,7 @@ public class Game implements IGame {
             System.out.println("qui4");
             currentPlayer.updateHiddenScore();
             notifyObservers(turn);
-            setTurn(TurnPhase.ENDTURN);
+
         }
         else {
             for (VirtualView v : observers) {
@@ -331,6 +333,7 @@ public class Game implements IGame {
     }
 
     public void endTurn () {
+        //System.out.println("---" + turn);
         if (turn == TurnPhase.ENDTURN) {
             if (controlRefill()) {
                 board.remove(bag);
@@ -340,8 +343,9 @@ public class Game implements IGame {
                 setTurn(TurnPhase.ENDGAME);
             }
             else {
-                turn = TurnPhase.START;
+                //System.out.println("---" + turn);
                 nextPlayer();
+                turn = TurnPhase.START;
             }
         }
    }
