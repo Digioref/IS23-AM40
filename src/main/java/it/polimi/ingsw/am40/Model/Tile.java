@@ -24,6 +24,7 @@ public class Tile {
      * @param color a colour
      * @param type a type
      */
+
     public Tile(TileColor color, TileType type) {
         this.color = color;
         this.type = type;
@@ -147,6 +148,7 @@ public class Tile {
                 ", type = " + type +
                 ", pos = " + pos.getKey() +
                 " }";
+
     }
 
     public boolean isInvalid() {

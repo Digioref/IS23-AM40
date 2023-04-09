@@ -12,6 +12,7 @@ public class Bookshelf {
      * An array made up of columns
      */
     private ArrayList<Column> bookshelf;
+    private static int DIMROW = 5;
 
     /**
      * Constructor which creates the bookshelf and its columns
@@ -173,8 +174,25 @@ public class Bookshelf {
 
     @Override
     public String toString() {
+
         return "Bookshelf{" +
                 "bookshelf=" + bookshelf +
                 '}';
+    }
+
+    public void print(){
+        ArrayList<String> tmp = new ArrayList<>();
+        for(int i=DIMROW; i>=0 ; i--){
+            tmp.clear();
+            for(int j=0; j<5; j++){
+                if(this.getTile(j,i)!=null){
+                    tmp.add(this.getTile(j,i).getColor().toString());
+                }
+                else{
+                    tmp.add("----");
+                }
+            }
+            System.out.println(tmp);
+        }
     }
 }

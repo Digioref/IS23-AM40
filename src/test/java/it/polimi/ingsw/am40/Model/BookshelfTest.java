@@ -76,6 +76,8 @@ class BookshelfTest {
                         bookshelf.addTile(tiles.get(j), j);
                     }
                 }
+                bookshelf.print();
+
 
                 for (Object value : obj2) {
                     score=(Integer.parseInt(value.toString()));
@@ -91,5 +93,12 @@ class BookshelfTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void Test2(){
+
+    }
+
+
 
 }
