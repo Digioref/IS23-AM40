@@ -45,32 +45,54 @@ class ColumnTest {
 
     }
 
+    /**
+     * Test of getMark and setMark
+     */
     @Test
     void setMark() {
-
+        Position p1 = new Position(1,1);
+        assertEquals(column.getMark(p1.getY()), 0);
+        column.setMark(p1.getY();
+        assertEquals(column.getMark(p1.getY()), 1);
     }
 
-    @Test
-    void getMark() {
-    }
 
     @Test
     void getColor() {
+        column.addTile(tile1);
+        assertEquals(column.getColor(1), TileColor.BLUE);
     }
 
     @Test
     void getSize() {
+        column.addTile(tile1);
+        assertEquals(column.getSize(), 1);
     }
 
+    /**
+     * Testing getTile method
+     */
     @Test
     void getTile() {
+        column.addTile(tile1);
+        assertEquals(column.getTile(1), tile1);
     }
 
+    /*
     @Test
+
     void testToString() {
     }
 
+     */
+
+    /**
+     * Testing is empty method
+     */
     @Test
-    void isEmpty() {
+    void testIsEmpty() {
+        assertEquals(column.isEmpty(), true);
+        column.addTile(tile1);
+        assertEquals(column.isEmpty(), false);
     }
 }
