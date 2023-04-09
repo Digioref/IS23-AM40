@@ -190,6 +190,7 @@ public class Game implements IGame {
             if (board.getPickableTiles().contains(pos)) {
                 board.updatePickable(pos);
                 currentPlayer.getSelectedPositions().add(pos);
+                board.updateAfterSelect(pos, currentPlayer);
                 notifyObservers(turn);
             } else {
                 for (VirtualView v : observers) {
@@ -283,11 +284,11 @@ public class Game implements IGame {
     public void insertInBookshelf (int c) {
         if (turn == TurnPhase.INSERT) {
             setTurn(TurnPhase.ENDTURN);
-            System.out.println("qui2");
+//            System.out.println("qui2");
             currentPlayer.placeInBookshelf(c);
             currentPlayer.updateCurrScore(currentComGoals);
             endToken.updateScore(currentPlayer);
-            System.out.println("qui4");
+//            System.out.println("qui4");
             currentPlayer.updateHiddenScore();
             notifyObservers(turn);
 
@@ -321,15 +322,17 @@ public class Game implements IGame {
 
     public void startTurn () {
 //        System.out.println("print wrong");
-        board.clearPickable();
-        board.setSideFreeTile();
-        for (VirtualView v: observers) {
-            if (currentPlayer.getNickname().equals(v.getNickname())) {
-                v.receiveCurrentPlayer(currentPlayer);
+        if (turn == TurnPhase.START) {
+            board.clearPickable();
+            board.setSideFreeTile();
+            for (VirtualView v: observers) {
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    v.receiveCurrentPlayer(currentPlayer);
+                }
             }
+            notifyObservers(turn);
+            setTurn(TurnPhase.SELECTION);
         }
-        notifyObservers(turn);
-        setTurn(TurnPhase.SELECTION);
     }
 
     public void endTurn () {
@@ -344,6 +347,7 @@ public class Game implements IGame {
             }
             else {
                 //System.out.println("---" + turn);
+                currentPlayer.clearTilesPicked();
                 nextPlayer();
                 turn = TurnPhase.START;
             }

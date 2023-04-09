@@ -93,14 +93,27 @@ public class CliTest {
         cli.showAllBookshelfs();
 
         cli.showCurrentPlayer();
+        for (Player p: game1.getPlayers()) {
+            if (game1.getCurrentPlayer().equals(p)) {
+                v = new VirtualView(p.getNickname(), null, c);
+            }
+        }
 
         gc.selectTile(v,new Position(0,-3));
         gc.pickTiles(v);
+        ord = new ArrayList<Integer>(List.of(1));
+        gc.order(v, ord);
         gc.insert(v, 0);
 
         cli.showBoard();
 
         cli.showCurrentPlayer();
+        for (Player p: game1.getPlayers()) {
+            if (game1.getCurrentPlayer().equals(p)) {
+                v = new VirtualView(p.getNickname(), null, c);
+            }
+        }
+        cli.showBoardPickable();
 
         gc.selectTile(v,new Position(-2,-1));
 
@@ -118,7 +131,11 @@ public class CliTest {
         cli.showBoardPickable();
 
         gc.pickTiles(v);
+        cli.showPickedTiles();
+        ord = new ArrayList<Integer>(List.of(1,2,3));
+        gc.order(v, ord);
         gc.insert(v, 0);
+        cli.showAllBookshelfs();
 
     }
     @Test
@@ -143,7 +160,7 @@ public class CliTest {
         game1.startGame();
         VirtualView v = new VirtualView("cammello", null, c);
         for (Player p: game1.getPlayers()) {
-            if (game1.getCurrentPlayer().equals(p)) {
+            if (game1.getCurrentPlayer().getNickname().equals(p.getNickname())) {
                 v = new VirtualView(p.getNickname(), null, c);
             }
         }
@@ -157,6 +174,10 @@ public class CliTest {
         cli.showSelectedTiles();
         gc.pickTiles(v);
         cli.showPickedTiles();
+        ArrayList<Integer> arr = new ArrayList<>();
+        arr.add(1);
+        arr.add(2);
+        gc.order(v, arr);
         gc.insert(v,4);
         cli.showBoard();
         cli.showCurrentBookshelf();

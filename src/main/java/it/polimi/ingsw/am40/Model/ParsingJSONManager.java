@@ -194,6 +194,21 @@ public class ParsingJSONManager {
                     case "remove":
                         map.put("remove", new Remove());
                         break;
+                    case "setplayers":
+                        map.put("setplayers", new SetPlayers());
+                        break;
+                    case "getcurrent":
+                        map.put("getcurrent", new GetCurrent());
+                        break;
+                    case "getcurscore":
+                        map.put("getcurscore", new GetCurScore());
+                        break;
+                    case "gethiddenscore":
+                        map.put("gethiddenscore", new GetHiddenScore());
+                        break;
+                    case "getplayers":
+                        map.put("getplayers", new GetPlayers());
+                        break;
                 }
             }
 

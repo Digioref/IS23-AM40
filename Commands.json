@@ -7,6 +7,11 @@
    {"Command4": "pick"},
    {"Command5": "order"},
    {"Command6": "insert"},
-   {"Command7": "remove"}
+   {"Command7": "remove"},
+   {"Command8": "setplayers"},
+   {"Command9": "getcurrent"},
+   {"Command10": "getcurscore"},
+   {"Command11": "gethiddenscore"},
+   {"Command12": "getplayers"},
  ]
 }
