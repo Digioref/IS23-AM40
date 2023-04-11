@@ -153,14 +153,17 @@ public class Board {
      * @param pos position of the tile picked
      */
     public void updatePickable(Position pos){
-        for (int i = 0; i < pickableTiles.size(); i++) {
-            if (pickableTiles.get(i) != null) {
-                if (!(isPickable(pos, pickableTiles.get(i))) || pos.equals(pickableTiles.get(i))) {
+        for (int i = 0; i < pickableTiles.size();) {
+//            if (pickableTiles.get(i) != null) {
+                if ((!(isPickable(pos, pickableTiles.get(i)))) || (pos.equals(pickableTiles.get(i)))) {
                     pickableTiles.remove(pickableTiles.get(i));
                     //System.out.println(pickableTiles.remove(pickableTiles.get(i)));
-                    i--;
+//                    i--;
                 }
-            }
+                else {
+                    i++;
+                }
+ //           }
         }
     }
 
@@ -208,6 +211,49 @@ public class Board {
 
     public ArrayList<Position> getPickableTiles() {
         return pickableTiles;
+    }
+    public void updateAfterSelect(Position p, Player pl) {
+        Position pos = new Position(-10, -10);
+        pos.setXY(p.getX(), p.getY()-1);
+        if (pl.getSelectedPositions().size() < 2) {
+            if (isPickable(p, pos) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                pickableTiles.add(new Position(p.getX(), p.getY()-1));
+            }
+            pos.setXY(p.getX(), p.getY()+1);
+            if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                pickableTiles.add(new Position(p.getX(), p.getY()+1));
+            }
+            pos.setXY(p.getX()-1, p.getY());
+            if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                pickableTiles.add(new Position(p.getX()-1, p.getY()));
+            }
+            pos.setXY(p.getX()+1, p.getY());
+            if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                pickableTiles.add(new Position(p.getX()+1, p.getY()));
+            }
+        }
+        else {
+            if (pl.getSelectedPositions().get(0).getX() == pl.getSelectedPositions().get(1).getX()) {
+                pos.setXY(p.getX(), p.getY()+1);
+                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                    pickableTiles.add(new Position(p.getX(), p.getY()+1));
+                }
+                pos.setXY(p.getX(), p.getY()-1);
+                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                    pickableTiles.add(new Position(p.getX(), p.getY()-1));
+                }
+            }
+            if (pl.getSelectedPositions().get(0).getY() == pl.getSelectedPositions().get(1).getY()) {
+                pos.setXY(p.getX()+1, p.getY());
+                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                    pickableTiles.add(new Position(p.getX()+1, p.getY()));
+                }
+                pos.setXY(p.getX()-1, p.getY());
+                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                    pickableTiles.add(new Position(p.getX()-1, p.getY()));
+                }
+            }
+        }
     }
 
 }

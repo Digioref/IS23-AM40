@@ -170,6 +170,7 @@ public class Game implements IGame {
      * Sets the current player to the next player
      */
     public void nextPlayer() {
+        //System.out.println(turn);
         if (checkEndGame() || turn != TurnPhase.ENDTURN) {
             return;
         }
@@ -189,6 +190,7 @@ public class Game implements IGame {
             if (board.getPickableTiles().contains(pos)) {
                 board.updatePickable(pos);
                 currentPlayer.getSelectedPositions().add(pos);
+                board.updateAfterSelect(pos, currentPlayer);
                 notifyObservers(turn);
             } else {
                 for (VirtualView v : observers) {
@@ -281,14 +283,15 @@ public class Game implements IGame {
      */
     public void insertInBookshelf (int c) {
         if (turn == TurnPhase.INSERT) {
-            System.out.println("qui2");
+            setTurn(TurnPhase.ENDTURN);
+//            System.out.println("qui2");
             currentPlayer.placeInBookshelf(c);
             currentPlayer.updateCurrScore(currentComGoals);
             endToken.updateScore(currentPlayer);
-            System.out.println("qui4");
+//            System.out.println("qui4");
             currentPlayer.updateHiddenScore();
             notifyObservers(turn);
-            setTurn(TurnPhase.ENDTURN);
+
         }
         else {
             for (VirtualView v : observers) {
@@ -319,18 +322,21 @@ public class Game implements IGame {
 
     public void startTurn () {
 //        System.out.println("print wrong");
-        board.clearPickable();
-        board.setSideFreeTile();
-        for (VirtualView v: observers) {
-            if (currentPlayer.getNickname().equals(v.getNickname())) {
-                v.receiveCurrentPlayer(currentPlayer);
+        if (turn == TurnPhase.START) {
+            board.clearPickable();
+            board.setSideFreeTile();
+            for (VirtualView v: observers) {
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    v.receiveCurrentPlayer(currentPlayer);
+                }
             }
+            notifyObservers(turn);
+            setTurn(TurnPhase.SELECTION);
         }
-        notifyObservers(turn);
-        setTurn(TurnPhase.SELECTION);
     }
 
     public void endTurn () {
+        //System.out.println("---" + turn);
         if (turn == TurnPhase.ENDTURN) {
             if (controlRefill()) {
                 board.remove(bag);
@@ -340,8 +346,10 @@ public class Game implements IGame {
                 setTurn(TurnPhase.ENDGAME);
             }
             else {
-                turn = TurnPhase.START;
+                //System.out.println("---" + turn);
+                currentPlayer.clearTilesPicked();
                 nextPlayer();
+                turn = TurnPhase.START;
             }
         }
    }

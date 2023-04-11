@@ -50,7 +50,7 @@ public class GameController {
 
     public void insert(VirtualView v, int c) {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
-            System.out.println("qui");
+//            System.out.println("qui");
             game.insertInBookshelf(c);
             game.endTurn();
             if (game.getTurn() == TurnPhase.ENDGAME) {

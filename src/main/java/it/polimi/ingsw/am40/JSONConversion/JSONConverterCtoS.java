@@ -35,8 +35,10 @@ public class JSONConverterCtoS {
         JSONObject object = (JSONObject) jsonParser.parse(s);
         command = object.get("Command").toString();
         JSONArray parameters = (JSONArray) object.get("Params");
-        for (int i = 0; i < parameters.size(); i++) {
-            par.add((String) parameters.get(i));
+        if (parameters != null) {
+            for (int i = 0; i < parameters.size(); i++) {
+                par.add((String) parameters.get(i));
+            }
         }
     }
 

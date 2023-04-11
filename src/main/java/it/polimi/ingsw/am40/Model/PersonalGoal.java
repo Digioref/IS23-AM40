@@ -85,17 +85,17 @@ public class PersonalGoal {
      * @return an int representing the score obtained
      */
     public int calcScore(Bookshelf b) {
-        for (int i = 0; i < pos.size(); i++) {
-            System.out.println(color.get(i).toString() + " " + pos.get(i).getKey());
-        }
+//        for (int i = 0; i < pos.size(); i++) {
+//            System.out.println(color.get(i).toString() + " " + pos.get(i).getKey());
+//        }
         int t = 0;
         for (int i = 0; i < pos.size(); i++) {
             Column c = b.getBookshelf().get(pos.get(i).getX());
-            System.out.println(c.toString());
-            System.out.println("qui5");
+//            System.out.println(c.toString());
+//            System.out.println("qui5");
             if (!(c.isEmpty())) {
                 if (pos.get(i).getY() < c.getSize()) {
-                    System.out.println("qui6");
+//                    System.out.println("qui6");
                     if (c.getColor(pos.get(i).getY()).equals(color.get(i))) {
                         t++;
                     }
@@ -126,7 +126,7 @@ public class PersonalGoal {
                 s = 0;
                 break;
         }
-        System.out.println("qui6");
+//        System.out.println("qui6");
         return s;
     }
 
