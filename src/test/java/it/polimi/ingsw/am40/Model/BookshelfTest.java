@@ -6,23 +6,70 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
+import java.awt.print.Book;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.SyncFailedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.Assert.*;
 
 class BookshelfTest {
+
     @Test
-    public void Test(){
+    public void AddTile(){
+        Bookshelf bookshelf=new Bookshelf();
+        Tile tile = null;
+        //test with null tile for each column
+        for(int i=0; i<5;i++){
+            assertFalse(bookshelf.addTile(null,i));
+        }
+        //test with null tile and non existing column
+        assertFalse(bookshelf.addTile(null,-1));
+
+        tile  = new Tile(TileColor.GREEN,TileType.CATS);
+
+        //test with one tile for each column
+        for(int i=0; i<5;i++){
+            assertTrue(bookshelf.addTile(tile,i));
+        }
+        //test out of bound with correct tile
+        assertFalse(bookshelf.addTile(tile,7));
+        //bookshelf.print();
+        System.out.println("\n");
+
+        //test filling each column and also exceed column limit
+        int count=0;
+        for(int j=0; j<20; j++){
+            for(int k=0;k<5;k++){
+                if(count<5){
+                    assertTrue(bookshelf.addTile(tile,k));
+                }
+                else {
+                    assertFalse(bookshelf.addTile(tile,k));
+                }
+            }
+            count++;
+        }
+        //bookshelf.print();
+
+        //test adding null tile in a filled column
+        assertFalse(bookshelf.addTile(null,0));
+
+    }
+
+    @Test
+    public void TestAddingCalcScore(){
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
 
         try {
-            reader = new FileReader("Bookshelf.json");
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource("Bookshelf.json")).getFile());
+            reader = new FileReader(file);
             JSONObject commonGoals = (JSONObject) jsonParser.parse(reader);
 
             JSONArray array = (JSONArray) commonGoals.get("Bookshelfs");
@@ -95,10 +142,91 @@ class BookshelfTest {
     }
 
     @Test
-    public void Test2(){
+    public void isFull(){
+        Bookshelf bookshelf=new Bookshelf();
+        //test isFull() metod with empty bookshelf
+        assertFalse(bookshelf.isFull());
+        //test isFulll(int) metod with empty bookshelf
+        for(int i=0; i<5;i++){
+            assertFalse(bookshelf.isFull(i));
+        }
+        Tile tile =new Tile(TileColor.GREEN,TileType.CATS);
+        //test with column filled with some tile but not full
+        for(int i=0;i<5;i++){
+            for(int j=0;j<3;j++){
+                bookshelf.addTile(tile,i);
+            }
+            assertFalse(bookshelf.isFull(i));
+        }
+        assertFalse(bookshelf.isFull());
 
+        //one column full and the others empty
+        bookshelf=new Bookshelf();
+        for(int i=0;i<6;i++){
+            bookshelf.addTile(tile,0);
+        }
+        assertTrue(bookshelf.isFull(0));
+        assertFalse(bookshelf.isFull());
+
+        //fill the others with some tiles but not full
+        for(int i=1;i<5;i++){
+            for(int j=0;j<4;j++){
+                bookshelf.addTile(tile,i);
+            }
+            assertFalse(bookshelf.isFull(i));
+        }
+        assertTrue(bookshelf.isFull(0));
+        assertFalse(bookshelf.isFull());
+
+        //test out of limit column
+        assertFalse(bookshelf.isFull(-1));
+        assertFalse(bookshelf.isFull(7));
+
+        //full bookshelf
+        bookshelf=new Bookshelf();
+        for(int i=0;i<5;i++){
+            for(int j=0;j<6;j++){
+                bookshelf.addTile(tile,i);
+            }
+            assertTrue(bookshelf.isFull(i));
+        }
+        assertTrue(bookshelf.isFull());
     }
 
+    @Test
+    public void getBookshelf(){
+        Bookshelf bookshelf=new Bookshelf();
+        assertNotNull(bookshelf.getBookshelf());
+        Tile tile=new Tile(TileColor.GREEN,TileType.CATS);
+        for(int i=0;i<5;i++){
+            for(int j=0;j<6;j++) {
+                bookshelf.addTile(tile, i);
+            }
+        }
+        assertNotNull(bookshelf.getBookshelf());
+        bookshelf=new Bookshelf();
+        for(int j=0;j<6;j++) {
+            bookshelf.addTile(tile, 0);
+        }
+        assertNotNull(bookshelf.getBookshelf());
+    }
 
-
+    @Test
+    public void getTile(){
+        Bookshelf bookshelf = new Bookshelf();
+        assertNull(bookshelf.getTile(0,1));
+        Tile tile=new Tile(TileColor.GREEN,TileType.CATS);
+        for(int j=0;j<5;j++) {
+            bookshelf.addTile(tile, 0);
+        }
+        assertNull(bookshelf.getTile(0,5));
+        assertNull(bookshelf.getTile(0,6));
+        bookshelf=new Bookshelf();
+        for(int i=0;i<5;i++){
+            for(int j=0;j<6;j++) {
+                bookshelf.addTile(tile, i);
+                assertNotNull(bookshelf.getTile(i,j));
+            }
+        }
+    }
 }

@@ -6,6 +6,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,9 +22,10 @@ public class CommonGoalTest {
         FileReader reader;
 
         try {
-            reader = new FileReader("CommonGoals.json");
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource("CommonGoals.json").getFile());
+            reader = new FileReader(file);
             JSONObject commonGoals = (JSONObject) jsonParser.parse(reader);
-
             JSONArray array = (JSONArray) commonGoals.get("CommonGoals");
 
             for (int i = 0; i < array.size(); i++) {

@@ -9,11 +9,13 @@ import org.json.simple.parser.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ParsingJSONManager {
 
@@ -26,7 +28,9 @@ public class ParsingJSONManager {
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
         try {
-            reader = new FileReader("PositionsBoard.json");
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource("PositionsBoard.json")).getFile());
+            reader = new FileReader(file);
             JSONObject configs = (JSONObject) jsonParser.parse(reader);
             JSONArray posArray = (JSONArray) configs.get("Positions");
             JSONObject o = (JSONObject) posArray.get(num - 2);
@@ -51,7 +55,9 @@ public class ParsingJSONManager {
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
         try {
-            reader = new FileReader("PersonalGoals.json");
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource("PersonalGoals.json")).getFile());
+            reader = new FileReader(file);
             JSONObject persGoals = (JSONObject) jsonParser.parse(reader);
 
             JSONArray array = (JSONArray) persGoals.get("PersonalGoals");
@@ -103,7 +109,9 @@ public class ParsingJSONManager {
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
         try {
-            reader = new FileReader("Tiles.json");
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource("Tiles.json")).getFile());
+            reader = new FileReader(file);
             JSONObject configs = (JSONObject) jsonParser.parse(reader);
             JSONArray posArray = (JSONArray) configs.get("Tiles");
             for (int i = 0; i < posArray.size(); i++) {
@@ -163,7 +171,9 @@ public class ParsingJSONManager {
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
         try {
-            reader = new FileReader("Commands.json");
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource("Commands.json").getFile());
+            reader = new FileReader(file);
             JSONObject configs = (JSONObject) jsonParser.parse(reader);
             JSONArray posArray = (JSONArray) configs.get("Commands");
             for (int i = 0; i < posArray.size(); i++) {

@@ -32,7 +32,7 @@ public class Bookshelf {
      * @return true if the column is full, false otherwise
      */
     public boolean isFull(int col){
-        if (bookshelf != null && col >= 0 && col < bookshelf.size()) {
+        if (col >= 0 && col < bookshelf.size()) {
             return bookshelf.get(col).isFull();
         }
         return false;
@@ -56,20 +56,13 @@ public class Bookshelf {
      * @param newTile the tile that must be inserted
      * @param col column where to insert the tile
      */
-    public void addTile(Tile newTile, int col){
-        if (!(bookshelf.get(col).isFull() || newTile == null || col >= 5 || col < 0)){
+    public boolean addTile(Tile newTile, int col){
+        if (!((this.isFull(col)) || newTile == null || col >= 5 || col < 0)){
             bookshelf.get(col).addTile( new Tile(newTile.getColor(), newTile.getType(), new Position(col,bookshelf.get(col).getSize())) );
             //System.out.println(newTile.toString());
+            return true;
         }
-    }
-
-    /**
-     * Returns how many free spaces are left in a column of a given index
-     * @param col column considered
-     * @return number of free spaces of the column
-     */
-    public int freeSpaceCol(int col){
-        return 6-bookshelf.get(col).getSize();
+        return false;
     }
 
     /**
@@ -164,17 +157,11 @@ public class Bookshelf {
      * @return a tile
      */
     public Tile getTile(int i, int j) {
-        if (!bookshelf.isEmpty()) {
-            return bookshelf.get(i).getTile(j);
-        } else {
-            return null;
-        }
-
+        return bookshelf.get(i).getTile(j);
     }
 
     @Override
     public String toString() {
-
         return "Bookshelf{" +
                 "bookshelf=" + bookshelf +
                 '}';
