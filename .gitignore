@@ -25,6 +25,5 @@ target/
 .mtj.tmp/
 
 #Javadoc file
-JavaDoc/
-
+JavaDoc/*
 !JavaDoc/index.html
