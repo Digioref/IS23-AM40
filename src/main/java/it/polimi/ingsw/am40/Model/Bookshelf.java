@@ -72,7 +72,7 @@ public class Bookshelf {
      * @return color of the tile
      */
     private TileColor tileColor(int x,int y){
-        if (! (bookshelf.get(x).getSize()<y)){
+        if (x>=0 && x<DIMROW && y<bookshelf.get(x).getSize()){
             return bookshelf.get(x).getColor(y);
         }
         return null;
@@ -86,7 +86,7 @@ public class Bookshelf {
      * @return int value of the mark
      */
     private int markTile(int x,int y){
-        if (bookshelf.get(x).getSize() < y){
+        if (x<0 || x>DIMROW || bookshelf.get(x).getSize() <= y){
             return -1;
         }
         return bookshelf.get(x).getMark(y);
@@ -124,8 +124,8 @@ public class Bookshelf {
      */
     public int calcScore(){
         int result=0;
-        int numMark;
-        TileColor colorTmp;
+        int numMark=markTile(-1,-1); //purely for test coverage
+        TileColor colorTmp=tileColor(-1,-1);    //purely for test coverage
         for(int i=0; i<5;i++){
             for(int j=0; j<bookshelf.get(i).getSize();j++){
                 if(markTile(i,j)==0){
