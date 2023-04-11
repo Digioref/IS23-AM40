@@ -1,0 +1,8 @@
+it.polimi.ingsw.am40.App
+it.polimi.ingsw.am40.CLI
+it.polimi.ingsw.am40.Client
+it.polimi.ingsw.am40.Controller
+it.polimi.ingsw.am40.JSONConversion
+it.polimi.ingsw.am40.Model
+it.polimi.ingsw.am40.Network
+it.polimi.ingsw.am40.Network.Commands

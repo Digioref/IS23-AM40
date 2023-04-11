@@ -24,6 +24,3 @@ target/
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-#Javadoc file
-JavaDoc/*
-!JavaDoc/index.html
