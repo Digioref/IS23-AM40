@@ -52,7 +52,7 @@ class ColumnTest {
     void setMark() {
         Position p1 = new Position(1,1);
         assertEquals(column.getMark(p1.getY()), 0);
-        column.setMark(p1.getY();
+        column.setMark(p1.getY());
         assertEquals(column.getMark(p1.getY()), 1);
     }
 

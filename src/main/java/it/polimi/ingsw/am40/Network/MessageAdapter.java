@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am40.Network;
 
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.ParsingJSONManager;
 import org.json.simple.parser.ParseException;
 
@@ -45,7 +46,7 @@ public class MessageAdapter {
         }
     }
     public void startMessage(ClientHandler c) throws IOException {
-        c.sendMessage("Welcome to MyShelfie game! (type 'help' for available commands)");
+        c.sendMessage(JSONConverterStoC.normalMessage("Welcome to MyShelfie game! (type 'help' for available commands)"));
     }
 
     public Map<String, ICommand> getCommands() {

@@ -13,5 +13,10 @@
    {"Command10": "getcurscore"},
    {"Command11": "gethiddenscore"},
    {"Command12": "getplayers"},
+   {"Command13": "getcommgoals"},
+   {"Command14": "getpersgoal"},
+   {"Command15": "getboard"},
+   {"Command16": "getbook"},
+   {"Command17": "getbookall"}
  ]
 }

@@ -22,35 +22,37 @@ public class Lobby implements Runnable {
     }
 
     public void  removeFromQueue() {
-        if (activePlayers.size() == 0) {
+//        if (activePlayers.size() == 0) {
             ClientHandler c;
             synchronized (queue) {
                 c = queue.remove(0);
             }
             activePlayers.add(c);
-            numPlayers = c.getNumPlayers();
+//            numPlayers = c.getNumPlayers();
             nicknameInGame.add(c.getNickname());
-        }
-        else if (numPlayers != 0 && activePlayers.size() != 0) {
-            ClientHandler c;
-            synchronized (queue) {
-                c = queue.remove(0);
-            }
-            activePlayers.add(c);
-            nicknameInGame.add(c.getNickname());
-        }
+//        }
+//        else if (numPlayers != 0 && activePlayers.size() != 0) {
+//            ClientHandler c;
+//            synchronized (queue) {
+//                c = queue.remove(0);
+//            }
+//            activePlayers.add(c);
+//            nicknameInGame.add(c.getNickname());
+//        }
     }
 
     public void run() {
         System.out.println("Lobby is running...");
         while (true) {
             synchronized (queue) {
-                if (!queue.isEmpty()) {
-                    removeFromQueue();
+                if (numPlayers != 0) {
+                    if (!queue.isEmpty()) {
+                        removeFromQueue();
+                    }
+                    if (activePlayers.size() == numPlayers) {
+                        create();
+                    }
                 }
-            }
-            if (numPlayers != 0 && activePlayers.size() == numPlayers) {
-                create();
             }
         }
     }
@@ -90,5 +92,9 @@ public class Lobby implements Runnable {
 
     public ArrayList<ClientHandler> getActivePlayers() {
         return activePlayers;
+    }
+
+    public void setNumPlayers(int numPlayers) {
+        this.numPlayers = numPlayers;
     }
 }

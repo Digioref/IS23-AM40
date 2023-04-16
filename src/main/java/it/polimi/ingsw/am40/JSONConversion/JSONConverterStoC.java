@@ -1,7 +1,6 @@
 package it.polimi.ingsw.am40.JSONConversion;
 
-import it.polimi.ingsw.am40.Model.Player;
-import it.polimi.ingsw.am40.Network.ICommand;
+import it.polimi.ingsw.am40.Model.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -9,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class JSONConverterStoC {
+    private final static int NUM = 6;
 
     public static String createJSONCurrentPlayer(String s) {
         JSONObject obj = new JSONObject();
@@ -50,4 +50,189 @@ public class JSONConverterStoC {
         obj.put("Players", arr);
         return obj.toJSONString();
     }
+
+    public static String createJSONCommonGoals(int num1, int score1, int num2, int score2) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "CommonGoals");
+        JSONArray arr = new JSONArray();
+        JSONObject obj1 = new JSONObject();
+        obj1.put("Number", num1);
+        obj1.put("Score", score1);
+        arr.add(obj1);
+        JSONObject obj2 = new JSONObject();
+        obj2.put("Number", num2);
+        obj2.put("Score", score2);
+        arr.add(obj2);
+        obj.put("CommonGoals", arr);
+        return obj.toJSONString();
+    }
+
+
+    public static String createJSONPersGoal(PersonalGoal personalGoal) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "PersonalGoal");
+        JSONArray arr1 = new JSONArray();
+        for (int i = 0; i < NUM; i++) {
+            JSONObject obj1 = new JSONObject();
+            obj1.put("x", personalGoal.getPos().get(i).getX());
+            obj1.put("y", personalGoal.getPos().get(i).getY());
+            obj1.put("color", personalGoal.getColor().get(i).toString());
+            arr1.add(obj1);
+        }
+        obj.put("PersonalGoal", arr1);
+        return obj.toJSONString();
+    }
+
+    public static String createJSONBoard(Board board) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "Board");
+        JSONArray arr1 = new JSONArray();
+        for (String s: board.getGrid().keySet()) {
+            JSONObject obj1 = new JSONObject();
+            obj1.put("color", board.getGrid().get(s).getColor().toString());
+            obj1.put("x", board.getGrid().get(s).getPos().getX());
+            obj1.put("y", board.getGrid().get(s).getPos().getY());
+            arr1.add(obj1);
+        }
+        obj.put("Board", arr1);
+        return obj.toJSONString();
+    }
+
+    public static String createJSONBook(Bookshelf bookshelf) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "Bookshelf");
+        JSONArray arr1 = new JSONArray();
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 6; j++) {
+                JSONObject obj1 = new JSONObject();
+                if (bookshelf.getBookshelf().get(i).isEmpty()) {
+                    obj1.put("color", TileColor.NOCOLOR.toString());
+                }
+                else {
+                    obj1.put("color", bookshelf.getBookshelf().get(i).getTile(j).getColor().toString());
+                }
+                obj1.put("x", i);
+                obj1.put("y", j);
+                arr1.add(obj1);
+            }
+        }
+        obj.put("Bookshelf", arr1);
+        return obj.toJSONString();
+    }
+
+    public static String createJSONBookAll(ArrayList<Player> players) {
+        JSONObject obj = new JSONObject();
+        JSONArray arr = new JSONArray();
+        obj.put("Command", "BookshelfAll");
+        for (Player p: players) {
+            JSONArray arr1 = new JSONArray();
+            JSONObject obj2 = new JSONObject();
+            obj2.put("Nickname", p.getNickname());
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 6; j++) {
+                    JSONObject obj1 = new JSONObject();
+                    if (p.getBookshelf().getBookshelf().get(i).isEmpty()) {
+                        obj1.put("color", TileColor.NOCOLOR.toString());
+                    }
+                    else {
+                        obj1.put("color", p.getBookshelf().getBookshelf().get(i).getTile(j).getColor().toString());
+                    }
+                    obj1.put("x", i);
+                    obj1.put("y", j);
+                    arr1.add(obj1);
+                }
+            }
+            obj2.put("Bookshelf", arr1);
+            arr.add(obj2);
+        }
+        obj.put("Bookshelves" , arr);
+        return obj.toJSONString();
+    }
+
+    public static String createJSONBoardPickable(Board board, ArrayList<Position> arr) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "BoardPickable");
+        JSONArray arr1 = new JSONArray();
+        for (Position p: board.getPickableTiles()) {
+            JSONObject obj1 = new JSONObject();
+            if (board.getGrid().containsKey(p.getKey()) && !arr.contains(p)) {
+                obj1.put("color", board.getGrid().get(p.getKey()).getColor().toString());
+                obj1.put("x", p.getX());
+                obj1.put("y", p.getY());
+                arr1.add(obj1);
+            }
+        }
+        obj.put("PickableTiles", arr1);
+        JSONArray arr2 = new JSONArray();
+        for (Position p: arr) {
+            JSONObject obj1 = new JSONObject();
+            obj1.put("x", p.getX());
+            obj1.put("y", p.getY());
+            arr2.add(obj1);
+        }
+        obj.put("AlreadySel", arr2);
+        JSONArray arr3 = new JSONArray();
+        for (String s: board.getGrid().keySet()) {
+            JSONObject obj1 = new JSONObject();
+            obj1.put("color", board.getGrid().get(s).getColor().toString());
+            obj1.put("x", board.getGrid().get(s).getPos().getX());
+            obj1.put("y", board.getGrid().get(s).getPos().getY());
+            arr3.add(obj1);
+        }
+        obj.put("Board", arr3);
+        return obj.toJSONString();
+    }
+
+    public static String createJSONSelectedTiles(Player player) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "SelectedTiles");
+        JSONArray arr1 = new JSONArray();
+        for (Position p: player.getSelectedPositions()) {
+            JSONObject obj1 = new JSONObject();
+            obj1.put("color", player.getBoard().getGrid().get(p.getKey()).getColor().toString());
+            obj1.put("x", p.getX());
+            obj1.put("y", p.getY());
+            arr1.add(obj1);
+        }
+        obj.put("SelectedTiles", arr1);
+        obj.put("Nickname", player.getNickname());
+        return obj.toJSONString();
+    }
+
+    public static String createJSONPickedTiles(Player player) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "PickedTiles");
+        JSONArray arr1 = new JSONArray();
+        for (Tile t: player.getTilesPicked()) {
+            JSONObject obj1 = new JSONObject();
+            obj1.put("color", t.getColor().toString());
+            obj1.put("x", t.getPos().getX());
+            obj1.put("y", t.getPos().getY());
+            arr1.add(obj1);
+        }
+        obj.put("PickedTiles", arr1);
+        obj.put("Nickname", player.getNickname());
+        return obj.toJSONString();
+    }
+
+    public static String createJSONFinalScore(ArrayList<Player> players, Player winner) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "FinalScores");
+        JSONArray arr1 = new JSONArray();
+        for (Player p: players) {
+            JSONObject obj1 = new JSONObject();
+            obj1.put("Nickname", p.getNickname());
+            obj1.put("Score", p.getFinalScore());
+            arr1.add(obj1);
+        }
+        obj.put("FinalScores", arr1);
+        obj.put("Nickname", winner.getNickname());
+        return obj.toJSONString();
+    }
+    public static String normalMessage(String s) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", s);
+        return obj.toJSONString();
+    }
+
 }

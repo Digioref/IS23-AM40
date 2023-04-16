@@ -582,4 +582,7 @@ public class CommonGoal {
         return 0;
     }
 
+    public CommonGoalToken getCommgoaltok() {
+        return commgoaltok;
+    }
 }

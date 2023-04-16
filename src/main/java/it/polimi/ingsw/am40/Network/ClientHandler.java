@@ -2,6 +2,7 @@ package it.polimi.ingsw.am40.Network;
 
 import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.Controller.Lobby;
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.Position;
 import org.json.simple.parser.ParseException;
 
@@ -91,7 +92,7 @@ public class ClientHandler implements Runnable {
 //
 //                out.println("Give command: ");
 //                out.flush();
-                sendMessage("Type your command here: ");
+                sendMessage(JSONConverterStoC.normalMessage("Type your command here: "));
                 String line = in.nextLine();
                 messAd.parserMessage(this, line);
                 if (line.equals("quit")) {
@@ -149,7 +150,7 @@ public class ClientHandler implements Runnable {
             int x = random.nextInt(10);
             int y = random.nextInt(10);
             int z = random.nextInt(10);
-            sendMessage(nickname + x + y + z);
+            sendMessage(JSONConverterStoC.normalMessage(nickname + x + y + z));
         }
     }
 

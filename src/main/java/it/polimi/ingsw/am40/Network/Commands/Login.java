@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am40.Network.Commands;
 
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.ICommand;
 
@@ -21,9 +22,10 @@ public class Login implements ICommand {
             else {
                 c.setLogged(true);
                 c.setNickname(comm.get(0));
+                c.getLobby().addQueue(c);
             }
             if (c.getLobby().getActivePlayers().size() == 0) {
-                c.sendMessage("The number of players you want to play with: ");
+                c.sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with: "));
             }
         }
         else {
