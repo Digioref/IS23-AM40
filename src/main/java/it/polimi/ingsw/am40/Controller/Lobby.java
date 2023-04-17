@@ -33,7 +33,7 @@ public class Lobby implements Runnable {
             }
             activePlayers.add(c);
 //            numPlayers = c.getNumPlayers();
-            nicknameInGame.add(c.getNickname());
+//            nicknameInGame.add(c.getNickname());
 //        }
 //        else if (numPlayers != 0 && activePlayers.size() != 0) {
 //            ClientHandler c;

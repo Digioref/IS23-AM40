@@ -23,8 +23,8 @@ public class GameController {
     }
 
     public void pickTiles(VirtualView v) {
-        game.setTurn(TurnPhase.PICK);
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
+            game.setTurn(TurnPhase.PICK);
             game.pickTiles();
         } else {
             v.turnError();

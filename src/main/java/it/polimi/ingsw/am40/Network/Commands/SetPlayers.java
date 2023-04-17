@@ -16,6 +16,8 @@ public class SetPlayers implements ICommand {
         if (comm.size() == 1) {
             if (LoggingPhase.SETPLAYERS && c.getLogphase().equals(LoggingPhase.WAITING)) {
                 c.getLobby().setNumPlayers(Integer.parseInt(comm.get(0)));
+            } else if (!LoggingPhase.SETPLAYERS) {
+                c.sendMessage(JSONConverterStoC.normalMessage("You can not set the number of players, the game has been already created!"));
             }
             else {
                 c.sendMessage(JSONConverterStoC.normalMessage("You are not logged in yet!"));

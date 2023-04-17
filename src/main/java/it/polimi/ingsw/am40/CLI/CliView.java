@@ -31,7 +31,7 @@ public class CliView {
     public void showPlayers(ArrayList<String> names) {
         System.out.println(color.blackBg() + " Players " + color.rst());
         for (String s: names) {
-            System.out.println(s + "\n");
+            System.out.println(color.greenBg() + s + color.rst());
         }
     }
 

@@ -15,7 +15,7 @@ public class Insert implements ICommand {
             c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));
         }
         else {
-            if (Integer.parseInt(comm.get(0)) > 0 && Integer.parseInt(comm.get(0)) >= 5) {
+            if (Integer.parseInt(comm.get(0)) > 0 && Integer.parseInt(comm.get(0)) <= 5) {
                 ArrayList<Integer> arr = new ArrayList<>();
                 arr.add(Integer.parseInt(comm.get(0)));
                 c.executeCommand(ActionType.INSERT, arr);
