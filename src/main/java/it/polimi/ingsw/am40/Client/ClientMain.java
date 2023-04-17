@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 public class ClientMain {
     final static String hostName = "localhost";
     final static int portNumber = 1234;
-    static Logger logger = null;
+    static ClientAdapter clientAdapter = null;
     public static void main(String[] args) {
         System.out.println("Client started!");
         try {
@@ -21,8 +21,8 @@ public class ClientMain {
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
             ExecutorService executor = Executors.newCachedThreadPool();
-            logger = new Logger(socket);
-            executor.submit(logger);
+            clientAdapter = new ClientAdapter(socket);
+            executor.submit(clientAdapter);
             String userInput;
             while (true) {
                 userInput = stdIn.readLine();

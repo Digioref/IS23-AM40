@@ -1,7 +1,9 @@
 package it.polimi.ingsw.am40.Model;
 
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.VirtualView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -57,6 +59,7 @@ public class Game implements IGame {
     private ArrayList<VirtualView> observers;
     private ParsingJSONManager pJSONm;
     private TurnPhase turn;
+    private Player winner;
 
     /**
      * Constructor which builds the class assigning the number of players and creating the array of players
@@ -188,9 +191,11 @@ public class Game implements IGame {
     public void updatePickableTiles (Position pos) {
         if (turn == TurnPhase.SELECTION) {
             if (board.getPickableTiles().contains(pos)) {
+//                System.out.println("qui");
                 board.updatePickable(pos);
                 currentPlayer.getSelectedPositions().add(pos);
                 board.updateAfterSelect(pos, currentPlayer);
+//                System.out.println("qui");
                 notifyObservers(turn);
             } else {
                 for (VirtualView v : observers) {
@@ -283,15 +288,21 @@ public class Game implements IGame {
      */
     public void insertInBookshelf (int c) {
         if (turn == TurnPhase.INSERT) {
-            setTurn(TurnPhase.ENDTURN);
-//            System.out.println("qui2");
-            currentPlayer.placeInBookshelf(c);
-            currentPlayer.updateCurrScore(currentComGoals);
-            endToken.updateScore(currentPlayer);
+            if (currentPlayer.getBookshelf().getBookshelf().get(c).isFull()) {
+                for (VirtualView v : observers) {
+                    if (currentPlayer.getNickname().equals(v.getNickname())) {
+                        v.insertError();
+                    }
+                }
+            } else {
+                currentPlayer.placeInBookshelf(c);
+                currentPlayer.updateCurrScore(currentComGoals);
+                endToken.updateScore(currentPlayer);
 //            System.out.println("qui4");
-            currentPlayer.updateHiddenScore();
-            notifyObservers(turn);
-
+                currentPlayer.updateHiddenScore();
+                notifyObservers(turn);
+                setTurn(TurnPhase.ENDTURN);
+            }
         }
         else {
             for (VirtualView v : observers) {
@@ -306,11 +317,10 @@ public class Game implements IGame {
      * Calculates the score of each player at the end of the game
      */
     public void endGame() {
-        ArrayList<Integer> score = new ArrayList<>(numPlayers);
         if (checkEndGame() && turn == TurnPhase.ENDGAME) {
             for (Player p : players) {
                 p.calculateScore();
-                score.add(p.getFinalScore());
+                setWinner();
             }
         }
         notifyObservers(turn);
@@ -327,7 +337,11 @@ public class Game implements IGame {
             board.setSideFreeTile();
             for (VirtualView v: observers) {
                 if (currentPlayer.getNickname().equals(v.getNickname())) {
-                    v.receiveCurrentPlayer(currentPlayer);
+                    try {
+                        v.getClientHandler().sendMessage(JSONConverterStoC.normalMessage("It's your turn!"));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
             notifyObservers(turn);
@@ -352,6 +366,59 @@ public class Game implements IGame {
                 turn = TurnPhase.START;
             }
         }
+   }
+
+   public void setWinner() {
+        ArrayList<Player> pl = new ArrayList<>();
+        int max = 0;
+        for (Player p: players) {
+            if (p.getFinalScore() >= max) {
+               max = p.getFinalScore();
+           }
+        }
+        for (Player p: players) {
+           if (p.getFinalScore() == max) {
+               pl.add(p);
+           }
+        }
+        if (pl.size() == 1) {
+           winner = pl.get(0);
+        }
+        else if (pl.size() >= 2) {
+            int fp = players.indexOf(firstPlayer);
+            ArrayList<Integer> ind = new ArrayList<>();
+            for (Player p: pl) {
+                ind.add(players.indexOf(p));
+            }
+            switch (fp) {
+                case 0:
+                   winner = players.get(ind.stream().mapToInt(x->x).max().getAsInt());
+                   break;
+                case 1:
+                    if (ind.contains(0)) {
+                        winner = players.get(0);
+                    } else {
+                        winner = players.get(ind.stream().mapToInt(x->x).max().getAsInt());
+                    }
+                    break;
+                case 2:
+                    if (ind.contains(1)) {
+                        winner = players.get(1);
+                    } else if (ind.contains(0)) {
+                        winner = players.get(0);
+                    } else {
+                        winner = players.get(ind.stream().mapToInt(x->x).max().getAsInt());
+                    }
+                    break;
+                case 3:
+                    if (ind.contains(3)) {
+                        ind.remove(ind.indexOf(3));
+                    }
+                    winner = players.get(ind.stream().mapToInt(x->x).max().getAsInt());
+                    break;
+            }
+        }
+
    }
 
     /**
@@ -426,24 +493,22 @@ public class Game implements IGame {
         switch (turnPhase) {
             case START:
                 for (VirtualView v : observers) {
-                    ArrayList<Bookshelf> b = new ArrayList<>();
                     v.receiveBoard(board);
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
-                        v.receiveAllowedPositions(board.getPickableTiles());
+                        v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
                     }
 //                    v.receiveCurrentPlayer(currentPlayer);
                     v.receiveCommonGoals(currentComGoals);
                     for (Player p : players) {
                         if (p.getNickname().equals(v.getNickname())) {
-                            v.receiveCurrentScore(p.getCurrentScore());
                             v.receiveHiddenScore(p.getHiddenScore());
                             v.receivePersonalGoal(p.getPersonalGoal());
                         }
-                        b.add(p.getBookshelf());
                     }
-                    v.receiveListBookshelves(b);
+                    v.receiveListBookshelves(players);
                     v.receiveListPlayers(players);
                     v.receiveNumPlayers(numPlayers);
+                    v.receiveCurrentPlayer(currentPlayer);
                 };
                 break;
 
@@ -451,7 +516,8 @@ public class Game implements IGame {
 //                System.out.println("qui");
                 for (VirtualView v : observers) {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
-                        v.receiveAllowedPositions(board.getPickableTiles());
+                        v.receiveSelectedTiles(currentPlayer);
+                        v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
                     }
                 };
                 break;
@@ -460,7 +526,7 @@ public class Game implements IGame {
                 for (VirtualView v : observers) {
                     v.receiveBoard(board);
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
-                        v.receivePickedTiles(currentPlayer.getTilesPicked());
+                        v.receivePickedTiles(currentPlayer);
                     }
                 };
                 break;
@@ -475,23 +541,21 @@ public class Game implements IGame {
 
             case INSERT:
                 for (VirtualView v : observers) {
-                    ArrayList<Bookshelf> b = new ArrayList<>();
                     for (Player p : players) {
                         if (p.getNickname().equals(v.getNickname())) {
-                            v.receiveCurrentScore(p.getCurrentScore());
                             v.receiveHiddenScore(p.getHiddenScore());
                         }
-                        b.add(p.getBookshelf());
                     }
-                    v.receiveListBookshelves(b);
+                    v.receiveListBookshelves(players);
                 };
+//                setTurn(TurnPhase.ENDTURN);
                 break;
 
             case ENDGAME:
                 for (VirtualView v : observers) {
                     for (Player p : players) {
                         if (p.getNickname().equals(v.getNickname())) {
-                            v.receiveFinalScore(p.getFinalScore());
+                            v.receiveFinalScore(players, winner);
                         }
                     }
                 };

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am40.Network.Commands;
 
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.ICommand;
 
@@ -10,21 +11,28 @@ public class Help implements ICommand {
 
     @Override
     public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
-        for (String s: c.getMessAd().getCommands().keySet()) {
-            switch(s) {
-                case "select":
-                    c.sendMessage("- " + s + " [int] [int]");
-                    break;
-                case "order":
-                    c.sendMessage("- " + s + " [int] (at least)");
-                    break;
-                case "insert":
-                    c.sendMessage("- " + s + " [int]");
-                    break;
-                default:
-                    c.sendMessage("- " + s);
-                    break;
+        if (comm.size() == 0) {
+            for (String s: c.getMessAd().getCommands().keySet()) {
+                switch(s) {
+                    case "select":
+                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [int] [int]"));
+                        break;
+                    case "order":
+                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [int] (at least)"));
+                        break;
+                    case "insert", "setplayers":
+                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [int]"));
+                        break;
+                    case "login":
+                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [string]"));
+                        break;
+                    default:
+                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s));
+                        break;
+                }
             }
+        } else {
+            c.sendMessage(JSONConverterStoC.normalMessage("The command help doesn't want arguments!"));
         }
     }
 }

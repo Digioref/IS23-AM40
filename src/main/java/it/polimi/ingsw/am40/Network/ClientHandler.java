@@ -2,6 +2,7 @@ package it.polimi.ingsw.am40.Network;
 
 import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.Controller.Lobby;
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.Position;
 import org.json.simple.parser.ParseException;
 
@@ -23,14 +24,14 @@ public class ClientHandler implements Runnable {
     private boolean logged;
     private MessageAdapter messAd;
     private Lobby lobby;
-    private boolean isPlaying;
+    private LoggingPhase logphase;
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
         logged = false;
         messAd = new MessageAdapter();
         lobby = new Lobby();
-        isPlaying = false;
+        setLogphase(LoggingPhase.LOGGING);
     }
 
     public void sendMessage(String s) throws IOException {
@@ -91,7 +92,7 @@ public class ClientHandler implements Runnable {
 //
 //                out.println("Give command: ");
 //                out.flush();
-                sendMessage("Type your command here: ");
+                sendMessage(JSONConverterStoC.normalMessage("Type your command here: "));
                 String line = in.nextLine();
                 messAd.parserMessage(this, line);
                 if (line.equals("quit")) {
@@ -149,7 +150,7 @@ public class ClientHandler implements Runnable {
             int x = random.nextInt(10);
             int y = random.nextInt(10);
             int z = random.nextInt(10);
-            sendMessage(nickname + x + y + z);
+            sendMessage(JSONConverterStoC.normalMessage(nickname + x + y + z));
         }
     }
 
@@ -158,7 +159,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void executeCommand(ActionType at, ArrayList<Integer> arr) {
-        if (isPlaying) {
+        if (logphase.equals(LoggingPhase.INGAME)) {
             switch(at) {
                 case SELECT:
                     Position p = new Position(arr.get(0), arr.get(1));
@@ -180,7 +181,7 @@ public class ClientHandler implements Runnable {
             }
         } else {
             try {
-                sendMessage("You are not playing in any game yet!");
+                sendMessage(JSONConverterStoC.normalMessage("You are not playing in any game yet!"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -191,7 +192,13 @@ public class ClientHandler implements Runnable {
         this.virtualView = v;
     }
 
-    public void setPlaying(boolean playing) {
-        isPlaying = playing;
+
+    public void setLogphase(LoggingPhase logphase) {
+        this.logphase = logphase;
     }
+
+    public LoggingPhase getLogphase() {
+        return logphase;
+    }
+
 }

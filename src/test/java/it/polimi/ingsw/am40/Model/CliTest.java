@@ -2,7 +2,6 @@ package it.polimi.ingsw.am40.Model;
 import it.polimi.ingsw.am40.CLI.*;
 import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.Controller.GameController;
-import it.polimi.ingsw.am40.Network.ServerMain;
 import it.polimi.ingsw.am40.Network.VirtualView;
 import org.junit.jupiter.api.Test;
 
@@ -90,7 +89,7 @@ public class CliTest {
         cli.showCurrentBookshelf();
         cli.showPersonalGoal();
 
-        cli.showAllBookshelfs();
+        cli.showAllBookshelves();
 
         cli.showCurrentPlayer();
         for (Player p: game1.getPlayers()) {
@@ -135,7 +134,7 @@ public class CliTest {
         ord = new ArrayList<Integer>(List.of(1,2,3));
         gc.order(v, ord);
         gc.insert(v, 0);
-        cli.showAllBookshelfs();
+        cli.showAllBookshelves();
 
     }
     @Test
@@ -181,7 +180,7 @@ public class CliTest {
         gc.insert(v,4);
         cli.showBoard();
         cli.showCurrentBookshelf();
-        cli.showAllBookshelfs();
+        cli.showAllBookshelves();
 
         cli.showCurrentPlayer();
 

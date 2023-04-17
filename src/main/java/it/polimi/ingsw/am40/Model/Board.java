@@ -214,42 +214,42 @@ public class Board {
     }
     public void updateAfterSelect(Position p, Player pl) {
         Position pos = new Position(-10, -10);
-        pos.setXY(p.getX(), p.getY()-1);
         if (pl.getSelectedPositions().size() < 2) {
-            if (isPickable(p, pos) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+            pos.setXY(p.getX(), (p.getY()-1));
+            if (isPickable(p, pos) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos) && !pickableTiles.contains(pos)){
                 pickableTiles.add(new Position(p.getX(), p.getY()-1));
             }
             pos.setXY(p.getX(), p.getY()+1);
-            if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+            if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos) && !pickableTiles.contains(pos)){
                 pickableTiles.add(new Position(p.getX(), p.getY()+1));
             }
             pos.setXY(p.getX()-1, p.getY());
-            if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+            if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos) && !pickableTiles.contains(pos)){
                 pickableTiles.add(new Position(p.getX()-1, p.getY()));
             }
             pos.setXY(p.getX()+1, p.getY());
-            if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+            if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos) && !pickableTiles.contains(pos)){
                 pickableTiles.add(new Position(p.getX()+1, p.getY()));
             }
         }
         else {
             if (pl.getSelectedPositions().get(0).getX() == pl.getSelectedPositions().get(1).getX()) {
                 pos.setXY(p.getX(), p.getY()+1);
-                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos) && !pickableTiles.contains(pos)){
                     pickableTiles.add(new Position(p.getX(), p.getY()+1));
                 }
                 pos.setXY(p.getX(), p.getY()-1);
-                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos) && !pickableTiles.contains(pos)){
                     pickableTiles.add(new Position(p.getX(), p.getY()-1));
                 }
             }
             if (pl.getSelectedPositions().get(0).getY() == pl.getSelectedPositions().get(1).getY()) {
                 pos.setXY(p.getX()+1, p.getY());
-                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos) && !pickableTiles.contains(pos)){
                     pickableTiles.add(new Position(p.getX()+1, p.getY()));
                 }
                 pos.setXY(p.getX()-1, p.getY());
-                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos)){
+                if (isPickable(pos, p) && checkFreeSide(pos) > 0 && !pl.getSelectedPositions().contains(pos) && !pickableTiles.contains(pos)){
                     pickableTiles.add(new Position(p.getX()-1, p.getY()));
                 }
             }

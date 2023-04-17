@@ -8,18 +8,18 @@ import it.polimi.ingsw.am40.Network.ICommand;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GetHiddenScore  implements ICommand {
+public class GetPersGoal implements ICommand {
     @Override
     public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
         if (comm.size() == 0) {
             for (Player p: c.getController().getGame().getPlayers()) {
                 if (c.getNickname().equals(p.getNickname())) {
-                    c.sendMessage(JSONConverterStoC.createJSONHiddenScore(p.getHiddenScore()));
+                    c.sendMessage(JSONConverterStoC.createJSONPersGoal(p.getPersonalGoal()));
                     break;
                 }
             }
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command gethiddenscore doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.normalMessage("The command getpersgoal doesn't want arguments!"));
         }
     }
 }

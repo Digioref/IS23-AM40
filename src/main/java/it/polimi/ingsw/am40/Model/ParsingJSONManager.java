@@ -219,6 +219,22 @@ public class ParsingJSONManager {
                     case "getplayers":
                         map.put("getplayers", new GetPlayers());
                         break;
+                    case "getcommgoals":
+                        map.put("getcommgoals", new GetCommGoals());
+                        break;
+                    case "getpersgoal":
+                        map.put("getpersgoal", new GetPersGoal());
+                        break;
+                    case "getboard":
+                        map.put("getboard", new GetBoard());
+                        break;
+                    case "getbook":
+                        map.put("getbook", new GetBook());
+                        break;
+                    case "getbookall":
+                        map.put("getbookall", new GetBookAll());
+                        break;
+
                 }
             }
 

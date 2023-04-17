@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am40.Network.Commands;
 
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.ActionType;
 import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.ICommand;
@@ -11,12 +12,18 @@ public class Insert implements ICommand {
     @Override
     public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
         if (comm.size() != 1) {
-            c.sendMessage("Incomplete command");
+            c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));
         }
         else {
-            ArrayList<Integer> arr = new ArrayList<>();
-            arr.add(Integer.parseInt(comm.get(0)));
-            c.executeCommand(ActionType.INSERT, arr);
+            if (Integer.parseInt(comm.get(0)) > 0 && Integer.parseInt(comm.get(0)) >= 5) {
+                ArrayList<Integer> arr = new ArrayList<>();
+                arr.add(Integer.parseInt(comm.get(0)));
+                c.executeCommand(ActionType.INSERT, arr);
+            } else if (Integer.parseInt(comm.get(0)) <= 0) {
+                c.sendMessage(JSONConverterStoC.normalMessage("The index of the column is too low"));
+            } else {
+                c.sendMessage(JSONConverterStoC.normalMessage("The index of the column is too high"));
+            }
         }
     }
 }

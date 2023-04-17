@@ -118,28 +118,28 @@ public class Tile {
         else return col.black() + "X " + col.rst();
     }
 */
-    public String print() {
-        Colors col = new Colors();
-        if (color.equals(TileColor.GREEN)) {
-            return col.greenBg() + " G " + col.rst();
-        }
-        if (color.equals(TileColor.WHITE)) {
-            return col.whiteBg() + " W " + col.rst();
-        }
-        if (color.equals(TileColor.YELLOW)) {
-            return col.yellowBg() + " Y " + col.rst();
-        }
-        if (color.equals(TileColor.BLUE)) {
-            return col.blueBg() + " B " + col.rst();
-        }
-        if (color.equals(TileColor.CYAN)) {
-            return col.cyanBg() + " C " + col.rst();
-        }
-        if (color.equals(TileColor.VIOLET)) {
-            return col.purpleBg() + " V " + col.rst();
-        }
-        else return col.blackBg() + "   " + col.rst();
-    }
+//    public String print() {
+//        Colors col = new Colors();
+//        if (color.equals(TileColor.GREEN)) {
+//            return col.greenBg() + " G " + col.rst();
+//        }
+//        if (color.equals(TileColor.WHITE)) {
+//            return col.whiteBg() + " W " + col.rst();
+//        }
+//        if (color.equals(TileColor.YELLOW)) {
+//            return col.yellowBg() + " Y " + col.rst();
+//        }
+//        if (color.equals(TileColor.BLUE)) {
+//            return col.blueBg() + " B " + col.rst();
+//        }
+//        if (color.equals(TileColor.CYAN)) {
+//            return col.cyanBg() + " C " + col.rst();
+//        }
+//        if (color.equals(TileColor.VIOLET)) {
+//            return col.purpleBg() + " V " + col.rst();
+//        }
+//        else return col.blackBg() + "   " + col.rst();
+//    }
 
     @Override
     public String toString() {
