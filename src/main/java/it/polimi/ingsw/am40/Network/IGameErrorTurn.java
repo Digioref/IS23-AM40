@@ -9,4 +9,5 @@ public interface IGameErrorTurn {
     public void orderingError();
     public void insertTurnError();
     public void turnError();
+    public void insertError();
 }

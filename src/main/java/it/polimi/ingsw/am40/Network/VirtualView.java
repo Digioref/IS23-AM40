@@ -198,7 +198,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void orderingError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("The order specified is not compatible withe the number of tiles picked!"));
+            clientHandler.sendMessage(JSONConverterStoC.normalMessage("The order specified is not compatible with the number of tiles picked!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -217,6 +217,15 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     public void turnError() {
         try {
             clientHandler.sendMessage(JSONConverterStoC.normalMessage("It's not your turn!"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void insertError() {
+        try {
+            clientHandler.sendMessage(JSONConverterStoC.normalMessage("The column you selected is full!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

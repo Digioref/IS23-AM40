@@ -11,11 +11,15 @@ import java.util.ArrayList;
 public class GetPersGoal implements ICommand {
     @Override
     public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
-        for (Player p: c.getController().getGame().getPlayers()) {
-            if (c.getNickname().equals(p.getNickname())) {
-                c.sendMessage(JSONConverterStoC.createJSONPersGoal(p.getPersonalGoal()));
-                break;
+        if (comm.size() == 0) {
+            for (Player p: c.getController().getGame().getPlayers()) {
+                if (c.getNickname().equals(p.getNickname())) {
+                    c.sendMessage(JSONConverterStoC.createJSONPersGoal(p.getPersonalGoal()));
+                    break;
+                }
             }
+        } else {
+            c.sendMessage(JSONConverterStoC.normalMessage("The command getpersgoal doesn't want arguments!"));
         }
     }
 }

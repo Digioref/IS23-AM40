@@ -288,15 +288,21 @@ public class Game implements IGame {
      */
     public void insertInBookshelf (int c) {
         if (turn == TurnPhase.INSERT) {
-            setTurn(TurnPhase.ENDTURN);
-//            System.out.println("qui2");
-            currentPlayer.placeInBookshelf(c);
-            currentPlayer.updateCurrScore(currentComGoals);
-            endToken.updateScore(currentPlayer);
+            if (currentPlayer.getBookshelf().getBookshelf().get(c).isFull()) {
+                for (VirtualView v : observers) {
+                    if (currentPlayer.getNickname().equals(v.getNickname())) {
+                        v.insertError();
+                    }
+                }
+            } else {
+                currentPlayer.placeInBookshelf(c);
+                currentPlayer.updateCurrScore(currentComGoals);
+                endToken.updateScore(currentPlayer);
 //            System.out.println("qui4");
-            currentPlayer.updateHiddenScore();
-            notifyObservers(turn);
-
+                currentPlayer.updateHiddenScore();
+                notifyObservers(turn);
+                setTurn(TurnPhase.ENDTURN);
+            }
         }
         else {
             for (VirtualView v : observers) {
@@ -489,7 +495,7 @@ public class Game implements IGame {
                 for (VirtualView v : observers) {
                     v.receiveBoard(board);
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
-                        v.receiveAllowedPositions(board.getPickableTiles(), board);
+                        v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
                     }
 //                    v.receiveCurrentPlayer(currentPlayer);
                     v.receiveCommonGoals(currentComGoals);
@@ -542,6 +548,7 @@ public class Game implements IGame {
                     }
                     v.receiveListBookshelves(players);
                 };
+//                setTurn(TurnPhase.ENDTURN);
                 break;
 
             case ENDGAME:

@@ -24,14 +24,14 @@ public class ClientHandler implements Runnable {
     private boolean logged;
     private MessageAdapter messAd;
     private Lobby lobby;
-    private boolean isPlaying;
+    private LoggingPhase logphase;
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
         logged = false;
         messAd = new MessageAdapter();
         lobby = new Lobby();
-        isPlaying = false;
+        setLogphase(LoggingPhase.LOGGING);
     }
 
     public void sendMessage(String s) throws IOException {
@@ -159,7 +159,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void executeCommand(ActionType at, ArrayList<Integer> arr) {
-        if (isPlaying) {
+        if (logphase.equals(LoggingPhase.INGAME)) {
             switch(at) {
                 case SELECT:
                     Position p = new Position(arr.get(0), arr.get(1));
@@ -181,7 +181,7 @@ public class ClientHandler implements Runnable {
             }
         } else {
             try {
-                sendMessage("You are not playing in any game yet!");
+                sendMessage(JSONConverterStoC.normalMessage("You are not playing in any game yet!"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -192,7 +192,13 @@ public class ClientHandler implements Runnable {
         this.virtualView = v;
     }
 
-    public void setPlaying(boolean playing) {
-        isPlaying = playing;
+
+    public void setLogphase(LoggingPhase logphase) {
+        this.logphase = logphase;
     }
+
+    public LoggingPhase getLogphase() {
+        return logphase;
+    }
+
 }

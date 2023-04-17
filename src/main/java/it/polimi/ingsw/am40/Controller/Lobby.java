@@ -1,12 +1,16 @@
 package it.polimi.ingsw.am40.Controller;
 
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.Game;
 import it.polimi.ingsw.am40.Model.Player;
 import it.polimi.ingsw.am40.Network.ClientHandler;
+import it.polimi.ingsw.am40.Network.LoggingPhase;
 import it.polimi.ingsw.am40.Network.VirtualView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.jar.JarEntry;
 
 public class Lobby implements Runnable {
     private int numPlayers;
@@ -45,7 +49,7 @@ public class Lobby implements Runnable {
         System.out.println("Lobby is running...");
         while (true) {
             synchronized (queue) {
-                if (numPlayers != 0) {
+                if (numPlayers != 0 && LoggingPhase.SETPLAYERS) {
                     if (!queue.isEmpty()) {
                         removeFromQueue();
                     }
@@ -77,13 +81,19 @@ public class Lobby implements Runnable {
             cl.setController(c);
             VirtualView v = new VirtualView(cl.getNickname(), cl, c);
             cl.setVirtualView(v);
-            cl.setPlaying(true);
+            cl.setLogphase(LoggingPhase.INGAME);
             g.register(cl.getVirtualViewInstance());
         }
         numPlayers = 0;
         activePlayers.clear();
         g.configureGame();
         g.startGame();
+        LoggingPhase.setSETPLAYERS(false);
+        try {
+            queue.get(0).sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with:"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ArrayList<String> getNicknameInGame() {

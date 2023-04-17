@@ -42,7 +42,7 @@ public class MessageAdapter {
             cmd.execute(c, jconv.getPar());
         }
         else {
-            c.sendMessage("Unknown command");
+            c.sendMessage(JSONConverterStoC.normalMessage("Unknown command"));
         }
     }
     public void startMessage(ClientHandler c) throws IOException {

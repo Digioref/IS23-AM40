@@ -13,10 +13,14 @@ import java.util.Map;
 public class GetCurScore implements ICommand {
     @Override
     public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
-        Map<String, Integer> map = new HashMap<>();
-        for (Player p: c.getController().getGame().getPlayers()) {
-            map.put(p.getNickname(), p.getCurrentScore());
+        if (comm.size() == 0) {
+            Map<String, Integer> map = new HashMap<>();
+            for (Player p: c.getController().getGame().getPlayers()) {
+                map.put(p.getNickname(), p.getCurrentScore());
+            }
+            c.sendMessage(JSONConverterStoC.createJSONCurrentScore(map));
+        } else {
+            c.sendMessage(JSONConverterStoC.normalMessage("The command getcurscore doesn't want arguments!"));
         }
-        c.sendMessage(JSONConverterStoC.createJSONCurrentScore(map));
     }
 }

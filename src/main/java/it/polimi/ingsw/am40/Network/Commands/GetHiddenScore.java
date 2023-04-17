@@ -11,11 +11,15 @@ import java.util.ArrayList;
 public class GetHiddenScore  implements ICommand {
     @Override
     public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
-        for (Player p: c.getController().getGame().getPlayers()) {
-            if (c.getNickname().equals(p.getNickname())) {
-                c.sendMessage(JSONConverterStoC.createJSONHiddenScore(p.getHiddenScore()));
-                break;
+        if (comm.size() == 0) {
+            for (Player p: c.getController().getGame().getPlayers()) {
+                if (c.getNickname().equals(p.getNickname())) {
+                    c.sendMessage(JSONConverterStoC.createJSONHiddenScore(p.getHiddenScore()));
+                    break;
+                }
             }
+        } else {
+            c.sendMessage(JSONConverterStoC.normalMessage("The command gethiddenscore doesn't want arguments!"));
         }
     }
 }

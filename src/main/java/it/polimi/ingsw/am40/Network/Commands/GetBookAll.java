@@ -10,6 +10,10 @@ import java.util.ArrayList;
 public class GetBookAll implements ICommand {
     @Override
     public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
-        c.sendMessage(JSONConverterStoC.createJSONBookAll(c.getController().getGame().getPlayers()));
+        if (comm.size() == 0) {
+            c.sendMessage(JSONConverterStoC.createJSONBookAll(c.getController().getGame().getPlayers()));
+        } else {
+            c.sendMessage(JSONConverterStoC.normalMessage("The command getbookall doesn't want arguments!"));
+        }
     }
 }

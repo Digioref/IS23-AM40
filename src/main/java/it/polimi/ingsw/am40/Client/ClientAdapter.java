@@ -1,9 +1,7 @@
 package it.polimi.ingsw.am40.Client;
 
 import it.polimi.ingsw.am40.CLI.CliView;
-import it.polimi.ingsw.am40.Model.Game;
 import it.polimi.ingsw.am40.Model.Position;
-import javafx.geometry.Point2D;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,10 +15,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Logger implements Runnable {
+public class ClientAdapter implements Runnable {
     private BufferedReader in;
     private CliView cliView;
-    public Logger(Socket socket) {
+    public ClientAdapter(Socket socket) {
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException e) {
@@ -38,7 +36,7 @@ public class Logger implements Runnable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            print(line);
+//            print(line);
             try {
                 parseMessage(line);
             } catch (ParseException e) {
@@ -124,7 +122,7 @@ public class Logger implements Runnable {
                     JSONArray array = (JSONArray) obj.get("Bookshelf");
                     Map<String, String> map6 = new HashMap<>();
                     for (int j = 0; j < array.size(); j++) {
-                        JSONObject obj1 = (JSONObject) array.get(i);
+                        JSONObject obj1 = (JSONObject) array.get(j);
                         Position p = new Position(Integer.parseInt(obj1.get("x").toString()), Integer.parseInt(obj1.get("y").toString()));
                         map6.put(p.getKey(), obj1.get("color").toString());
                     }
