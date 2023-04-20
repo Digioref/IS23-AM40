@@ -101,6 +101,9 @@ public class Column {
         return column.size();
     }
 
+    public int getFreeSpace(){
+        return DIM- column.size();
+    }
     /**
      * Returns the tile in position i
      * @param pos position in the column

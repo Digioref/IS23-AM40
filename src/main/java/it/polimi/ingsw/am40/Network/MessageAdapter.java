@@ -28,6 +28,7 @@ public class MessageAdapter {
 //        match.find();
 //        String command = match.group(0);
         JSONConverterCtoS jconv = new JSONConverterCtoS();
+        System.out.println(message);
         jconv.fromJSON(message);
 //        String[] command = message.split("\\s");
 //        if (commands.containsKey(command[0].toLowerCase())) {

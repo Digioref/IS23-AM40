@@ -1,14 +1,14 @@
 module it.polimi.ingsw.am40{
     requires javafx.controls;
+    requires javafx.graphics;
     requires javafx.fxml;
     requires json.simple;
     //requires org.junit.jupiter.api;
 
     opens it.polimi.ingsw.am40.Model to javafx.fxml;
     exports it.polimi.ingsw.am40.Model;
+    opens it.polimi.ingsw.am40.App to javafx.fxml, javafx.control, javafx.graphics;
     exports it.polimi.ingsw.am40.App;
-    opens it.polimi.ingsw.am40.App to javafx.fxml;
-    exports it.polimi.ingsw.am40.CLI;
     opens it.polimi.ingsw.am40.CLI to javafx.fxml;
-
+    exports it.polimi.ingsw.am40.CLI;
 }

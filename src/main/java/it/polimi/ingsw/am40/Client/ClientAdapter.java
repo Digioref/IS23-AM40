@@ -36,7 +36,7 @@ public class ClientAdapter implements Runnable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-//            print(line);
+            print(line);
             try {
                 parseMessage(line);
             } catch (ParseException e) {

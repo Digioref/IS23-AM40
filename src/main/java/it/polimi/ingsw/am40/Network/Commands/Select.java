@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am40.Network.Commands;
 
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.ActionType;
 import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.ICommand;
@@ -12,7 +13,7 @@ public class Select implements ICommand {
     @Override
     public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
         if (comm.size() != 2) {
-            c.sendMessage("Incomplete command");
+            c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));
         }
         else {
 //            System.out.println(("qui"));
