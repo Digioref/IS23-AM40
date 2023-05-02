@@ -43,15 +43,17 @@ public class Board {
      * @param b bag
      */
     public void config(Bag b) {
+        int k=0;
         for (String pos : grid.keySet()) {
           //  Position p = new Position(-20, -20);
           //  p.convertKey(pos);
           //  grid.put(pos, b.pick());
           //  grid.get(pos).setPos(p);
-
+            //System.out.println(k+": "+pos); x DEBUG
             Tile t = b.pick();
             t.setPos(grid.get(pos).getPos());
             grid.put(pos, t);
+            k++;
         }
     }
 
@@ -76,13 +78,16 @@ public class Board {
      * @param b bag
      */
     public void remove(Bag b) {
+        int k=0;
         for (String pos : grid.keySet()) {
+            //System.out.println(("k: "+ k)); x DEBUG
             if (grid.get(pos).getType() != TileType.EMPTY) {
                 b.insert(grid.get(pos));
                 Position p = new Position(-20, -20);
                 p.convertKey(pos);
                 grid.put(pos, new Tile(TileColor.NOCOLOR, TileType.EMPTY, p));
             }
+            k++;
         }
     }
 
@@ -140,9 +145,10 @@ public class Board {
      */
     private boolean isFree(Position pos) {
         //if the key obtained from the position
-        if(!(grid.containsKey(pos.getKey()))){
+        /*
+        if(!(grid.containsKey(pos.getKey())))
             return true;
-        }
+         */
         if (grid.containsKey(pos.getKey())) {
             if (grid.get(pos.getKey()).getColor() != TileColor.NOCOLOR && grid.get(pos.getKey()).getType() != TileType.EMPTY) {
                 return false;
@@ -256,11 +262,28 @@ public class Board {
      * @return a boolean that states if a refill of the board is necessary
      */
     public boolean needRefill(){
-        for(Tile tile : grid.values()){
-            if(checkFreeSide(tile.getPos())>0){
+        //int h=0;
+        /*
+        for(String pos : grid.keySet()){
+            System.out.println(h+ ": "+ pos);
+            h++;
+        }
+         */
+        //h=0;
+        for(String value : grid.keySet()){
+            //System.out.println(h+ ": "+ value + " =>"+ grid.get(value));
+            if(!(grid.get(value).getType().equals(TileType.EMPTY)) && checkFreeSide(grid.get(value).getPos())<4){
                 return false;
             }
         }
+        /*
+        for(Tile tile : grid.values()){
+            System.out.println(tile);
+            if(!(tile.getType().equals(TileType.EMPTY)) && checkFreeSide(tile.getPos())>0){
+                return false;
+            }
+        }
+         */
         return true;
     }
 

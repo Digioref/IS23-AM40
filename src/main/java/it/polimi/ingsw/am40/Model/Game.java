@@ -331,6 +331,12 @@ public class Game implements IGame {
         return board.needRefill();
     }
 
+    public void refill (){
+        board.remove(bag);
+        board.config(bag);
+        board.setSideFreeTile();
+    }
+
     public void startTurn () {
 //        System.out.println("print wrong");
         if (turn == TurnPhase.START) {
@@ -351,7 +357,7 @@ public class Game implements IGame {
     }
 
     public void endTurn () {
-        //System.out.println("---" + turn);
+        System.out.println("---" + turn);
         if (turn == TurnPhase.ENDTURN) {
             if (controlRefill()) {
                 board.remove(bag);
