@@ -101,10 +101,10 @@ public class Player {
 
     public void placeInBookshelf(int col) {
         //System.out.println("qui3");
-        for (Tile tile : tilesPicked) {
-            //System.out.println(tile.toString());
-            bookshelf.addTile(tile, col);
-        }
+            for (Tile tile : tilesPicked) {
+                //System.out.println(tile.toString());
+                bookshelf.addTile(tile, col);
+            }
     }
 
     /**
@@ -113,14 +113,18 @@ public class Player {
      */
 
     public void selectOrder(ArrayList<Integer> at) {
+        System.out.println(at);
+        System.out.println(tilesPicked);
         ArrayList<Tile> arr = new ArrayList<>();
         for (Integer i: at) {
             arr.add(tilesPicked.get(i - 1));
         }
+
+        System.out.println(arr);
         tilesPicked.clear();
         tilesPicked.addAll(arr);
         for (Tile t : tilesPicked) {
-            //System.out.println(t.toString());
+            System.out.println(t.toString());
         }
     }
 
@@ -267,7 +271,7 @@ public class Player {
 
     public void clearSelected() {
         selectedPositions.clear();
-        board.getPickableTiles().clear();
+        board.clearPickable();
         board.setSideFreeTile();
     }
 

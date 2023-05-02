@@ -21,10 +21,14 @@ public class Login implements ICommand {
             else {
                 c.setLogged(true);
                 c.setNickname(comm.get(0));
-                c.sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
-                c.setLogphase(LoggingPhase.WAITING);
-                c.getLobby().getNicknameInGame().add(comm.get(0));
                 c.getLobby().addQueue(c);
+                c.getLobby().getNicknameInGame().add(comm.get(0));
+                c.setLogphase(LoggingPhase.WAITING);
+                c.sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
+            }
+            if (!LoggingPhase.SETPLAYERS) {
+                LoggingPhase.setSETPLAYERS(true);
+                c.sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with: "));
             }
         } else if (comm.size() != 1) {
             c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));

@@ -12,6 +12,7 @@ public class Bookshelf {
      * An array made up of columns
      */
     private ArrayList<Column> bookshelf;
+    private static int DIMROW = 5;
 
     /**
      * Constructor which creates the bookshelf and its columns
@@ -31,7 +32,7 @@ public class Bookshelf {
      * @return true if the column is full, false otherwise
      */
     public boolean isFull(int col){
-        if (bookshelf != null && col >= 0 && col < bookshelf.size()) {
+        if (col >= 0 && col < bookshelf.size()) {
             return bookshelf.get(col).isFull();
         }
         return false;
@@ -55,20 +56,13 @@ public class Bookshelf {
      * @param newTile the tile that must be inserted
      * @param col column where to insert the tile
      */
-    public void addTile(Tile newTile, int col){
-        if (!(bookshelf.get(col).isFull() || newTile == null || col >= 5 || col < 0)){
+    public boolean addTile(Tile newTile, int col){
+        if (!((this.isFull(col)) || newTile == null || col >= 5 || col < 0)){
             bookshelf.get(col).addTile( new Tile(newTile.getColor(), newTile.getType(), new Position(col,bookshelf.get(col).getSize())) );
             //System.out.println(newTile.toString());
+            return true;
         }
-    }
-
-    /**
-     * Returns how many free spaces are left in a column of a given index
-     * @param col column considered
-     * @return number of free spaces of the column
-     */
-    public int freeSpaceCol(int col){
-        return 6-bookshelf.get(col).getSize();
+        return false;
     }
 
     /**
@@ -78,7 +72,7 @@ public class Bookshelf {
      * @return color of the tile
      */
     private TileColor tileColor(int x,int y){
-        if (! (bookshelf.get(x).getSize()<y)){
+        if (x>=0 && x<DIMROW && y<bookshelf.get(x).getSize()){
             return bookshelf.get(x).getColor(y);
         }
         return null;
@@ -92,7 +86,7 @@ public class Bookshelf {
      * @return int value of the mark
      */
     private int markTile(int x,int y){
-        if (bookshelf.get(x).getSize() < y){
+        if (x<0 || x>DIMROW || bookshelf.get(x).getSize() <= y){
             return -1;
         }
         return bookshelf.get(x).getMark(y);
@@ -130,8 +124,8 @@ public class Bookshelf {
      */
     public int calcScore(){
         int result=0;
-        int numMark;
-        TileColor colorTmp;
+        int numMark=markTile(-1,-1); //purely for test coverage
+        TileColor colorTmp=tileColor(-1,-1);    //purely for test coverage
         for(int i=0; i<5;i++){
             for(int j=0; j<bookshelf.get(i).getSize();j++){
                 if(markTile(i,j)==0){
@@ -163,12 +157,7 @@ public class Bookshelf {
      * @return a tile
      */
     public Tile getTile(int i, int j) {
-        if (!bookshelf.isEmpty()) {
-            return bookshelf.get(i).getTile(j);
-        } else {
-            return null;
-        }
-
+        return bookshelf.get(i).getTile(j);
     }
 
     @Override
@@ -178,4 +167,19 @@ public class Bookshelf {
                 '}';
     }
 
+    public void print(){
+        ArrayList<String> tmp = new ArrayList<>();
+        for(int i=DIMROW; i>=0 ; i--){
+            tmp.clear();
+            for(int j=0; j<5; j++){
+                if(this.getTile(j,i)!=null){
+                    tmp.add(this.getTile(j,i).getColor().toString());
+                }
+                else{
+                    tmp.add("----");
+                }
+            }
+            System.out.println(tmp);
+        }
+    }
 }

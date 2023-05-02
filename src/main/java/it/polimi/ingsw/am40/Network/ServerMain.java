@@ -4,8 +4,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ServerMain {
     private static String hostName;
@@ -33,7 +35,9 @@ public class ServerMain {
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
         try {
-            reader = new FileReader("Server.json");
+            ClassLoader classLoader = ServerMain.class.getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource("Server.json")).getFile());
+            reader = new FileReader(file);
             JSONObject obj = (JSONObject) jsonParser.parse(reader);
             JSONObject server = (JSONObject) obj.get("Server");
             return Integer.parseInt(server.get("PortNumber").toString());
@@ -47,7 +51,9 @@ public class ServerMain {
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
         try {
-            reader = new FileReader("Server.json");
+            ClassLoader classLoader = ServerMain.class.getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource("Server.json")).getFile());
+            reader = new FileReader(file);
             JSONObject obj = (JSONObject) jsonParser.parse(reader);
             JSONObject server = (JSONObject) obj.get("Server");
             return server.get("HostName").toString();

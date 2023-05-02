@@ -192,9 +192,10 @@ public class Game implements IGame {
         if (turn == TurnPhase.SELECTION) {
             if (board.getPickableTiles().contains(pos)) {
 //                System.out.println("qui");
-                board.updatePickable(pos);
                 currentPlayer.getSelectedPositions().add(pos);
-                board.updateAfterSelect(pos, currentPlayer);
+                board.updatePickable(pos,currentPlayer);
+                //currentPlayer.getSelectedPositions().add(pos);
+                //board.updateAfterSelect(pos, currentPlayer);
 //                System.out.println("qui");
                 notifyObservers(turn);
             } else {
@@ -288,7 +289,7 @@ public class Game implements IGame {
      */
     public void insertInBookshelf (int c) {
         if (turn == TurnPhase.INSERT) {
-            if (currentPlayer.getBookshelf().getBookshelf().get(c).isFull()) {
+            if (currentPlayer.getBookshelf().getBookshelf().get(c).isFull() || currentPlayer.getTilesPicked().size()> currentPlayer.getBookshelf().getBookshelf().get(c).getFreeSpace()) {
                 for (VirtualView v : observers) {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.insertError();
@@ -330,6 +331,12 @@ public class Game implements IGame {
         return board.needRefill();
     }
 
+    public void refill (){
+        board.remove(bag);
+        board.config(bag);
+        board.setSideFreeTile();
+    }
+
     public void startTurn () {
 //        System.out.println("print wrong");
         if (turn == TurnPhase.START) {
@@ -350,7 +357,7 @@ public class Game implements IGame {
     }
 
     public void endTurn () {
-        //System.out.println("---" + turn);
+        System.out.println("---" + turn);
         if (turn == TurnPhase.ENDTURN) {
             if (controlRefill()) {
                 board.remove(bag);

@@ -54,18 +54,19 @@ public class Column {
      * @return true if the column is full, false otherwise
      */
     public boolean isFull(){
-        if (column != null) {
             return column.size() >= 6;
-        }
-        return false;
     }
 
     /**
      * Sets the value of mark in a given position
      * @param pos provided position
      */
-    public void setMark(int pos){
+    public boolean setMark(int pos){
+        if(pos<0 || pos>=mark.size()){
+            return false;
+        }
         mark.set(pos,1);
+        return true;
     }
 
     /**
@@ -74,7 +75,10 @@ public class Column {
      * @return int of the mark at position pos
      */
     public int getMark(int pos){
-        return mark.get(pos);
+        if(pos>=0 && pos <mark.size()){
+            return mark.get(pos);
+        }
+        return -1;
     }
 
     /**
@@ -83,7 +87,10 @@ public class Column {
      * @return color of the tile
      */
     public TileColor getColor(int pos){
-        return (column.get(pos).getColor());
+        if(pos>=0 && pos<column.size()){
+            return (column.get(pos).getColor());
+        }
+        return null;
     }
 
     /**
@@ -94,17 +101,19 @@ public class Column {
         return column.size();
     }
 
+    public int getFreeSpace(){
+        return DIM- column.size();
+    }
     /**
      * Returns the tile in position i
-     * @param i position in the column
+     * @param pos position in the column
      * @return tile in position i
      */
-    public Tile getTile (int i) {
-        if (!column.isEmpty() && i < column.size()) {
-            return column.get(i);
-        } else {
-            return null;
+    public Tile getTile (int pos) {
+        if (pos>=0 && pos< column.size()) {
+            return column.get(pos);
         }
+        return null;
     }
 
     @Override

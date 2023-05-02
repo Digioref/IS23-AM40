@@ -33,7 +33,7 @@ public class Lobby implements Runnable {
             }
             activePlayers.add(c);
 //            numPlayers = c.getNumPlayers();
-//            nicknameInGame.add(c.getNickname());
+            //nicknameInGame.add(c.getNickname());
 //        }
 //        else if (numPlayers != 0 && activePlayers.size() != 0) {
 //            ClientHandler c;
@@ -68,15 +68,6 @@ public class Lobby implements Runnable {
     public void addQueue (ClientHandler clientHandler) {
         synchronized (queue) {
             queue.add(clientHandler);
-            if (!LoggingPhase.SETPLAYERS && numPlayers == 0 && queue.indexOf(clientHandler) == 0) {
-                try {
-                    clientHandler.sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with: "));
-                    LoggingPhase.setSETPLAYERS(true);
-                    clientHandler.setLogphase(LoggingPhase.SETTING);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
         }
 //        System.out.println("Added " + clientHandler.getNickname());
     }
@@ -99,13 +90,7 @@ public class Lobby implements Runnable {
         g.startGame();
         LoggingPhase.setSETPLAYERS(false);
         try {
-            synchronized (queue) {
-                if (!queue.isEmpty()) {
-                    queue.get(0).sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with:"));
-                    queue.get(0).setLogphase(LoggingPhase.SETTING);
-                    LoggingPhase.setSETPLAYERS(true);
-                }
-            }
+            queue.get(0).sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with:"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

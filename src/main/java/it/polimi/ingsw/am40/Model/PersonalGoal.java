@@ -34,7 +34,9 @@ public class PersonalGoal {
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
         try {
-            reader = new FileReader("PersonalGoals.json");
+        ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource("PersonalGoals.json")).getFile());
+            reader = new FileReader(file);
             JSONObject persGoals = (JSONObject) jsonParser.parse(reader);
 
             JSONArray array = (JSONArray) persGoals.get("PersonalGoals");
