@@ -3,6 +3,8 @@ package it.polimi.ingsw.am40.Network;
 import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.Controller.Lobby;
 
+import java.io.IOException;
+
 public abstract class Handlers {
     protected static final int NSUGGEST = 8;
     protected String nickname;
@@ -81,4 +83,5 @@ public abstract class Handlers {
     public LoggingPhase getLogphase() {
         return logphase;
     }
+    public abstract void sendMessage(String s) throws IOException;
 }

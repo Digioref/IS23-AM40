@@ -4,6 +4,7 @@ import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.Game;
 import it.polimi.ingsw.am40.Model.Player;
 import it.polimi.ingsw.am40.Network.ClientHandler;
+import it.polimi.ingsw.am40.Network.Handlers;
 import it.polimi.ingsw.am40.Network.LoggingPhase;
 import it.polimi.ingsw.am40.Network.VirtualView;
 
@@ -14,20 +15,20 @@ import java.util.jar.JarEntry;
 
 public class Lobby implements Runnable {
     private int numPlayers;
-    private ArrayList<ClientHandler> queue;
-    private ArrayList<ClientHandler> activePlayers;
+    private ArrayList<Handlers> queue;
+    private ArrayList<Handlers> activePlayers;
     private ArrayList<String> nicknameInGame;
 
     public Lobby() {
         numPlayers = 0;
-        queue = new ArrayList();
+        queue = new ArrayList<>();
         activePlayers = new ArrayList<>();
         nicknameInGame = new ArrayList<>();
     }
 
     public void  removeFromQueue() {
 //        if (activePlayers.size() == 0) {
-            ClientHandler c;
+            Handlers c;
             synchronized (queue) {
                 c = queue.remove(0);
             }
@@ -65,7 +66,7 @@ public class Lobby implements Runnable {
         return c.getController().getGame();
     }
 
-    public void addQueue (ClientHandler clientHandler) {
+    public void addQueue (Handlers clientHandler) {
         synchronized (queue) {
             queue.add(clientHandler);
         }
@@ -76,7 +77,7 @@ public class Lobby implements Runnable {
         System.out.println("Creating game...");
         Game g = new Game(numPlayers);
         Controller c = new Controller(g);
-        for (ClientHandler cl : activePlayers) {
+        for (Handlers cl : activePlayers) {
             g.addPlayer(new Player(cl.getNickname()));
             cl.setController(c);
             VirtualView v = new VirtualView(cl.getNickname(), cl, c);
@@ -101,7 +102,7 @@ public class Lobby implements Runnable {
         return nicknameInGame;
     }
 
-    public ArrayList<ClientHandler> getActivePlayers() {
+    public ArrayList<Handlers> getActivePlayers() {
         return activePlayers;
     }
 
@@ -109,7 +110,7 @@ public class Lobby implements Runnable {
         this.numPlayers = numPlayers;
     }
 
-    public ArrayList<ClientHandler> getQueue() {
+    public ArrayList<Handlers> getQueue() {
         synchronized (queue) {
             return queue;
         }

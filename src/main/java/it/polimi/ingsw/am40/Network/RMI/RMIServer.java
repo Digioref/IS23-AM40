@@ -7,13 +7,17 @@ import it.polimi.ingsw.am40.Network.RMIClientHandler;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RMIServer extends UnicastRemoteObject implements IRMI {
     private Lobby lobby;
+    private List<RMIClientHandler> clientHandlers;
 
 
     public RMIServer() throws RemoteException {
         super();
+        clientHandlers = new ArrayList<>();
     }
 
     @Override
@@ -24,7 +28,8 @@ public class RMIServer extends UnicastRemoteObject implements IRMI {
             rmiClientHandler.setLobby(lobby);
             rmiClientHandler.setNickname(s);
             rmiClientHandler.setLogged(true);
-//            lobby.addQueue(rmiClientHandler);
+            clientHandlers.add(rmiClientHandler);
+            lobby.addQueue(rmiClientHandler);
         } else {
             return JSONConverterStoC.normalMessage("The nickname you desire is already in use! Please type another nickname:");
 
@@ -32,14 +37,15 @@ public class RMIServer extends UnicastRemoteObject implements IRMI {
         if (lobby.getQueue().get(0).getNickname().equals(rmiClientHandler.getNickname())) {
             rmiClientHandler.setLogphase(LoggingPhase.SETTING);
             LoggingPhase.setSETPLAYERS(true);
-            return JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby...\n You can set the number of players you want to play with:");
+            return JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby...\nYou can set the number of players you want to play with:");
         }
         return JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby...");
     }
 
     @Override
     public String setPlayers(int n) throws RemoteException {
-        return null;
+        lobby.setNumPlayers(n);
+        return JSONConverterStoC.normalMessage("Number of players set!");
     }
 
     public void setLobby(Lobby lobby) {

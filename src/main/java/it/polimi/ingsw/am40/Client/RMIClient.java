@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am40.Client;
 
 import it.polimi.ingsw.am40.Network.RMI.IRMI;
+import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,10 +52,16 @@ public class RMIClient {
         switch (command[0]) {
             case "login":
                 try {
-                    System.out.println(stub.login(command[1]));
-                } catch (RemoteException e) {
+                    SocketClient.parseMessage(stub.login(command[1]));
+                } catch (RemoteException | ParseException e) {
                     throw new RuntimeException(e);
-                }
+                };
+            case "setplayers":
+                try {
+                    SocketClient.parseMessage(stub.setPlayers(Integer.parseInt(command[1])));
+                } catch (RemoteException | ParseException e) {
+                    throw new RuntimeException(e);
+                };
         }
     }
 

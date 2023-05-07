@@ -10,10 +10,10 @@ import java.util.ArrayList;
 public class VirtualView implements  IGameObserver, IGameErrorTurn{
 
     private String nickname;
-    private ClientHandler clientHandler;
+    private Handlers clientHandler;
     private Controller controller;
 
-    public VirtualView(String nickname, ClientHandler clientHandler, Controller controller) {
+    public VirtualView(String nickname, Handlers clientHandler, Controller controller) {
         this.nickname = nickname;
         this.clientHandler = clientHandler;
         this.controller = controller;
@@ -146,7 +146,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         return nickname;
     }
 
-    public ClientHandler getClientHandler() {
+    public Handlers getClientHandler() {
         return clientHandler;
     }
 
