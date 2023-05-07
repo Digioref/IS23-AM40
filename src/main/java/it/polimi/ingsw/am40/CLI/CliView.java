@@ -1,12 +1,16 @@
 package it.polimi.ingsw.am40.CLI;
 
+import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.Model.*;
 import javafx.geometry.Point2D;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class CliView {
+public class CliView implements View{
 //    private Game game;
 
     private Colors color = new Colors();
@@ -396,6 +400,27 @@ public class CliView {
 
     public void printMessage(String s) {
         System.out.println(s);
+    }
+
+    @Override
+    public void chooseConnection() {
+        String choice;
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+        printMessage("Choose the connection type:");
+        do{
+            printMessage("Socket[S] or RMI[R] ?:");
+            try {
+                choice = stdIn.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            choice = choice.toUpperCase();
+            if(choice.equals("S"))
+                choice = "SOCKET";
+            else if(choice.equals("R"))
+                choice = "RMI";
+        }while(!choice.equals("RMI") && !choice.equals("SOCKET"));
+        LaunchClient.startConnection(choice);
     }
 
 //    public void showBoard() {

@@ -91,6 +91,7 @@ public class Lobby implements Runnable {
         LoggingPhase.setSETPLAYERS(false);
         try {
             queue.get(0).sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with:"));
+            queue.get(0).setLogphase(LoggingPhase.SETTING);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -106,5 +107,11 @@ public class Lobby implements Runnable {
 
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
+    }
+
+    public ArrayList<ClientHandler> getQueue() {
+        synchronized (queue) {
+            return queue;
+        }
     }
 }

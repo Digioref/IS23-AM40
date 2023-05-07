@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am40.Model;
 
+import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import it.polimi.ingsw.am40.Network.Commands.*;
 import it.polimi.ingsw.am40.Network.ICommand;
 import it.polimi.ingsw.am40.Network.MessageAdapter;
@@ -9,9 +10,8 @@ import org.json.simple.parser.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,12 +26,9 @@ public class ParsingJSONManager {
      */
     public void createBoard (Map<String, Tile> map, int num) {
         JSONParser jsonParser = new JSONParser();
-        FileReader reader;
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource("PositionsBoard.json")).getFile());
-            reader = new FileReader(file);
-            JSONObject configs = (JSONObject) jsonParser.parse(reader);
+            InputStream is = ServerArgs.class.getClassLoader().getResourceAsStream("PositionsBoard.json");
+            JSONObject configs = (JSONObject) jsonParser.parse(new InputStreamReader(is, StandardCharsets.UTF_8));
             JSONArray posArray = (JSONArray) configs.get("Positions");
             JSONObject o = (JSONObject) posArray.get(num - 2);
             JSONArray obj1 = (JSONArray) o.get("Players" + Integer.valueOf(num).toString()); // I think it is redundant, you don't need to specify the position in the array and also the name of the elementt, you need just one of the two info
@@ -53,12 +50,9 @@ public class ParsingJSONManager {
 
     public void createPersonalGoals (PersonalGoal pg, int k) {
         JSONParser jsonParser = new JSONParser();
-        FileReader reader;
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource("PersonalGoals.json")).getFile());
-            reader = new FileReader(file);
-            JSONObject persGoals = (JSONObject) jsonParser.parse(reader);
+            InputStream is = ServerArgs.class.getClassLoader().getResourceAsStream("PersonalGoals.json");
+            JSONObject persGoals = (JSONObject) jsonParser.parse(new InputStreamReader(is, StandardCharsets.UTF_8));
 
             JSONArray array = (JSONArray) persGoals.get("PersonalGoals");
             JSONObject o = (JSONObject) array.get(k);
@@ -107,12 +101,9 @@ public class ParsingJSONManager {
 
     public void createTiles(Bag b) {
         JSONParser jsonParser = new JSONParser();
-        FileReader reader;
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource("Tiles.json")).getFile());
-            reader = new FileReader(file);
-            JSONObject configs = (JSONObject) jsonParser.parse(reader);
+            InputStream is = ServerArgs.class.getClassLoader().getResourceAsStream("Tiles.json");
+            JSONObject configs = (JSONObject) jsonParser.parse(new InputStreamReader(is, StandardCharsets.UTF_8));
             JSONArray posArray = (JSONArray) configs.get("Tiles");
             for (int i = 0; i < posArray.size(); i++) {
                 JSONObject t = (JSONObject) posArray.get(i);
@@ -169,12 +160,9 @@ public class ParsingJSONManager {
 
     public void configureCommands(Map<String, ICommand> map) {
         JSONParser jsonParser = new JSONParser();
-        FileReader reader;
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("Commands.json").getFile());
-            reader = new FileReader(file);
-            JSONObject configs = (JSONObject) jsonParser.parse(reader);
+            InputStream is = ServerArgs.class.getClassLoader().getResourceAsStream("Commands.json");
+            JSONObject configs = (JSONObject) jsonParser.parse(new InputStreamReader(is,StandardCharsets.UTF_8));
             JSONArray posArray = (JSONArray) configs.get("Commands");
             for (int i = 0; i < posArray.size(); i++) {
                 JSONObject t = (JSONObject) posArray.get(i);

@@ -1,14 +1,14 @@
 package it.polimi.ingsw.am40.Model;
 
+import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -19,13 +19,10 @@ public class CommonGoalTest {
     public void Test() { // GREEN, WHITE, YELLOW, BLUE, CYAN, VIOLET
 
         JSONParser jsonParser = new JSONParser();
-        FileReader reader;
 
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("CommonGoals.json").getFile());
-            reader = new FileReader(file);
-            JSONObject commonGoals = (JSONObject) jsonParser.parse(reader);
+            InputStream is = ServerArgs.class.getClassLoader().getResourceAsStream("CommonGoals.json");
+            JSONObject commonGoals = (JSONObject) jsonParser.parse(new InputStreamReader(is, StandardCharsets.UTF_8));
             JSONArray array = (JSONArray) commonGoals.get("CommonGoals");
 
             for (int i = 0; i < array.size(); i++) {
