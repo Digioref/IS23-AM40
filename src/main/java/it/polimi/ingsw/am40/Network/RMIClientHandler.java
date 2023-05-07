@@ -15,8 +15,8 @@ public class RMIClientHandler extends Handlers {
     }
 
     @Override
-    public void sendMessage(String s) throws IOException {
-
+    public void sendMessage(String s) {
+        rmiClient.receive(s);
     }
 
     public void setRmiClient(RMIClientInterface rmiClient) {

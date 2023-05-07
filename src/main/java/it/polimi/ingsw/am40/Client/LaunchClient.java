@@ -6,6 +6,7 @@ import it.polimi.ingsw.am40.Network.LaunchServer;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 public class LaunchClient {
@@ -86,7 +87,12 @@ public class LaunchClient {
     public static void startConnection(String choice) {
         if (choice.equals("RMI")) {
             System.setProperty("java.rmi.server.hostname", "localhost");
-            RMIClient rmiClient = new RMIClient();
+            RMIClient rmiClient = null;
+            try {
+                rmiClient = new RMIClient();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             rmiClient.connect();
         } else {
             Socket socket;

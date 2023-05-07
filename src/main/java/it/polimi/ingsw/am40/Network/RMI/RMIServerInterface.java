@@ -6,9 +6,9 @@ import java.rmi.*;
 
 public interface RMIServerInterface extends Remote {
 
-    String login(String s, RMIClientInterface client) throws RemoteException;
-    String setPlayers(String s, int n) throws RemoteException;
-//    String help() throws RemoteException;
+    void login(String s, RMIClientInterface client) throws RemoteException;
+    void setPlayers(String s, int n) throws RemoteException;
+    void help(String s) throws RemoteException;
 //    String insert(int c) throws RemoteException;
 //    String order(ArrayList<Integer> n) throws RemoteException;
 //    String pick() throws RemoteException;

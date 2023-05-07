@@ -3,13 +3,12 @@ package it.polimi.ingsw.am40.Client;
 import it.polimi.ingsw.am40.Network.RMI.RMIServerInterface;
 import org.json.simple.parser.ParseException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 public class RMIClient implements RMIClientInterface {
     private BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
@@ -18,7 +17,8 @@ public class RMIClient implements RMIClientInterface {
     private boolean stop;
     private String nickname;
 
-    public RMIClient() {
+    public RMIClient() throws RemoteException {
+        super();
         stop = false;
     }
 
@@ -54,17 +54,21 @@ public class RMIClient implements RMIClientInterface {
             case "login":
                 try {
                     nickname = command[1];
-                    SocketClient.parseMessage(stub.login(command[1], this));
-                } catch (RemoteException | ParseException e) {
+                    stub.login(command[1], this);
+                } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 };
             case "setplayers":
                 try {
-                    SocketClient.parseMessage(stub.setPlayers(nickname, Integer.parseInt(command[1])));
-                } catch (RemoteException | ParseException e) {
+                    stub.setPlayers(nickname, Integer.parseInt(command[1]));
+                } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 };
         }
     }
 
+    @Override
+    public void receive(String s) {
+
+    }
 }

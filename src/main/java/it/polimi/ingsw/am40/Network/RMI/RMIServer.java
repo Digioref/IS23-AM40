@@ -6,6 +6,7 @@ import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.LoggingPhase;
 import it.polimi.ingsw.am40.Network.RMIClientHandler;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     @Override
-    public String login(String s, RMIClientInterface client) throws RemoteException {
-        RMIClientHandler rmiClientHandler;
+    public void login(String s, RMIClientInterface client) throws RemoteException {
+        RMIClientHandler rmiClientHandler = null;
         if(!checkNickname(s)) {
             rmiClientHandler = new RMIClientHandler();
             rmiClientHandler.setLobby(lobby);
@@ -34,31 +35,32 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             rmiClientHandler.setRmiClient(client);
             clientHandlers.put(s, rmiClientHandler);
             lobby.addQueue(rmiClientHandler);
+            if (lobby.getQueue().get(0).getNickname().equals(rmiClientHandler.getNickname())) {
+                rmiClientHandler.setLogphase(LoggingPhase.SETTING);
+                LoggingPhase.setSETPLAYERS(true);
+                clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby...\nYou can set the number of players you want to play with:"));
+            }
         } else {
-            return JSONConverterStoC.normalMessage("The nickname you desire is already in use! Please type another nickname:");
-
+            clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("The nickname you desire is already in use! Please type another nickname:"));
         }
-        if (lobby.getQueue().get(0).getNickname().equals(rmiClientHandler.getNickname())) {
-            rmiClientHandler.setLogphase(LoggingPhase.SETTING);
-            LoggingPhase.setSETPLAYERS(true);
-            return JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby...\nYou can set the number of players you want to play with:");
-        }
-        return JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby...");
+        clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby..."));
     }
 
     @Override
-    public String setPlayers(String s, int n) throws RemoteException {
-        if(!clientHandlers.get(s).getLogphase().equals(LoggingPhase.SETTING)) {
-
+    public void setPlayers(String s, int n) throws RemoteException {
+        if(!clientHandlers.get(s).getLogphase().equals(LoggingPhase.SETTING) || LoggingPhase.SETPLAYERS) {
+            clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You can not set the number of players!"));
         }
         lobby.setNumPlayers(n);
-        return JSONConverterStoC.normalMessage("Number of players set!");
+        LoggingPhase.setSETPLAYERS(true);
+        clientHandlers.get(s).setLogphase(LoggingPhase.WAITING);
+        clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Number of players set!"));
     }
-//
-//    @Override
-//    public String help() throws RemoteException {
-//        return null;
-//    }
+
+    @Override
+    public void help(String s) throws RemoteException {
+
+    }
 //
 //    @Override
 //    public String insert(int c) throws RemoteException {
