@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class RMIClient {
+public class RMIClient implements RMIClientInterface {
     private BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
     private RMIServerInterface stub;
     private Thread rmiThread;
@@ -54,13 +54,13 @@ public class RMIClient {
             case "login":
                 try {
                     nickname = command[1];
-                    SocketClient.parseMessage(stub.login(command[1]));
+                    SocketClient.parseMessage(stub.login(command[1], this));
                 } catch (RemoteException | ParseException e) {
                     throw new RuntimeException(e);
                 };
             case "setplayers":
                 try {
-                    SocketClient.parseMessage(stub.setPlayers(Integer.parseInt(command[1])));
+                    SocketClient.parseMessage(stub.setPlayers(nickname, Integer.parseInt(command[1])));
                 } catch (RemoteException | ParseException e) {
                     throw new RuntimeException(e);
                 };
