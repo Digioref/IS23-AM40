@@ -39,7 +39,7 @@ public class LaunchClient {
                 System.out.println("You have chosen RMI!");
                 try {
                     Registry registry = LocateRegistry.getRegistry("127.0.0.1",0);
-                    IRMI stub = (IRMI) registry.lookup("RMIRegistry");
+                    RMIServerInterface stub = (RMIServerInterface) registry.lookup("RMIRegistry");
                     rmiAdapter = new RMIClient(stub);
                     executor.submit(rmiAdapter);
 

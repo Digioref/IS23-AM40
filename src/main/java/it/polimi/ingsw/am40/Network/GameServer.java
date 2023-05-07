@@ -58,8 +58,9 @@ public class GameServer implements Runnable {
 //                Scanner in = new Scanner(clientSocket.getInputStream());
 //                c.setNickname(in.nextLine());
                 c.setLobby(lobby);
+                c.setLogphase(LoggingPhase.LOGGING);
                 pool.submit(c);
-                lobby.addQueue(c);
+//                lobby.addQueue(c);
             } catch (IOException e) {
                 e.printStackTrace();
                 break;
@@ -72,7 +73,7 @@ public class GameServer implements Runnable {
         rmiserver = new RMIServer();
         rmiserver.setLobby(lobby);
         Registry registry = LocateRegistry.createRegistry(5000);
-        registry.rebind("RMIRegistry",rmiserver);
+        registry.rebind("RMIRegistry", rmiserver);
         System.out.println("GameServer bound on RMI registry");
         serverSocket = new ServerSocket(port);
         System.out.println("GameServer listening on port 5000");

@@ -21,9 +21,9 @@ public class Login implements ICommand {
             else {
                 c.setLogged(true);
                 c.setNickname(comm.get(0));
-                c.getLobby().addQueue(c);
                 c.getLobby().getNicknameInGame().add(comm.get(0));
                 c.setLogphase(LoggingPhase.WAITING);
+                c.getLobby().addQueue(c);
                 c.sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
             }
             if (!LoggingPhase.SETPLAYERS) {

@@ -69,6 +69,9 @@ public class Lobby implements Runnable {
     public void addQueue (Handlers clientHandler) {
         synchronized (queue) {
             queue.add(clientHandler);
+            if (queue.size() == 1) {
+                queue.get(0).setLogphase(LoggingPhase.SETTING);
+            }
         }
 //        System.out.println("Added " + clientHandler.getNickname());
     }

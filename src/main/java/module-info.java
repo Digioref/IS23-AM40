@@ -13,4 +13,6 @@ module it.polimi.ingsw.am40{
     //opens it.polimi.ingsw.am40.CLI to javafx.fxml;
     //exports it.polimi.ingsw.am40.CLI;
     exports it.polimi.ingsw.am40.Network.RMI;
+    opens it.polimi.ingsw.am40.GUI to javafx.fxml, javafx.control, javafx.graphics;
+    exports it.polimi.ingsw.am40.GUI;
 }
