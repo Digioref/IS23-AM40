@@ -1,0 +1,84 @@
+package it.polimi.ingsw.am40.Network;
+
+import it.polimi.ingsw.am40.Controller.Controller;
+import it.polimi.ingsw.am40.Controller.Lobby;
+
+public abstract class Handlers {
+    protected static final int NSUGGEST = 8;
+    protected String nickname;
+    protected Controller controller;
+    protected VirtualView virtualView;
+    protected int numPlayers;
+    protected boolean logged;
+    protected Lobby lobby;
+    protected LoggingPhase logphase;
+
+    public VirtualView getVirtualViewInstance() {
+        return this.virtualView;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public Controller getController() {
+        return controller;
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
+    }
+    public void setLogged(boolean logged) {
+        this.logged = logged;
+    }
+
+    public boolean isLogged() {
+        return logged;
+    }
+    public boolean checkNickname(String nickname) {
+        if(nickname.equals("")) {
+            return false;
+        }
+        if (lobby.getNicknameInGame().size() == 0) {
+            return false;
+        }
+        for (String s: lobby.getNicknameInGame()) {
+            if (s.toLowerCase().equals(nickname.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void setNumPlayers(int numPlayers) {
+        this.numPlayers = numPlayers;
+    }
+    public void setVirtualView(VirtualView v) {
+        this.virtualView = v;
+    }
+
+
+    public void setLogphase(LoggingPhase logphase) {
+        this.logphase = logphase;
+    }
+
+    public LoggingPhase getLogphase() {
+        return logphase;
+    }
+}
