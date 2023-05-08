@@ -15,7 +15,7 @@ import java.util.jar.JarEntry;
 
 public class Lobby implements Runnable {
     private int numPlayers;
-    private ArrayList<Handlers> queue;
+    private final ArrayList<Handlers> queue;
     private ArrayList<Handlers> activePlayers;
     private ArrayList<String> nicknameInGame;
 
@@ -69,6 +69,7 @@ public class Lobby implements Runnable {
     public void addQueue (Handlers clientHandler) {
         synchronized (queue) {
             queue.add(clientHandler);
+//            nicknameInGame.add(clientHandler.getNickname());
             if (queue.size() == 1) {
                 queue.get(0).setLogphase(LoggingPhase.SETTING);
             }
@@ -117,5 +118,8 @@ public class Lobby implements Runnable {
         synchronized (queue) {
             return queue;
         }
+    }
+    public void addNickname(String s) {
+        nicknameInGame.add(s);
     }
 }

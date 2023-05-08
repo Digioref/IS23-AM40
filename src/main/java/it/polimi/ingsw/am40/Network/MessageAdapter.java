@@ -19,9 +19,10 @@ public class MessageAdapter {
     }
     public void configure() {
         pJsonm.configureCommands(commands);
+//        System.out.println(commands.toString());
     }
 
-    public void parserMessage (ClientHandler c, String message) throws IOException, ParseException {
+    public void parserMessage (Handlers c, String message) throws IOException, ParseException {
 //        Pattern pattern = Pattern.compile("^([a-zA-Z]+)|(([a-zA-Z]+)( +([0-9]+)*))$");
 //        Pattern pattern = Pattern.compile("[a-zA-Z0-9]+");
 //        Matcher match = pattern.matcher(message);
@@ -46,11 +47,12 @@ public class MessageAdapter {
             c.sendMessage(JSONConverterStoC.normalMessage("Unknown command"));
         }
     }
-    public void startMessage(ClientHandler c) throws IOException {
+    public void startMessage(Handlers c) throws IOException {
         c.sendMessage(JSONConverterStoC.normalMessage("Welcome to MyShelfie game! (type 'help' for available commands)"));
     }
 
     public Map<String, ICommand> getCommands() {
         return commands;
     }
+
 }

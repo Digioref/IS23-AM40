@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am40.Network;
 
-import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.Controller.Lobby;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.Position;
@@ -86,13 +85,17 @@ public class ClientHandler extends Handlers implements Runnable {
 
 
 
-    public void suggestNickname(String nickname) throws IOException {
+    public void suggestNickname(String nickname) {
         Random random = new Random();
         for (int i = 0; i < NSUGGEST; i++) {
             int x = random.nextInt(10);
             int y = random.nextInt(10);
             int z = random.nextInt(10);
-            sendMessage(JSONConverterStoC.normalMessage(nickname + x + y + z));
+            try {
+                sendMessage(JSONConverterStoC.normalMessage(nickname + x + y + z));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -128,6 +131,14 @@ public class ClientHandler extends Handlers implements Runnable {
         }
     }
 
+    @Override
+    public void chat(String message, String name) {
+        if (name == null) {
+            getController().getGameController().chatAll(message);
+        } else {
+            getController().getGameController().chat(name, message);
+        }
+    }
 
 
 }

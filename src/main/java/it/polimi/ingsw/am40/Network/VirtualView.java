@@ -112,7 +112,11 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
 
     @Override
     public void receiveDoneOrder(ArrayList<Tile> array) {
-
+        try {
+            clientHandler.sendMessage(JSONConverterStoC.normalMessage("Order set!"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -226,6 +230,14 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     public void insertError() {
         try {
             clientHandler.sendMessage(JSONConverterStoC.normalMessage("The column you selected is full!"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void receiveChat(String message) {
+        try {
+            clientHandler.sendMessage(JSONConverterStoC.normalMessage(message));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

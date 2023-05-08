@@ -7,6 +7,7 @@ import it.polimi.ingsw.am40.Network.LaunchServer;
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 public class LaunchClient {
@@ -90,6 +91,7 @@ public class LaunchClient {
             RMIClient rmiClient = null;
             try {
                 rmiClient = new RMIClient();
+                UnicastRemoteObject.exportObject(rmiClient, 0);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

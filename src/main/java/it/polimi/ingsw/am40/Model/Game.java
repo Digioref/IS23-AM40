@@ -579,4 +579,8 @@ public class Game implements IGame {
     public TurnPhase getTurn() {
         return turn;
     }
+
+    public ArrayList<VirtualView> getObservers() {
+        return observers;
+    }
 }

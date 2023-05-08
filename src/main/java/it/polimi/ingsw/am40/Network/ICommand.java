@@ -4,5 +4,5 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public interface ICommand {
-    public void execute(ClientHandler c, ArrayList<String> comm) throws IOException;
+    public void execute(Handlers c, ArrayList<String> comm) throws IOException;
 }

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.am40.Network.Commands;
 
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
-import it.polimi.ingsw.am40.Network.ClientHandler;
+import it.polimi.ingsw.am40.Network.Handlers;
 import it.polimi.ingsw.am40.Network.ICommand;
 import it.polimi.ingsw.am40.Network.LoggingPhase;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Login implements ICommand {
 
     @Override
-    public void execute(ClientHandler c, ArrayList<String> comm) throws IOException {
+    public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (!c.isLogged() && c.getLogphase().equals(LoggingPhase.LOGGING) && comm.size() == 1) {
             if (c.checkNickname(comm.get(0))) {
                 c.sendMessage(JSONConverterStoC.normalMessage("Nickname already used!"));

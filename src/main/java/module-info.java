@@ -15,4 +15,10 @@ module it.polimi.ingsw.am40{
     exports it.polimi.ingsw.am40.Network.RMI;
     opens it.polimi.ingsw.am40.GUI to javafx.fxml, javafx.control, javafx.graphics;
     exports it.polimi.ingsw.am40.GUI;
+    exports it.polimi.ingsw.am40.Client;
+    exports it.polimi.ingsw.am40.Controller;
+    exports it.polimi.ingsw.am40.Model;
+    exports it.polimi.ingsw.am40.JSONConversion;
+    exports it.polimi.ingsw.am40.Network.Commands;
+    exports it.polimi.ingsw.am40.Network;
 }

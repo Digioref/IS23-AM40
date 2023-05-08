@@ -54,7 +54,7 @@ public class BagTest {
     }
 
     /**
-     * Tests the insert method
+     * Tests the gameUpdate method
      */
     @Test
     void Test4() {

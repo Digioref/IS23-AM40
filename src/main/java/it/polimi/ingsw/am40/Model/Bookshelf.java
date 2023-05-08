@@ -54,7 +54,7 @@ public class Bookshelf {
     /**
      * Inserts a Tile in a column identified by a given index
      * @param newTile the tile that must be inserted
-     * @param col column where to insert the tile
+     * @param col column where to gameUpdate the tile
      */
     public boolean addTile(Tile newTile, int col){
         if (!((this.isFull(col)) || newTile == null || col >= 5 || col < 0)){

@@ -65,6 +65,15 @@ public class GameController {
 
     }
 
+    public void chat(String name, String message) {
+
+    }
+    public void chatAll(String message) {
+        for (VirtualView v: game.getObservers()) {
+            v.receiveChat(message);
+        }
+    }
+
 
     public void setController(Controller controller) {
     }

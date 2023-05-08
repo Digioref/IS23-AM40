@@ -20,6 +20,9 @@ public class JSONConverterCtoS {
 
     public void toJSON (String s) {
         String[] command = s.split("\\s");
+        if(command[0].equals("chat") || command[0].equals("chatall")) {
+            command = s.split("#");
+        }
         obj.put("Command", command[0]);
         for (int i = 1; i < command.length; i++) {
             arr.add(command[i]);

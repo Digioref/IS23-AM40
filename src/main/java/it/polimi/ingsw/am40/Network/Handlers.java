@@ -4,6 +4,7 @@ import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.Controller.Lobby;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public abstract class Handlers {
     protected static final int NSUGGEST = 8;
@@ -14,6 +15,7 @@ public abstract class Handlers {
     protected boolean logged;
     protected Lobby lobby;
     protected LoggingPhase logphase;
+    protected ArrayList<String> commands;
 
     public VirtualView getVirtualViewInstance() {
         return this.virtualView;
@@ -84,4 +86,14 @@ public abstract class Handlers {
         return logphase;
     }
     public abstract void sendMessage(String s) throws IOException;
+
+    public abstract void suggestNickname(String s);
+
+    public ArrayList<String> getCommands() {
+        return commands;
+    }
+
+    public abstract void executeCommand(ActionType at, ArrayList<Integer> arr);
+
+    public abstract void chat(String message, String name);
 }
