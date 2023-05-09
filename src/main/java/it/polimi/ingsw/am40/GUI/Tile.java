@@ -14,8 +14,9 @@ import javafx.scene.shape.Rectangle;
 public class Tile extends Label {
 
 	private final String border_selected = "-fx-border-style: solid; -fx-border-color: black; -fx-border-width: 3;";
-	private final String border_pickable = "-fx-border-style: dotted; -fx-border-color: white; -fx-border-width: 4;";
-	private final String border_none = "-fx-border-width: 0;";
+	private final String border_pickable = "-fx-border-style: dotted; -fx-border-color: #008002; -fx-border-width: 4;";
+	//private final String border_none = "-fx-border-width: 0;";
+	private final String border_none = "-fx-border-style: dotted; -fx-border-color: transparent; -fx-border-width: 4;";
 
 	private Point2D pos;
 

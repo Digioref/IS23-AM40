@@ -48,7 +48,7 @@ public class ViewController extends AnchorPane {
 		cg2.relocate(20, 350);
 		getChildren().add(cg2);
 
-		persGoal.relocate(1150, 200);
+		persGoal.relocate(1150, 250);
 		getChildren().add(persGoal);
 
 		board.relocate(230, 40);

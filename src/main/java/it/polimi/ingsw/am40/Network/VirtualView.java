@@ -236,10 +236,12 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     }
 
     public void receiveChat(GroupChat groupChat) {
+        /*
         try {
             clientHandler.sendMessage(JSONConverterStoC.normalMessage(message));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        */
     }
 }
