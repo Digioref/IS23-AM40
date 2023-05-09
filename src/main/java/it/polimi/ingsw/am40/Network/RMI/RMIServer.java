@@ -30,6 +30,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 
     @Override
     public void login(String s, RMIClientInterface client) throws RemoteException {
+        for (String t: clientHandlers.keySet()) {
+            if(clientHandlers.get(t).getRmiClient().equals(client)) {
+                client.receive(JSONConverterStoC.normalMessage("You are already logged in!"));
+                return;
+            }
+        }
         RMIClientHandler rmiClientHandler = null;
         if(!checkNickname(s)) {
             rmiClientHandler = new RMIClientHandler();

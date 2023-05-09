@@ -134,9 +134,9 @@ public class ClientHandler extends Handlers implements Runnable {
     @Override
     public void chat(String message, String name) {
         if (name == null) {
-            getController().getGameController().chatAll(message);
+            getController().getGameController().chatAll(message, nickname, System.currentTimeMillis());
         } else {
-            getController().getGameController().chat(name, message);
+            getController().getGameController().chat(name, message, nickname, System.currentTimeMillis());
         }
     }
 

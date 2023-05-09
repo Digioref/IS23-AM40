@@ -65,12 +65,18 @@ public class GameController {
 
     }
 
-    public void chat(String name, String message) {
-
-    }
-    public void chatAll(String message) {
+    public void chat(String name, String message, String from, long time) {
+        game.getGroupChat().addMessage(name, message, from, time);
         for (VirtualView v: game.getObservers()) {
-            v.receiveChat(message);
+            if (name.equals(v.getNickname())) {
+                v.receiveChat(game.getGroupChat());
+            }
+        }
+    }
+    public void chatAll(String message, String from, long time) {
+        game.getGroupChat().addMessage(null, message, from, time);
+        for (VirtualView v: game.getObservers()) {
+            v.receiveChat(game.getGroupChat());
         }
     }
 

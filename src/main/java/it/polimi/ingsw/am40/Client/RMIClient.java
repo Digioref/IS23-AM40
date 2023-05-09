@@ -32,6 +32,7 @@ public class RMIClient implements RMIClientInterface {
         }
         try {
             stub = (RMIServerInterface) registry.lookup("RMIRegistry");
+
         } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }

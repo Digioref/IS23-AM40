@@ -2,6 +2,7 @@ package it.polimi.ingsw.am40.Client;
 
 import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.CLI.View;
+import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import it.polimi.ingsw.am40.Network.LaunchServer;
 
 import java.io.IOException;
@@ -99,7 +100,9 @@ public class LaunchClient {
         } else {
             Socket socket;
             try {
-                socket = new Socket(LaunchServer.ReadHostFromJSON(), LaunchServer.ReadPortFromJSON());
+                String[] args = ServerArgs.ReadServerConfigFromJSON();
+                socket = new Socket(args[0], Integer.parseInt(args[1]));
+//                socket = new Socket(LaunchServer.ReadHostFromJSON(), LaunchServer.ReadPortFromJSON());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

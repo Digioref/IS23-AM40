@@ -5,6 +5,7 @@ import it.polimi.ingsw.am40.Network.VirtualView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -60,6 +61,7 @@ public class Game implements IGame {
     private ParsingJSONManager pJSONm;
     private TurnPhase turn;
     private Player winner;
+    private GroupChat groupChat;
 
     /**
      * Constructor which builds the class assigning the number of players and creating the array of players
@@ -70,6 +72,7 @@ public class Game implements IGame {
         players = new ArrayList<>();
         pJSONm = new ParsingJSONManager();
         observers = new ArrayList<>();
+        groupChat = new GroupChat();
     }
 
     /**
@@ -582,5 +585,9 @@ public class Game implements IGame {
 
     public ArrayList<VirtualView> getObservers() {
         return observers;
+    }
+
+    public GroupChat getGroupChat() {
+        return groupChat;
     }
 }
