@@ -25,7 +25,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         super();
         clientHandlers = new HashMap<>();
         commands = new ArrayList<>();
-//        ParsingJSONManager.commands(commands);
+        ParsingJSONManager.commands(commands);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             rmiClientHandler.setLogged(true);
             rmiClientHandler.setRmiClient(client);
             clientHandlers.put(s, rmiClientHandler);
-            client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
+            client.receiveNickname(JSONConverterStoC.createJSONNickname(s), rmiClientHandler);
             clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby..."));
             lobby.addQueue(rmiClientHandler);
             lobby.addNickname(s);
@@ -56,7 +56,6 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             }
         } else {
             client.receive(JSONConverterStoC.normalMessage("The nickname you desire is already in use! Please type another nickname:"));
-            return;
         }
 
     }
@@ -138,6 +137,15 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    @Override
+    public void close(String s) throws RemoteException {
+        //TODO impact on game
+        if (clientHandlers.containsKey(s)) {
+            clientHandlers.get(s).setRmiClient(null);
+            clientHandlers.remove(s);
+        }
+    }
+
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
@@ -154,5 +162,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             }
         }
         return false;
+    }
+
+    public Map<String, RMIClientHandler> getClientHandlers() {
+        return clientHandlers;
     }
 }

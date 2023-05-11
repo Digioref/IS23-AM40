@@ -410,10 +410,10 @@ public class CliView implements View{
 
         while (!quit) {
             System.out.println(color.blackBg() + " You are in the Chat!" + color.rst());
-            System.out.println("Write the message: ");
+            System.out.println("Write the message (-q to quit): ");
             try {
                 String message = socketClient.getStdIn().readLine();
-                if (message.toLowerCase().equals("q")) {
+                if (message.toLowerCase().equals("-q")) {
                     quit = true;
                 } else {
                     System.out.println("to [playerName] (leave it blank if it is a broadcast message): ");

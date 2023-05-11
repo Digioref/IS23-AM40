@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ParsingJSONManager {
@@ -232,20 +233,20 @@ public class ParsingJSONManager {
         }
     }
 
-//    public static void commands(ArrayList<String> arr) {
-//        JSONParser jsonParser = new JSONParser();
-//        try {
-//            InputStream is = ServerArgs.class.getClassLoader().getResourceAsStream("Commands.json");
-//            JSONObject configs = (JSONObject) jsonParser.parse(new InputStreamReader(is,StandardCharsets.UTF_8));
-//            JSONArray posArray = (JSONArray) configs.get("Commands");
-//            for (int i = 0; i < posArray.size(); i++) {
-//                JSONObject t = (JSONObject) posArray.get(i);
-//                String t1 = t.get("Command" + i).toString();
-//                arr.add(t1);
-//                }
-//        } catch (IOException | ParseException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public static void commands(ArrayList<String> arr) {
+        JSONParser jsonParser = new JSONParser();
+        try {
+            InputStream is = ServerArgs.class.getClassLoader().getResourceAsStream("Commands.json");
+            JSONObject configs = (JSONObject) jsonParser.parse(new InputStreamReader(is,StandardCharsets.UTF_8));
+            JSONArray posArray = (JSONArray) configs.get("Commands");
+            for (int i = 0; i < posArray.size(); i++) {
+                JSONObject t = (JSONObject) posArray.get(i);
+                String t1 = t.get("Command" + i).toString();
+                arr.add(t1);
+                }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

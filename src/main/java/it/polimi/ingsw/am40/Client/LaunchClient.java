@@ -19,7 +19,7 @@ public class LaunchClient {
     public static void main(String[] args) {
         String choice = interfaceSelection();
         if (choice.equals("GUI")) {
-
+            System.out.println("GUI Started");
         } else {
             view = new CliView();
         }
@@ -91,7 +91,7 @@ public class LaunchClient {
 
     public static void startConnection(String choice, String serverIp) {
         if (choice.equals("RMI")) {
-            RMIClient rmiClient = null;
+            RMIClient rmiClient;
             try {
                 setRMIHostname();
                 rmiClient = new RMIClient(serverIp);

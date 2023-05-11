@@ -84,10 +84,6 @@ public class ClientHandler extends Handlers implements Runnable {
         }
     }
 
-    public Socket getSocket() {
-        return socket;
-    }
-
     public void suggestNickname(String nickname) {
         Random random = new Random();
         for (int i = 0; i < NSUGGEST; i++) {

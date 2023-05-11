@@ -1,7 +1,9 @@
 package it.polimi.ingsw.am40.Client;
 
+import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
+import it.polimi.ingsw.am40.Network.Handlers;
 import it.polimi.ingsw.am40.Network.RMI.RMIServerInterface;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -9,19 +11,21 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class RMIClient implements RMIClientInterface {
+public class RMIClient extends Client implements RMIClientInterface {
     private BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
     private RMIServerInterface stub;
     private Thread rmiThread;
     private boolean stop;
-    private String nickname;
     private String Ipaddress;
+    private Handlers rmiClientHandler;
 
     public RMIClient(String serverIp) throws RemoteException {
         super();
@@ -42,45 +46,28 @@ public class RMIClient implements RMIClientInterface {
         } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
-        rmiThread = new Thread(() -> {
-            do {
-                String line;
-                try {
-                    line = stdIn.readLine();
-                    if (line.equals("chat")) {
-                        boolean quit = false;
-                        while (!quit) {
-                            LaunchClient.getView().printMessage("You are in the Chat!\nWrite the message: ");
-                            try {
-                                line = stdIn.readLine();
-                                if (line.toLowerCase().equals("q")) {
-                                    quit = true;
-                                } else {
-                                    LaunchClient.getView().printMessage("to [playerName] (leave it blank if it is a broadcast message): ");
-                                    String receiver = stdIn.readLine();
-                                    if (receiver.length() == 0)
-                                        receiver = null;
-                                    JSONConverterCtoS jconv = new JSONConverterCtoS();
-                                    jconv.toJSONChat(receiver, line);
-                                    chat(jconv.toString());
-                                }
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+        if (LaunchClient.getView() instanceof CliView) {
+            rmiThread = new Thread(() -> {
+                do {
+                    String line;
+                    try {
+                        line = stdIn.readLine();
+                        if (line.equals("chat")) {
+                            startChat();
+                        } else {
+                            parseMessageIn(line);
                         }
-                    } else {
-                        parseMessage(line);
+                    } catch (IOException e) {
+                        throw new RuntimeException();
                     }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                } while(!stop);
+            });
+            rmiThread.start();
+        }
 
-            } while(!stop);
-        });
-        rmiThread.start();
     }
 
-    public void parseMessage(String line) {
+    public void parseMessageIn(String line) {
         String[] command = line.split("\\s");
         JSONConverterCtoS jconv = new JSONConverterCtoS();
         jconv.toJSON(line);
@@ -91,7 +78,7 @@ public class RMIClient implements RMIClientInterface {
                     stub.login(command[1], this);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
-                };
+                }
                 break;
             case "setplayers":
                 try {
@@ -128,6 +115,16 @@ public class RMIClient implements RMIClientInterface {
                     throw new RuntimeException(e);
                 }
                 break;
+            case "quit":
+                try {
+                    if (nickname != null) {
+                        stub.close(nickname);
+                    }
+                    close();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
             default:
                 try {
                     receive(JSONConverterStoC.normalMessage("Your command is wrong, please retype:"));
@@ -137,17 +134,63 @@ public class RMIClient implements RMIClientInterface {
                 break;
         }
     }
+
+    public void startChat() {
+        boolean quit = false;
+        while (!quit) {
+            LaunchClient.getView().printMessage("You are in the Chat!\nWrite the message: ");
+            try {
+                String line = stdIn.readLine();
+                if (line.toLowerCase().equals("q")) {
+                    quit = true;
+                } else {
+                    LaunchClient.getView().printMessage("to [playerName] (leave it blank if it is a broadcast message): ");
+                    String receiver = stdIn.readLine();
+                    if (receiver.length() == 0)
+                        receiver = null;
+                    JSONConverterCtoS jconv = new JSONConverterCtoS();
+                    jconv.toJSONChat(receiver, line);
+                    chat(jconv.toString());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    @Override
+    public void close() {
+        rmiClientHandler = null;
+        stop = true;
+        rmiThread.interrupt();
+        try {
+            stdIn.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            UnicastRemoteObject.unexportObject(this, true);
+        } catch (NoSuchObjectException e) {
+            throw new RuntimeException(e);
+        }
+        if (nickname != null) {
+            System.out.println("Client " + nickname + "closed!");
+        } else {
+            System.out.println("Client closed!");
+        }
+    }
+
     @Override
     public void receive(String s) throws RemoteException {
         try {
-            SocketClient.parseMessage(s);
+            parseMessage(s);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void receiveNickname(String s) throws RemoteException {
+    public void receiveNickname(String s, Handlers handler) throws RemoteException {
+        rmiClientHandler = handler;
         JSONParser jsonParser = new JSONParser();
         JSONObject object = null;
         try {
@@ -184,9 +227,6 @@ public class RMIClient implements RMIClientInterface {
         }
     }
 
-    public BufferedReader getStdIn() {
-        return stdIn;
-    }
 
     public String getNickname() {
         return nickname;

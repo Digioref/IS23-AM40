@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am40.Network;
 
 import it.polimi.ingsw.am40.Controller.Lobby;
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.RMI.RMIServer;
 
 import java.io.IOException;
@@ -82,5 +83,12 @@ public class GameServer implements Runnable {
         close = true;
         serverSocket.close();
         pool.shutdown();
+        for (Handlers h: clientHandlers) {
+            h.sendMessage(JSONConverterStoC.normalMessage("Quit"));
+        }
+        for (String s: rmiserver.getClientHandlers().keySet()) {
+            rmiserver.getClientHandlers().get(s).sendMessage(JSONConverterStoC.normalMessage("Quit"));
+        }
+
     }
 }
