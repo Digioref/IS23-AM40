@@ -15,7 +15,8 @@ public abstract class Handlers {
     protected boolean logged;
     protected Lobby lobby;
     protected LoggingPhase logphase;
-    protected ArrayList<String> commands;
+    protected MessageAdapter messAd;
+//    protected ArrayList<String> commands;
 
     public VirtualView getVirtualViewInstance() {
         return this.virtualView;
@@ -89,11 +90,18 @@ public abstract class Handlers {
 
     public abstract void suggestNickname(String s);
 
-    public ArrayList<String> getCommands() {
-        return commands;
-    }
+//    public ArrayList<String> getCommands() {
+//        return commands;
+//    }
 
     public abstract void executeCommand(ActionType at, ArrayList<Integer> arr);
 
     public abstract void chat(String message, String name);
+
+    public abstract void getChat();
+
+    public MessageAdapter getMessAd() {
+        return messAd;
+    }
+    public abstract void sendChat(String s);
 }

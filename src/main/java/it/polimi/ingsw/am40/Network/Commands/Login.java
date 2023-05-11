@@ -25,6 +25,7 @@ public class Login implements ICommand {
                 c.setLogphase(LoggingPhase.WAITING);
                 c.getLobby().addQueue(c);
                 c.sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
+                c.sendMessage(JSONConverterStoC.createJSONNickname(comm.get(0)));
             }
             if (!LoggingPhase.SETPLAYERS) {
                 LoggingPhase.setSETPLAYERS(true);

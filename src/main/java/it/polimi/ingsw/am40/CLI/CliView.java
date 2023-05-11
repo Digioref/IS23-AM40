@@ -1,8 +1,9 @@
 package it.polimi.ingsw.am40.CLI;
 
 import it.polimi.ingsw.am40.Client.LaunchClient;
+import it.polimi.ingsw.am40.Client.SocketClient;
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
 import it.polimi.ingsw.am40.Model.*;
-import javafx.geometry.Point2D;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class CliView implements View{
         for (String s: names) {
             System.out.println(color.greenBg() + s + color.rst());
         }
+        System.out.println("\n");
     }
 
     public String printTile(String s) {
@@ -403,6 +405,44 @@ public class CliView implements View{
     }
 
     @Override
+    public void chat(SocketClient socketClient) {
+        boolean quit = false;
+
+        while (!quit) {
+            System.out.println(color.blackBg() + " You are in the Chat!" + color.rst());
+            System.out.println("Write the message: ");
+            try {
+                String message = socketClient.getStdIn().readLine();
+                if (message.toLowerCase().equals("q")) {
+                    quit = true;
+                } else {
+                    System.out.println("to [playerName] (leave it blank if it is a broadcast message): ");
+                    String receiver = socketClient.getStdIn().readLine();
+                    if (receiver.length() == 0)
+                        receiver = null;
+                    JSONConverterCtoS jconv = new JSONConverterCtoS();
+                    jconv.toJSONChat(receiver, message);
+                    socketClient.getOut().println(jconv.toString());
+                    socketClient.getOut().flush();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    @Override
+    public void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname) {
+        System.out.println(color.cyanBg() + " Chat " + color.rst() + "\n");
+        for (int i = 0; i < array1.size(); i++) {
+            if(nickname.equals(array2.get(i)) || array2.get(i).equals("all")) {
+                System.out.println(color.greenBg() + array1.get(i) + color.rst() + "  -->  " + color.yellowBg() + array2.get(i) + color.rst() + " : " + array3.get(i) + "\n");
+            }
+        }
+    }
+
+    @Override
     public void chooseConnection() {
         String choice;
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
@@ -420,8 +460,18 @@ public class CliView implements View{
             else if(choice.equals("R"))
                 choice = "RMI";
         }while(!choice.equals("RMI") && !choice.equals("SOCKET"));
-        LaunchClient.startConnection(choice);
+        printMessage("Insert the server IP (or localhost [L]):");
+        String ip;
+        try {
+            ip = stdIn.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if(ip.equalsIgnoreCase("L"))
+            ip = "localhost";
+        LaunchClient.startConnection(choice, ip);
     }
+
 
 //    public void showBoard() {
 //        for (int row = 4; row > -5; row--) {

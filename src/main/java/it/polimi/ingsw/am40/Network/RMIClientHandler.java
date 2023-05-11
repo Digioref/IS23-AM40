@@ -12,8 +12,6 @@ import java.util.Random;
 
 public class RMIClientHandler extends Handlers {
     private RMIClientInterface rmiClient;
-    private Controller controller;
-    private MessageAdapter messAd;
     public RMIClientHandler() {
         logged = false;
         lobby = new Lobby();
@@ -77,10 +75,20 @@ public class RMIClientHandler extends Handlers {
 
     @Override
     public void chat(String message, String name) {
-        if (name == null) {
-            getController().getGameController().chatAll(message,nickname, System.currentTimeMillis());
-        } else {
-            getController().getGameController().chat(name, message, nickname, System.currentTimeMillis());
+        controller.getGameController().chat(name, message, nickname);
+    }
+
+    @Override
+    public void getChat() {
+        controller.getGameController().getChat(nickname);
+    }
+
+    @Override
+    public void sendChat(String s) {
+        try {
+            rmiClient.receiveChat(s);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -88,14 +96,6 @@ public class RMIClientHandler extends Handlers {
         this.rmiClient = rmiClient;
     }
 
-    @Override
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
-
-    public MessageAdapter getMessAd() {
-        return messAd;
-    }
 
     public RMIClientInterface getRmiClient() {
         return rmiClient;

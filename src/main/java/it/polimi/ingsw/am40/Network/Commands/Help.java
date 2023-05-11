@@ -12,7 +12,7 @@ public class Help implements ICommand {
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (comm.size() == 0) {
-            for (String s: c.getCommands()) {
+            for (String s: c.getMessAd().getCommands().keySet()) {
                 switch(s) {
                     case "select":
                         c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [int] [int]"));

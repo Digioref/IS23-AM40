@@ -10,4 +10,5 @@ public interface IGameErrorTurn {
     public void insertTurnError();
     public void turnError();
     public void insertError();
+    public void chatError();
 }

@@ -236,4 +236,26 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    public static String createJSONChat(ArrayList<String> authors, ArrayList<String> receivers, ArrayList<String> messages){
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "Chat");
+        JSONArray arr1 = new JSONArray();
+        JSONArray arr2 = new JSONArray();
+        JSONArray arr3 = new JSONArray();
+        arr1.addAll(authors);
+        arr2.addAll(receivers);
+        arr3.addAll(messages);
+        obj.put("Authors", arr1);
+        obj.put("Receivers", arr2);
+        obj.put("Messages", arr3);
+        return obj.toJSONString();
+    }
+
+    public static String createJSONNickname(String nickname) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "Name");
+        obj.put("Nickname", nickname);
+        return obj.toJSONString();
+    }
+
 }

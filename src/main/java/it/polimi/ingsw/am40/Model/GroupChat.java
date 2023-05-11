@@ -8,14 +8,28 @@ import java.util.Map;
 public class GroupChat {
     private ArrayList<String> publisher;
     private ArrayList<String> toplayer;
-    private Map<String, Long> message;
+    private ArrayList<String> message;
 
     public GroupChat() {
         publisher = new ArrayList<>();
         toplayer = new ArrayList<>();
-        message = new HashMap<>();
+        message = new ArrayList<>();
     }
-    public void addMessage(String name, String message, String from, Long time) {
+    public void addMessage(String name, String message, String from) {
+        publisher.add(from);
+        toplayer.add(name);
+        this.message.add(message);
+    }
 
+    public ArrayList<String> getPublisher() {
+        return publisher;
+    }
+
+    public ArrayList<String> getToplayer() {
+        return toplayer;
+    }
+
+    public ArrayList<String> getMessage() {
+        return message;
     }
 }

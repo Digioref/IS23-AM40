@@ -20,9 +20,9 @@ public class JSONConverterCtoS {
 
     public void toJSON (String s) {
         String[] command = s.split("\\s");
-        if(command[0].equals("chat") || command[0].equals("chatall")) {
-            command = s.split("#");
-        }
+//        if(command[0].equals("chat") || command[0].equals("chatall")) {
+//            command = s.split("#");
+//        }
         obj.put("Command", command[0]);
         for (int i = 1; i < command.length; i++) {
             arr.add(command[i]);
@@ -42,6 +42,19 @@ public class JSONConverterCtoS {
             for (int i = 0; i < parameters.size(); i++) {
                 par.add((String) parameters.get(i));
             }
+        }
+    }
+
+    public void toJSONChat(String receiver, String message) {
+        obj.put("Command", "chat");
+        if (receiver == null) {
+            arr.add(0, "all");
+        } else {
+            arr.add(0, receiver);
+        }
+        arr.add(1, message);
+        if (!arr.isEmpty()) {
+            obj.put("Params", arr);
         }
     }
 

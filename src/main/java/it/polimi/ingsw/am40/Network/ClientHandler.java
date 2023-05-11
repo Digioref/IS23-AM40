@@ -16,8 +16,6 @@ import java.util.Scanner;
 public class ClientHandler extends Handlers implements Runnable {
     private Socket socket;
 
-    private MessageAdapter messAd;
-
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
@@ -37,6 +35,15 @@ public class ClientHandler extends Handlers implements Runnable {
 
     public MessageAdapter getMessAd() {
         return messAd;
+    }
+
+    @Override
+    public void sendChat(String s) {
+        try {
+            sendMessage(s);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -77,13 +84,9 @@ public class ClientHandler extends Handlers implements Runnable {
         }
     }
 
-
-
     public Socket getSocket() {
         return socket;
     }
-
-
 
     public void suggestNickname(String nickname) {
         Random random = new Random();
@@ -133,11 +136,12 @@ public class ClientHandler extends Handlers implements Runnable {
 
     @Override
     public void chat(String message, String name) {
-        if (name == null) {
-            getController().getGameController().chatAll(message, nickname, System.currentTimeMillis());
-        } else {
-            getController().getGameController().chat(name, message, nickname, System.currentTimeMillis());
-        }
+        controller.getGameController().chat(name, message, nickname);
+    }
+
+    @Override
+    public void getChat() {
+        controller.getGameController().getChat(nickname);
     }
 
 
