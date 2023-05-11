@@ -69,7 +69,6 @@ public class GameServer implements Runnable {
     }
 
     public void connect(int port) throws IOException {
-        System.setProperty("java.rmi.server.hostname","localhost");
         rmiserver = new RMIServer();
         rmiserver.setLobby(lobby);
         Registry registry = LocateRegistry.createRegistry(5000);

@@ -65,22 +65,39 @@ public class GameController {
 
     }
 
-    public void chat(String name, String message, String from, long time) {
-        game.getGroupChat().addMessage(name, message, from, time);
-        for (VirtualView v: game.getObservers()) {
+    public void chat(String name, String message, String from) {
+        if (name.equals("all")) {
+            game.getGroupChat().addMessage(name, message, from);
+            for (VirtualView v: game.getObservers()) {
+                v.receiveChat(game.getGroupChat());
+            }
+        } else {
+            for (Player p: game.getPlayers()) {
+                if(p.getNickname().equals(name)) {
+                    game.getGroupChat().addMessage(name, message, from);
+                    for (VirtualView v: game.getObservers()) {
+                        if (name.equals(v.getNickname())) {
+                            v.receiveChat(game.getGroupChat());
+                        }
+                    }
+                return;
+                }
+            }
+            for (VirtualView v: game.getObservers()) {
+                if (from.equals(v.getNickname())) {
+                    v.chatError();
+                }
+            }
+        }
+    }
+
+    public void getChat(String name) {
+        for (VirtualView v : game.getObservers()) {
             if (name.equals(v.getNickname())) {
                 v.receiveChat(game.getGroupChat());
             }
         }
     }
-    public void chatAll(String message, String from, long time) {
-        game.getGroupChat().addMessage(null, message, from, time);
-        for (VirtualView v: game.getObservers()) {
-            v.receiveChat(game.getGroupChat());
-        }
-    }
-
-
     public void setController(Controller controller) {
     }
 

@@ -235,11 +235,17 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
-    public void receiveChat(GroupChat groupChat) {
+    @Override
+    public void chatError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage(message));
+            clientHandler.sendMessage(JSONConverterStoC.normalMessage("The player you want to send the message is not in this game!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+    public void receiveChat(GroupChat groupChat) {
+        clientHandler.sendChat(JSONConverterStoC.createJSONChat(groupChat.getPublisher(), groupChat.getToplayer(), groupChat.getMessage()));
+    }
+
 }

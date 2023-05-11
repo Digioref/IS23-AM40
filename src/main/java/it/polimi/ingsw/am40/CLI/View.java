@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am40.CLI;
 
+import it.polimi.ingsw.am40.Client.SocketClient;
 import it.polimi.ingsw.am40.Model.Position;
 
 import java.util.ArrayList;
@@ -23,4 +24,7 @@ public interface View {
     public void showPlayers(ArrayList<String> names);
     public void printMessage(String s);
 
+    void chat(SocketClient socketClient);
+
+    void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname);
 }

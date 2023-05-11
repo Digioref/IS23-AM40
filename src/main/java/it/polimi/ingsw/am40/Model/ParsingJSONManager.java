@@ -3,7 +3,6 @@ package it.polimi.ingsw.am40.Model;
 import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import it.polimi.ingsw.am40.Network.Commands.*;
 import it.polimi.ingsw.am40.Network.ICommand;
-import it.polimi.ingsw.am40.Network.MessageAdapter;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -12,10 +11,7 @@ import org.json.simple.JSONObject;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class ParsingJSONManager {
 
@@ -225,8 +221,8 @@ public class ParsingJSONManager {
                     case "chat":
                         map.put("chat", new Chat());
                         break;
-                    case "chatall":
-                        map.put("chatall", new ChatAll());
+                    case "viewchat":
+                        map.put("viewchat", new ViewChat());
 
                 }
             }
@@ -236,20 +232,20 @@ public class ParsingJSONManager {
         }
     }
 
-    public static void commands(ArrayList<String> arr) {
-        JSONParser jsonParser = new JSONParser();
-        try {
-            InputStream is = ServerArgs.class.getClassLoader().getResourceAsStream("Commands.json");
-            JSONObject configs = (JSONObject) jsonParser.parse(new InputStreamReader(is,StandardCharsets.UTF_8));
-            JSONArray posArray = (JSONArray) configs.get("Commands");
-            for (int i = 0; i < posArray.size(); i++) {
-                JSONObject t = (JSONObject) posArray.get(i);
-                String t1 = t.get("Command" + i).toString();
-                arr.add(t1);
-                }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void commands(ArrayList<String> arr) {
+//        JSONParser jsonParser = new JSONParser();
+//        try {
+//            InputStream is = ServerArgs.class.getClassLoader().getResourceAsStream("Commands.json");
+//            JSONObject configs = (JSONObject) jsonParser.parse(new InputStreamReader(is,StandardCharsets.UTF_8));
+//            JSONArray posArray = (JSONArray) configs.get("Commands");
+//            for (int i = 0; i < posArray.size(); i++) {
+//                JSONObject t = (JSONObject) posArray.get(i);
+//                String t1 = t.get("Command" + i).toString();
+//                arr.add(t1);
+//                }
+//        } catch (IOException | ParseException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

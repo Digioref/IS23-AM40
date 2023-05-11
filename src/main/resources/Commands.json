@@ -19,6 +19,6 @@
     {"Command16": "getbook"},
     {"Command17": "getbookall"},
     {"Command18": "chat"},
-    {"Command19": "chatall"}
+    {"Command19": "viewchat"}
   ]
 }

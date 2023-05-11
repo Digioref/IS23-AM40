@@ -27,6 +27,7 @@ public class SocketClient {
     private Thread fromUser;
     private Thread fromServer;
     private boolean stop;
+    private static String nickname;
     public SocketClient(Socket socket) {
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -46,10 +47,14 @@ public class SocketClient {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                JSONConverterCtoS jconv = new JSONConverterCtoS();
-                jconv.toJSON(userInput);
-                out.println(jconv.toString());
-                out.flush();
+                if (userInput.equals("chat")) {
+                    LaunchClient.getView().chat(this);
+                } else {
+                    JSONConverterCtoS jconv = new JSONConverterCtoS();
+                    jconv.toJSON(userInput);
+                    out.println(jconv.toString());
+                    out.flush();
+                }
             } while (!stop);
         });
         fromServer = new Thread(() -> {
@@ -213,10 +218,34 @@ public class SocketClient {
                 }
                 LaunchClient.getView().showFinalScore(map11, object.get("Nickname").toString());
                 break;
+            case "Chat":
+                JSONArray arr13 = (JSONArray) object.get("Authors");
+                JSONArray arr14 = (JSONArray) object.get("Receivers");
+                JSONArray arr15 = (JSONArray) object.get("Messages");
+                ArrayList<String> array1 = new ArrayList<>(arr13);
+                ArrayList<String> array2 = new ArrayList<>(arr14);
+                ArrayList<String> array3 = new ArrayList<>(arr15);
+                LaunchClient.getView().showChat(array1, array2, array3, nickname);
+                break;
+            case "Name":
+                nickname = (String) object.get("Nickname");
+                break;
             default:
                 LaunchClient.getView().printMessage(command);
                 break;
         }
+    }
+
+    public BufferedReader getStdIn() {
+        return stdIn;
+    }
+
+    public BufferedReader getIn() {
+        return in;
+    }
+
+    public PrintWriter getOut() {
+        return out;
     }
 
     public synchronized void print(String s) {
