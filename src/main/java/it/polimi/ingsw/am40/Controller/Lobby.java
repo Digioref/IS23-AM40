@@ -28,11 +28,11 @@ public class Lobby implements Runnable {
 
     public void  removeFromQueue() {
 //        if (activePlayers.size() == 0) {
-            Handlers c;
             synchronized (queue) {
+                Handlers c;
                 c = queue.remove(0);
+                activePlayers.add(c);
             }
-            activePlayers.add(c);
 //            numPlayers = c.getNumPlayers();
             //nicknameInGame.add(c.getNickname());
 //        }
@@ -95,8 +95,10 @@ public class Lobby implements Runnable {
         g.startGame();
         LoggingPhase.setSETPLAYERS(false);
         try {
-            queue.get(0).sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with:"));
-            queue.get(0).setLogphase(LoggingPhase.SETTING);
+            if (!queue.isEmpty()) {
+                queue.get(0).sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with:"));
+                queue.get(0).setLogphase(LoggingPhase.SETTING);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

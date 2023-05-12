@@ -51,16 +51,24 @@ public class RMIClient extends Client implements RMIClientInterface {
         if (LaunchClient.getView() instanceof CliView) {
             rmiThread = new Thread(() -> {
                 do {
-                    String line;
                     try {
-                        line = stdIn.readLine();
-                        if (line.equals("chat")) {
-                            startChat();
-                        } else {
-                            parseMessageIn(line);
+                        String line;
+                        if (stdIn.ready()) {
+                            try {
+                                line = stdIn.readLine();
+                                if (line.equals("chat")) {
+                                    startChat();
+                                } else {
+                                    parseMessageIn(line);
+                                }
+                            } catch (IOException e) {
+                                close();
+                                break;
+//                                throw new RuntimeException();
+                            }
                         }
                     } catch (IOException e) {
-                        throw new RuntimeException();
+                        throw new RuntimeException(e);
                     }
                 } while(!stop);
             });
@@ -165,6 +173,7 @@ public class RMIClient extends Client implements RMIClientInterface {
         if (rmiThread != null) {
             rmiThread.interrupt();
         }
+        LaunchClient.getView().quit(nickname);
         try {
             stdIn.close();
         } catch (IOException e) {
@@ -175,7 +184,6 @@ public class RMIClient extends Client implements RMIClientInterface {
         } catch (NoSuchObjectException e) {
             throw new RuntimeException(e);
         }
-        LaunchClient.getView().quit(nickname);
     }
 
     @Override
