@@ -3,6 +3,7 @@ package it.polimi.ingsw.am40.GUI;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -33,8 +34,10 @@ public class Viewer extends Application {
 		viewController = new ViewController();
 		rootBox.getChildren().add(viewController);
 
+		ScrollPane scrollPane = new ScrollPane(rootBox);
+
 		/* Create the main scene */
-		scene = new Scene(rootBox);
+		scene = new Scene(scrollPane);
 
 		/* Set stage properties */
 		stage.setTitle("MyShelfie");

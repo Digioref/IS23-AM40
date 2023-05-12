@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -33,9 +34,8 @@ public class ViewController extends AnchorPane {
 		setPrefSize(Metrics.ROOT_WIDTH, Metrics.ROOT_HEIGHT);
 
 		Image background = Resources.background();
-		BackgroundImage bgImg = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
-				BackgroundPosition.DEFAULT,
-				new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
+		BackgroundImage bgImg = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT,
+				BackgroundPosition.CENTER, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
 
 		setBackground(new Background(bgImg));
 
@@ -57,6 +57,16 @@ public class ViewController extends AnchorPane {
 		bookshelf.relocate(786, 180);
 		bookshelf.setName("Francesco");
 		getChildren().add(bookshelf);
+
+		int numPlayers = 3;
+		int start = 612;
+		for (int i = 0; i < numPlayers - 1; i++) {
+			Bookshelf b = new Bookshelf();
+			b.relocate(460, (start + 380*i));
+			String nome = "nome " + i;
+			b.setName(nome);
+			getChildren().add(b);
+		}
 
 		commandBoard.relocate(850, 40);
 		getChildren().add(commandBoard);
