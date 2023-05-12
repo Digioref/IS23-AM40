@@ -125,4 +125,14 @@ public class Lobby implements Runnable {
     public void addNickname(String s) {
         nicknameInGame.add(s);
     }
+    public void removeQuit(Handlers c) {
+        synchronized (queue) {
+            if (queue.contains(c)) {
+                queue.remove(c);
+            }
+            if (activePlayers.contains(c.getNickname())) {
+                activePlayers.remove(c.getNickname());
+            }
+        }
+    }
 }
