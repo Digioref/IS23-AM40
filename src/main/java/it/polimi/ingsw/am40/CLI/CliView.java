@@ -476,7 +476,7 @@ public class CliView implements View{
     @Override
     public void quit(String nickname) {
         if (nickname != null) {
-            printMessage("Client" + nickname + "closed!");
+            printMessage("Client " + nickname + " closed!");
         } else {
             printMessage("Client closed!");
         }

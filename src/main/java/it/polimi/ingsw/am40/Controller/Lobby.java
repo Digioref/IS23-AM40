@@ -130,8 +130,9 @@ public class Lobby implements Runnable {
             if (queue.contains(c)) {
                 queue.remove(c);
             }
-            if (activePlayers.contains(c.getNickname())) {
-                activePlayers.remove(c.getNickname());
+            if (activePlayers.contains(c)) {
+                activePlayers.remove(c);
+                nicknameInGame.remove(c.getNickname());
             }
         }
     }
