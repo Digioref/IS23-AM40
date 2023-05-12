@@ -98,6 +98,7 @@ public class Lobby implements Runnable {
             if (!queue.isEmpty()) {
                 queue.get(0).sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with:"));
                 queue.get(0).setLogphase(LoggingPhase.SETTING);
+                LoggingPhase.setSETPLAYERS(true);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
