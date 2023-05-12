@@ -114,6 +114,7 @@ public class SocketClient extends Client {
             socket.shutdownOutput();
             socket.close();
             stdIn.close();
+            LaunchClient.getView().quit(nickname);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

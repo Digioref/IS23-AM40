@@ -467,6 +467,7 @@ public class CliView implements View{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         if(ip.equalsIgnoreCase("L"))
             ip = "localhost";
         LaunchClient.startConnection(choice, ip);
