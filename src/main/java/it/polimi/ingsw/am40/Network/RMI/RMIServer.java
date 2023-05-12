@@ -141,6 +141,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     public void close(String s) throws RemoteException {
         // TODO impact on game
         if (clientHandlers.containsKey(s)) {
+            lobby.removeQuit(clientHandlers.get(s));
             clientHandlers.get(s).close();
             clientHandlers.remove(s);
         }

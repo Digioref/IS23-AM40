@@ -151,6 +151,7 @@ public class ClientHandler extends Handlers implements Runnable {
 
     public void close() {
         //TODO impact on game
+        lobby.removeQuit(this);
         try {
             sendMessage(JSONConverterStoC.normalMessage("Quit"));
         } catch (IOException e) {
