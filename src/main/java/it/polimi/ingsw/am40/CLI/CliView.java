@@ -472,8 +472,16 @@ public class CliView implements View{
         LaunchClient.startConnection(choice, ip);
     }
 
+    @Override
+    public void quit(String nickname) {
+        if (nickname != null) {
+            printMessage("Client" + nickname + "closed!");
+        } else {
+            printMessage("Client closed!");
+        }
+    }
 
-//    public void showBoard() {
+    //    public void showBoard() {
 //        for (int row = 4; row > -5; row--) {
 //            if (row >= 0) {
 //                System.out.printf(" %d ", row);

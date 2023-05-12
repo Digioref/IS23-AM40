@@ -44,7 +44,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             rmiClientHandler.setLogged(true);
             rmiClientHandler.setRmiClient(client);
             clientHandlers.put(s, rmiClientHandler);
-            client.receiveNickname(JSONConverterStoC.createJSONNickname(s), rmiClientHandler);
+            client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
             clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby..."));
             lobby.addQueue(rmiClientHandler);
             lobby.addNickname(s);
@@ -139,9 +139,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 
     @Override
     public void close(String s) throws RemoteException {
-        //TODO impact on game
+        // TODO impact on game
         if (clientHandlers.containsKey(s)) {
-            clientHandlers.get(s).setRmiClient(null);
+            clientHandlers.get(s).close();
             clientHandlers.remove(s);
         }
     }

@@ -163,6 +163,7 @@ public abstract class Client {
                 break;
             case "Quit":
                 close();
+                LaunchClient.getView().quit(nickname);
                 break;
             default:
                 LaunchClient.getView().printMessage(command);

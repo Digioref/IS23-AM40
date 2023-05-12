@@ -92,6 +92,11 @@ public class RMIClientHandler extends Handlers {
         }
     }
 
+    @Override
+    public void close() {
+        rmiClient = null;
+    }
+
     public void setRmiClient(RMIClientInterface rmiClient) {
         this.rmiClient = rmiClient;
     }

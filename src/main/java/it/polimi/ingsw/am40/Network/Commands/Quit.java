@@ -10,6 +10,6 @@ public class Quit implements ICommand {
 
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
-        c.sendMessage("Bye Bye");
+        c.close();
     }
 }

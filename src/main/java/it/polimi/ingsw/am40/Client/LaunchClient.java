@@ -101,14 +101,16 @@ public class LaunchClient {
             }
             rmiClient.connect();
         } else {
-            Socket socket;
+            Socket socket = null;
             try {
 //                String[] args = ServerArgs.ReadServerConfigFromJSON();
 //                socket = new Socket(args[0], Integer.parseInt(args[1]));
                 socket = new Socket(serverIp, 1234);
 //                socket = new Socket(LaunchServer.ReadHostFromJSON(), LaunchServer.ReadPortFromJSON());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Server not reachable. Closing...");
+                return;
+//                throw new RuntimeException(e);
             }
             SocketClient socketClient = new SocketClient(socket);
             socketClient.init();

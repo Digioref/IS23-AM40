@@ -104,4 +104,6 @@ public abstract class Handlers {
         return messAd;
     }
     public abstract void sendChat(String s);
+
+    public abstract void close();
 }

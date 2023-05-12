@@ -25,7 +25,6 @@ public class RMIClient extends Client implements RMIClientInterface {
     private Thread rmiThread;
     private boolean stop;
     private String Ipaddress;
-    private Handlers rmiClientHandler;
 
     public RMIClient(String serverIp) throws RemoteException {
         super();
@@ -44,7 +43,10 @@ public class RMIClient extends Client implements RMIClientInterface {
             stub = (RMIServerInterface) registry.lookup("RMIRegistry");
 
         } catch (RemoteException | NotBoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("Server not reachable. Closing...");
+            close();
+            return;
+//            throw new RuntimeException(e);
         }
         if (LaunchClient.getView() instanceof CliView) {
             rmiThread = new Thread(() -> {
@@ -159,9 +161,10 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
     @Override
     public void close() {
-        rmiClientHandler = null;
         stop = true;
-        rmiThread.interrupt();
+        if (rmiThread != null) {
+            rmiThread.interrupt();
+        }
         try {
             stdIn.close();
         } catch (IOException e) {
@@ -172,11 +175,7 @@ public class RMIClient extends Client implements RMIClientInterface {
         } catch (NoSuchObjectException e) {
             throw new RuntimeException(e);
         }
-        if (nickname != null) {
-            System.out.println("Client " + nickname + "closed!");
-        } else {
-            System.out.println("Client closed!");
-        }
+        LaunchClient.getView().quit(nickname);
     }
 
     @Override
@@ -189,8 +188,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     @Override
-    public void receiveNickname(String s, Handlers handler) throws RemoteException {
-        rmiClientHandler = handler;
+    public void receiveNickname(String s) throws RemoteException {
         JSONParser jsonParser = new JSONParser();
         JSONObject object = null;
         try {

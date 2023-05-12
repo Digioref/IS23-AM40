@@ -15,18 +15,29 @@ import java.util.Scanner;
 
 public class ClientHandler extends Handlers implements Runnable {
     private Socket socket;
+    private Scanner in;
+    private PrintWriter out;
+    private boolean stop;
+    private GameServer gameServer;
 
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, GameServer gameServer) {
+        stop = false;
+        this.gameServer = gameServer;
         this.socket = socket;
         logged = false;
         messAd = new MessageAdapter();
         lobby = new Lobby();
+        try {
+            out = new PrintWriter(socket.getOutputStream());
+            in = new Scanner(socket.getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         setLogphase(LoggingPhase.LOGGING);
     }
 
     public void sendMessage(String s) throws IOException {
-        PrintWriter out = new PrintWriter(socket.getOutputStream());
         out.println(s);
         out.flush();
     }
@@ -49,12 +60,10 @@ public class ClientHandler extends Handlers implements Runnable {
     @Override
     public void run() {
         try {
-            Scanner in = new Scanner(socket.getInputStream());
-//            PrintWriter out = new PrintWriter(socket.getOutputStream());
             messAd.configure();
             messAd.startMessage(this);
 // Leggo e scrivo nella connessione finche' non ricevo "quit"
-            while (true) {
+            while (!stop) {
 //                out.println("Give nickname: ");
 //                out.flush();
 //
@@ -63,9 +72,9 @@ public class ClientHandler extends Handlers implements Runnable {
                 sendMessage(JSONConverterStoC.normalMessage("Type your command here: "));
                 String line = in.nextLine();
                 messAd.parserMessage(this, line);
-                if (line.equals("quit")) {
-                    break;
-                }
+//                if (line.equals("quit")) {
+//                    break;
+//                }
 //                else {
 //                    out.println("Received: " + line);
 //                    out.flush();
@@ -73,10 +82,10 @@ public class ClientHandler extends Handlers implements Runnable {
 
             }
 // Chiudo gli stream e il socket
-            in.close();
-//            out.close();
-            System.out.println("ClientHandler " + nickname + " closed!");
-            socket.close();
+//            in.close();
+////            out.close();
+//            System.out.println("ClientHandler " + nickname + " closed!");
+//            socket.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         } catch (ParseException e) {
@@ -140,5 +149,21 @@ public class ClientHandler extends Handlers implements Runnable {
         controller.getGameController().getChat(nickname);
     }
 
-
+    public void close() {
+        //TODO impact on game
+        try {
+            sendMessage(JSONConverterStoC.normalMessage("Quit"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stop = true;
+        in.close();
+        out.close();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        gameServer.shutdownHandler(this);
+    }
 }

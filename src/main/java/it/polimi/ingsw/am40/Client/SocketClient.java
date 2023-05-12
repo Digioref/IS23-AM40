@@ -27,9 +27,11 @@ public class SocketClient extends Client {
     private Thread fromUser;
     private Thread fromServer;
     private boolean stop;
+    private Socket socket;
 
     public SocketClient(Socket socket) {
         try {
+            this.socket = socket;
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
             stdIn = new BufferedReader(new InputStreamReader(System.in));
@@ -42,19 +44,33 @@ public class SocketClient extends Client {
         if (LaunchClient.getView() instanceof CliView) {
             fromUser = new Thread(() -> {
                 do {
-                    String userInput;
                     try {
-                        userInput = stdIn.readLine();
+                        if (stdIn.ready()) {
+                            String userInput = null;
+                            try {
+                                userInput = stdIn.readLine();
+                            } catch (IOException e ) {
+                                break;
+    //                        throw new RuntimeException(e);
+                            }
+                            if (userInput.equals("quit")) {
+                                JSONConverterCtoS jconv = new JSONConverterCtoS();
+                                jconv.toJSON(userInput);
+                                out.println(jconv.toString());
+                                out.flush();
+                                break;
+                            }
+                            if (userInput.equals("chat")) {
+                                LaunchClient.getView().chat(this);
+                            } else {
+                                JSONConverterCtoS jconv = new JSONConverterCtoS();
+                                jconv.toJSON(userInput);
+                                out.println(jconv.toString());
+                                out.flush();
+                            }
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
-                    }
-                    if (userInput.equals("chat")) {
-                        LaunchClient.getView().chat(this);
-                    } else {
-                        JSONConverterCtoS jconv = new JSONConverterCtoS();
-                        jconv.toJSON(userInput);
-                        out.println(jconv.toString());
-                        out.flush();
                     }
                 } while (!stop);
             });
@@ -63,18 +79,22 @@ public class SocketClient extends Client {
         }
         fromServer = new Thread(() -> {
             do {
-                String line;
+                String line = null;
                 try {
-                    line = in.readLine();
+                        line = in.readLine();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Server crashed! Closing client...");
+                    close();
+                    break;
+//                    throw new RuntimeException(e);
                 }
-                //print(line);
+//                print(line);
                 try {
                     parseMessage(line);
                 } catch (ParseException e) {
                     System.out.println("Error in parsing!");
-                    throw new RuntimeException(e);
+                    break;
+//                    throw new RuntimeException(e);
                 }
             } while (!stop);
         });
@@ -88,11 +108,12 @@ public class SocketClient extends Client {
     public void close() {
         stop = true;
         try {
-            stdIn.close();
-            in.close();
-            out.close();
             fromUser.interrupt();
             fromServer.interrupt();
+            socket.shutdownInput();
+            socket.shutdownOutput();
+            socket.close();
+            stdIn.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
