@@ -1,8 +1,8 @@
 package it.polimi.ingsw.am40.GUI;
 
 public class Metrics {
-	public static final int ROOT_WIDTH = 1280;
-	public static final int ROOT_HEIGHT = 600;
+	public static final int ROOT_WIDTH = 2000; 	//1280
+	public static final int ROOT_HEIGHT = 1000;	//600
 
 	public static final int BAG_WIDTH = 100;
 	public static final int BAG_HEIGHT = 100;

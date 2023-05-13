@@ -20,19 +20,16 @@ public class Resources {
 
 	private static final String publisherPath = "Publisher material";
 	private static final String iconFile = "Icon 50x50px.png";
-
 	private static final String customPath = "custom";
 	private static final String arrowdownFile = "arrow_down_orange.png";
 	private static final String number1File = "number_1.png";
 	private static final String number2File = "number_2.png";
 	private static final String number3File = "number_3.png";
 	private static final String labelNameFile = "label_name_3.png";
-
 	private static final String miscPath = "misc";
 	private static final String backgroundFile = "sfondo parquet.jpg";
 	private static final String bagFile = "Sacchetto Chiuso.png";
 	private static final String basePageFile = "base_pagina2.jpg";
-
 	private static final String boardsPath = "boards";
 	private static final String boardFile = "livingroom.png";
 	private static final String bookshelfFile = "bookshelf.png";
@@ -54,6 +51,8 @@ public class Resources {
 	private static final String tileBookFile[] = { "Libri1.1.png", "Libri1.2.png", "Libri1.3.png", };
 	private static final String tileFlowerFile[] = { "Piante1.1.png", "Piante1.2.png", "Piante1.3.png", };
 	private static final String tileTrophyFile[] = { "Trofei1.1.png", "Trofei1.2.png", "Trofei1.3.png", };
+
+	private static final String titleFile = "Title 2000x618px.png";
 
 	private static Image loadImage(String imageFile) {
 		Image image = null;
@@ -254,6 +253,18 @@ public class Resources {
 			imageFile += tileTrophyFile[index];
 			break;
 		}
+
+		return loadImage(imageFile);
+	}
+
+	public static Image title() {
+		String imageFile;
+
+		imageFile = Resources.resourcesPath;
+		imageFile += Resources.pathSeparator;
+		imageFile += Resources.publisherPath;
+		imageFile += Resources.pathSeparator;
+		imageFile += Resources.titleFile;
 
 		return loadImage(imageFile);
 	}

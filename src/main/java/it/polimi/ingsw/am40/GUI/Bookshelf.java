@@ -15,23 +15,19 @@ import javafx.scene.text.Text;
 
 public class Bookshelf extends AnchorPane {
 	private static final int COLUMN_SPACES = 6;
-
 	private static final int[] colStart = { 42, 98, 154, 210, 266 };
 	private static final int[] rowEnd = { 264, 216, 168, 120, 72, 24 };
 	private final int[] bookshelf = { 0, 0, 0, 0, 0, 0 };
-
 	private final Label bsImage;
 	private final StackPane labelName;
 	private final AnimationTimer animTimer;
 	private final Text labelText;
-
 	private int col;
 	private int colIndex;
 	private int depth;
 	private Node node;
 	private ArrayList<Node> nodeList;
 	private Point2D velocity;
-
 	public Bookshelf() {
 		super();
 
