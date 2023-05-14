@@ -16,14 +16,17 @@ import java.util.Scanner;
 
 public class LaunchClient {
     private static View view;
+    private static LaunchGui gui;
     public static void main(String[] args) {
         String choice = interfaceSelection();
         if (choice.equals("GUI")) {
-            System.out.println("GUI Started");
+            gui = new LaunchGui();
+            gui.main(args);
         } else {
             view = new CliView();
+            view.chooseConnection();
         }
-        view.chooseConnection();
+
 
 /*        System.out.println("Client started!");
 
@@ -91,7 +94,7 @@ public class LaunchClient {
 
     public static void startConnection(String choice, String serverIp) {
         if (choice.equals("RMI")) {
-            RMIClient rmiClient;
+            RMIClient rmiClient = null;
             try {
                 setRMIHostname();
                 rmiClient = new RMIClient(serverIp);
@@ -101,16 +104,14 @@ public class LaunchClient {
             }
             rmiClient.connect();
         } else {
-            Socket socket = null;
+            Socket socket;
             try {
 //                String[] args = ServerArgs.ReadServerConfigFromJSON();
 //                socket = new Socket(args[0], Integer.parseInt(args[1]));
                 socket = new Socket(serverIp, 1234);
 //                socket = new Socket(LaunchServer.ReadHostFromJSON(), LaunchServer.ReadPortFromJSON());
             } catch (IOException e) {
-                System.out.println("Server not reachable. Closing...");
-                return;
-//                throw new RuntimeException(e);
+                throw new RuntimeException(e);
             }
             SocketClient socketClient = new SocketClient(socket);
             socketClient.init();
