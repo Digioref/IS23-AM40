@@ -2,11 +2,16 @@ package it.polimi.ingsw.am40.GUI;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 import it.polimi.ingsw.am40.CLI.View;
 import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.Client.SocketClient;
 import it.polimi.ingsw.am40.Model.Position;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -20,6 +25,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
+import javafx.util.Duration;
 
 import static javafx.scene.text.Font.loadFont;
 
@@ -72,9 +78,9 @@ public class ViewController extends AnchorPane implements View {
 		text_ip.setFont(Font.font(25));
 		vbox.getChildren().add(text_ip);
 
-		TextField ip = new TextField();
-		ip.setMaxWidth(200);
-		vbox.getChildren().add(ip);
+		TextField textField = new TextField();
+		textField.setMaxWidth(200);
+		vbox.getChildren().add(textField);
 
 
 		Text text = new Text("Scegli un tipo di connessione bro");
@@ -119,17 +125,66 @@ public class ViewController extends AnchorPane implements View {
 		conferma.setFont(Font.font(20));
 		conferma.setBackground(bg_conferma_pulsante);
 
+		Button button = new Button("CONTINUA");
+
+		Image im = Resources.tile(1,0);
+		ImageView loadImage = new ImageView(im);
+		loadImage.setFitWidth(100);
+		loadImage.setPreserveRatio(true);
+
+		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), loadImage);
+		rotateTransition.setByAngle(360); // Rotate by 360 degrees
+		rotateTransition.setCycleCount(Animation.INDEFINITE); // Repeat indefinitely
+		rotateTransition.setAutoReverse(false); // Do not reverse the animation
+
+		Timeline timeline = new Timeline(
+				new KeyFrame(Duration.ZERO, event -> {
+					Random random = new Random();
+					int type = random.nextInt(5);
+					int index = random.nextInt();
+					Image tmp = Resources.tile(type,index);
+					loadImage.setImage(tmp);
+				}),
+				new KeyFrame(Duration.seconds(2), event -> {
+
+				})
+		);
+		timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
+
 		conferma.setOnAction(e -> {
-			connectionIp = ip.getText();
+			connectionIp = textField.getText();
 			if (!connectionIp.equals("")) {
 				if (connectionIp.equalsIgnoreCase("L")) {
 					connectionIp = "localhost";
 				}
-				LaunchClient.startConnection(connectionType, connectionIp);
+				//LaunchClient.startConnection(connectionType, connectionIp);
+				vbox.getChildren().remove(text);
+				vbox.getChildren().remove(socket);
+				vbox.getChildren().remove(rmi);
+				vbox.getChildren().remove(conferma);
+
+				text_ip.setText("Scegli uno username");
+				textField.clear();
+				vbox.getChildren().add(button);
 			} else {
 				text.setText("Devi selezionare un indirizzo ip se no non ti mando avanti");
 				//////////////////////////////////////////////////////////////////////////////////////////////////////// da rendere rosso con FONT
 			}
+		});
+
+		button.setOnAction(e -> {
+				if (!textField.getText().equals("")) {
+					String tmp = "Welcome " + textField.getText();
+					text_ip.setText(tmp);
+
+					vbox.getChildren().add(loadImage);
+					rotateTransition.play();
+					timeline.play();
+				} else {
+					String tmp = text_ip.getText();
+					tmp = tmp.concat("!");
+					text_ip.setText(tmp);
+				}
 		});
 
 		vbox.getChildren().add(conferma);
@@ -383,6 +438,11 @@ public class ViewController extends AnchorPane implements View {
 
 	@Override
 	public void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname) {
+
+	}
+
+	@Override
+	public void quit(String nickname) {
 
 	}
 

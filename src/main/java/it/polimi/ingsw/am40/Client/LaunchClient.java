@@ -2,6 +2,7 @@ package it.polimi.ingsw.am40.Client;
 
 import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.CLI.View;
+import it.polimi.ingsw.am40.GUI.LaunchGui;
 import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import it.polimi.ingsw.am40.Network.LaunchServer;
 

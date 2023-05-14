@@ -30,7 +30,6 @@ public class JSONConverterCtoS {
         if (!arr.isEmpty()) {
             obj.put("Params", arr);
         }
-
     }
 
     public void fromJSON(String s) throws ParseException {
