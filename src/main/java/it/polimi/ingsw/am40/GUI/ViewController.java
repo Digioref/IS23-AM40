@@ -10,6 +10,7 @@ import it.polimi.ingsw.am40.Model.Position;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -20,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 
 public class ViewController extends AnchorPane implements View {
@@ -61,7 +63,9 @@ public class ViewController extends AnchorPane implements View {
 		ImageView imageView = new ImageView(title);
 		imageView.setFitWidth(screenWidth);
 		imageView.setPreserveRatio(true);
-		vbox.getChildren().add(imageView);
+		ImageViewPane viewPane = new ImageViewPane(imageView);
+		vbox.getChildren().addAll(viewPane);
+
 
 		ToggleGroup tg = new ToggleGroup();
 		RadioButton socket = new RadioButton("Socket");
@@ -70,7 +74,7 @@ public class ViewController extends AnchorPane implements View {
 		connectionType = "SOCKET";
 
 		socket.setOnAction(e -> {
-			connectionType = "SCOKET";
+			connectionType = "SOCKET";
 		});
 		rmi.setOnAction(e -> {
 			connectionType = "RMI";

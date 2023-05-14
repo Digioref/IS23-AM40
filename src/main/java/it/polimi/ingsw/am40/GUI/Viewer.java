@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class Viewer extends Application {
 
@@ -31,10 +32,12 @@ public class Viewer extends Application {
 		MenuBar topMenu = MenuObj.createMenuBar(stage);
 		rootBox.getChildren().add(topMenu);
 
+
 		viewController = new ViewController();
 		rootBox.getChildren().add(viewController);
 
 		ScrollPane scrollPane = new ScrollPane(rootBox);
+
 
 		/* Create the main scene */
 		scene = new Scene(scrollPane);
