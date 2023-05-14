@@ -1,0 +1,7 @@
+.conferma {
+    -fx-background-color: #2196F3;
+    -fx-background-radius: 20;
+    -fx-text-fill: white;
+    -fx-pref-width: 270;
+    -fx-pref-height: 90;
+}

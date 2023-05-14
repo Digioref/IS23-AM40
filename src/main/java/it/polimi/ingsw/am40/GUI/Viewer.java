@@ -42,6 +42,9 @@ public class Viewer extends Application {
 		/* Create the main scene */
 		scene = new Scene(scrollPane);
 
+		///////////////////////////////////////////////////////scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+
+
 		/* Set stage properties */
 		stage.setMaximized(true);
 		stage.setTitle("MyShelfie");
