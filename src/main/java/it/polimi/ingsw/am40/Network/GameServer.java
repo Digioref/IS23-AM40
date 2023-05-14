@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am40.Network;
 
 import it.polimi.ingsw.am40.Controller.Lobby;
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.RMI.RMIServer;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +18,7 @@ import java.util.concurrent.Executors;
 
 public class GameServer implements Runnable {
 
-    private String hostName = "localhost";
+    private String hostName;
     private int portNumber = 1234;
     private ServerSocket serverSocket;
     private Lobby lobby;
@@ -50,7 +52,7 @@ public class GameServer implements Runnable {
             try {
                 clientSocket = serverSocket.accept();
                 System.out.println("Accepted!");
-                ClientHandler c = new ClientHandler(clientSocket);
+                ClientHandler c = new ClientHandler(clientSocket, instance);
                 clientHandlers.add(c);
 //                PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 //                out.println("Give nickname: ");
@@ -75,12 +77,27 @@ public class GameServer implements Runnable {
         registry.rebind("RMIRegistry", rmiserver);
         System.out.println("GameServer bound on RMI registry");
         serverSocket = new ServerSocket(port);
-        System.out.println("GameServer listening on port 5000");
+        System.out.println("GameServer listening on port 1234");
     }
 
     public void close() throws IOException {
         close = true;
         serverSocket.close();
         pool.shutdown();
+        for (ClientHandler h: clientHandlers) {
+            h.sendMessage(JSONConverterStoC.normalMessage("Quit"));
+            h.close();
+        }
+        for (String s: rmiserver.getClientHandlers().keySet()) {
+            rmiserver.getClientHandlers().get(s).sendMessage(JSONConverterStoC.normalMessage("Quit"));
+        }
+    }
+    public void shutdownHandler(ClientHandler clientHandler) {
+        clientHandlers.remove(clientHandler);
+        clientHandler.close();
+    }
+
+    public List<ClientHandler> getClientHandlers() {
+        return clientHandlers;
     }
 }

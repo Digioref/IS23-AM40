@@ -14,6 +14,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+
+import static it.polimi.ingsw.am40.Network.Handlers.NSUGGEST;
 
 public class RMIServer extends UnicastRemoteObject implements RMIServerInterface {
     private Lobby lobby;
@@ -25,7 +28,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         super();
         clientHandlers = new HashMap<>();
         commands = new ArrayList<>();
-//        ParsingJSONManager.commands(commands);
+        ParsingJSONManager.commands(commands);
     }
 
     @Override
@@ -56,7 +59,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             }
         } else {
             client.receive(JSONConverterStoC.normalMessage("The nickname you desire is already in use! Please type another nickname:"));
-            return;
+            client.receive(JSONConverterStoC.normalMessage("You can choose one of the following nicknames, if you want"));
+            suggestNickname(s, client);
         }
 
     }
@@ -138,6 +142,16 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    @Override
+    public void close(String s) throws RemoteException {
+        // TODO impact on game
+        if (clientHandlers.containsKey(s)) {
+            lobby.removeQuit(clientHandlers.get(s));
+            clientHandlers.get(s).close();
+            clientHandlers.remove(s);
+        }
+    }
+
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
@@ -154,5 +168,22 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             }
         }
         return false;
+    }
+
+    public Map<String, RMIClientHandler> getClientHandlers() {
+        return clientHandlers;
+    }
+    private void suggestNickname(String nickname, RMIClientInterface client) {
+        Random random = new Random();
+        for (int i = 0; i < NSUGGEST; i++) {
+            int x = random.nextInt(10);
+            int y = random.nextInt(10);
+            int z = random.nextInt(10);
+            try {
+                client.receive(JSONConverterStoC.normalMessage(nickname + x + y + z));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

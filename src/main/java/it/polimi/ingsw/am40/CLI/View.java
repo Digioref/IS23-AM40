@@ -25,4 +25,5 @@ public interface View {
     public void printMessage(String s);
     void chat(SocketClient socketClient);
     void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname);
+    void quit(String nickname);
 }

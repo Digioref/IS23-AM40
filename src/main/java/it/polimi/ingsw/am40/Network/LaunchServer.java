@@ -53,6 +53,7 @@ public class LaunchServer {
         try {
             server.run();
         } finally {
+            System.out.println("qui");
             server.close();
         }
     }

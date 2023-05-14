@@ -410,10 +410,10 @@ public class CliView implements View{
 
         while (!quit) {
             System.out.println(color.blackBg() + " You are in the Chat!" + color.rst());
-            System.out.println("Write the message: ");
+            System.out.println("Write the message (-q to quit): ");
             try {
                 String message = socketClient.getStdIn().readLine();
-                if (message.toLowerCase().equals("q")) {
+                if (message.toLowerCase().equals("-q")) {
                     quit = true;
                 } else {
                     System.out.println("to [playerName] (leave it blank if it is a broadcast message): ");
@@ -467,13 +467,22 @@ public class CliView implements View{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         if(ip.equalsIgnoreCase("L"))
             ip = "localhost";
         LaunchClient.startConnection(choice, ip);
     }
 
+    @Override
+    public void quit(String nickname) {
+        if (nickname != null) {
+            printMessage("Client " + nickname + " closed!");
+        } else {
+            printMessage("Client closed!");
+        }
+    }
 
-//    public void showBoard() {
+    //    public void showBoard() {
 //        for (int row = 4; row > -5; row--) {
 //            if (row >= 0) {
 //                System.out.printf(" %d ", row);

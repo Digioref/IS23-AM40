@@ -2,7 +2,6 @@ package it.polimi.ingsw.am40.Client;
 
 import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.CLI.View;
-import it.polimi.ingsw.am40.GUI.LaunchGui;
 import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import it.polimi.ingsw.am40.Network.LaunchServer;
 
@@ -17,7 +16,6 @@ import java.util.Scanner;
 
 public class LaunchClient {
     private static View view;
-    private static LaunchGui gui;
     public static void main(String[] args) {
         String choice = interfaceSelection();
         if (choice.equals("GUI")) {
@@ -26,7 +24,7 @@ public class LaunchClient {
             view = new CliView();
             view.chooseConnection();
         }
-        
+
 
 /*        System.out.println("Client started!");
 
@@ -111,7 +109,6 @@ public class LaunchClient {
                 socket = new Socket(serverIp, 1234);
 //                socket = new Socket(LaunchServer.ReadHostFromJSON(), LaunchServer.ReadPortFromJSON());
             } catch (IOException e) {
-                //System.out.println("Errore qui");
                 throw new RuntimeException(e);
             }
             SocketClient socketClient = new SocketClient(socket);
