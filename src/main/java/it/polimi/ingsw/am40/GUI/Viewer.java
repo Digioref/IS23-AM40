@@ -34,10 +34,11 @@ public class Viewer extends Application {
 		viewController = new ViewController();
 		rootBox.getChildren().add(viewController);
 
-		ScrollPane scrollPane = new ScrollPane(rootBox);
+		//ScrollPane scrollPane = new ScrollPane(rootBox);
 
 		/* Create the main scene */
-		scene = new Scene(scrollPane);
+		//scene = new Scene(scrollPane);
+		scene = new Scene(rootBox);
 
 		/* Set stage properties */
 		stage.setMaximized(true);

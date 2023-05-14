@@ -21,8 +21,7 @@ public class LaunchClient {
     public static void main(String[] args) {
         String choice = interfaceSelection();
         if (choice.equals("GUI")) {
-            gui = new LaunchGui();
-            gui.main(args);
+            LaunchGui.main(args);
         } else {
             view = new CliView();
             view.chooseConnection();
@@ -112,6 +111,7 @@ public class LaunchClient {
                 socket = new Socket(serverIp, 1234);
 //                socket = new Socket(LaunchServer.ReadHostFromJSON(), LaunchServer.ReadPortFromJSON());
             } catch (IOException e) {
+                //System.out.println("Errore qui");
                 throw new RuntimeException(e);
             }
             SocketClient socketClient = new SocketClient(socket);

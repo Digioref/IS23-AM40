@@ -25,7 +25,6 @@ import javafx.stage.Screen;
 public class ViewController extends AnchorPane implements View {
 
 	private static final int ARROWS_DOWN = 5;
-
 	private final CommandBoard commandBoard = new CommandBoard();
 	private final Bookshelf bookshelf = new Bookshelf();
 	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
