@@ -2,6 +2,7 @@ package it.polimi.ingsw.am40.Client;
 
 import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.CLI.View;
+import it.polimi.ingsw.am40.GUI.LaunchGui;
 import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import it.polimi.ingsw.am40.Network.LaunchServer;
 
@@ -16,14 +17,18 @@ import java.util.Scanner;
 
 public class LaunchClient {
     private static View view;
+//    private static LaunchGui gui;
     public static void main(String[] args) {
         String choice = interfaceSelection();
         if (choice.equals("GUI")) {
-            System.out.println("GUI Started");
+            LaunchGui.main(args);
+//            gui = new LaunchGui();
+//            gui.main(args);
         } else {
             view = new CliView();
+            view.chooseConnection();
         }
-        view.chooseConnection();
+        
 
 /*        System.out.println("Client started!");
 
@@ -91,9 +96,13 @@ public class LaunchClient {
 
     public static void startConnection(String choice, String serverIp) {
         if (choice.equals("RMI")) {
-            RMIClient rmiClient;
+            RMIClient rmiClient = null;
             try {
-                setRMIHostname();
+                if (serverIp.equals("localhost")) {
+                    setRMIHostname();
+                } else {
+                    System.setProperty("java.rmi.server.hostname",serverIp);
+                }
                 rmiClient = new RMIClient(serverIp);
                 UnicastRemoteObject.exportObject(rmiClient, 0);
             } catch (RemoteException e) {
@@ -101,7 +110,7 @@ public class LaunchClient {
             }
             rmiClient.connect();
         } else {
-            Socket socket = null;
+            Socket socket;
             try {
 //                String[] args = ServerArgs.ReadServerConfigFromJSON();
 //                socket = new Socket(args[0], Integer.parseInt(args[1]));

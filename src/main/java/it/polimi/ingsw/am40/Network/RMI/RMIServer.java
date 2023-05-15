@@ -14,6 +14,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+
+import static it.polimi.ingsw.am40.Network.Handlers.NSUGGEST;
 
 public class RMIServer extends UnicastRemoteObject implements RMIServerInterface {
     private Lobby lobby;
@@ -30,6 +33,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 
     @Override
     public void login(String s, RMIClientInterface client) throws RemoteException {
+        if (s.equals("")) {
+            client.receive(JSONConverterStoC.normalMessage("Incomplete command, you must specify your nickname!"));
+            return;
+        }
         for (String t: clientHandlers.keySet()) {
             if(clientHandlers.get(t).getRmiClient().equals(client)) {
                 client.receive(JSONConverterStoC.normalMessage("You are already logged in!"));
@@ -56,6 +63,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             }
         } else {
             client.receive(JSONConverterStoC.normalMessage("The nickname you desire is already in use! Please type another nickname:"));
+            client.receive(JSONConverterStoC.normalMessage("You can choose one of the following nicknames, if you want"));
+            suggestNickname(s, client);
         }
 
     }
@@ -167,5 +176,18 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 
     public Map<String, RMIClientHandler> getClientHandlers() {
         return clientHandlers;
+    }
+    private void suggestNickname(String nickname, RMIClientInterface client) {
+        Random random = new Random();
+        for (int i = 0; i < NSUGGEST; i++) {
+            int x = random.nextInt(10);
+            int y = random.nextInt(10);
+            int z = random.nextInt(10);
+            try {
+                client.receive(JSONConverterStoC.normalMessage(nickname + x + y + z));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

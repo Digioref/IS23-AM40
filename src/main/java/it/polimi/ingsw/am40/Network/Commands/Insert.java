@@ -6,6 +6,7 @@ import it.polimi.ingsw.am40.Network.Handlers;
 import it.polimi.ingsw.am40.Network.ICommand;
 
 import java.io.IOException;
+import java.lang.invoke.TypeDescriptor;
 import java.util.ArrayList;
 
 public class Insert implements ICommand {
@@ -15,6 +16,12 @@ public class Insert implements ICommand {
             c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));
         }
         else {
+            try {
+                Integer i = Integer.parseInt(comm.get(0));
+            } catch (NumberFormatException e) {
+                c.sendMessage(JSONConverterStoC.normalMessage("You must type an int, not a string!"));
+                return;
+            }
             if (Integer.parseInt(comm.get(0)) > 0 && Integer.parseInt(comm.get(0)) <= 5) {
                 ArrayList<Integer> arr = new ArrayList<>();
                 arr.add(Integer.parseInt(comm.get(0)));

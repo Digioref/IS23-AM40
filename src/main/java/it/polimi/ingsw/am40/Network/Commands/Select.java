@@ -17,8 +17,14 @@ public class Select implements ICommand {
         }
         else {
 //            System.out.println(("qui"));
-            int x = Integer.parseInt(comm.get(0));
-            int y = Integer.parseInt(comm.get(1));
+            int x, y;
+            try {
+                x = Integer.parseInt(comm.get(0));
+                y = Integer.parseInt(comm.get(1));
+            } catch (NumberFormatException e) {
+                c.sendMessage(JSONConverterStoC.normalMessage("You must type an int, not a string!"));
+                return;
+            }
             ArrayList<Integer> arr = new ArrayList<>();
             arr.add(x);
             arr.add(y);

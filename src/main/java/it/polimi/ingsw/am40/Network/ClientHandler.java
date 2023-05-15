@@ -69,7 +69,7 @@ public class ClientHandler extends Handlers implements Runnable {
 //
 //                out.println("Give command: ");
 //                out.flush();
-                sendMessage(JSONConverterStoC.normalMessage("Type your command here: "));
+//                sendMessage(JSONConverterStoC.normalMessage("Type your command here: "));
                 String line = in.nextLine();
                 messAd.parserMessage(this, line);
 //                if (line.equals("quit")) {

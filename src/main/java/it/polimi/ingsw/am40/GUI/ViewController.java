@@ -1,22 +1,38 @@
 package it.polimi.ingsw.am40.GUI;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 
-import javafx.event.EventHandler;
+import it.polimi.ingsw.am40.CLI.View;
+import it.polimi.ingsw.am40.Client.LaunchClient;
+import it.polimi.ingsw.am40.Client.SocketClient;
+import it.polimi.ingsw.am40.Model.Position;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Screen;
+import javafx.util.Duration;
 
-public class ViewController extends AnchorPane {
+import static javafx.scene.text.Font.loadFont;
+
+
+public class ViewController extends AnchorPane implements View {
 
 	private static final int ARROWS_DOWN = 5;
-
 	private final CommandBoard commandBoard = new CommandBoard();
 	private final Bookshelf bookshelf = new Bookshelf();
 	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
@@ -27,17 +43,160 @@ public class ViewController extends AnchorPane {
 	private final CommonGoal cg2 = new CommonGoal(8);
 	private final PersonalGoal persGoal = new PersonalGoal(4);
 
+	private String connectionType;
+	private String connectionIp;
+
 	public ViewController() {
 		super();
 
-		setPrefSize(Metrics.ROOT_WIDTH, Metrics.ROOT_HEIGHT);
+		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
+		setPrefSize(screenWidth, screenHeight);
 
 		Image background = Resources.background();
 		BackgroundImage bgImg = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
-				BackgroundPosition.DEFAULT,
-				new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
+				BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
 
 		setBackground(new Background(bgImg));
+
+		VBox vbox = new VBox();
+		vbox.setSpacing(10);
+		vbox.setAlignment(Pos.CENTER);
+
+		Image title = Resources.title();
+		//Image pg = Resources.personalGoal(1);
+		ImageView imageView = new ImageView(title);
+		imageView.setFitWidth(screenWidth);
+		imageView.setPreserveRatio(true);
+		ImageViewPane viewPane = new ImageViewPane(imageView);
+		vbox.getChildren().addAll(viewPane);
+
+
+		Text text_ip = new Text("Inserisci l'IP bro, L per localhost");
+		// Font font1 = loadFont("font_connessione.ttf", 20);
+		//text.setFont(font1);
+		text_ip.setFont(Font.font(25));
+		vbox.getChildren().add(text_ip);
+
+		TextField textField = new TextField();
+		textField.setMaxWidth(200);
+		vbox.getChildren().add(textField);
+
+
+		Text text = new Text("Scegli un tipo di connessione bro");
+		// Font font1 = loadFont("font_connessione.ttf", 20);
+		//text.setFont(font1);
+		text.setFont(Font.font(25));
+		vbox.getChildren().add(text);
+
+		//Background background_bottoni = new Background(bgImg);
+		ToggleGroup tg = new ToggleGroup();
+		RadioButton socket = new RadioButton("Socket");
+		socket.setFont(Font.font(20));
+		//socket.setBackground(background_bottoni);
+		RadioButton rmi = new RadioButton("RMI    ");
+		rmi.setFont(Font.font(20));
+		socket.setSelected(true);
+		connectionType = "SOCKET";
+
+		socket.setOnAction(e -> {
+			connectionType = "SOCKET";
+		});
+		rmi.setOnAction(e -> {
+			connectionType = "RMI";
+		});
+
+		socket.setToggleGroup(tg);
+		rmi.setToggleGroup(tg);
+
+		vbox.getChildren().addAll(socket,rmi);
+
+
+		Image background_per_pulsanti = new Image("colore_pulsanti.jpg");
+		BackgroundImage bgImg_per_pulsanti = new BackgroundImage(background_per_pulsanti, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
+				BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
+
+		Background bg_conferma_pulsante = new Background(bgImg_per_pulsanti);
+
+		Button conferma = new Button("READY?!");
+
+		//conferma.getStyleClass().add("conferma");
+
+		conferma.setFont(Font.font(20));
+		conferma.setBackground(bg_conferma_pulsante);
+
+		Button button = new Button("CONTINUA");
+
+		Image im = Resources.tile(1,0);
+		ImageView loadImage = new ImageView(im);
+		loadImage.setFitWidth(100);
+		loadImage.setPreserveRatio(true);
+
+		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), loadImage);
+		rotateTransition.setByAngle(360); // Rotate by 360 degrees
+		rotateTransition.setCycleCount(Animation.INDEFINITE); // Repeat indefinitely
+		rotateTransition.setAutoReverse(false); // Do not reverse the animation
+
+		Timeline timeline = new Timeline(
+				new KeyFrame(Duration.ZERO, event -> {
+					Random random = new Random();
+					int type = random.nextInt(5);
+					int index = random.nextInt();
+					Image tmp = Resources.tile(type,index);
+					loadImage.setImage(tmp);
+				}),
+				new KeyFrame(Duration.seconds(2), event -> {
+
+				})
+		);
+		timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
+
+		conferma.setOnAction(e -> {
+			connectionIp = textField.getText();
+			if (!connectionIp.equals("")) {
+				if (connectionIp.equalsIgnoreCase("L")) {
+					connectionIp = "localhost";
+				}
+				//LaunchClient.startConnection(connectionType, connectionIp);
+				vbox.getChildren().remove(text);
+				vbox.getChildren().remove(socket);
+				vbox.getChildren().remove(rmi);
+				vbox.getChildren().remove(conferma);
+
+				text_ip.setText("Scegli uno username");
+				textField.clear();
+				vbox.getChildren().add(button);
+			} else {
+				text.setText("Devi selezionare un indirizzo ip se no non ti mando avanti");
+				//////////////////////////////////////////////////////////////////////////////////////////////////////// da rendere rosso con FONT
+			}
+		});
+
+		button.setOnAction(e -> {
+				if (!textField.getText().equals("")) {
+					String tmp = "Welcome " + textField.getText();
+					text_ip.setText(tmp);
+
+					vbox.getChildren().add(loadImage);
+					rotateTransition.play();
+					timeline.play();
+				} else {
+					String tmp = text_ip.getText();
+					tmp = tmp.concat("!");
+					text_ip.setText(tmp);
+				}
+		});
+
+		vbox.getChildren().add(conferma);
+
+		getChildren().add(vbox);
+
+
+
+
+		/*
+
+		showCurrentPlayer("Dai figaaaa");
 
 		bag.relocate(50, 60);
 		getChildren().add(bag);
@@ -48,7 +207,7 @@ public class ViewController extends AnchorPane {
 		cg2.relocate(20, 350);
 		getChildren().add(cg2);
 
-		persGoal.relocate(1150, 200);
+		persGoal.relocate(1150, 250);
 		getChildren().add(persGoal);
 
 		board.relocate(230, 40);
@@ -57,6 +216,16 @@ public class ViewController extends AnchorPane {
 		bookshelf.relocate(786, 180);
 		bookshelf.setName("Francesco");
 		getChildren().add(bookshelf);
+
+		int numPlayers = 3;
+		int start = 612;
+		for (int i = 0; i < numPlayers - 1; i++) {
+			Bookshelf b = new Bookshelf();
+			b.relocate(460, (start + 380*i));
+			String nome = "nome " + i;
+			b.setName(nome);
+			getChildren().add(b);
+		}
 
 		commandBoard.relocate(850, 40);
 		getChildren().add(commandBoard);
@@ -105,7 +274,7 @@ public class ViewController extends AnchorPane {
 		});
 		getChildren().add(arrowRight);
 
-		/* Custom handler */
+		// Custom handler
 		addEventFilter(CustomEvent.TILE_SELECTED, event -> {
 			Tile obj = (Tile) event.getObj();
 			boolean flag = event.getFlag();
@@ -120,37 +289,38 @@ public class ViewController extends AnchorPane {
 				arrowRight.setVisible(true);
 			}
 
-			/* Stop the event here */
+			// Stop the event here
 			event.consume();
 		});
 
-		/* Custom handler */
+		// Custom handler
 		addEventFilter(CustomEvent.BOOKSHELF_DONE, event -> {
 
-			/* Stop the event here */
+			// Stop the event here
 			event.consume();
 		});
 
-		/* Custom handler */
+		// Custom handler
 		addEventFilter(CustomEvent.BOARD_ADD_TILE, event -> {
 			Tile obj = (Tile) event.getObj();
 
 			board.place(obj);
 
-			/* Stop the event here */
+			// Stop the event here
 			event.consume();
 		});
 
-		/* Custom handler */
+		// Custom handler
 		addEventFilter(CustomEvent.BOARD_TILE_PICKABLE, event -> {
 			int x = event.getX();
 			int y = event.getY();
 
 			board.pickable(x, y);
 
-			/* Stop the event here */
+			// Stop the event here
 			event.consume();
 		});
+		*/
 	}
 
 	private void handleArrowDown(MouseEvent event, int column) {
@@ -175,6 +345,105 @@ public class ViewController extends AnchorPane {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void chooseConnection() {
+
+	}
+
+	@Override
+	public void showCurrentPlayer(String s) {
+		Text labelText = new Text(s);
+		labelText.relocate(0,0);
+		getChildren().add(labelText);
+	}
+
+	@Override
+	public void showCurrentScore(Map<String, Integer> map) {
+
+	}
+
+	@Override
+	public void showHiddenScore(int score) {
+
+	}
+
+	@Override
+	public void showCommonGoals(Map<Integer, Integer> map) {
+
+	}
+
+	@Override
+	public void showPersonalGoal(Map<String, String> map) {
+
+	}
+
+	@Override
+	public void showBoard(Map<String, String> map) {
+
+	}
+
+	@Override
+	public void showCurrentBookshelf(Map<String, String> map) {
+		bookshelf.relocate(786, 180);
+		bookshelf.setName("Francesco");
+		getChildren().add(bookshelf);
+	}
+
+	@Override
+	public void showAllBookshelves(Map<String, Map<String, String>> map) {
+
+	}
+
+	@Override
+	public void showBookshelf(Map<String, String> map) {
+
+	}
+
+	@Override
+	public void showBoardPickable(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
+
+	}
+
+	@Override
+	public void showSelectedTiles(Map<String, String> map, String s) {
+
+	}
+
+	@Override
+	public void showPickedTiles(Map<String, String> map, String s) {
+
+	}
+
+	@Override
+	public void showFinalScore(Map<String, Integer> map, String winner) {
+
+	}
+
+	@Override
+	public void showPlayers(ArrayList<String> names) {
+
+	}
+
+	@Override
+	public void printMessage(String s) {
+
+	}
+
+	@Override
+	public void chat(SocketClient socketClient) {
+
+	}
+
+	@Override
+	public void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname) {
+
+	}
+
+	@Override
+	public void quit(String nickname) {
+
 	}
 
 }

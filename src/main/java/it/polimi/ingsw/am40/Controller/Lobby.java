@@ -32,6 +32,11 @@ public class Lobby implements Runnable {
                 Handlers c;
                 c = queue.remove(0);
                 activePlayers.add(c);
+                try {
+                    c.sendMessage(JSONConverterStoC.normalMessage("You are playing with " + numPlayers + " players!"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 //            numPlayers = c.getNumPlayers();
             //nicknameInGame.add(c.getNickname());
@@ -130,8 +135,9 @@ public class Lobby implements Runnable {
             if (queue.contains(c)) {
                 queue.remove(c);
             }
-            if (activePlayers.contains(c.getNickname())) {
-                activePlayers.remove(c.getNickname());
+            if (activePlayers.contains(c)) {
+                activePlayers.remove(c);
+                nicknameInGame.remove(c.getNickname());
             }
         }
     }

@@ -19,8 +19,8 @@ public class Board extends AnchorPane {
 
 	private static final int MAX_SELECTABLE = 3;
 
-	private static final int ORIGIN_X = 240;
-	private static final int ORIGIN_Y = 242;
+	private static final int ORIGIN_X = 236;
+	private static final int ORIGIN_Y = 238;
 	private static final int STEP_X = 54;
 	private static final int STEP_Y = 54;
 

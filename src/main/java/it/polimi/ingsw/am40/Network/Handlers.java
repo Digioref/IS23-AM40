@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Handlers {
-    protected static final int NSUGGEST = 8;
+    public static final int NSUGGEST = 8;
     protected String nickname;
     protected Controller controller;
     protected VirtualView virtualView;

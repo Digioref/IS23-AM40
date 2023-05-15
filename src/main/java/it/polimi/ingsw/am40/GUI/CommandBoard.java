@@ -55,7 +55,6 @@ public class CommandBoard extends AnchorPane {
 		pickupIndex = 1;
 
 		for (int i = 0; i < TILES; i++) {
-
 			tiles[i] = new TileRect(i);
 			tiles[i].relocate(TILE_LEFT_OFFSET + (i * (TILE_LEFT_OFFSET + Metrics.TILE_WIDTH)), TILE_TOP_OFFSET);
 
