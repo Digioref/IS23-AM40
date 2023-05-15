@@ -356,4 +356,9 @@ public class ViewController extends AnchorPane implements View {
 
 	}
 
+	@Override
+	public void quit(String nickname) {
+
+	}
+
 }

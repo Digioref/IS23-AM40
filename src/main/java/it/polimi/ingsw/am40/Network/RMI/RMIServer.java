@@ -33,6 +33,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 
     @Override
     public void login(String s, RMIClientInterface client) throws RemoteException {
+        if (s.equals("")) {
+            client.receive(JSONConverterStoC.normalMessage("Incomplete command, you must specify your nickname!"));
+            return;
+        }
         for (String t: clientHandlers.keySet()) {
             if(clientHandlers.get(t).getRmiClient().equals(client)) {
                 client.receive(JSONConverterStoC.normalMessage("You are already logged in!"));

@@ -83,9 +83,16 @@ public class RMIClient extends Client implements RMIClientInterface {
         jconv.toJSON(line);
         switch (command[0]) {
             case "login":
+                String s = "";
                 try {
-//                    nickname = command[1];
-                    stub.login(command[1], this);
+                    for (int i = 1; i < command.length; i++) {
+                        if (s.equals("")) {
+                            s = command[i];
+                        } else {
+                            s = s + " " + command[i];
+                        }
+                    }
+                    stub.login(s, this);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.am40.Client;
 
 import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.CLI.View;
+import it.polimi.ingsw.am40.GUI.*;
 import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import it.polimi.ingsw.am40.Network.LaunchServer;
 
@@ -16,12 +17,13 @@ import java.util.Scanner;
 
 public class LaunchClient {
     private static View view;
-    private static LaunchGui gui;
+//    private static LaunchGui gui;
     public static void main(String[] args) {
         String choice = interfaceSelection();
         if (choice.equals("GUI")) {
-            gui = new LaunchGui();
-            gui.main(args);
+            LaunchGui.main(args);
+//            gui = new LaunchGui();
+//            gui.main(args);
         } else {
             view = new CliView();
             view.chooseConnection();
@@ -96,7 +98,11 @@ public class LaunchClient {
         if (choice.equals("RMI")) {
             RMIClient rmiClient = null;
             try {
-                setRMIHostname();
+                if (serverIp.equals("localhost")) {
+                    setRMIHostname();
+                } else {
+                    System.setProperty("java.rmi.server.hostname",serverIp);
+                }
                 rmiClient = new RMIClient(serverIp);
                 UnicastRemoteObject.exportObject(rmiClient, 0);
             } catch (RemoteException e) {
@@ -111,7 +117,9 @@ public class LaunchClient {
                 socket = new Socket(serverIp, 1234);
 //                socket = new Socket(LaunchServer.ReadHostFromJSON(), LaunchServer.ReadPortFromJSON());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Server not reachable! Closing...");
+                return;
+//                throw new RuntimeException(e);
             }
             SocketClient socketClient = new SocketClient(socket);
             socketClient.init();

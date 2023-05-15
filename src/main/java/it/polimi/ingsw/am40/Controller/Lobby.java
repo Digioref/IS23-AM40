@@ -32,6 +32,11 @@ public class Lobby implements Runnable {
                 Handlers c;
                 c = queue.remove(0);
                 activePlayers.add(c);
+                try {
+                    c.sendMessage(JSONConverterStoC.normalMessage("You are playing with " + numPlayers + " players!"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 //            numPlayers = c.getNumPlayers();
             //nicknameInGame.add(c.getNickname());
