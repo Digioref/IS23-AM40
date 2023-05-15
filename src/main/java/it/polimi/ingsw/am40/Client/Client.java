@@ -165,10 +165,14 @@ public abstract class Client {
                 close();
                 LaunchClient.getView().quit(nickname);
                 break;
+            case "Ping":
+                sendPong();
+                break;
             default:
                 LaunchClient.getView().printMessage(command);
                 break;
         }
     }
     public abstract void close();
+    public abstract void sendPong();
 }

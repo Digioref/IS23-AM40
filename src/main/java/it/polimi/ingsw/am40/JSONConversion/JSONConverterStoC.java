@@ -258,4 +258,10 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    public static String createJSONPing() {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "Ping");
+        return obj.toJSONString();
+    }
+
 }
