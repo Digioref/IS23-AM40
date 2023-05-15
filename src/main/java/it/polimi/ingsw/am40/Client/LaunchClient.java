@@ -2,7 +2,7 @@ package it.polimi.ingsw.am40.Client;
 
 import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.CLI.View;
-import it.polimi.ingsw.am40.GUI.*;
+import it.polimi.ingsw.am40.GUI.LaunchGui;
 import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import it.polimi.ingsw.am40.Network.LaunchServer;
 
@@ -28,7 +28,7 @@ public class LaunchClient {
             view = new CliView();
             view.chooseConnection();
         }
-
+        
 
 /*        System.out.println("Client started!");
 
@@ -117,7 +117,7 @@ public class LaunchClient {
                 socket = new Socket(serverIp, 1234);
 //                socket = new Socket(LaunchServer.ReadHostFromJSON(), LaunchServer.ReadPortFromJSON());
             } catch (IOException e) {
-                System.out.println("Server not reachable! Closing...");
+                System.out.println("Server not reachable. Closing...");
                 return;
 //                throw new RuntimeException(e);
             }

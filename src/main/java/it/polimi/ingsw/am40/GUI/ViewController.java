@@ -2,12 +2,16 @@ package it.polimi.ingsw.am40.GUI;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 import it.polimi.ingsw.am40.CLI.View;
 import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.Client.SocketClient;
 import it.polimi.ingsw.am40.Model.Position;
-import javafx.event.EventHandler;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -18,14 +22,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
+import javafx.util.Duration;
+
+import static javafx.scene.text.Font.loadFont;
 
 
 public class ViewController extends AnchorPane implements View {
 
 	private static final int ARROWS_DOWN = 5;
-
 	private final CommandBoard commandBoard = new CommandBoard();
 	private final Bookshelf bookshelf = new Bookshelf();
 	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
@@ -61,16 +68,39 @@ public class ViewController extends AnchorPane implements View {
 		ImageView imageView = new ImageView(title);
 		imageView.setFitWidth(screenWidth);
 		imageView.setPreserveRatio(true);
-		vbox.getChildren().add(imageView);
+		ImageViewPane viewPane = new ImageViewPane(imageView);
+		vbox.getChildren().addAll(viewPane);
 
+
+		Text text_ip = new Text("Inserisci l'IP bro, L per localhost");
+		// Font font1 = loadFont("font_connessione.ttf", 20);
+		//text.setFont(font1);
+		text_ip.setFont(Font.font(25));
+		vbox.getChildren().add(text_ip);
+
+		TextField textField = new TextField();
+		textField.setMaxWidth(200);
+		vbox.getChildren().add(textField);
+
+
+		Text text = new Text("Scegli un tipo di connessione bro");
+		// Font font1 = loadFont("font_connessione.ttf", 20);
+		//text.setFont(font1);
+		text.setFont(Font.font(25));
+		vbox.getChildren().add(text);
+
+		//Background background_bottoni = new Background(bgImg);
 		ToggleGroup tg = new ToggleGroup();
 		RadioButton socket = new RadioButton("Socket");
-		RadioButton rmi = new RadioButton("RMI      ");
+		socket.setFont(Font.font(20));
+		//socket.setBackground(background_bottoni);
+		RadioButton rmi = new RadioButton("RMI    ");
+		rmi.setFont(Font.font(20));
 		socket.setSelected(true);
 		connectionType = "SOCKET";
 
 		socket.setOnAction(e -> {
-			connectionType = "SCOKET";
+			connectionType = "SOCKET";
 		});
 		rmi.setOnAction(e -> {
 			connectionType = "RMI";
@@ -81,28 +111,83 @@ public class ViewController extends AnchorPane implements View {
 
 		vbox.getChildren().addAll(socket,rmi);
 
-		TextField ip = new TextField();
-		ip.setMaxWidth(100);
-		vbox.getChildren().add(ip);
 
-		Text text = new Text("scegli una connessione bro");
+		Image background_per_pulsanti = new Image("colore_pulsanti.jpg");
+		BackgroundImage bgImg_per_pulsanti = new BackgroundImage(background_per_pulsanti, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
+				BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
 
-		Button conferma = new Button("Continua");
+		Background bg_conferma_pulsante = new Background(bgImg_per_pulsanti);
+
+		Button conferma = new Button("READY?!");
+
+		//conferma.getStyleClass().add("conferma");
+
+		conferma.setFont(Font.font(20));
+		conferma.setBackground(bg_conferma_pulsante);
+
+		Button button = new Button("CONTINUA");
+
+		Image im = Resources.tile(1,0);
+		ImageView loadImage = new ImageView(im);
+		loadImage.setFitWidth(100);
+		loadImage.setPreserveRatio(true);
+
+		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), loadImage);
+		rotateTransition.setByAngle(360); // Rotate by 360 degrees
+		rotateTransition.setCycleCount(Animation.INDEFINITE); // Repeat indefinitely
+		rotateTransition.setAutoReverse(false); // Do not reverse the animation
+
+		Timeline timeline = new Timeline(
+				new KeyFrame(Duration.ZERO, event -> {
+					Random random = new Random();
+					int type = random.nextInt(5);
+					int index = random.nextInt();
+					Image tmp = Resources.tile(type,index);
+					loadImage.setImage(tmp);
+				}),
+				new KeyFrame(Duration.seconds(2), event -> {
+
+				})
+		);
+		timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
 
 		conferma.setOnAction(e -> {
-			connectionIp = ip.getText();
+			connectionIp = textField.getText();
 			if (!connectionIp.equals("")) {
 				if (connectionIp.equalsIgnoreCase("L")) {
 					connectionIp = "localhost";
 				}
-				LaunchClient.startConnection(connectionType, connectionIp);
+				//LaunchClient.startConnection(connectionType, connectionIp);
+				vbox.getChildren().remove(text);
+				vbox.getChildren().remove(socket);
+				vbox.getChildren().remove(rmi);
+				vbox.getChildren().remove(conferma);
+
+				text_ip.setText("Scegli uno username");
+				textField.clear();
+				vbox.getChildren().add(button);
 			} else {
 				text.setText("Devi selezionare un indirizzo ip se no non ti mando avanti");
+				//////////////////////////////////////////////////////////////////////////////////////////////////////// da rendere rosso con FONT
 			}
 		});
 
+		button.setOnAction(e -> {
+				if (!textField.getText().equals("")) {
+					String tmp = "Welcome " + textField.getText();
+					text_ip.setText(tmp);
+
+					vbox.getChildren().add(loadImage);
+					rotateTransition.play();
+					timeline.play();
+				} else {
+					String tmp = text_ip.getText();
+					tmp = tmp.concat("!");
+					text_ip.setText(tmp);
+				}
+		});
+
 		vbox.getChildren().add(conferma);
-		vbox.getChildren().add(text);
 
 		getChildren().add(vbox);
 
