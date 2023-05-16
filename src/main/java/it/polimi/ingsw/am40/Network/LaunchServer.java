@@ -22,17 +22,15 @@ public class LaunchServer {
 
     public static void main(String[] args) throws IOException {
 //        System.out.println("Server started!");
+        if (args.length == 2) {
+            hostName = args[0];
+            portNumber = Integer.parseInt(args[1]);
+        }
+        else {
+            hostName = ReadHostFromJSON();
+            portNumber = ReadPortFromJSON();
+        }
         setServerHostname();
-
-//        if (args.length == 2) {
-//            hostName = args[0];
-//            portNumber = Integer.parseInt(args[1]);
-//        }
-//        else {
-//            hostName = ReadHostFromJSON();
-//            portNumber = ReadPortFromJSON();
-//        }
-
         Scanner scanner = new Scanner(System.in);
         GameServer server = null;
         boolean retry;
