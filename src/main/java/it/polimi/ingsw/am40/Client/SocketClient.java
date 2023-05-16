@@ -136,6 +136,10 @@ public class SocketClient extends Client {
                 String line = null;
                 try {
                     line = in.readLine();
+                    if (line == null) {
+                        close();
+                        break;
+                    }
                 } catch (IOException e) {
                     System.out.println("Server crashed! Closing client...");
                     close();
