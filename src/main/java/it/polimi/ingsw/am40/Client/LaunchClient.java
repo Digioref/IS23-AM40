@@ -13,6 +13,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class LaunchClient {
@@ -24,7 +25,7 @@ public class LaunchClient {
             LaunchGui.main(args);
 //            gui = new LaunchGui();
 //            gui.main(args);
-        } else {
+        } else if (choice.equals("CLI")){
             view = new CliView();
             view.chooseConnection();
         }
@@ -80,11 +81,16 @@ public class LaunchClient {
     }
 
     public static String interfaceSelection() {
-        String input;
+        String input = null;
         Scanner in = new Scanner(System.in);
         do {
             System.out.println("CLI[C] or GUI[G]?");
-            input = in.nextLine();
+            try{
+                input = in.nextLine();
+            } catch (NoSuchElementException e) {
+                input = "";
+                break;
+            }
             input = input.toUpperCase();
             if(input.equals("G"))
                 input = "GUI";
@@ -101,7 +107,7 @@ public class LaunchClient {
                 if (serverIp.equals("localhost")) {
                     setRMIHostname();
                 } else {
-                    System.setProperty("java.rmi.server.hostname", serverIp);
+//                    System.setProperty("java.rmi.server.hostname", serverIp);
                     System.out.println("Exposed address: " + serverIp);
                 }
                 rmiClient = new RMIClient(serverIp);

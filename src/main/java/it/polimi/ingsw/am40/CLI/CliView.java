@@ -456,6 +456,9 @@ public class CliView implements View{
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            if (choice == null) {
+                return;
+            }
             choice = choice.toUpperCase();
             if(choice.equals("S"))
                 choice = "SOCKET";
@@ -470,6 +473,9 @@ public class CliView implements View{
                 ip = stdIn.readLine();
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            }
+            if (ip == null) {
+                return;
             }
             if (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L") && !ip.equals("")) {
                 printMessage("Insert a valid ip address, please:");
