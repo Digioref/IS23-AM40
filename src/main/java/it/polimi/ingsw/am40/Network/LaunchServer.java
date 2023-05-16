@@ -24,14 +24,14 @@ public class LaunchServer {
 //        System.out.println("Server started!");
         setServerHostname();
 
-        if (args.length == 2) {
-            hostName = args[0];
-            portNumber = Integer.parseInt(args[1]);
-        }
-        else {
-            hostName = ReadHostFromJSON();
-            portNumber = ReadPortFromJSON();
-        }
+//        if (args.length == 2) {
+//            hostName = args[0];
+//            portNumber = Integer.parseInt(args[1]);
+//        }
+//        else {
+//            hostName = ReadHostFromJSON();
+//            portNumber = ReadPortFromJSON();
+//        }
 
         Scanner scanner = new Scanner(System.in);
         GameServer server = null;
@@ -39,7 +39,7 @@ public class LaunchServer {
         do{
             try{
                 server = GameServer.get();
-                server.connect(portNumber);
+                server.connect(portNumber, hostName);
                 retry = false;
             }catch(BindException e)
             {
@@ -53,7 +53,7 @@ public class LaunchServer {
         try {
             server.run();
         } finally {
-            System.out.println("qui");
+//            System.out.println("qui");
             server.close();
         }
     }
@@ -115,7 +115,8 @@ public class LaunchServer {
 
 
         }
-        System.setProperty("java.rmi.server.hostname",localIP);
+//        System.setProperty("java.rmi.server.hostname",localIP);
+        hostName = localIP;
         System.out.println("Exposed address: " + localIP);
     }
 

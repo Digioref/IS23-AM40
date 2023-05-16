@@ -101,7 +101,7 @@ public class LaunchClient {
                 if (serverIp.equals("localhost")) {
                     setRMIHostname();
                 } else {
-                    System.setProperty("java.rmi.server.hostname",serverIp);
+                    System.setProperty("java.rmi.server.hostname", serverIp);
                 }
                 rmiClient = new RMIClient(serverIp);
                 UnicastRemoteObject.exportObject(rmiClient, 0);

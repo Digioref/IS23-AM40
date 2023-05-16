@@ -471,12 +471,12 @@ public class CliView implements View{
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            if (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L")) {
+            if (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L") && !ip.equals("")) {
                 printMessage("Insert a valid ip address, please:");
             }
-        } while (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L"));
+        } while (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L") && !ip.equals(""));
 
-        if(ip.equalsIgnoreCase("L")) {
+        if(ip.equalsIgnoreCase("L") || ip.equals("")) {
             ip = "localhost";
         }
         LaunchClient.startConnection(choice, ip);
