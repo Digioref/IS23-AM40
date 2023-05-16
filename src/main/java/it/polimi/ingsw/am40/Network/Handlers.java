@@ -16,6 +16,7 @@ public abstract class Handlers {
     protected Lobby lobby;
     protected LoggingPhase logphase;
     protected MessageAdapter messAd;
+    protected int nPingLost;
 //    protected ArrayList<String> commands;
 
     public VirtualView getVirtualViewInstance() {
@@ -106,4 +107,5 @@ public abstract class Handlers {
     public abstract void sendChat(String s);
 
     public abstract void close();
+    public abstract void handlePong();
 }

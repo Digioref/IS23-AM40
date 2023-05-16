@@ -97,6 +97,11 @@ public class RMIClientHandler extends Handlers {
         rmiClient = null;
     }
 
+    @Override
+    public void handlePong() {
+
+    }
+
     public void setRmiClient(RMIClientInterface rmiClient) {
         this.rmiClient = rmiClient;
     }
