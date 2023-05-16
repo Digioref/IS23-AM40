@@ -1,0 +1,34 @@
+package it.polimi.ingsw.am40.Network.Commands;
+
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
+import it.polimi.ingsw.am40.Network.ActionType;
+import it.polimi.ingsw.am40.Network.Handlers;
+import it.polimi.ingsw.am40.Network.ICommand;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class Select implements ICommand {
+
+    @Override
+    public void execute(Handlers c, ArrayList<String> comm) throws IOException {
+        if (comm.size() != 2) {
+            c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));
+        }
+        else {
+//            System.out.println(("qui"));
+            int x, y;
+            try {
+                x = Integer.parseInt(comm.get(0));
+                y = Integer.parseInt(comm.get(1));
+            } catch (NumberFormatException e) {
+                c.sendMessage(JSONConverterStoC.normalMessage("You must type an int, not a string!"));
+                return;
+            }
+            ArrayList<Integer> arr = new ArrayList<>();
+            arr.add(x);
+            arr.add(y);
+            c.executeCommand(ActionType.SELECT, arr);
+        }
+    }
+}

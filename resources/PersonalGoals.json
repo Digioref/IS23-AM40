@@ -1,0 +1,275 @@
+{
+  "PersonalGoals": [
+    {"position": 	[{"x":0,
+      "y":5},
+      {"x":1,
+        "y":2},
+      {"x":2,
+        "y":0},
+      {"x":2,
+        "y":5},
+      {"x":3,
+        "y":3},
+      {"x":4,
+        "y":4}],
+
+      "color":		[{"Color": "Violet"},
+        {"Color": "Yellow"},
+        {"Color": "Cyan"},
+        {"Color": "Blue"},
+        {"Color": "White"},
+        {"Color": "Green"}
+      ]
+    },
+
+    {"position": 	[{"x":0,
+      "y":3},
+      {"x":1,
+        "y":4},
+      {"x":2,
+        "y":3},
+      {"x":3,
+        "y":1},
+      {"x":4,
+        "y":0},
+      {"x":4,
+        "y":2}],
+
+      "color":		[{"Color":"Green"},
+        {"Color": "Violet"},
+        {"Color": "Yellow"},
+        {"Color": "Cyan"},
+        {"Color": "Blue"},
+        {"Color": "White"}
+      ]
+    },
+
+    {"position": 	[{"x":0,
+      "y":0},
+      {"x":0,
+        "y":4},
+      {"x":1,
+        "y":2},
+      {"x":2,
+        "y":3},
+      {"x":3,
+        "y":4},
+      {"x":4,
+        "y":2}],
+
+      "color":		[{"Color":"White"},
+        {"Color": "Blue"},
+        {"Color": "Green"},
+        {"Color": "Violet"},
+        {"Color": "Yellow"},
+        {"Color": "Cyan"}
+      ]
+    },
+
+
+    {"position": 	[{"x":0,
+      "y":3},
+      {"x":1,
+        "y":1},
+      {"x":2,
+        "y":1},
+      {"x":2,
+        "y":3},
+      {"x":0,
+        "y":2},
+      {"x":4,
+        "y":5}],
+
+      "color":		[{"Color": "Cyan"},
+        {"Color": "White"},
+        {"Color": "Green"},
+        {"Color": "Blue"},
+        {"Color": "Violet"},
+        {"Color": "Yellow"}
+      ]
+    },
+
+    {"position": 	[{"x":0,
+      "y":0},
+      {"x":1,
+        "y":2},
+      {"x":1,
+        "y":4},
+      {"x":2,
+        "y":2},
+      {"x":3,
+        "y":0},
+      {"x":4,
+        "y":1}],
+
+      "color":		[{"Color": "Yellow"},
+        {"Color": "Blue"},
+        {"Color": "Cyan"},
+        {"Color": "White"},
+        {"Color": "Green"},
+        {"Color": "Violet"}
+      ]
+    },
+
+    {"position": 	[{"x":0,
+      "y":0},
+      {"x":1,
+        "y":1},
+      {"x":2,
+        "y":5},
+      {"x":3,
+        "y":1},
+      {"x":3,
+        "y":3},
+      {"x":4,
+        "y":5}],
+
+      "color":		[{"Color": "Violet"},
+        {"Color": "Yellow"},
+        {"Color": "Cyan"},
+        {"Color": "Blue"},
+        {"Color": "White"},
+        {"Color": "Green"}
+      ]
+    },
+
+    {"position": 	[{"x":0,
+      "y":2},
+      {"x":0,
+        "y":5},
+      {"x":1,
+        "y":3},
+      {"x":2,
+        "y":0},
+      {"x":3,
+        "y":4},
+      {"x":4,
+        "y":1}],
+
+      "color":		[{"Color": "Cyan"},
+        {"Color": "Green"},
+        {"Color": "Violet"},
+        {"Color": "White"},
+        {"Color": "Blue"},
+        {"Color": "Yellow"}
+      ]
+    },
+
+
+    {"position": 	[{"x":0,
+      "y":2},
+      {"x":1,
+        "y":4},
+      {"x":2,
+        "y":3},
+      {"x":3,
+        "y":0},
+      {"x":3,
+        "y":1},
+      {"x":4,
+        "y":5}],
+
+      "color":		[{"Color": "Violet"},
+        {"Color": "Green"},
+        {"Color": "Cyan"},
+        {"Color": "Yellow"},
+        {"Color": "White"},
+        {"Color": "Blue"}
+      ]
+    },
+
+
+    {"position": 	[{"x":0,
+      "y":0},
+      {"x":1,
+        "y":1},
+      {"x":2,
+        "y":3},
+      {"x":2,
+        "y":5},
+      {"x":4,
+        "y":1},
+      {"x":4,
+        "y":2}],
+
+      "color":		[{"Color": "Blue"},
+        {"Color": "Cyan"},
+        {"Color": "Green"},
+        {"Color": "Yellow"},
+        {"Color": "Violet"},
+        {"Color": "White"}
+      ]
+    },
+
+
+    {"position": 	[{"x":0,
+      "y":3},
+      {"x":1,
+        "y":1},
+      {"x":1,
+        "y":4},
+      {"x":3,
+        "y":0},
+      {"x":3,
+        "y":2},
+      {"x":4,
+        "y":5}],
+
+      "color":		[{"Color": "White"},
+        {"Color": "Blue"},
+        {"Color": "Yellow"},
+        {"Color": "Violet"},
+        {"Color": "Green"},
+        {"Color": "Cyan"}
+      ]
+    },
+
+
+    {"position": 	[{"x":0,
+      "y":3},
+      {"x":1,
+        "y":4},
+      {"x":2,
+        "y":2},
+      {"x":2,
+        "y":5},
+      {"x":3,
+        "y":0},
+      {"x":4,
+        "y":1}],
+
+      "color":		[{"Color": "Yellow"},
+        {"Color": "White"},
+        {"Color": "Blue"},
+        {"Color": "Violet"},
+        {"Color": "Cyan"},
+        {"Color": "Green"}
+      ]
+    },
+
+
+
+    {"position": 	[{"x":0,
+      "y":0},
+      {"x":1,
+        "y":4},
+      {"x":2,
+        "y":3},
+      {"x":2,
+        "y":5},
+      {"x":3,
+        "y":2},
+      {"x":4,
+        "y":1}],
+
+      "color":		[{"Color": "Green"},
+        {"Color": "Violet"},
+        {"Color": "Blue"},
+        {"Color": "White"},
+        {"Color": "Cyan"},
+        {"Color": "Yellow"}
+      ]
+    }
+  ]
+}
+
