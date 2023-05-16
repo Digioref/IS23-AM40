@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ClientHandler extends Handlers implements Runnable {
     private final static int WAIT_PING = 10000;
-    private final static int SEND_PING = 2000;
+    private final static int SEND_PING = 4000;
     private Socket socket;
     private Scanner in;
     private PrintWriter out;
@@ -26,7 +26,6 @@ public class ClientHandler extends Handlers implements Runnable {
     private GameServer gameServer;
     private ScheduledExecutorService sendPing;
     private ScheduledExecutorService waitPing;
-    private int nPingLost;
 
     public ClientHandler(Socket socket, GameServer gameServer) {
         nPingLost = 0;
@@ -124,9 +123,8 @@ public class ClientHandler extends Handlers implements Runnable {
         Runnable task = () -> {
             nPingLost++;
             if(nPingLost >= 3){
-                System.out.println("Disconesso il Client per aver perso 5 PING!");
+                System.out.println("Disconesso il Client per aver perso 3 PING!");
                 close();
-
             }
         };
         synchronized (this){
@@ -193,6 +191,9 @@ public class ClientHandler extends Handlers implements Runnable {
 
     public void close() {
         //TODO impact on game
+        nPingLost = 0;
+        waitPing.shutdownNow();
+        sendPing.shutdownNow();
         lobby.removeQuit(this);
         try {
             sendMessage(JSONConverterStoC.normalMessage("Quit"));
@@ -200,13 +201,19 @@ public class ClientHandler extends Handlers implements Runnable {
             throw new RuntimeException(e);
         }
         stop = true;
-        in.close();
-        out.close();
-        try {
-            socket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        in.close();
+//        out.close();
+//        try {
+//            socket.close();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
         gameServer.shutdownHandler(this);
+    }
+
+    @Override
+    public synchronized void handlePong() {
+        waitPing.shutdown();
+        nPingLost = 0;
     }
 }

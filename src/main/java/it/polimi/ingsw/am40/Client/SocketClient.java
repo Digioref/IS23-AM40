@@ -21,8 +21,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class SocketClient extends Client {
-    private final static int NUMPINGLOST = 5;
-    private final static int WAIT_PING = 5000;
 
     final static String hostName = "localhost";
     final static int portNumber = 1234;
@@ -31,10 +29,9 @@ public class SocketClient extends Client {
     private PrintWriter out;
     private Thread fromUser;
     private Thread fromServer;
-    private ScheduledExecutorService ping;
     private boolean stop;
     private Socket socket;
-    private int numPing;
+
 
     public SocketClient(Socket socket) {
         try {
@@ -53,17 +50,7 @@ public class SocketClient extends Client {
         startPing();
     }
 
-    private void startPing() {
-        Runnable task = () -> {
-            numPing++;
-            if (numPing == NUMPINGLOST) {
-                close();
-                ping.shutdownNow();
-            }
-        };
-        ping = Executors.newSingleThreadScheduledExecutor();
-        ping.scheduleAtFixedRate(task, WAIT_PING, WAIT_PING, TimeUnit.MILLISECONDS);
-    }
+
     public void sendPong() {
         JSONConverterCtoS jconv = new JSONConverterCtoS();
         jconv.toJSON("Pong");
@@ -75,6 +62,7 @@ public class SocketClient extends Client {
     }
 
     public void close() {
+        ping.shutdownNow();
         stop = true;
         try {
             fromUser.interrupt();

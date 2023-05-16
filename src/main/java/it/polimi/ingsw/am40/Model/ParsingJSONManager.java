@@ -224,6 +224,10 @@ public class ParsingJSONManager {
                         break;
                     case "viewchat":
                         map.put("viewchat", new ViewChat());
+                        break;
+                    case "pong":
+                        map.put("pong", new Pong());
+                        break;
 
                 }
             }
