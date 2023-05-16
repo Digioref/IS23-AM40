@@ -12,8 +12,10 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -25,6 +27,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import static javafx.scene.text.Font.loadFont;
@@ -140,7 +143,7 @@ public class ViewController extends AnchorPane implements View {
 		Timeline timeline = new Timeline(
 				new KeyFrame(Duration.ZERO, event -> {
 					Random random = new Random();
-					int type = random.nextInt(5);
+					int type = random.nextInt(6) + 1;
 					int index = random.nextInt();
 					Image tmp = Resources.tile(type,index);
 					loadImage.setImage(tmp);
@@ -172,10 +175,16 @@ public class ViewController extends AnchorPane implements View {
 			}
 		});
 
+		Button startGame = new Button("Start game!");
+
 		button.setOnAction(e -> {
 				if (!textField.getText().equals("")) {
 					String tmp = "Welcome " + textField.getText();
 					text_ip.setText(tmp);
+
+					vbox.getChildren().remove(button);
+					vbox.getChildren().remove(textField);
+					vbox.getChildren().add(startGame);
 
 					vbox.getChildren().add(loadImage);
 					rotateTransition.play();
@@ -187,16 +196,34 @@ public class ViewController extends AnchorPane implements View {
 				}
 		});
 
+		Pane rootBox = new Pane();
+		Scene newScene = new Scene(rootBox);
+
+		startGame.setOnAction(e -> {
+			Stage stage = (Stage) startGame.getScene().getWindow();
+			stage.setScene(newScene);
+			stage.setTitle("New Page");
+		});
+
+		VBox newVBox = new VBox();
+		Text tmp = new Text("Pippo");
+		Text tmp1 = new Text("Pippo");
+		Text tmp2 = new Text("Pippo");
+
+		newVBox.getChildren().addAll(tmp,tmp1,tmp2);
+
+		rootBox.getChildren().add(newVBox);
+
 		vbox.getChildren().add(conferma);
 
 		getChildren().add(vbox);
 
 
+/*
 
 
-		/*
 
-		showCurrentPlayer("Dai figaaaa");
+		//showCurrentPlayer("Dai figaaaa");
 
 		bag.relocate(50, 60);
 		getChildren().add(bag);
@@ -320,7 +347,9 @@ public class ViewController extends AnchorPane implements View {
 			// Stop the event here
 			event.consume();
 		});
-		*/
+
+ */
+
 	}
 
 	private void handleArrowDown(MouseEvent event, int column) {
