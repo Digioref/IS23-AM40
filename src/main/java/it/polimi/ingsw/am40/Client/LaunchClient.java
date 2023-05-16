@@ -102,6 +102,7 @@ public class LaunchClient {
                     setRMIHostname();
                 } else {
                     System.setProperty("java.rmi.server.hostname", serverIp);
+                    System.out.println("Exposed address: " + serverIp);
                 }
                 rmiClient = new RMIClient(serverIp);
                 UnicastRemoteObject.exportObject(rmiClient, 0);
