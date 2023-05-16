@@ -18,6 +18,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class RMIClient extends Client implements RMIClientInterface {
     private BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
@@ -48,6 +50,7 @@ public class RMIClient extends Client implements RMIClientInterface {
             return;
 //            throw new RuntimeException(e);
         }
+        startPing();
         if (LaunchClient.getView() instanceof CliView) {
             rmiThread = new Thread(() -> {
                 do {
@@ -83,9 +86,16 @@ public class RMIClient extends Client implements RMIClientInterface {
         jconv.toJSON(line);
         switch (command[0]) {
             case "login":
+                String s = "";
                 try {
-//                    nickname = command[1];
-                    stub.login(command[1], this);
+                    for (int i = 1; i < command.length; i++) {
+                        if (s.equals("")) {
+                            s = command[i];
+                        } else {
+                            s = s + " " + command[i];
+                        }
+                    }
+                    stub.login(s, this);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -169,6 +179,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
     @Override
     public void close() {
+        ping.shutdownNow();
         stop = true;
         if (rmiThread != null) {
             rmiThread.interrupt();
@@ -184,6 +195,15 @@ public class RMIClient extends Client implements RMIClientInterface {
         } catch (NoSuchObjectException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void sendPong() {
+        Runnable task = () -> {
+
+        };
+        ping = Executors.newSingleThreadScheduledExecutor();
+        ping.scheduleAtFixedRate(task, WAIT_PING, WAIT_PING, TimeUnit.MILLISECONDS);
     }
 
     @Override

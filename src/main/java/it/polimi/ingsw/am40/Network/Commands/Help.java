@@ -26,12 +26,6 @@ public class Help implements ICommand {
                     case "login":
                         c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [string]"));
                         break;
-                    case "chat":
-                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s + "#nameofplayer" + "#message"));
-                        break;
-                    case "chatall":
-                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s + "#message"));
-                        break;
                     default:
                         c.sendMessage(JSONConverterStoC.normalMessage("- " + s));
                         break;

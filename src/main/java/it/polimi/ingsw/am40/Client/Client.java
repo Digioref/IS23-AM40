@@ -9,9 +9,19 @@ import org.json.simple.parser.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public abstract class Client {
+
+    protected final static int NUMPINGLOST = 5;
+    protected final static int WAIT_PING = 40000;
+
     protected String nickname;
+    protected ScheduledExecutorService ping;
+    protected int numPing;
+
     public void parseMessage(String line) throws ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject object = (JSONObject) jsonParser.parse(line);
@@ -165,10 +175,27 @@ public abstract class Client {
                 close();
                 LaunchClient.getView().quit(nickname);
                 break;
+            case "Ping":
+                sendPong();
+                ping.shutdownNow();
+                numPing = 0;
+                startPing();
+                break;
             default:
                 LaunchClient.getView().printMessage(command);
                 break;
         }
     }
     public abstract void close();
+    public abstract void sendPong();
+    protected void startPing() {
+        Runnable task = () -> {
+            numPing++;
+            if (numPing == NUMPINGLOST) {
+                close();
+            }
+        };
+        ping = Executors.newSingleThreadScheduledExecutor();
+        ping.scheduleAtFixedRate(task, WAIT_PING, WAIT_PING, TimeUnit.MILLISECONDS);
+    }
 }

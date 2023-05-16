@@ -11,17 +11,24 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class ClientHandler extends Handlers implements Runnable {
+    private final static int WAIT_PING = 10000;
+    private final static int SEND_PING = 4000;
     private Socket socket;
     private Scanner in;
     private PrintWriter out;
     private boolean stop;
     private GameServer gameServer;
-
+    private ScheduledExecutorService sendPing;
+    private ScheduledExecutorService waitPing;
 
     public ClientHandler(Socket socket, GameServer gameServer) {
+        nPingLost = 0;
         stop = false;
         this.gameServer = gameServer;
         this.socket = socket;
@@ -37,7 +44,7 @@ public class ClientHandler extends Handlers implements Runnable {
         setLogphase(LoggingPhase.LOGGING);
     }
 
-    public void sendMessage(String s) throws IOException {
+    public synchronized void sendMessage(String s) throws IOException {
         out.println(s);
         out.flush();
     }
@@ -60,6 +67,7 @@ public class ClientHandler extends Handlers implements Runnable {
     @Override
     public void run() {
         try {
+            startPing();
             messAd.configure();
             messAd.startMessage(this);
 // Leggo e scrivo nella connessione finche' non ricevo "quit"
@@ -69,7 +77,7 @@ public class ClientHandler extends Handlers implements Runnable {
 //
 //                out.println("Give command: ");
 //                out.flush();
-                sendMessage(JSONConverterStoC.normalMessage("Type your command here: "));
+//                sendMessage(JSONConverterStoC.normalMessage("Type your command here: "));
                 String line = in.nextLine();
                 messAd.parserMessage(this, line);
 //                if (line.equals("quit")) {
@@ -90,6 +98,38 @@ public class ClientHandler extends Handlers implements Runnable {
             System.err.println(e.getMessage());
         } catch (ParseException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void startPing() {
+        if(sendPing != null)
+            sendPing.shutdownNow();
+        if(waitPing != null)
+            waitPing.shutdownNow();
+        waitPing = Executors.newSingleThreadScheduledExecutor();
+        sendPing = Executors.newScheduledThreadPool(1);
+        Runnable task = () -> {
+            ping();
+        };
+        sendPing.scheduleAtFixedRate(task, 0, SEND_PING, TimeUnit.MILLISECONDS);
+    }
+
+    private void ping() {
+        try {
+            sendMessage(JSONConverterStoC.createJSONPing());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Runnable task = () -> {
+            nPingLost++;
+            if(nPingLost >= 3){
+                System.out.println("Disconesso il Client per aver perso 3 PING!");
+                close();
+            }
+        };
+        synchronized (this){
+            waitPing = Executors.newScheduledThreadPool(1);
+            waitPing.schedule(task,WAIT_PING,TimeUnit.MILLISECONDS);
         }
     }
 
@@ -151,6 +191,9 @@ public class ClientHandler extends Handlers implements Runnable {
 
     public void close() {
         //TODO impact on game
+        nPingLost = 0;
+        waitPing.shutdownNow();
+        sendPing.shutdownNow();
         lobby.removeQuit(this);
         try {
             sendMessage(JSONConverterStoC.normalMessage("Quit"));
@@ -158,13 +201,19 @@ public class ClientHandler extends Handlers implements Runnable {
             throw new RuntimeException(e);
         }
         stop = true;
-        in.close();
-        out.close();
-        try {
-            socket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        in.close();
+//        out.close();
+//        try {
+//            socket.close();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
         gameServer.shutdownHandler(this);
+    }
+
+    @Override
+    public synchronized void handlePong() {
+        waitPing.shutdown();
+        nPingLost = 0;
     }
 }

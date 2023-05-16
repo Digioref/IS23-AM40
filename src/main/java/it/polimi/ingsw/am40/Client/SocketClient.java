@@ -16,6 +16,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SocketClient extends Client {
 
@@ -29,6 +32,7 @@ public class SocketClient extends Client {
     private boolean stop;
     private Socket socket;
 
+
     public SocketClient(Socket socket) {
         try {
             this.socket = socket;
@@ -41,71 +45,24 @@ public class SocketClient extends Client {
         stop = false;
     }
     public void init() {
-        if (LaunchClient.getView() instanceof CliView) {
-            fromUser = new Thread(() -> {
-                do {
-                    try {
-                        if (stdIn.ready()) {
-                            String userInput = null;
-                            try {
-                                userInput = stdIn.readLine();
-                            } catch (IOException e ) {
-                                break;
-    //                        throw new RuntimeException(e);
-                            }
-                            if (userInput.equals("quit")) {
-                                JSONConverterCtoS jconv = new JSONConverterCtoS();
-                                jconv.toJSON(userInput);
-                                out.println(jconv.toString());
-                                out.flush();
-                                break;
-                            }
-                            if (userInput.equals("chat")) {
-                                LaunchClient.getView().chat(this);
-                            } else {
-                                JSONConverterCtoS jconv = new JSONConverterCtoS();
-                                jconv.toJSON(userInput);
-                                out.println(jconv.toString());
-                                out.flush();
-                            }
-                        }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                } while (!stop);
-            });
-            fromUser.setName("READ FROM USER");
-            fromUser.start();
-        }
-        fromServer = new Thread(() -> {
-            do {
-                String line = null;
-                try {
-                        line = in.readLine();
-                } catch (IOException e) {
-                    System.out.println("Server crashed! Closing client...");
-                    close();
-                    break;
-//                    throw new RuntimeException(e);
-                }
-//                print(line);
-                try {
-                    parseMessage(line);
-                } catch (ParseException e) {
-                    System.out.println("Error in parsing!");
-                    break;
-//                    throw new RuntimeException(e);
-                }
-            } while (!stop);
-        });
-
-        fromServer.setName("READ FROM SERVER");
-        fromServer.start();
+        createThreadFU();
+        createThreadFS();
+        startPing();
     }
 
 
+    public void sendPong() {
+        JSONConverterCtoS jconv = new JSONConverterCtoS();
+        jconv.toJSON("Pong");
+        sendMessage(jconv.toString());
+    }
+    public synchronized void sendMessage(String s) {
+        out.println(s);
+        out.flush();
+    }
 
     public void close() {
+        ping.shutdownNow();
         stop = true;
         try {
             fromUser.interrupt();
@@ -135,5 +92,68 @@ public class SocketClient extends Client {
     public synchronized void print(String s) {
         System.out.println(s);
         System.out.flush();
+    }
+
+    private void createThreadFU() {
+        if (LaunchClient.getView() instanceof CliView) {
+            fromUser = new Thread(() -> {
+                do {
+                    try {
+                        if (stdIn.ready()) {
+                            String userInput = null;
+                            try {
+                                userInput = stdIn.readLine();
+                            } catch (IOException e ) {
+                                break;
+                                //                        throw new RuntimeException(e);
+                            }
+                            if (userInput.equals("quit")) {
+                                JSONConverterCtoS jconv = new JSONConverterCtoS();
+                                jconv.toJSON(userInput);
+                                sendMessage(jconv.toString());
+                                break;
+                            }
+                            if (userInput.equals("chat")) {
+                                LaunchClient.getView().chat(this);
+                            } else {
+                                JSONConverterCtoS jconv = new JSONConverterCtoS();
+                                jconv.toJSON(userInput);
+                                sendMessage(jconv.toString());
+                            }
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } while (!stop);
+            });
+            fromUser.setName("READ FROM USER");
+            fromUser.start();
+        }
+    }
+    private void createThreadFS() {
+        fromServer = new Thread(() -> {
+            do {
+                String line = null;
+                try {
+                    line = in.readLine();
+                } catch (IOException e) {
+                    System.out.println("Server crashed! Closing client...");
+                    close();
+                    break;
+//                    throw new RuntimeException(e);
+                }
+//                print(line);
+                try {
+                    parseMessage(line);
+                } catch (ParseException e) {
+                    System.out.println("Error in parsing!");
+                    break;
+//                    throw new RuntimeException(e);
+                }
+            } while (!stop);
+        });
+
+        fromServer.setName("READ FROM SERVER");
+        fromServer.start();
     }
 }

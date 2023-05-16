@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CliView implements View{
 //    private Game game;
@@ -461,15 +463,22 @@ public class CliView implements View{
                 choice = "RMI";
         }while(!choice.equals("RMI") && !choice.equals("SOCKET"));
         printMessage("Insert the server IP (or localhost [L]):");
+        Pattern p = Pattern.compile("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
         String ip;
-        try {
-            ip = stdIn.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        do {
+            try {
+                ip = stdIn.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            if (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L")) {
+                printMessage("Insert a valid ip address, please:");
+            }
+        } while (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L"));
 
-        if(ip.equalsIgnoreCase("L"))
+        if(ip.equalsIgnoreCase("L")) {
             ip = "localhost";
+        }
         LaunchClient.startConnection(choice, ip);
     }
 
