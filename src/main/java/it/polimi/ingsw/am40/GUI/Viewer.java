@@ -1,15 +1,24 @@
 package it.polimi.ingsw.am40.GUI;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
+
+import java.util.Random;
 
 public class Viewer extends Application {
 
@@ -17,49 +26,244 @@ public class Viewer extends Application {
 	 * This variable is needed only for the test methods. Remove it when removing
 	 * the test methods.
 	 */
-	private AnchorPane viewController;
-
-	public static void main(String[] args) {launch(args);
+	private String connectionType;
+	public static void main(String[] args) {
+		launch(args);
 	}
 
 	@Override
 	public void start(Stage stage) {
 
 		Pane rootBox = new Pane();
-		final Scene scene;
 
-		/* Add the menu */
-		MenuBar topMenu = MenuObj.createMenuBar(stage);
-		rootBox.getChildren().add(topMenu);
+		newScene(stage, rootBox);
 
-
-		viewController = new ViewController();
-		rootBox.getChildren().add(viewController);
-
-		//ScrollPane scrollPane = new ScrollPane(rootBox);
-
-
-		/* Create the main scene */
-		//scene = new Scene(scrollPane);
-		scene = new Scene(rootBox);
-
-		///////////////////////////////////////////////////////scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-
-
-		/* Set stage properties */
 		stage.setMaximized(true);
 		stage.setTitle("MyShelfie");
 		stage.getIcons().add(Resources.icon());
 		stage.setResizable(true);
-		stage.setScene(scene);
+
 		stage.show();
 
+		setBackground(stage, rootBox);
+
+		VBox vbox = createVbox(rootBox);
+
+		setTitle(vbox);
+
+		Text t1 = addDescription(vbox, "Inserisci l'indirizzo ip, L per localHost");
+
+		TextField tf = addTextField(vbox);
+
+		Text t2 = addDescription(vbox, "scegli un tipo di connessione");
+
+		RadioButton r1 = addToggle(vbox,"RMI", true);
+		RadioButton r2 = addToggle(vbox,"SOCKET", false);
+		setToggles(r1,r2);
+
+		Button b1 = addButton(vbox, "Ready?", true);
+		Button b2 = addButton(vbox, "CONTINUA", false);
+		b1.setOnAction(e -> {
+			setConnection(vbox, tf, t1, t2, r1, r2, b1, b2);
+		});
+
+		Button b3 = addButton(vbox, "Let's goooo", false);
+
+		b2.setOnAction(e -> {
+			setUsername(vbox, tf, t1, b2, b3);
+		});
+
+		Pane newPane = new Pane();
+		b3.setOnAction(e -> {
+			newScene(stage, newPane);
+		});
+
+		setBackground(stage, newPane);
+
+
+
+
+
+		//ScrollPane scrollPane = new ScrollPane(rootBox);
+
+		//scene = new Scene(scrollPane);
+
+
+
+
+
 		/* Test: populate the board */
-		populateBoard();
+		//populateBoard();
 	}
 
-	/* Test methods */
+	public void setBackground(Stage stage, Pane pane) {
+		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
+		pane.setPrefSize(screenWidth, screenHeight);
 
+		Image background = Resources.background();
+		BackgroundImage bgImg = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
+				BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
+		pane.setBackground(new Background(bgImg));
+
+		MenuBar topMenu = MenuObj.createMenuBar(stage);
+		pane.getChildren().add(topMenu);
+
+	}
+
+	public VBox createVbox(Pane pane) {
+		VBox vbox = new VBox();
+		vbox.setSpacing(10);
+		vbox.setAlignment(Pos.CENTER);
+		pane.getChildren().add(vbox);
+		return vbox;
+	}
+
+	public void setTitle(Pane pane) {
+		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+		Image title = Resources.title();
+		ImageView imageView = new ImageView(title);
+		imageView.setFitWidth(screenWidth);
+		imageView.setPreserveRatio(true);
+		pane.getChildren().addAll(imageView);
+	}
+
+	public Text addDescription(Pane pane, String tmp) {
+		Text text = new Text(tmp);
+		text.setFont(Font.font(25));
+		pane.getChildren().add(text);
+		return text;
+	}
+
+	public TextField addTextField(Pane pane) {
+		TextField textField = new TextField();
+		textField.setMaxWidth(200);
+		pane.getChildren().add(textField);
+		return textField;
+	}
+
+	public RadioButton addToggle(Pane pane, String tmp, Boolean isSelected) {
+		RadioButton button = new RadioButton(tmp);
+		button.setFont(Font.font(20));
+		button.setSelected(isSelected);
+		pane.getChildren().add(button);
+		return button;
+	}
+
+	public void setToggles(RadioButton rmi, RadioButton socket) {
+		ToggleGroup tg = new ToggleGroup();
+
+		connectionType = "SOCKET";
+
+		socket.setOnAction(e -> {
+			connectionType = "SOCKET";
+		});
+		rmi.setOnAction(e -> {
+			connectionType = "RMI";
+		});
+
+		socket.setToggleGroup(tg);
+		rmi.setToggleGroup(tg);
+
+	}
+
+	public Button addButton(Pane pane, String tmp, Boolean isVisible) {
+		Image background_per_pulsanti = new Image("colore_pulsanti.jpg");
+		BackgroundImage bgImg_per_pulsanti = new BackgroundImage(background_per_pulsanti, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
+				BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
+
+		Background bg_conferma_pulsante = new Background(bgImg_per_pulsanti);
+
+		Button button = new Button(tmp);
+		button.setFont(Font.font(20));
+		button.setBackground(bg_conferma_pulsante);
+		button.setVisible(isVisible);
+		pane.getChildren().add(button);
+
+		return button;
+
+	}
+
+	public void setConnection(Pane pane, TextField tf, Text t1, Text t2, RadioButton socket, RadioButton rmi, Button oldB, Button newB) {
+		String connectionIp = tf.getText();
+		if (!connectionIp.equals("")) {
+			if (connectionIp.equalsIgnoreCase("L")) {
+				connectionIp = "localhost";
+			}
+			//LaunchClient.startConnection(connectionType, connectionIp);
+			t1.setText("Scegli uno username");
+			tf.clear();
+
+			pane.getChildren().remove(t2);
+			pane.getChildren().remove(socket);
+			pane.getChildren().remove(rmi);
+			pane.getChildren().remove(oldB);
+
+			newB.setVisible(true);
+		} else {
+			t1.setText("Devi selezionare un indirizzo ip se no non ti mando avanti");
+			//////////////////////////////////////////////////////////////////////////////////////////////////////// da rendere rosso con FONT
+		}
+	}
+
+	public void setUsername(Pane pane, TextField tf, Text t1, Button oldB, Button newB) {
+		if (!tf.getText().equals("")) {
+			String tmp = "Welcome " + tf.getText();
+			t1.setText(tmp);
+
+			pane.getChildren().remove(oldB);
+			pane.getChildren().remove(tf);
+
+			newB.setVisible(true);
+
+			waitingAnimation(pane);
+
+		} else {
+			String tmp = t1.getText();
+			tmp = tmp.concat("!");
+			t1.setText(tmp);
+		}
+	}
+
+	public void waitingAnimation(Pane pane) {
+		Image im = Resources.tile(1,0);
+		ImageView loadImage = new ImageView(im);
+		loadImage.setFitWidth(100);
+		loadImage.setPreserveRatio(true);
+
+		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), loadImage);
+		rotateTransition.setByAngle(360); // Rotate by 360 degrees
+		rotateTransition.setCycleCount(Animation.INDEFINITE); // Repeat indefinitely
+		rotateTransition.setAutoReverse(false); // Do not reverse the animation
+
+		Timeline timeline = new Timeline(
+				new KeyFrame(Duration.ZERO, event -> {
+					Random random = new Random();
+					int type = random.nextInt(5) + 2;
+					int index = random.nextInt(4);
+					Image tmp = Resources.tile(type,index);
+					loadImage.setImage(tmp);
+				}),
+				new KeyFrame(Duration.seconds(2), event -> {
+
+				})
+		);
+		timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
+
+		pane.getChildren().add(loadImage);
+		rotateTransition.play();
+		timeline.play();
+	}
+
+	public void newScene(Stage stage, Pane pane) {
+		final Scene scene = new Scene(pane);
+		stage.setScene(scene);
+	}
+
+
+
+	/* Test methods */
+/*
 	void populateBoard() {
 		addTile(Resources.TILE_TYPE_CAT, 0, 0);
 		addTile(Resources.TILE_TYPE_FRAME, 0, 1);
@@ -126,4 +330,6 @@ public class Viewer extends Application {
 	void setTilePickable(int x, int y) {
 		viewController.fireEvent(new CustomEvent(CustomEvent.BOARD_TILE_PICKABLE, x, y));
 	}
+	*/
+
 }
