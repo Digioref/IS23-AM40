@@ -46,7 +46,7 @@ public class Viewer extends Application {
 		stage.getIcons().add(Resources.icon());
 		stage.setResizable(true);
 
-		newScene(stage, rootBox);
+		//newScene(stage, rootBox);
 
 		stage.show();
 
@@ -85,30 +85,52 @@ public class Viewer extends Application {
 			newScene(stage, newRoot);
 		});
 
-		//newScene(stage, newRoot);
+		newScene(stage, newRoot);
 		setBackground(stage, newRoot);
+
+		StackPane stack = new StackPane();
 
 		BorderPane home = new BorderPane();
 
+		stack.getChildren().add(home);
+
+
 		//ScrollPane sp = new ScrollPane();   --- Come mai lo scroll pane non va??????
 
-		newRoot.getChildren().add(home);
+		newRoot.getChildren().add(stack);
 
 		VBox vLeft = new VBox();
+		vLeft.setSpacing(Screen.getPrimary().getVisualBounds().getHeight() * 0.05);
 		VBox vRight = new VBox();
+		vRight.setSpacing(40);
+		vRight.setAlignment(Pos.CENTER);
 		VBox v = new VBox();
 
-
-
 		Bag b = new Bag();
-		Bookshelf bs1 = new Bookshelf();
-		Bookshelf bs2 = new Bookshelf();
-		Bookshelf bs3 = new Bookshelf();
-		Bookshelf bs4 = new Bookshelf();
+		int numPlayers = 4;
+		for (int i = 0; i < numPlayers; i++) {
+			HBox row = new HBox();
+			Bookshelf bs1 = new Bookshelf();
+			PersonalGoal pg = new PersonalGoal(i);
+			row.getChildren().addAll(bs1,pg);
+			vLeft.getChildren().add(row);
+		}
+
 		CommonGoalGui cg1 = new CommonGoalGui(1);
 		CommonGoalGui cg2 = new CommonGoalGui(2);
 
-		vLeft.getChildren().addAll(bs1,bs2,bs3, bs4);
+		CommonGoalGui cg1duplicate = new CommonGoalGui(1);
+
+		cg1.setOnMouseEntered(e -> {
+			System.out.println("entro");
+			stack.getChildren().add(cg1duplicate);
+		});
+
+		cg1.setOnMouseExited(e -> {
+			System.out.println("esco");
+			stack.getChildren().remove(cg1duplicate);
+		});
+
 		vRight.getChildren().addAll(cg1, cg2);
 		Board board = new Board();
 

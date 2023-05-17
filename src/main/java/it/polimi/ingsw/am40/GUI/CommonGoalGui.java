@@ -16,8 +16,8 @@ public class CommonGoalGui extends Label {
 		Image image = Resources.commonGoal(index);
 		ImageView view = new ImageView(image);
 		view.setPreserveRatio(true);
-		view.setFitWidth(150);
-		view.setFitHeight(100);
+		view.setFitWidth(300);
+		view.setFitHeight(300);
 		setGraphic(view);
 
 		Rectangle clip = new Rectangle(view.getFitWidth(), view.getFitHeight());

@@ -22,12 +22,13 @@ public class Metrics {
 	public static final int BOARD_WIDTH = 532;
 	public static final int BOARD_HEIGHT = 532;
 
-	public static final int BOOKSHELF_WIDTH = 360;
-	public static final int BOOKSHELF_HEIGHT = 360;
+	public static final int BOOKSHELF_WIDTH = 360; //360
+	public static final int BOOKSHELF_HEIGHT = 360; //360
 
 	/* Bookshelf animation speed: higher is faster */
 	public static final double BOOKSHELF_SPEED = 4.0;
 
 	public static final int COMMAND_BOARD_WIDTH = 224;
 	public static final int COMMAND_BOARD_HEIGHT = 100;
+
 }
