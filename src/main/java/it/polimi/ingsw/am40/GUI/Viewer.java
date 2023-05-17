@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am40.GUI;
 
+import it.polimi.ingsw.am40.Model.CommonGoal;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
@@ -34,6 +35,8 @@ public class Viewer extends Application {
 
 	@Override
 	public void start(Stage stage) {
+
+		// -----------  setup page  -----------
 
 		Pane rootBox = new Pane();
 
@@ -75,14 +78,44 @@ public class Viewer extends Application {
 			setUsername(vbox, tf, t1, b2, b3);
 		});
 
-		//
+		// -----------  From here you go to the play scene  -----------
 
-		Pane newPane = new Pane();
+		Pane newRoot = new Pane();
 		b3.setOnAction(e -> {
-			newScene(stage, newPane);
+			newScene(stage, newRoot);
 		});
 
-		setBackground(stage, newPane);
+		//newScene(stage, newRoot);
+		setBackground(stage, newRoot);
+
+		BorderPane home = new BorderPane();
+
+		//ScrollPane sp = new ScrollPane();   --- Come mai lo scroll pane non va??????
+
+		newRoot.getChildren().add(home);
+
+		VBox vLeft = new VBox();
+		VBox vRight = new VBox();
+		VBox v = new VBox();
+
+
+
+		Bag b = new Bag();
+		Bookshelf bs1 = new Bookshelf();
+		Bookshelf bs2 = new Bookshelf();
+		Bookshelf bs3 = new Bookshelf();
+		Bookshelf bs4 = new Bookshelf();
+		CommonGoalGui cg1 = new CommonGoalGui(1);
+		CommonGoalGui cg2 = new CommonGoalGui(2);
+
+		vLeft.getChildren().addAll(bs1,bs2,bs3, bs4);
+		vRight.getChildren().addAll(cg1, cg2);
+		Board board = new Board();
+
+		home.setRight(vRight);
+		home.setLeft(vLeft);
+		home.setCenter(board);
+		home.setBottom(v);
 
 
 

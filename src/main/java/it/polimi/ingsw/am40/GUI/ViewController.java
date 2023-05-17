@@ -42,8 +42,8 @@ public class ViewController extends AnchorPane implements View {
 	private final ArrayList<Arrow> arrowDownList = new ArrayList<Arrow>();
 	private final Board board = new Board();
 	private final Bag bag = new Bag();
-	private final CommonGoal cg1 = new CommonGoal(3);
-	private final CommonGoal cg2 = new CommonGoal(8);
+	//private final CommonGoal cg1 = new CommonGoal(3);
+	//private final CommonGoal cg2 = new CommonGoal(8);
 	private final PersonalGoal persGoal = new PersonalGoal(4);
 
 	private String connectionType;

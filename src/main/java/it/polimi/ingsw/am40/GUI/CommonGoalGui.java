@@ -9,9 +9,9 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class CommonGoal extends Label {
+public class CommonGoalGui extends Label {
 
-	public CommonGoal(int index) {
+	public CommonGoalGui(int index) {
 		super();
 		Image image = Resources.commonGoal(index);
 		ImageView view = new ImageView(image);
