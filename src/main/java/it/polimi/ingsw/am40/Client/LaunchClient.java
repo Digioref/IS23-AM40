@@ -105,14 +105,15 @@ public class LaunchClient {
             RMIClient rmiClient = null;
             try {
                 if (serverIp.equals("localhost")) {
-                    setRMIHostname();
+                    InetAddress ip = InetAddress.getLocalHost();
+                    System.out.println( "Exposed Address: " + ip.getHostAddress());
                 } else {
 //                    System.setProperty("java.rmi.server.hostname", serverIp);
                     System.out.println("Exposed address: " + serverIp);
                 }
                 rmiClient = new RMIClient(serverIp);
                 UnicastRemoteObject.exportObject(rmiClient, 0);
-            } catch (RemoteException e) {
+            } catch (RemoteException | UnknownHostException e) {
                 throw new RuntimeException(e);
             }
             rmiClient.connect();
@@ -137,43 +138,43 @@ public class LaunchClient {
     public static View getView() {
         return view;
     }
-    private static void setRMIHostname() {
-
-        String localIP = getCorrectLocalIP();
-        if(localIP == null)
-        {
-            Scanner scanner = new Scanner(System.in);
-            InetAddress inetAddress;
-            try {
-                inetAddress = InetAddress.getLocalHost();
-                System.out.println("Java host address: " + inetAddress.getHostAddress());
-                System.out.println("Unable to verify the correct local ip address, insert Y if it is correct or otherwise insert the correct local ip:");
-                localIP = scanner.nextLine();
-                if(localIP.equalsIgnoreCase("Y"))
-                    localIP = inetAddress.getHostAddress();
-            } catch (UnknownHostException e) {
-                System.out.println("Unable to find the local ip address, please provide it");
-                localIP = scanner.nextLine();
-            }
-
-
-        }
-        System.setProperty("java.rmi.server.hostname",localIP);
-        System.out.println("Exposed address: " + localIP);
-    }
-
-    private static String getCorrectLocalIP()
-    {
-        String ip;
-        try(final DatagramSocket socket = new DatagramSocket()){
-            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-            ip = socket.getLocalAddress().getHostAddress();
-            if(ip.equals("0.0.0.0"))
-                return null;
-            return ip;
-        }catch(Exception e)
-        {
-            return null;
-        }
-    }
+//    private static void setRMIHostname() {
+//
+//        String localIP = getCorrectLocalIP();
+//        if(localIP == null)
+//        {
+//            Scanner scanner = new Scanner(System.in);
+//            InetAddress inetAddress;
+//            try {
+//                inetAddress = InetAddress.getLocalHost();
+//                System.out.println("Java host address: " + inetAddress.getHostAddress());
+//                System.out.println("Unable to verify the correct local ip address, insert Y if it is correct or otherwise insert the correct local ip:");
+//                localIP = scanner.nextLine();
+//                if(localIP.equalsIgnoreCase("Y"))
+//                    localIP = inetAddress.getHostAddress();
+//            } catch (UnknownHostException e) {
+//                System.out.println("Unable to find the local ip address, please provide it");
+//                localIP = scanner.nextLine();
+//            }
+//
+//
+//        }
+//        System.setProperty("java.rmi.server.hostname",localIP);
+//        System.out.println("Exposed address: " + localIP);
+//    }
+//
+//    private static String getCorrectLocalIP()
+//    {
+//        String ip;
+//        try(final DatagramSocket socket = new DatagramSocket()){
+//            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+//            ip = socket.getLocalAddress().getHostAddress();
+//            if(ip.equals("0.0.0.0"))
+//                return null;
+//            return ip;
+//        }catch(Exception e)
+//        {
+//            return null;
+//        }
+//    }
 }

@@ -18,6 +18,7 @@ import java.net.BindException;
 
 public class LaunchServer {
     private static String hostName;
+    private static String IPAddress;
     private static int portNumber;
 
     public static void main(String[] args) throws IOException {
@@ -30,14 +31,18 @@ public class LaunchServer {
             hostName = ReadHostFromJSON();
             portNumber = ReadPortFromJSON();
         }
-        setServerHostname();
+        InetAddress ip = InetAddress.getLocalHost();
+        IPAddress = ip.getHostAddress();
+        System.out.println("HostName: " + hostName);
+        System.out.println( "Exposed Address: " + IPAddress);
+//        setServerHostname();
         Scanner scanner = new Scanner(System.in);
         GameServer server = null;
         boolean retry;
         do{
             try{
                 server = GameServer.get();
-                server.connect(portNumber, hostName);
+                server.connect(portNumber, IPAddress, hostName);
                 retry = false;
             }catch(BindException e)
             {
@@ -92,50 +97,50 @@ public class LaunchServer {
         return null;
     }
 
-    private static void setServerHostname() {
-
-        String localIP = getCorrectLocalIP();
-        if(localIP == null)
-        {
-            Scanner scanner = new Scanner(System.in);
-            InetAddress inetAddress;
-            try {
-                inetAddress = InetAddress.getLocalHost();
-                System.out.println("Java host address: " + inetAddress.getHostAddress());
-                System.out.println("Unable to verify the correct local ip address, insert Y if it is correct or otherwise insert the correct local ip:");
-                localIP = scanner.nextLine();
-                if(localIP.equalsIgnoreCase("Y"))
-                    localIP = inetAddress.getHostAddress();
-            } catch (UnknownHostException e) {
-                System.out.println("Unable to find the local ip address, please provide it");
-                localIP = scanner.nextLine();
-            }
-
-
-        }
-//        System.setProperty("java.rmi.server.hostname",localIP);
-        hostName = localIP;
-        System.out.println("Exposed address: " + localIP);
-    }
+//    private static void setServerHostname() {
+//        String localIP = null;
+////        String localIP = getCorrectLocalIP();
+//        if(localIP == null)
+//        {
+//            Scanner scanner = new Scanner(System.in);
+//            InetAddress inetAddress;
+//            try {
+//                inetAddress = InetAddress.getLocalHost();
+//                System.out.println("Java host address: " + inetAddress.getHostAddress());
+//                System.out.println("Unable to verify the correct local ip address, insert Y if it is correct or otherwise insert the correct local ip:");
+//                localIP = scanner.nextLine();
+//                if(localIP.equalsIgnoreCase("Y"))
+//                    localIP = inetAddress.getHostAddress();
+//            } catch (UnknownHostException e) {
+//                System.out.println("Unable to find the local ip address, please provide it");
+//                localIP = scanner.nextLine();
+//            }
+//
+//
+//        }
+////        System.setProperty("java.rmi.server.hostname",localIP);
+//        hostName = localIP;
+//
+//    }
 
 //    /**
 //     * Return che correct local ip address
 //     * It is necessary because the rmi system property java.rmi.server.hostname it's automatically set to InetAddress.getLocalHost().getHostAddress() which can be an incorrect address in same cases (eg: in presence of Wireshark or Virtualbox it seems to take the address of their interfaces, which are not the ones used to communicate in the lan)
 //     * @return the correct ip address, null in case of error
 //     */
-    private static String getCorrectLocalIP()
-    {
-        String ip;
-        try(final DatagramSocket socket = new DatagramSocket()){
-            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-            ip = socket.getLocalAddress().getHostAddress();
-            if(ip.equals("0.0.0.0"))
-                return null;
-            return ip;
-        }catch(Exception e)
-        {
-            return null;
-        }
-    }
+//    private static String getCorrectLocalIP()
+//    {
+//        String ip;
+//        try(final DatagramSocket socket = new DatagramSocket()){
+//            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+//            ip = socket.getLocalAddress().getHostAddress();
+//            if(ip.equals("0.0.0.0"))
+//                return null;
+//            return ip;
+//        }catch(Exception e)
+//        {
+//            return null;
+//        }
+//    }
 
 }
