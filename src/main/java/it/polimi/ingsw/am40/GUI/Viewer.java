@@ -27,6 +27,7 @@ public class Viewer extends Application {
 	 * the test methods.
 	 */
 	private String connectionType;
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -36,12 +37,13 @@ public class Viewer extends Application {
 
 		Pane rootBox = new Pane();
 
-		newScene(stage, rootBox);
-
-		stage.setMaximized(true);
+		//stage.setMaximized(true);
+		stage.setFullScreen(true);
 		stage.setTitle("MyShelfie");
 		stage.getIcons().add(Resources.icon());
 		stage.setResizable(true);
+
+		newScene(stage, rootBox);
 
 		stage.show();
 
@@ -73,12 +75,16 @@ public class Viewer extends Application {
 			setUsername(vbox, tf, t1, b2, b3);
 		});
 
+		//
+
 		Pane newPane = new Pane();
 		b3.setOnAction(e -> {
 			newScene(stage, newPane);
 		});
 
 		setBackground(stage, newPane);
+
+
 
 
 
@@ -258,6 +264,7 @@ public class Viewer extends Application {
 	public void newScene(Stage stage, Pane pane) {
 		final Scene scene = new Scene(pane);
 		stage.setScene(scene);
+		stage.setFullScreen(true);
 	}
 
 
