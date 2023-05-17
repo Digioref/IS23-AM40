@@ -146,6 +146,15 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    @Override
+    public void receiveTimer() {
+        try {
+            clientHandler.sendMessage(JSONConverterStoC.normalMessage("The timer in game for disconnection is started!"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public String getNickname() {
         return nickname;
     }

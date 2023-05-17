@@ -21,6 +21,8 @@ public abstract class Client {
     protected String nickname;
     protected ScheduledExecutorService ping;
     protected int numPing;
+    protected boolean inChat;
+    protected ClientState state;
 
     public void parseMessage(String line) throws ParseException {
         JSONParser jsonParser = new JSONParser();
@@ -28,7 +30,10 @@ public abstract class Client {
         String command = object.get("Command").toString();
         switch (command) {
             case "CurrentPlayer":
-                LaunchClient.getView().showCurrentPlayer(object.get("Nickname").toString());
+                if (!inChat) {
+                    LaunchClient.getView().showCurrentPlayer(object.get("Nickname").toString());
+                }
+                state.saveCurrentPlayer(object.get("Nickname").toString());
                 break;
             case "CurrentScore":
                 JSONArray arr = (JSONArray) object.get("Scores");
@@ -37,10 +42,16 @@ public abstract class Client {
                     JSONObject obj = (JSONObject) arr.get(i);
                     map.put(obj.get("Nickname").toString(), Integer.parseInt(obj.get("Score").toString()));
                 }
-                LaunchClient.getView().showCurrentScore(map);
+                if (!inChat) {
+                    LaunchClient.getView().showCurrentScore(map);
+                }
+                state.saveCurrentScore(map);
                 break;
             case "HiddenScore":
-                LaunchClient.getView().showHiddenScore(Integer.parseInt(object.get("Score").toString()));
+                if (!inChat) {
+                    LaunchClient.getView().showHiddenScore(Integer.parseInt(object.get("Score").toString()));
+                }
+                state.saveHiddenScore(Integer.parseInt(object.get("Score").toString()));
                 break;
             case "Players":
                 JSONArray arr1 = (JSONArray) object.get("Players");
@@ -49,7 +60,10 @@ public abstract class Client {
                     JSONObject obj = (JSONObject) arr1.get(i);
                     names.add(obj.get("Nickname").toString());
                 }
-                LaunchClient.getView().showPlayers(names);
+                if (!inChat) {
+                    LaunchClient.getView().showPlayers(names);
+                }
+                state.savePlayers(names);
                 break;
             case "CommonGoals":
                 JSONArray arr2 = (JSONArray) object.get("CommonGoals");
@@ -58,7 +72,10 @@ public abstract class Client {
                     JSONObject obj = (JSONObject) arr2.get(i);
                     map1.put(Integer.parseInt(obj.get("Number").toString()), Integer.parseInt(obj.get("Score").toString()));
                 }
-                LaunchClient.getView().showCommonGoals(map1);
+                if (!inChat) {
+                    LaunchClient.getView().showCommonGoals(map1);
+                }
+                state.saveCommonGoals(map1);
                 break;
             case "PersonalGoal":
                 JSONArray arr3 = (JSONArray) object.get("PersonalGoal");
@@ -68,7 +85,10 @@ public abstract class Client {
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map2.put(p.getKey(), obj.get("color").toString());
                 }
-                LaunchClient.getView().showPersonalGoal(map2);
+                if (!inChat) {
+                    LaunchClient.getView().showPersonalGoal(map2);
+                }
+                state.savePersonalGoal(map2);
                 break;
             case "Board":
                 JSONArray arr4 = (JSONArray) object.get("Board");
@@ -78,7 +98,10 @@ public abstract class Client {
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map3.put(p.getKey(), obj.get("color").toString());
                 }
-                LaunchClient.getView().showBoard(map3);
+                if (!inChat) {
+                    LaunchClient.getView().showBoard(map3);
+                }
+                state.saveBoard(map3);
                 break;
             case "Bookshelf":
                 JSONArray arr5 = (JSONArray) object.get("Bookshelf");
@@ -88,7 +111,10 @@ public abstract class Client {
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map4.put(p.getKey(), obj.get("color").toString());
                 }
-                LaunchClient.getView().showCurrentBookshelf(map4);
+                if (!inChat) {
+                    LaunchClient.getView().showCurrentBookshelf(map4);
+                }
+                state.saveBookshelf(map4);
                 break;
             case "BookshelfAll":
                 JSONArray arr6 = (JSONArray) object.get("Bookshelves");
@@ -104,7 +130,10 @@ public abstract class Client {
                     }
                     map5.put(obj.get("Nickname").toString(), map6);
                 }
-                LaunchClient.getView().showAllBookshelves(map5);
+                if (!inChat) {
+                    LaunchClient.getView().showAllBookshelves(map5);
+                }
+                state.saveBookshelves(map5);
                 break;
             case "BoardPickable":
                 JSONArray arr7 = (JSONArray) object.get("PickableTiles");
@@ -128,7 +157,10 @@ public abstract class Client {
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map8.put(p.getKey(), obj.get("color").toString());
                 }
-                LaunchClient.getView().showBoardPickable(map7, arrayList, map8);
+                if (!inChat) {
+                    LaunchClient.getView().showBoardPickable(map7, arrayList, map8);
+                }
+                state.savePickable(map7, arrayList, map8);
                 break;
             case "SelectedTiles":
                 JSONArray arr10 = (JSONArray) object.get("SelectedTiles");
@@ -138,7 +170,10 @@ public abstract class Client {
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map9.put(p.getKey(), obj.get("color").toString());
                 }
-                LaunchClient.getView().showSelectedTiles(map9, object.get("Nickname").toString());
+                if (!inChat) {
+                    LaunchClient.getView().showSelectedTiles(map9, object.get("Nickname").toString());
+                }
+                state.saveSelectedTiles(map9);
                 break;
             case "PickedTiles":
                 JSONArray arr11 = (JSONArray) object.get("PickedTiles");
@@ -148,7 +183,10 @@ public abstract class Client {
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map10.put(p.getKey(), obj.get("color").toString());
                 }
-                LaunchClient.getView().showPickedTiles(map10, object.get("Nickname").toString());
+                if (!inChat) {
+                    LaunchClient.getView().showPickedTiles(map10, object.get("Nickname").toString());
+                }
+                state.savePickedTiles(map10);
                 break;
             case "FinalScores":
                 JSONArray arr12 = (JSONArray) object.get("FinalScores");
@@ -157,7 +195,10 @@ public abstract class Client {
                     JSONObject obj = (JSONObject) arr12.get(i);
                     map11.put(obj.get("Nickname").toString(), Integer.parseInt(obj.get("Scores").toString()));
                 }
-                LaunchClient.getView().showFinalScore(map11, object.get("Nickname").toString());
+                if (!inChat) {
+                    LaunchClient.getView().showFinalScore(map11, object.get("Nickname").toString());
+                }
+                state.saveFinalScores(map11, object.get("Nickname").toString());
                 break;
             case "Chat":
                 JSONArray arr13 = (JSONArray) object.get("Authors");
@@ -170,6 +211,7 @@ public abstract class Client {
                 break;
             case "Name":
                 nickname = (String) object.get("Nickname");
+                state.saveNickname(nickname);
                 break;
             case "Quit":
                 close();
@@ -182,20 +224,13 @@ public abstract class Client {
                 startPing();
                 break;
             default:
-                LaunchClient.getView().printMessage(command);
+                if (!inChat) {
+                    LaunchClient.getView().printMessage(command);
+                }
                 break;
         }
     }
     public abstract void close();
     public abstract void sendPong();
-    protected void startPing() {
-        Runnable task = () -> {
-            numPing++;
-            if (numPing == NUMPINGLOST) {
-                close();
-            }
-        };
-        ping = Executors.newSingleThreadScheduledExecutor();
-        ping.scheduleAtFixedRate(task, WAIT_PING, WAIT_PING, TimeUnit.MILLISECONDS);
-    }
+    public abstract void startPing();
 }

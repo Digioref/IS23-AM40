@@ -10,6 +10,8 @@ import it.polimi.ingsw.am40.Network.VirtualView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.jar.JarEntry;
 
@@ -18,12 +20,14 @@ public class Lobby implements Runnable {
     private final ArrayList<Handlers> queue;
     private ArrayList<Handlers> activePlayers;
     private ArrayList<String> nicknameInGame;
+    private Map<String, GameController> games;
 
     public Lobby() {
         numPlayers = 0;
         queue = new ArrayList<>();
         activePlayers = new ArrayList<>();
         nicknameInGame = new ArrayList<>();
+        games = new HashMap<>();
     }
 
     public void  removeFromQueue() {
@@ -92,7 +96,8 @@ public class Lobby implements Runnable {
             VirtualView v = new VirtualView(cl.getNickname(), cl, c);
             cl.setVirtualView(v);
             cl.setLogphase(LoggingPhase.INGAME);
-            g.register(cl.getVirtualViewInstance());
+            g.register(v);
+            games.put(cl.getNickname(), c.getGameController());
         }
         numPlayers = 0;
         activePlayers.clear();
@@ -130,6 +135,7 @@ public class Lobby implements Runnable {
     public void addNickname(String s) {
         nicknameInGame.add(s);
     }
+
     public void removeQuit(Handlers c) {
         synchronized (queue) {
             if (queue.contains(c)) {
@@ -138,7 +144,18 @@ public class Lobby implements Runnable {
             if (activePlayers.contains(c)) {
                 activePlayers.remove(c);
                 nicknameInGame.remove(c.getNickname());
+                for (Handlers cl: activePlayers) {
+                    try {
+                        cl.sendMessage("Player " + c.getNickname() + "disconnected!");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
+    }
+
+    public Map<String, GameController> getGames() {
+        return games;
     }
 }

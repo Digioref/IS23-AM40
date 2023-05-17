@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class ClientHandler extends Handlers implements Runnable {
     private final static int WAIT_PING = 10000;
     private final static int SEND_PING = 4000;
+    private final static int NUMLOST = 3;
     private Socket socket;
     private Scanner in;
     private PrintWriter out;
@@ -122,8 +123,8 @@ public class ClientHandler extends Handlers implements Runnable {
         }
         Runnable task = () -> {
             nPingLost++;
-            if(nPingLost >= 3){
-                System.out.println("Disconesso il Client per aver perso 3 PING!");
+            if(nPingLost >= NUMLOST){
+                System.out.println("Client disconnected for having lost " + NUMLOST +  " PING!");
                 close();
             }
         };
@@ -190,10 +191,12 @@ public class ClientHandler extends Handlers implements Runnable {
     }
 
     public void close() {
-        //TODO impact on game
+        if (controller != null) {
+            controller.getGameController().disconnectPlayer(nickname);
+        }
         nPingLost = 0;
-        waitPing.shutdownNow();
-        sendPing.shutdownNow();
+        waitPing.shutdown();
+        sendPing.shutdown();
         lobby.removeQuit(this);
         try {
             sendMessage(JSONConverterStoC.normalMessage("Quit"));
@@ -201,6 +204,7 @@ public class ClientHandler extends Handlers implements Runnable {
             throw new RuntimeException(e);
         }
         stop = true;
+        gameServer.shutdownHandler(this);
 //        in.close();
 //        out.close();
 //        try {
@@ -208,12 +212,11 @@ public class ClientHandler extends Handlers implements Runnable {
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
-        gameServer.shutdownHandler(this);
     }
 
     @Override
     public synchronized void handlePong() {
-        waitPing.shutdown();
+        waitPing.shutdownNow();
         nPingLost = 0;
     }
 }

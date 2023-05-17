@@ -31,6 +31,7 @@ public class SocketClient extends Client {
     private Thread fromServer;
     private boolean stop;
     private Socket socket;
+    private boolean quitchat;
 
 
     public SocketClient(Socket socket) {
@@ -43,6 +44,8 @@ public class SocketClient extends Client {
             throw new RuntimeException(e);
         }
         stop = false;
+        inChat = false;
+        state = new ClientState(this);
     }
     public void init() {
         createThreadFU();
@@ -64,6 +67,7 @@ public class SocketClient extends Client {
     public void close() {
         ping.shutdownNow();
         stop = true;
+        quitchat = true;
         try {
             fromUser.interrupt();
             fromServer.interrupt();
@@ -114,10 +118,17 @@ public class SocketClient extends Client {
                                 break;
                             }
                             if (userInput.equals("chat")) {
+                                inChat = true;
                                 LaunchClient.getView().chat(this);
+                                inChat = false;
+                                state.refresh();
                             } else {
                                 JSONConverterCtoS jconv = new JSONConverterCtoS();
                                 jconv.toJSON(userInput);
+                                if (jconv.getObj().get("Command").toString().equals("insert")) {
+                                    state.setSelectedtiles(null);
+                                    state.setPickedtiles(null);
+                                }
                                 sendMessage(jconv.toString());
                             }
                         }
@@ -159,5 +170,23 @@ public class SocketClient extends Client {
 
         fromServer.setName("READ FROM SERVER");
         fromServer.start();
+    }
+    public void startPing() {
+        Runnable task = () -> {
+            numPing++;
+            if (numPing == NUMPINGLOST) {
+                close();
+            }
+        };
+        ping = Executors.newSingleThreadScheduledExecutor();
+        ping.scheduleAtFixedRate(task, WAIT_PING, WAIT_PING, TimeUnit.MILLISECONDS);
+    }
+
+    public void setQuitchat(boolean quitchat) {
+        this.quitchat = quitchat;
+    }
+
+    public boolean isQuitchat() {
+        return quitchat;
     }
 }
