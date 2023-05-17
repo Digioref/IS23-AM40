@@ -107,7 +107,6 @@ public class ClientHandler extends Handlers implements Runnable {
             sendPing.shutdownNow();
         if(waitPing != null)
             waitPing.shutdownNow();
-        waitPing = Executors.newSingleThreadScheduledExecutor();
         sendPing = Executors.newScheduledThreadPool(1);
         Runnable task = () -> {
             ping();
@@ -123,7 +122,7 @@ public class ClientHandler extends Handlers implements Runnable {
         }
         Runnable task = () -> {
             nPingLost++;
-            if(nPingLost >= NUMLOST){
+            if (nPingLost >= NUMLOST) {
                 System.out.println("Client disconnected for having lost " + NUMLOST +  " PING!");
                 close();
             }
@@ -191,12 +190,12 @@ public class ClientHandler extends Handlers implements Runnable {
     }
 
     public void close() {
-        if (controller != null) {
-            controller.getGameController().disconnectPlayer(nickname);
-        }
         nPingLost = 0;
         waitPing.shutdown();
         sendPing.shutdown();
+        if (controller != null) {
+            controller.getGameController().disconnectPlayer(nickname);
+        }
         lobby.removeQuit(this);
         try {
             sendMessage(JSONConverterStoC.normalMessage("Quit"));

@@ -172,31 +172,13 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     public void close(String s) throws RemoteException {
         if (clientHandlers.containsKey(s)) {
             lobby.removeQuit(clientHandlers.get(s));
-            clientHandlers.get(s).close();
-            clientHandlers.remove(s);
+            RMIClientHandler r = clientHandlers.remove(s);
+            r.close();
             System.out.println("Client " + s + " closed!");
             if(lobby.getGames().containsKey(s)) {
                 lobby.getGames().get(s).disconnectPlayer(s);
             }
         }
-    }
-    public void close (RMIClientHandler r) {
-        for (String s: clientHandlers.keySet()) {
-            if (clientHandlers.get(s).equals(r)) {
-                lobby.removeQuit(r);
-                clientHandlers.remove(s);
-//                System.out.println("Client " + r.getNickname() + " closed!");
-                if(lobby.getGames().containsKey(s)) {
-                    lobby.getGames().get(s).disconnectPlayer(s);
-                }
-                break;
-            }
-        }
-        if (rmiHandlers.contains(r)) {
-            rmiHandlers.remove(r);
-            System.out.println("Client closed!");
-        }
-
     }
 
     @Override
@@ -257,4 +239,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    public ArrayList<RMIClientHandler> getRmiHandlers() {
+        return rmiHandlers;
+    }
 }

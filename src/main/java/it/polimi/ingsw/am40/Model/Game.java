@@ -207,23 +207,20 @@ public class Game implements IGame {
     }
 
     public void startTimer() {
-        for (VirtualView v: observers) {
-            for (Player p: players) {
-                if (!p.isDisconnected() && p.getNickname().equals(v.getNickname())) {
-                    System.out.println(p.getNickname());
-                    v.receiveTimer();
-                    break;
-                }
-            }
-        }
         timer = Executors.newScheduledThreadPool(1);
         Runnable task = () -> {
             setTurn(TurnPhase.ENDGAME);
             setHasEnded(true);
-            System.out.println("Timer");
             endGame();
         };
         timer.schedule(task, WAIT_TIME, TimeUnit.MILLISECONDS);
+        for (VirtualView v: observers) {
+            for (Player p: players) {
+                if (!p.isDisconnected() && p.getNickname().equals(v.getNickname())) {
+                    v.receiveTimer();
+                }
+            }
+        }
     }
     public boolean checkEndGame () {
         if (endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer) && turn == TurnPhase.ENDTURN) {
@@ -616,11 +613,11 @@ public class Game implements IGame {
             case ENDGAME:
                 for (VirtualView v : observers) {
                     for (Player p : players) {
-                        if (p.getNickname().equals(v.getNickname())) {
+                        if (p.getNickname().equals(v.getNickname()) && !p.isDisconnected()) {
                             v.receiveFinalScore(players, winner);
                         }
                     }
-                };
+                }
                 break;
 
         }

@@ -193,12 +193,13 @@ public abstract class Client {
                 Map<String, Integer> map11 = new HashMap<>();
                 for (int i = 0; i < arr12.size(); i++) {
                     JSONObject obj = (JSONObject) arr12.get(i);
-                    map11.put(obj.get("Nickname").toString(), Integer.parseInt(obj.get("Scores").toString()));
+                    map11.put(obj.get("Nickname").toString(), Integer.parseInt(obj.get("Score").toString()));
                 }
                 if (!inChat) {
                     LaunchClient.getView().showFinalScore(map11, object.get("Nickname").toString());
                 }
                 state.saveFinalScores(map11, object.get("Nickname").toString());
+                close();
                 break;
             case "Chat":
                 JSONArray arr13 = (JSONArray) object.get("Authors");

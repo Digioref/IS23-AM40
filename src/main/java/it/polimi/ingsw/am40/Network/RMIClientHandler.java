@@ -139,9 +139,22 @@ public class RMIClientHandler extends Handlers {
     @Override
     public void close() {
         rmiClient = null;
-        waitPing.shutdown();
-        sendPing.shutdown();
-        server.close(this);
+        waitPing.shutdownNow();
+        sendPing.shutdownNow();
+        if (nickname == null) {
+            if (server.getRmiHandlers().contains(this)) {
+                server.getRmiHandlers().remove(this);
+                System.out.println("Client closed!");
+            }
+        }
+        if (server.getClientHandlers().containsKey(nickname)) {
+            lobby.removeQuit(server.getClientHandlers().get(nickname));
+            server.getClientHandlers().remove(nickname);
+            System.out.println("Client " + nickname + " closed!");
+            if (lobby.getGames().containsKey(nickname)) {
+                lobby.getGames().get(nickname).disconnectPlayer(nickname);
+            }
+        }
     }
 
     @Override
