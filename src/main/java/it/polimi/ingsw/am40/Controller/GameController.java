@@ -101,5 +101,19 @@ public class GameController {
     public void setController(Controller controller) {
     }
 
-
+    public void disconnectPlayer(String s) {
+        for (Player p: game.getPlayers()) {
+            if (p.getNickname().equals(s)) {
+                p.setDisconnected(true);
+                if (game.getCurrentPlayer().getNickname().equals(s)) {
+                    game.setTurn(TurnPhase.ENDTURN);
+                    game.nextPlayer();
+                }
+                break;
+            }
+        }
+        if (game.checkDisconnection() == 1) {
+            game.startTimer();
+        }
+    }
 }

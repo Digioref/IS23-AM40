@@ -399,6 +399,7 @@ public class CliView implements View{
                 System.out.println(color.yellowBg() + color.black() + " " + s + " " + map.get(s) + " " + color.rst());
             }
         }
+        System.out.println(color.blackBg() + " The winner is: " + color.rst() + color.greenBg() + color.black() + winner + color.rst());
         System.out.println();
     }
 
@@ -408,24 +409,28 @@ public class CliView implements View{
 
     @Override
     public void chat(SocketClient socketClient) {
-        boolean quit = false;
-
-        while (!quit) {
-            System.out.println(color.blackBg() + " You are in the Chat!" + color.rst());
-            System.out.println("Write the message (-q to quit): ");
+        socketClient.setQuitchat(false);
+        System.out.println(color.cyanBg() + " You are in the Chat!" + color.rst());
+        System.out.println("Write the message (-q to quit): ");
+        while (!socketClient.isQuitchat()) {
             try {
-                String message = socketClient.getStdIn().readLine();
-                if (message.toLowerCase().equals("-q")) {
-                    quit = true;
-                } else {
-                    System.out.println("to [playerName] (leave it blank if it is a broadcast message): ");
-                    String receiver = socketClient.getStdIn().readLine();
-                    if (receiver.length() == 0)
-                        receiver = null;
-                    JSONConverterCtoS jconv = new JSONConverterCtoS();
-                    jconv.toJSONChat(receiver, message);
-                    socketClient.getOut().println(jconv.toString());
-                    socketClient.getOut().flush();
+                String message = null;
+                if (socketClient.getStdIn().ready()) {
+                    message = socketClient.getStdIn().readLine();
+                    if (message.toLowerCase().equals("-q")) {
+                        socketClient.setQuitchat(true);
+                    } else {
+                        System.out.println("to [playerName] (leave it blank if it is a broadcast message): ");
+                        String receiver = socketClient.getStdIn().readLine();
+                        if (receiver.length() == 0)
+                            receiver = null;
+                        JSONConverterCtoS jconv = new JSONConverterCtoS();
+                        jconv.toJSONChat(receiver, message);
+                        socketClient.getOut().println(jconv.toString());
+                        socketClient.getOut().flush();
+                        System.out.println(color.cyanBg() + " You are in the Chat!" + color.rst());
+                        System.out.println("Write the message (-q to quit): ");
+                    }
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -438,7 +443,7 @@ public class CliView implements View{
     public void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname) {
         System.out.println(color.cyanBg() + " Chat " + color.rst() + "\n");
         for (int i = 0; i < array1.size(); i++) {
-            if(nickname.equals(array2.get(i)) || array2.get(i).equals("all")) {
+            if(nickname.equals(array2.get(i)) || array2.get(i).equals("all") || nickname.equals(array1.get(i))) {
                 System.out.println(color.greenBg() + array1.get(i) + color.rst() + "  -->  " + color.yellowBg() + array2.get(i) + color.rst() + " : " + array3.get(i) + "\n");
             }
         }

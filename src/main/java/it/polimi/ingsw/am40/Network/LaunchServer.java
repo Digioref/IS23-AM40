@@ -31,6 +31,7 @@ public class LaunchServer {
             hostName = ReadHostFromJSON();
             portNumber = ReadPortFromJSON();
         }
+        hostName = InetAddress.getLocalHost().getHostName();
         InetAddress ip = InetAddress.getLocalHost();
         IPAddress = ip.getHostAddress();
         System.out.println("HostName: " + hostName);

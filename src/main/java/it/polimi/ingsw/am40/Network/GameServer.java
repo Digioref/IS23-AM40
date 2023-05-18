@@ -102,7 +102,6 @@ public class GameServer implements Runnable {
     }
     public void shutdownHandler(ClientHandler clientHandler) {
         clientHandlers.remove(clientHandler);
-        clientHandler.close();
     }
 
     public List<ClientHandler> getClientHandlers() {
