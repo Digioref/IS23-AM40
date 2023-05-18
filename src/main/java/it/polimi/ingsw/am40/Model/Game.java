@@ -68,6 +68,8 @@ public class Game implements IGame {
     private Player winner;
     private GroupChat groupChat;
     private ScheduledExecutorService timer;
+    private boolean timerstate;
+    private ArrayList<String> discPlayers;
 
     /**
      * Constructor which builds the class assigning the number of players and creating the array of players
@@ -79,6 +81,8 @@ public class Game implements IGame {
         pJSONm = new ParsingJSONManager();
         observers = new ArrayList<>();
         groupChat = new GroupChat();
+        discPlayers = new ArrayList<>();
+        timerstate = false;
     }
 
     /**
@@ -214,6 +218,7 @@ public class Game implements IGame {
             endGame();
         };
         timer.schedule(task, WAIT_TIME, TimeUnit.MILLISECONDS);
+        timerstate = true;
         for (VirtualView v: observers) {
             for (Player p: players) {
                 if (!p.isDisconnected() && p.getNickname().equals(v.getNickname())) {
@@ -221,6 +226,10 @@ public class Game implements IGame {
                 }
             }
         }
+    }
+    public void stopTimer() {
+        timerstate = false;
+        timer.shutdownNow();
     }
     public boolean checkEndGame () {
         if (endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer) && turn == TurnPhase.ENDTURN) {
@@ -638,6 +647,17 @@ public class Game implements IGame {
 
     public GroupChat getGroupChat() {
         return groupChat;
+    }
+
+    public ArrayList<String> getDiscPlayers() {
+        return discPlayers;
+    }
+
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+    public boolean isTimerStarted() {
+        return timerstate;
     }
 
 

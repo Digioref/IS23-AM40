@@ -208,7 +208,10 @@ public abstract class Client {
                 ArrayList<String> array1 = new ArrayList<>(arr13);
                 ArrayList<String> array2 = new ArrayList<>(arr14);
                 ArrayList<String> array3 = new ArrayList<>(arr15);
-                LaunchClient.getView().showChat(array1, array2, array3, nickname);
+                if (!inChat) {
+                    LaunchClient.getView().showChat(array1, array2, array3, nickname);
+                }
+                state.saveChat(arr13, arr14, arr15);
                 break;
             case "Name":
                 nickname = (String) object.get("Nickname");

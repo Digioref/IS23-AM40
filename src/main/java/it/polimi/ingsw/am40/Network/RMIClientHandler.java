@@ -139,6 +139,7 @@ public class RMIClientHandler extends Handlers {
     @Override
     public void close() {
         rmiClient = null;
+        virtualView.setClientHandler(null);
         waitPing.shutdownNow();
         sendPing.shutdownNow();
         if (nickname == null) {
