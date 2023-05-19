@@ -105,6 +105,7 @@ public class GameController {
         for (Player p: game.getPlayers()) {
             if (p.getNickname().equals(s)) {
                 p.setDisconnected(true);
+                game.getDiscPlayers().add(p.getNickname());
                 if (game.getCurrentPlayer().getNickname().equals(s)) {
                     game.setTurn(TurnPhase.ENDTURN);
                     game.nextPlayer();
@@ -114,6 +115,26 @@ public class GameController {
         }
         if (game.checkDisconnection() == 1) {
             game.startTimer();
+        }
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public Controller getController() {
+        return controller;
+    }
+
+    public void reconnect(String s) {
+        game.getDiscPlayers().remove(s);
+        for (Player p: game.getPlayers()) {
+            if(p.getNickname().equals(s)) {
+                p.setDisconnected(false);
+            }
+        }
+        if (game.isTimerStarted()) {
+            game.stopTimer();
         }
     }
 }

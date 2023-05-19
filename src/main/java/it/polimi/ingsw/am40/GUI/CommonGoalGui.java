@@ -9,15 +9,15 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class CommonGoal extends Label {
+public class CommonGoalGui extends Label {
 
-	public CommonGoal(int index) {
+	public CommonGoalGui(int index) {
 		super();
 		Image image = Resources.commonGoal(index);
 		ImageView view = new ImageView(image);
 		view.setPreserveRatio(true);
-		view.setFitWidth(150);
-		view.setFitHeight(100);
+		view.setFitWidth(300);
+		view.setFitHeight(300);
 		setGraphic(view);
 
 		Rectangle clip = new Rectangle(view.getFitWidth(), view.getFitHeight());

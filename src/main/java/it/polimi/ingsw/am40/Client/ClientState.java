@@ -25,6 +25,9 @@ public class ClientState {
     private Map<String, Integer> finalscores;
     private String winner;
     private String nickname;
+    private ArrayList<String> authors;
+    private ArrayList<String> receivers;
+    private ArrayList<String> messages;
 
     public ClientState(Client client) {
         this.client = client;
@@ -88,6 +91,11 @@ public class ClientState {
     public void saveNickname(String nickname) {
         this.nickname = nickname;
     }
+    public void saveChat(ArrayList<String> authors, ArrayList<String> receivers, ArrayList<String> messages) {
+        this.authors = authors;
+        this.receivers = receivers;
+        this.messages = messages;
+    }
     public void refresh() {
         if (currscore != null) {
             LaunchClient.getView().showCurrentScore(currscore);
@@ -124,9 +132,13 @@ public class ClientState {
         if (finalscores != null && winner != null) {
             LaunchClient.getView().showFinalScore(finalscores, winner);
         }
+        if (authors != null && receivers != null && messages != null) {
+            LaunchClient.getView().showChat(authors, receivers, messages, nickname);
+        }
         if (currplayer != null) {
             LaunchClient.getView().showCurrentPlayer(currplayer);
         }
+
     }
 
     public void setSelectedtiles(Map<String, String> selectedtiles) {

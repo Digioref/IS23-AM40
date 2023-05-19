@@ -203,6 +203,7 @@ public class ClientHandler extends Handlers implements Runnable {
             throw new RuntimeException(e);
         }
         stop = true;
+        virtualView.setClientHandler(null);
         gameServer.shutdownHandler(this);
 //        in.close();
 //        out.close();

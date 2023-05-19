@@ -257,4 +257,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         clientHandler.sendChat(JSONConverterStoC.createJSONChat(groupChat.getPublisher(), groupChat.getToplayer(), groupChat.getMessage()));
     }
 
+    public void setClientHandler(Handlers clientHandler) {
+        this.clientHandler = clientHandler;
+    }
 }

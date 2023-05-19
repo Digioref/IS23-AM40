@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 
 public class Bookshelf extends AnchorPane {
 	private static final int COLUMN_SPACES = 6;
@@ -31,14 +32,15 @@ public class Bookshelf extends AnchorPane {
 	public Bookshelf() {
 		super();
 
-		setPrefSize(Metrics.BOOKSHELF_WIDTH, Metrics.BOOKSHELF_HEIGHT);
+		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
+		setPrefSize(screenHeight, screenHeight);
 
 		bsImage = new Label();
 		Image image = Resources.bookshelf();
 		ImageView view = new ImageView(image);
 		view.setPreserveRatio(true);
-		view.setFitWidth(Metrics.BOOKSHELF_WIDTH);
-		view.setFitHeight(Metrics.BOOKSHELF_HEIGHT);
+		view.setFitWidth(screenHeight);
+		view.setFitHeight(screenHeight);
 		bsImage.setGraphic(view);
 
 		getChildren().add(bsImage);
@@ -53,7 +55,7 @@ public class Bookshelf extends AnchorPane {
 		labelName.getChildren().add(view);
 		labelName.getChildren().add(labelText);
 		labelName.setAlignment(Pos.CENTER);
-		labelName.relocate(132, 316);
+		//labelName.relocate(132, 316);
 		getChildren().add(labelName);
 
 		/* Animation timer */

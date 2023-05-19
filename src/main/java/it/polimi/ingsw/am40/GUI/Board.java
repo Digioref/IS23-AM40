@@ -14,6 +14,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 
 public class Board extends AnchorPane {
 
@@ -31,7 +32,8 @@ public class Board extends AnchorPane {
 	public Board() {
 		super();
 
-		setPrefSize(Metrics.BOARD_WIDTH, Metrics.BOARD_HEIGHT);
+		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.8;
+		setPrefSize(screenHeight, screenHeight);
 		Image image = Resources.board();
 
 		BackgroundImage boardImg = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
