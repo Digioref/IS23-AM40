@@ -9,8 +9,9 @@ import java.util.ArrayList;
 public class GameController {
     Game game;
     Controller controller;
-    public GameController(Game game) {
+    public GameController(Game game, Controller controller) {
         this.game = game;
+        this.controller = controller;
     }
 
     public void selectTile(VirtualView v, Position p) {
@@ -116,6 +117,9 @@ public class GameController {
         if (game.checkDisconnection() == 1) {
             game.startTimer();
         }
+        for (VirtualView v: game.getObservers()) {
+            v.receiveDisconnection(s);
+        }
     }
 
     public Game getGame() {
@@ -127,14 +131,20 @@ public class GameController {
     }
 
     public void reconnect(String s) {
+        System.out.println("qui0");
         game.getDiscPlayers().remove(s);
+        System.out.println("qui1");
         for (Player p: game.getPlayers()) {
             if(p.getNickname().equals(s)) {
                 p.setDisconnected(false);
+                System.out.println("qui2");
+                break;
             }
         }
+        System.out.println("qui3");
         if (game.isTimerStarted()) {
             game.stopTimer();
         }
+        game.notifyReconnection(s);
     }
 }

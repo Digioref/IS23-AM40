@@ -23,7 +23,7 @@ public class Login implements ICommand {
                 }
             }
             if (c.checkNickname(s)) {
-                if (!c.getLobby().getGames().containsKey(s)) {
+                if (!c.getLobby().getGames().containsKey(s) || (c.getLobby().getGames().containsKey(s) && !c.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s))) {
                     c.sendMessage(JSONConverterStoC.normalMessage("Nickname already used!"));
                     c.sendMessage(JSONConverterStoC.normalMessage("What about these nicknames:"));
                     c.suggestNickname(s);
@@ -38,9 +38,12 @@ public class Login implements ICommand {
                     for (VirtualView v: c.getLobby().getGames().get(s).getGame().getObservers()) {
                         if (v.getNickname().equals(s)) {
                             v.setClientHandler(c);
+                            c.setVirtualView(v);
+                            break;
                         }
                     }
                     c.getController().getGameController().reconnect(s);
+                    return;
                 }
             } else {
                 c.setLogged(true);

@@ -3,10 +3,7 @@ package it.polimi.ingsw.am40.Controller;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.Game;
 import it.polimi.ingsw.am40.Model.Player;
-import it.polimi.ingsw.am40.Network.ClientHandler;
-import it.polimi.ingsw.am40.Network.Handlers;
-import it.polimi.ingsw.am40.Network.LoggingPhase;
-import it.polimi.ingsw.am40.Network.VirtualView;
+import it.polimi.ingsw.am40.Network.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -146,7 +143,7 @@ public class Lobby implements Runnable {
                 nicknameInGame.remove(c.getNickname());
                 for (Handlers cl: activePlayers) {
                     try {
-                        cl.sendMessage("Player " + c.getNickname() + "disconnected!");
+                        cl.sendMessage(JSONConverterStoC.normalMessage("Player " + c.getNickname() + " disconnected!"));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -157,5 +154,10 @@ public class Lobby implements Runnable {
 
     public Map<String, GameController> getGames() {
         return games;
+    }
+
+    public void closeGame(Handlers c) {
+        games.remove(c);
+        nicknameInGame.remove(c.getNickname());
     }
 }

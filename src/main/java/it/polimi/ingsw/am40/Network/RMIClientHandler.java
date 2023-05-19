@@ -139,17 +139,17 @@ public class RMIClientHandler extends Handlers {
     @Override
     public void close() {
         rmiClient = null;
-        virtualView.setClientHandler(null);
+        if (virtualView != null) {
+            virtualView.setClientHandler(null);
+        }
         waitPing.shutdownNow();
         sendPing.shutdownNow();
-        if (nickname == null) {
-            if (server.getRmiHandlers().contains(this)) {
-                server.getRmiHandlers().remove(this);
-                System.out.println("Client closed!");
-            }
+        if (nickname == null && server.getRmiHandlers().contains(this)) {
+            server.getRmiHandlers().remove(this);
+            System.out.println("Client closed!");
         }
-        if (server.getClientHandlers().containsKey(nickname)) {
-            lobby.removeQuit(server.getClientHandlers().get(nickname));
+        if (nickname != null && server.getClientHandlers().containsKey(nickname)) {
+            lobby.removeQuit(this);
             server.getClientHandlers().remove(nickname);
             System.out.println("Client " + nickname + " closed!");
             if (lobby.getGames().containsKey(nickname)) {
@@ -164,6 +164,14 @@ public class RMIClientHandler extends Handlers {
         nPingLost = 0;
         waitPing = Executors.newScheduledThreadPool(1);
 //        startPing();
+    }
+
+    @Override
+    public void closeGame() {
+        close();
+        controller = null;
+        virtualView = null;
+        lobby.closeGame(this);
     }
 
     public void setRmiClient(RMIClientInterface rmiClient) {

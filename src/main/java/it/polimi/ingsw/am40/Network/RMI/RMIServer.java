@@ -6,6 +6,7 @@ import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.ParsingJSONManager;
 import it.polimi.ingsw.am40.Network.LoggingPhase;
 import it.polimi.ingsw.am40.Network.RMIClientHandler;
+import it.polimi.ingsw.am40.Network.VirtualView;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -52,7 +53,6 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 //            rmiClientHandler = new RMIClientHandler();
             for (RMIClientHandler r: rmiHandlers) {
                 if (r.getRmiClient().equals(client)) {
-                    r.setLobby(lobby);
                     r.setNickname(s);
                     r.setLogged(true);
                     clientHandlers.put(s, r);
@@ -84,9 +84,34 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 //                clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You can set the number of players you want to play with:"));
 //            }
         } else {
-            client.receive(JSONConverterStoC.normalMessage("The nickname you desire is already in use! Please type another nickname:"));
-            client.receive(JSONConverterStoC.normalMessage("You can choose one of the following nicknames, if you want"));
-            suggestNickname(s, client);
+            for (RMIClientHandler r: rmiHandlers) {
+                if (r.getRmiClient().equals(client)) {
+                    if (!(r.getLobby().getGames().containsKey(s)) || (r.getLobby().getGames().containsKey(s) && !r.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s))) {
+                        client.receive(JSONConverterStoC.normalMessage("The nickname you desire is already in use! Please type another nickname:"));
+                        client.receive(JSONConverterStoC.normalMessage("You can choose one of the following nicknames, if you want"));
+                        suggestNickname(s, client);
+                        break;
+                    } else if (r.getLobby().getGames().containsKey(s) && r.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s)) {
+                        r.sendMessage(JSONConverterStoC.normalMessage("Welcome back " + s + "!\nReconnecting to the game..."));
+                        r.setNickname(s);
+                        r.setLogged(true);
+                        r.setLogphase(LoggingPhase.INGAME);
+                        r.setController(r.getLobby().getGames().get(s).getController());
+                        clientHandlers.put(s, r);
+                        client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
+                        r.setNumPlayers(r.getLobby().getGames().get(s).getGame().getNumPlayers());
+                        for (VirtualView v: r.getLobby().getGames().get(s).getGame().getObservers()) {
+                            if (v.getNickname().equals(s)) {
+                                v.setClientHandler(r);
+                            }
+                        }
+                        r.getController().getGameController().reconnect(s);
+                        rmiHandlers.remove(r);
+                        break;
+                    }
+                }
+            }
+
         }
 
     }
@@ -202,6 +227,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         RMIClientHandler rmiClientHandler = new RMIClientHandler(this);
         rmiClientHandler.setRmiClient(client);
         rmiHandlers.add(rmiClientHandler);
+        rmiClientHandler.setLobby(lobby);
     }
 
     public void setLobby(Lobby lobby) {

@@ -22,7 +22,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveNumPlayers(int numPlayers) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("Number of players in this game: " + numPlayers));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.normalMessage("Number of players in this game: " + numPlayers));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -31,7 +33,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveListPlayers(ArrayList<Player> players) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONPlayers(players));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONPlayers(players));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -44,7 +48,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         int num2 = commonGoals.get(1).getNum();
         int score2 = commonGoals.get(1).getCommgoaltok().getScore();
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONCommonGoals(num1, score1, num2, score2));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONCommonGoals(num1, score1, num2, score2));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -53,7 +59,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receivePersonalGoal(PersonalGoal personalGoal) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONPersGoal(personalGoal));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONPersGoal(personalGoal));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -62,7 +70,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveListBookshelves(ArrayList<Player> players) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONBookAll(players));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONBookAll(players));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -71,8 +81,10 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveAllowedPositions(ArrayList<Position> positions, Board board) {
         try {
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONBoardPickable(board, positions));
+            }
 //            System.out.println("qui");
-            clientHandler.sendMessage(JSONConverterStoC.createJSONBoardPickable(board, positions));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -86,7 +98,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveBoard(Board board) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONBoard(board));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONBoard(board));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -95,7 +109,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveCurrentPlayer(Player player) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONCurrentPlayer(player.getNickname()));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONCurrentPlayer(player.getNickname()));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -104,7 +120,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveHiddenScore(int hiddenScore) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONHiddenScore(hiddenScore));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONHiddenScore(hiddenScore));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -113,7 +131,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveDoneOrder(ArrayList<Tile> array) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("Order set!"));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.normalMessage("Order set!"));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -122,16 +142,21 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveFinalScore(ArrayList<Player> players, Player winner) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONFinalScore(players, winner));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONFinalScore(players, winner));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        clientHandler.closeGame();
     }
 
     @Override
     public void receivePickedTiles(Player player) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONPickedTiles(player));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONPickedTiles(player));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -140,7 +165,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveSelectedTiles(Player player) {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONSelectedTiles(player));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONSelectedTiles(player));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -149,9 +176,22 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void receiveTimer() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("The timer in game for disconnection is started!"));
+            if (clientHandler != null) {
+                clientHandler.sendMessage(JSONConverterStoC.normalMessage("The timer in game for disconnection is started!"));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void receiveDisconnection(String s) {
+        if (clientHandler != null) {
+            try {
+                clientHandler.sendMessage(JSONConverterStoC.normalMessage("Player " + s + " disconnected!"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

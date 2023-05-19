@@ -21,5 +21,6 @@ public interface IGameObserver {
     public void receivePickedTiles(Player player);
     public void receiveSelectedTiles(Player player);
     public void receiveTimer();
+    public void receiveDisconnection(String s);
 
 }
