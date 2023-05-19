@@ -109,7 +109,8 @@ public class GameController {
                 game.getDiscPlayers().add(p.getNickname());
                 if (game.getCurrentPlayer().getNickname().equals(s)) {
                     game.setTurn(TurnPhase.ENDTURN);
-                    game.nextPlayer();
+                    game.endTurn();
+                    game.startTurn();
                 }
                 break;
             }
@@ -119,6 +120,12 @@ public class GameController {
         }
         for (VirtualView v: game.getObservers()) {
             v.receiveDisconnection(s);
+        }
+        if (game.getDiscPlayers().size() == game.getNumPlayers()) {
+            for (String nickname: game.getDiscPlayers()) {
+                controller.getLobby().getGames().remove(nickname);
+                controller.getLobby().getNicknameInGame().remove(nickname);
+            }
         }
     }
 

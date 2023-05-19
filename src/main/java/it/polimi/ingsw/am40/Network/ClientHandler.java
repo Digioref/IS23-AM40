@@ -193,6 +193,9 @@ public class ClientHandler extends Handlers implements Runnable {
         nPingLost = 0;
         waitPing.shutdown();
         sendPing.shutdown();
+        if (virtualView != null) {
+            virtualView.setClientHandler(null);
+        }
         if (controller != null) {
             controller.getGameController().disconnectPlayer(nickname);
         }
@@ -203,9 +206,6 @@ public class ClientHandler extends Handlers implements Runnable {
             throw new RuntimeException(e);
         }
         stop = true;
-        if (virtualView != null) {
-            virtualView.setClientHandler(null);
-        }
         gameServer.shutdownHandler(this);
 //        in.close();
 //        out.close();
