@@ -108,4 +108,6 @@ public abstract class Handlers {
 
     public abstract void close();
     public abstract void handlePong();
+
+    public abstract void closeGame();
 }

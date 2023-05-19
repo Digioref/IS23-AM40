@@ -7,8 +7,7 @@ public class Controller {
     GameController gameController;
     public Controller(Game game) {
         this.game = game;
-        gameController = new GameController(game);
-        gameController.setController(this);
+        gameController = new GameController(game, this);
     }
 
 

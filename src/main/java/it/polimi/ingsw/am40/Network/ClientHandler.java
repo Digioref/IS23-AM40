@@ -203,7 +203,9 @@ public class ClientHandler extends Handlers implements Runnable {
             throw new RuntimeException(e);
         }
         stop = true;
-        virtualView.setClientHandler(null);
+        if (virtualView != null) {
+            virtualView.setClientHandler(null);
+        }
         gameServer.shutdownHandler(this);
 //        in.close();
 //        out.close();
@@ -218,5 +220,13 @@ public class ClientHandler extends Handlers implements Runnable {
     public synchronized void handlePong() {
         waitPing.shutdownNow();
         nPingLost = 0;
+    }
+
+    @Override
+    public void closeGame() {
+        close();
+        virtualView = null;
+        controller = null;
+        lobby.closeGame(this);
     }
 }

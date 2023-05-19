@@ -577,7 +577,7 @@ public class Game implements IGame {
                     v.receiveListPlayers(players);
                     v.receiveNumPlayers(numPlayers);
                     v.receiveCurrentPlayer(currentPlayer);
-                };
+                }
                 break;
 
             case SELECTION:
@@ -627,6 +627,7 @@ public class Game implements IGame {
                         }
                     }
                 }
+                setHasEnded(true);
                 break;
 
         }
@@ -661,4 +662,26 @@ public class Game implements IGame {
     }
 
 
+    public void notifyReconnection(String s) {
+        for (VirtualView v: observers) {
+            if (v.getNickname().equals(s)) {
+                v.receiveBoard(board);
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
+                }
+//                    v.receiveCurrentPlayer(currentPlayer);
+                v.receiveCommonGoals(currentComGoals);
+                for (Player p : players) {
+                    if (p.getNickname().equals(v.getNickname())) {
+                        v.receiveHiddenScore(p.getHiddenScore());
+                        v.receivePersonalGoal(p.getPersonalGoal());
+                    }
+                }
+                v.receiveListBookshelves(players);
+                v.receiveListPlayers(players);
+                v.receiveNumPlayers(numPlayers);
+                v.receiveCurrentPlayer(currentPlayer);
+            }
+        }
+    }
 }
