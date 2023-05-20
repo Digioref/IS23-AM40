@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am40.GUI;
 
-import it.polimi.ingsw.am40.Model.CommonGoal;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
@@ -16,7 +15,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.util.Random;
@@ -106,32 +104,25 @@ public class Viewer extends Application {
 		vRight.setAlignment(Pos.CENTER);
 		VBox v = new VBox();
 
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		Bag b = new Bag();
-		int numPlayers = 4;
-		for (int i = 0; i < numPlayers; i++) {
-			HBox row = new HBox();
-			Bookshelf bs1 = new Bookshelf();
-			PersonalGoal pg = new PersonalGoal(i);
-			row.getChildren().addAll(bs1,pg);
-			vLeft.getChildren().add(row);
-		}
+
+		//aggiunto un metodo per settare board e pg
+		setBookshelvesAndPG(vLeft, stack);
+
 
 		CommonGoalGui cg1 = new CommonGoalGui(1);
 		CommonGoalGui cg2 = new CommonGoalGui(2);
 
-		CommonGoalGui cg1duplicate = new CommonGoalGui(1);
+		CommonGoalGuiZOOMEDLabel cg1duplicate = new CommonGoalGuiZOOMEDLabel(1);
+		CommonGoalGuiZOOMEDLabel cg2duplicate = new CommonGoalGuiZOOMEDLabel(2);
 
-		cg1.setOnMouseEntered(e -> {
-			System.out.println("entro");
-			stack.getChildren().add(cg1duplicate);
-		});
-
-		cg1.setOnMouseExited(e -> {
-			System.out.println("esco");
-			stack.getChildren().remove(cg1duplicate);
-		});
+		activateZOOM(cg1, cg1duplicate, stack);
+		activateZOOM(cg2, cg2duplicate, stack);
 
 		vRight.getChildren().addAll(cg1, cg2);
+
 		Board board = new Board();
 
 		home.setRight(vRight);
@@ -141,9 +132,7 @@ public class Viewer extends Application {
 
 
 
-
-
-
+		//home.setBottom(v);
 
 		//ScrollPane scrollPane = new ScrollPane(rootBox);
 
@@ -324,9 +313,51 @@ public class Viewer extends Application {
 
 
 
+	public void setBookshelvesAndPG(VBox vLeft, StackPane stack){
+	    int numPlayers = 4;
+		for(int i=0; i<numPlayers;i++) {
+			HBox row = new HBox();
+			Bookshelf bs1 = new Bookshelf();
+			BookshelfZOOMED bs1zoomed = new BookshelfZOOMED();
+			activateZOOM(bs1,bs1zoomed,stack);
+			PersonalGoal pg = new PersonalGoal(0);
+			row.getChildren().addAll(bs1, pg);
+			vLeft.getChildren().add(row);
+		}
+
+	}
+
+
+	public void activateZOOM(NotZOOMED_Label notZOOMEDLabel, ZOOMED_Label zoomedLabel, StackPane stack){
+		notZOOMEDLabel.setOnMouseEntered(e -> {
+			System.out.println("entro");
+			stack.getChildren().add(zoomedLabel);
+		});
+
+		notZOOMEDLabel.setOnMouseExited(e -> {
+			System.out.println("esco");
+			stack.getChildren().remove(zoomedLabel);
+		});
+	}
+
+	public void activateZOOM(NotZOOMMED_AnchorPane notZOOMMEDAnchorPane, ZOOMED_AnchorPane zoomedAnchorPane, StackPane stack){
+		notZOOMMEDAnchorPane.setOnMouseEntered(e -> {
+			System.out.println("entro");
+			stack.getChildren().add(zoomedAnchorPane);
+		});
+
+		notZOOMMEDAnchorPane.setOnMouseExited(e -> {
+			System.out.println("esco");
+			stack.getChildren().remove(zoomedAnchorPane);
+		});
+	}
+
+
 	/* Test methods */
 /*
 	void populateBoard() {
+
+
 		addTile(Resources.TILE_TYPE_CAT, 0, 0);
 		addTile(Resources.TILE_TYPE_FRAME, 0, 1);
 		addTile(Resources.TILE_TYPE_FLOWER, 0, 2);
