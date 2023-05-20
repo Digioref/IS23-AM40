@@ -24,7 +24,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -80,9 +82,10 @@ public class ViewController extends AnchorPane implements View {
 
 
 		Text text = new Text("Scegli un tipo di connessione bro");
-		// Font font1 = loadFont("font_connessione.ttf", 20);
+		// ing conti salvaci tuu
+		//Font font1 = loadFont(getClass().getResource("font_connessione.ttf").toExternalForm(), 20);
 		//text.setFont(font1);
-		text.setFont(Font.font(25));
+		// text.setFont(Font.font(25));
 		vbox.getChildren().add(text);
 
 		//Background background_bottoni = new Background(bgImg);
@@ -115,11 +118,13 @@ public class ViewController extends AnchorPane implements View {
 		Background bg_conferma_pulsante = new Background(bgImg_per_pulsanti);
 
 		Button conferma = new Button("READY?!");
+		conferma.setFont(Font.font("Arial", FontWeight.BOLD,35));
 
 		//conferma.getStyleClass().add("conferma");
 
-		conferma.setFont(Font.font(20));
+		//conferma.setFont(Font.font(20));
 		conferma.setBackground(bg_conferma_pulsante);
+		conferma.setStyle("-fx-border-radius: 20;");
 
 		Button button = new Button("CONTINUA");
 
@@ -164,6 +169,7 @@ public class ViewController extends AnchorPane implements View {
 				vbox.getChildren().add(button);
 			} else {
 				text.setText("Devi selezionare un indirizzo ip se no non ti mando avanti");
+				text.setFill(Color.RED);
 				//////////////////////////////////////////////////////////////////////////////////////////////////////// da rendere rosso con FONT
 			}
 		});

@@ -14,7 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 
-public class Bookshelf extends AnchorPane {
+public class Bookshelf extends NotZOOMMED_AnchorPane {
 	private static final int COLUMN_SPACES = 6;
 	private static final int[] colStart = { 42, 98, 154, 210, 266 };
 	private static final int[] rowEnd = { 264, 216, 168, 120, 72, 24 };
