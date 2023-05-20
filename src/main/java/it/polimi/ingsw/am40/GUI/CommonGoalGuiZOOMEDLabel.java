@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am40.GUI;
 
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,7 +9,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class CommonGoalGuiZOOMEDLabel extends ZOOMED_Label {
+public class CommonGoalGuiZOOMEDLabel extends Label {
     public CommonGoalGuiZOOMEDLabel(int index) {
         super();
         Image image = Resources.commonGoal(index);

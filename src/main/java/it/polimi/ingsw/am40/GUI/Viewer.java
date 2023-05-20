@@ -6,6 +6,7 @@ import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -328,27 +329,15 @@ public class Viewer extends Application {
 	}
 
 
-	public void activateZOOM(NotZOOMED_Label notZOOMEDLabel, ZOOMED_Label zoomedLabel, StackPane stack){
-		notZOOMEDLabel.setOnMouseEntered(e -> {
+	public void activateZOOM(Node notZOOMED, Node zoomedLabel, StackPane stack){
+		notZOOMED.setOnMouseEntered(e -> {
 			System.out.println("entro");
 			stack.getChildren().add(zoomedLabel);
 		});
 
-		notZOOMEDLabel.setOnMouseExited(e -> {
+		notZOOMED.setOnMouseExited(e -> {
 			System.out.println("esco");
 			stack.getChildren().remove(zoomedLabel);
-		});
-	}
-
-	public void activateZOOM(NotZOOMMED_AnchorPane notZOOMMEDAnchorPane, ZOOMED_AnchorPane zoomedAnchorPane, StackPane stack){
-		notZOOMMEDAnchorPane.setOnMouseEntered(e -> {
-			System.out.println("entro");
-			stack.getChildren().add(zoomedAnchorPane);
-		});
-
-		notZOOMMEDAnchorPane.setOnMouseExited(e -> {
-			System.out.println("esco");
-			stack.getChildren().remove(zoomedAnchorPane);
 		});
 	}
 

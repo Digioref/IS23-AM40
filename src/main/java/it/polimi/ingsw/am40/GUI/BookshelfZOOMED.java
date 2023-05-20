@@ -7,13 +7,14 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 
 import java.util.ArrayList;
 
-public class BookshelfZOOMED extends ZOOMED_AnchorPane {
+public class BookshelfZOOMED extends AnchorPane {
     private static final int COLUMN_SPACES = 6;
     private static final int[] colStart = { 42, 98, 154, 210, 266 };
     private static final int[] rowEnd = { 264, 216, 168, 120, 72, 24 };
