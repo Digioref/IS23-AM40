@@ -57,13 +57,14 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
                     r.setLogged(true);
                     clientHandlers.put(s, r);
                     client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
-                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby..."));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Waiting"));
                     lobby.addQueue(r);
                     lobby.addNickname(s);
                     if (!lobby.getQueue().isEmpty() && lobby.getQueue().get(0).getNickname().equals(r.getNickname())) {
                         r.setLogphase(LoggingPhase.SETTING);
                         LoggingPhase.setSETPLAYERS(true);
-                        clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You can set the number of players you want to play with:"));
+                        clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
                     }
                     rmiHandlers.remove(r);
                     break;

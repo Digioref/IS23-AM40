@@ -23,6 +23,7 @@ public class SetPlayers implements ICommand {
                     return;
                 }
                 c.sendMessage(JSONConverterStoC.normalMessage("Number of players set!"));
+                c.sendMessage(JSONConverterStoC.normalMessage("Waiting"));
             } else if (c.getLogphase().equals(LoggingPhase.INGAME)) {
                 c.sendMessage(JSONConverterStoC.normalMessage("You can not set the number of players, the game has been already created!"));
             } else if (c.getLogphase().equals(LoggingPhase.LOGGING)) {

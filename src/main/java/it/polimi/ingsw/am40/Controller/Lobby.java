@@ -103,7 +103,7 @@ public class Lobby implements Runnable {
         LoggingPhase.setSETPLAYERS(false);
         try {
             if (!queue.isEmpty()) {
-                queue.get(0).sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with:"));
+                queue.get(0).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
                 queue.get(0).setLogphase(LoggingPhase.SETTING);
                 LoggingPhase.setSETPLAYERS(true);
             }
@@ -139,6 +139,13 @@ public class Lobby implements Runnable {
                 queue.remove(c);
             }
             if (activePlayers.contains(c)) {
+                if (activePlayers.indexOf(c) == 0) {
+                    try {
+                        activePlayers.get(1).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 activePlayers.remove(c);
                 nicknameInGame.remove(c.getNickname());
                 for (Handlers cl: activePlayers) {

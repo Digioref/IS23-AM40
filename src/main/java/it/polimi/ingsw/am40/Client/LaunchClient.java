@@ -29,16 +29,16 @@ public class LaunchClient {
 //            gui.main(args);
         } else if (choice.equals("CLI")){
             view = new CliView();
-            view.chooseConnection();
         }
-        
+        view.chooseConnection();
+
 
 /*        System.out.println("Client started!");
 
         ExecutorService executor = Executors.newCachedThreadPool();
         System.out.println("Do you want to play with RMI or SOCKET?");
         String userin;
-        do {
+        do {g
             try {
                 userin = stdIn.readLine();
             } catch (IOException e) {
@@ -142,7 +142,11 @@ public class LaunchClient {
     public static View getView() {
         return view;
     }
-//    private static void setRMIHostname() {
+
+    public static Client getClient() {
+        return client;
+    }
+    //    private static void setRMIHostname() {
 //
 //        String localIP = getCorrectLocalIP();
 //        if(localIP == null)

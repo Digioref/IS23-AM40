@@ -502,6 +502,16 @@ public class CliView implements View{
         }
     }
 
+    @Override
+    public void setplayers() {
+        printMessage("The number of players you want to play with: ");
+    }
+
+    @Override
+    public void waitLobby() {
+        printMessage("Waiting in the lobby.....");
+    }
+
     //    public void showBoard() {
 //        for (int row = 4; row > -5; row--) {
 //            if (row >= 0) {

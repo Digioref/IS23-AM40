@@ -227,6 +227,12 @@ public abstract class Client {
                 numPing = 0;
                 startPing();
                 break;
+            case "Setplayers":
+                LaunchClient.getView().setplayers();
+                break;
+            case "Waiting":
+                LaunchClient.getView().waitLobby();
+                break;
             default:
                 if (!inChat) {
                     LaunchClient.getView().printMessage(command);

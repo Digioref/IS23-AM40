@@ -7,13 +7,18 @@ import it.polimi.ingsw.am40.Model.Position;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static javafx.application.Platform.runLater;
+
 public class ClientGUIController implements View {
+    private Viewer gui;
+
     public ClientGUIController() {
+        gui = Viewer.getGUI();
     }
 
     @Override
     public void chooseConnection() {
-
+        runLater(gui::chooseConnection);
     }
 
     @Override
@@ -88,7 +93,7 @@ public class ClientGUIController implements View {
 
     @Override
     public void printMessage(String s) {
-
+        runLater(()->gui.showMessage(s));
     }
 
     @Override
@@ -104,5 +109,15 @@ public class ClientGUIController implements View {
     @Override
     public void quit(String nickname) {
 
+    }
+
+    @Override
+    public void setplayers() {
+        runLater(gui::setplayers);
+    }
+
+    @Override
+    public void waitLobby() {
+        runLater(gui::waitingAnimation);
     }
 }

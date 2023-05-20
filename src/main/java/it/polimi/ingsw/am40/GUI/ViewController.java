@@ -499,4 +499,14 @@ public class ViewController extends AnchorPane implements View {
 
 	}
 
+	@Override
+	public void setplayers() {
+
+	}
+
+	@Override
+	public void waitLobby() {
+
+	}
+
 }
