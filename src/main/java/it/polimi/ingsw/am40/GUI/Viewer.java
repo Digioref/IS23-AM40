@@ -35,7 +35,6 @@ public class Viewer extends Application {
 	public void start(Stage stage) {
 
 		// -----------  setup page  -----------
-
 		Pane rootBox = new Pane();
 
 		//stage.setMaximized(true);
@@ -58,7 +57,7 @@ public class Viewer extends Application {
 
 		TextField tf = addTextField(vbox);
 
-		Text t2 = addDescription(vbox, "scegli un tipo di connessione");
+		Text t2 = addDescription(vbox, "Scegli un tipo di connessione");
 
 		RadioButton r1 = addToggle(vbox,"RMI", true);
 		RadioButton r2 = addToggle(vbox,"SOCKET", false);

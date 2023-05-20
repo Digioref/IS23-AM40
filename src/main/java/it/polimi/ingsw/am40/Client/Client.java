@@ -237,4 +237,5 @@ public abstract class Client {
     public abstract void close();
     public abstract void sendPong();
     public abstract void startPing();
+    public abstract void sendMessage(String s);
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.am40.Client;
 
 import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.CLI.View;
+import it.polimi.ingsw.am40.GUI.ClientGUIController;
 import it.polimi.ingsw.am40.GUI.LaunchGui;
 import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import it.polimi.ingsw.am40.Network.LaunchServer;
@@ -18,11 +19,12 @@ import java.util.Scanner;
 
 public class LaunchClient {
     private static View view;
+    private static Client client;
 //    private static LaunchGui gui;
     public static void main(String[] args) {
         String choice = interfaceSelection();
         if (choice.equals("GUI")) {
-            LaunchGui.main(args);
+            view = new ClientGUIController();
 //            gui = new LaunchGui();
 //            gui.main(args);
         } else if (choice.equals("CLI")){
@@ -112,6 +114,7 @@ public class LaunchClient {
                     System.out.println("Exposed address: " + serverIp);
                 }
                 rmiClient = new RMIClient(serverIp);
+                client = rmiClient;
                 UnicastRemoteObject.exportObject(rmiClient, 0);
             } catch (RemoteException | UnknownHostException e) {
                 throw new RuntimeException(e);
@@ -130,6 +133,7 @@ public class LaunchClient {
 //                throw new RuntimeException(e);
             }
             SocketClient socketClient = new SocketClient(socket);
+            client = socketClient;
             socketClient.init();
 
         }
