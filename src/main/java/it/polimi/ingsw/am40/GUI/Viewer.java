@@ -402,7 +402,7 @@ public class Viewer extends Application {
 			HBox row = new HBox();
 			Bookshelf bs1 = new Bookshelf();
 			BookshelfZOOMED bs1zoomed = new BookshelfZOOMED();
-			activateZOOM(bs1,stack);
+			activateZOOM(bs1);
 			PersonalGoal pg = new PersonalGoal(0);
 			row.getChildren().addAll(bs1, pg);
 			vLeft.getChildren().add(row);
@@ -429,16 +429,16 @@ public class Viewer extends Application {
 
 	 */
 
-	public void activateZOOM(Bookshelf bookshelf, StackPane stack){
+	public void activateZOOM(Bookshelf bookshelf){
 		bookshelf.setOnMouseEntered(e -> {
 			System.out.println("entro");
 			bookshelf.getImageView().setFitWidth(500);
-			stack.getChildren().add(bookshelf);
 		});
 
 		bookshelf.setOnMouseExited(e -> {
 			System.out.println("esco");
-			stack.getChildren().remove(bookshelf);
+			bookshelf.getImageView().setFitWidth(90);
+			//TODO CAPIRE DIMENSIONE BOOKSHELF E SE USARE DEI DEFAULT
 		});
 	}
 
