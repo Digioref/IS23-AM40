@@ -78,15 +78,17 @@ public class RMIClientHandler extends Handlers {
     @Override
     public void suggestNickname(String s) {
         Random random = new Random();
+        ArrayList<String> arr = new ArrayList<>();
         for (int i = 0; i < NSUGGEST; i++) {
             int x = random.nextInt(10);
             int y = random.nextInt(10);
             int z = random.nextInt(10);
-            try {
-                rmiClient.receive(JSONConverterStoC.normalMessage(nickname + x + y + z));
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            arr.add(nickname + x + y + z);
+        }
+        try {
+            rmiClient.receive(JSONConverterStoC.createJSONNicknames(arr));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -113,7 +115,7 @@ public class RMIClientHandler extends Handlers {
 
             }
         } else {
-            sendMessage(JSONConverterStoC.normalMessage("You are not playing in any game yet!"));
+            sendMessage(JSONConverterStoC.createJSONError("You are not playing in any game yet!"));
         }
     }
 

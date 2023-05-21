@@ -19,7 +19,7 @@ public class GetHiddenScore  implements ICommand {
                 }
             }
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command gethiddenscore doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command gethiddenscore doesn't want arguments!"));
         }
     }
 }

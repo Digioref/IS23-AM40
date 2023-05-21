@@ -34,7 +34,9 @@ public class Lobby implements Runnable {
                 c = queue.remove(0);
                 activePlayers.add(c);
                 try {
-                    c.sendMessage(JSONConverterStoC.normalMessage("You are playing with " + numPlayers + " players!"));
+                    if (numPlayers != 0) {
+                        c.sendMessage(JSONConverterStoC.normalMessage("You are playing with " + numPlayers + " players!"));
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -95,6 +97,11 @@ public class Lobby implements Runnable {
             cl.setLogphase(LoggingPhase.INGAME);
             g.register(v);
             games.put(cl.getNickname(), c.getGameController());
+            try {
+                cl.sendMessage(JSONConverterStoC.normalMessage("Game"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         numPlayers = 0;
         activePlayers.clear();
@@ -140,8 +147,15 @@ public class Lobby implements Runnable {
             }
             if (activePlayers.contains(c)) {
                 if (activePlayers.indexOf(c) == 0) {
+                    numPlayers = 0;
                     try {
-                        activePlayers.get(1).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
+                        if (activePlayers.size() > 1) {
+                            activePlayers.get(1).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
+                            LoggingPhase.setSETPLAYERS(true);
+                            activePlayers.get(1).setLogphase(LoggingPhase.SETTING);
+                        } else {
+                            LoggingPhase.setSETPLAYERS(false);
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

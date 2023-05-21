@@ -233,6 +233,17 @@ public abstract class Client {
             case "Waiting":
                 LaunchClient.getView().waitLobby();
                 break;
+            case "Suggest":
+                JSONArray arr16 = (JSONArray) object.get("Nicknames");
+                ArrayList<String> array4 = new ArrayList<>(arr16);
+                String s = (String) object.get("Phrase");
+                LaunchClient.getView().showSuggestedNicknames(s, array4);
+                break;
+            case "Error":
+                LaunchClient.getView().showError((String) object.get("Error"));
+                break;
+            case "Game":
+                LaunchClient.getView().showGame();
             default:
                 if (!inChat) {
                     LaunchClient.getView().printMessage(command);

@@ -509,4 +509,19 @@ public class ViewController extends AnchorPane implements View {
 
 	}
 
+	@Override
+	public void showSuggestedNicknames(String s, ArrayList<String> array4) {
+
+	}
+
+	@Override
+	public void showError(String error) {
+
+	}
+
+	@Override
+	public void showGame() {
+
+	}
+
 }

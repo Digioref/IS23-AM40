@@ -120,4 +120,19 @@ public class ClientGUIController implements View {
     public void waitLobby() {
         runLater(gui::waitingAnimation);
     }
+
+    @Override
+    public void showSuggestedNicknames(String s, ArrayList<String> array4) {
+        runLater(()->gui.suggestNicknames(s, array4));
+    }
+
+    @Override
+    public void showError(String error) {
+        runLater(()->gui.showError(error));
+    }
+
+    @Override
+    public void showGame() {
+        runLater(gui::startGame);
+    }
 }

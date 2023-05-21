@@ -512,6 +512,25 @@ public class CliView implements View{
         printMessage("Waiting in the lobby.....");
     }
 
+    @Override
+    public void showSuggestedNicknames(String s, ArrayList<String> array4) {
+        printMessage(s);
+        for (String t: array4) {
+            printMessage(t);
+        }
+    }
+
+    @Override
+    public void showError(String error) {
+        System.out.println(color.red() + error + color.rst());
+    }
+
+    @Override
+    public void showGame() {
+        System.out.println(color.green() + "Game is being created" + color.rst());
+    }
+
+
     //    public void showBoard() {
 //        for (int row = 4; row > -5; row--) {
 //            if (row >= 0) {

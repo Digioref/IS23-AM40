@@ -263,5 +263,20 @@ public class JSONConverterStoC {
         obj.put("Command", "Ping");
         return obj.toJSONString();
     }
+    public static String createJSONError(String error) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "Error");
+        obj.put("Error", error);
+        return obj.toJSONString();
+    }
+    public static String createJSONNicknames(ArrayList<String> nicknames) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "Suggest");
+        obj.put("Phrase", "What about these nicknames: ");
+        JSONArray arr1 = new JSONArray();
+        arr1.addAll(nicknames);
+        obj.put("Nicknames", arr1);
+        return obj.toJSONString();
+    }
 
 }

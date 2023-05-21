@@ -15,7 +15,7 @@ public class Remove implements ICommand {
         if (comm.size() == 0) {
             c.executeCommand(ActionType.REMOVE, null);
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command remove doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command remove doesn't want arguments!"));
         }
 
     }

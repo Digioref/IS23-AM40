@@ -135,15 +135,17 @@ public class ClientHandler extends Handlers implements Runnable {
 
     public void suggestNickname(String nickname) {
         Random random = new Random();
+        ArrayList<String> arr = new ArrayList<>();
         for (int i = 0; i < NSUGGEST; i++) {
             int x = random.nextInt(10);
             int y = random.nextInt(10);
             int z = random.nextInt(10);
-            try {
-                sendMessage(JSONConverterStoC.normalMessage(nickname + x + y + z));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            arr.add(nickname + x + y + z);
+        }
+        try {
+            sendMessage(JSONConverterStoC.createJSONNicknames(arr));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

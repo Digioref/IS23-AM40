@@ -16,11 +16,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.*;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -578,14 +580,63 @@ public class Viewer extends Application {
 	}
 
 	public void showMessage(String s) {
-		System.out.println(s);
-		Text text = new Text(s);
-		text.setFont(Font.font(25));
-		Pane x = (Pane) pane.getChildren().get(0);
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setHeaderText(null);
+		alert.setContentText(s);
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(primaryStage);
+		alert.showAndWait();
+	}
 
-//		x.getChildren().remove(x.getChildren().size()-1);
-		Text y = (Text) x.getChildren().get(x.getChildren().size()-1);
-		y.setText(s);
-//		primaryStage.show();
+	public void suggestNicknames(String s, ArrayList<String> array4) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		String r = s;
+		for (String t: array4) {
+			r = r + "\n"+ t;
+		}
+		alert.setContentText(r);
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(primaryStage);
+		alert.showAndWait();
+	}
+
+	public void showError(String error) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Error Dialog");
+		alert.setHeaderText("!ERROR!");
+		alert.setContentText(error);
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(primaryStage);
+		alert.showAndWait();
+	}
+
+	public void startGame() {
+		pane = new Pane();
+		newScene(pane);
+		setBackground(primaryStage, pane);
+
+		StackPane stack = new StackPane();
+
+		BorderPane home = new BorderPane();
+
+		stack.getChildren().add(home);
+
+
+		//ScrollPane sp = new ScrollPane();   --- Come mai lo scroll pane non va??????
+
+		pane.getChildren().add(stack);
+
+		VBox vLeft = new VBox();
+		vLeft.setSpacing(Screen.getPrimary().getVisualBounds().getHeight() * 0.05);
+		VBox vRight = new VBox();
+		vRight.setSpacing(40);
+		vRight.setAlignment(Pos.CENTER);
+		VBox v = new VBox();
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		Bag b = new Bag();
 	}
 }

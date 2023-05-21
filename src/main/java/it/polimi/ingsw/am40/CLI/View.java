@@ -28,5 +28,8 @@ public interface View {
     void quit(String nickname);
     void setplayers();
     void waitLobby();
+    void showSuggestedNicknames(String s, ArrayList<String> array4);
+    void showError(String error);
+    void showGame();
 
 }

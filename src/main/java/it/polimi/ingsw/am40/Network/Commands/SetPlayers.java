@@ -19,22 +19,23 @@ public class SetPlayers implements ICommand {
                 try {
                     c.getLobby().setNumPlayers(Integer.parseInt(comm.get(0)));
                 } catch (NumberFormatException e) {
-                    c.sendMessage(JSONConverterStoC.normalMessage("You must type an int, not a string!"));
+                    c.sendMessage(JSONConverterStoC.createJSONError("You must type an int, not a string!"));
                     return;
                 }
-                c.sendMessage(JSONConverterStoC.normalMessage("Number of players set!"));
+//                c.sendMessage(JSONConverterStoC.normalMessage("Number of players set!"));
+//                c.sendMessage(JSONConverterStoC.normalMessage("You are playing with " + comm.get(0) + " players!"));
                 c.sendMessage(JSONConverterStoC.normalMessage("Waiting"));
             } else if (c.getLogphase().equals(LoggingPhase.INGAME)) {
-                c.sendMessage(JSONConverterStoC.normalMessage("You can not set the number of players, the game has been already created!"));
+                c.sendMessage(JSONConverterStoC.createJSONError("You can not set the number of players, the game has been already created!"));
             } else if (c.getLogphase().equals(LoggingPhase.LOGGING)) {
-                c.sendMessage(JSONConverterStoC.normalMessage("You can not set the number of players, you have not yet logged in!"));
+                c.sendMessage(JSONConverterStoC.createJSONError("You can not set the number of players, you have not yet logged in!"));
             } else if (c.getLogphase().equals(LoggingPhase.WAITING)) {
-                c.sendMessage(JSONConverterStoC.normalMessage("You can not set the number of players, someone already did it!"));
+                c.sendMessage(JSONConverterStoC.createJSONError("You can not set the number of players, someone already did it!"));
             } else {
-                c.sendMessage(JSONConverterStoC.normalMessage("You are not logged in yet!"));
+                c.sendMessage(JSONConverterStoC.createJSONError("You are not logged in yet!"));
             }
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));
+            c.sendMessage(JSONConverterStoC.createJSONError("Incomplete command"));
         }
     }
 }

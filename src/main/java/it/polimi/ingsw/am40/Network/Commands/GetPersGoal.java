@@ -19,7 +19,7 @@ public class GetPersGoal implements ICommand {
                 }
             }
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command getpersgoal doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command getpersgoal doesn't want arguments!"));
         }
     }
 }
