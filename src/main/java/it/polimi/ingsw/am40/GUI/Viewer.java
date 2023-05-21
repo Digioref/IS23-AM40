@@ -402,7 +402,7 @@ public class Viewer extends Application {
 			HBox row = new HBox();
 			Bookshelf bs1 = new Bookshelf();
 			BookshelfZOOMED bs1zoomed = new BookshelfZOOMED();
-			activateZOOM(bs1,bs1zoomed,stack);
+			activateZOOM(bs1,stack);
 			PersonalGoal pg = new PersonalGoal(0);
 			row.getChildren().addAll(bs1, pg);
 			vLeft.getChildren().add(row);
@@ -411,15 +411,47 @@ public class Viewer extends Application {
 	}
 
 
-	public void activateZOOM(Node notZOOMED, Node zoomedLabel, StackPane stack){
+	/*
+
+	ci ho pasticciato mannaggia a me
+
+		public void activateZOOM(Node notZOOMED, Node ZOOMED, StackPane stack){
 		notZOOMED.setOnMouseEntered(e -> {
 			System.out.println("entro");
-			stack.getChildren().add(zoomedLabel);
+			stack.getChildren().add(bookshelf);
 		});
 
-		notZOOMED.setOnMouseExited(e -> {
+		bookshelf.setOnMouseExited(e -> {
 			System.out.println("esco");
-			stack.getChildren().remove(zoomedLabel);
+			stack.getChildren().remove();
+		});
+	}
+
+	 */
+
+	public void activateZOOM(Bookshelf bookshelf, StackPane stack){
+		bookshelf.setOnMouseEntered(e -> {
+			System.out.println("entro");
+			bookshelf.getImageView().setFitWidth(500);
+			stack.getChildren().add(bookshelf);
+		});
+
+		bookshelf.setOnMouseExited(e -> {
+			System.out.println("esco");
+			stack.getChildren().remove(bookshelf);
+		});
+	}
+
+
+	public void activateZOOM(CommonGoalGui commonGoalGui){
+		commonGoalGui.setOnMouseEntered(e -> {
+			System.out.println("entro");
+			commonGoalGui.getImageView().setFitWidth(500);
+		});
+
+		commonGoalGui.setOnMouseExited(e -> {
+			System.out.println("esco");
+			commonGoalGui.getImageView().setFitWidth(300);
 		});
 	}
 
@@ -645,6 +677,8 @@ public class Viewer extends Application {
 		c2 = new CommonGoalGui(arr.get(1)-1);
 		c1.relocate(20, 200);
 		c2.relocate(20, 350);
+		activateZOOM(c1);
+		activateZOOM(c2);
 		pane.getChildren().add(c1);
 		pane.getChildren().add(c2);
 	}

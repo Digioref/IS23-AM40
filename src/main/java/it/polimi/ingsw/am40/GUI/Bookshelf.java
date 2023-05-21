@@ -29,6 +29,7 @@ public class Bookshelf extends AnchorPane {
 	private Node node;
 	private ArrayList<Node> nodeList;
 	private Point2D velocity;
+	private ImageView imageView;
 	public Bookshelf() {
 		super();
 
@@ -38,6 +39,7 @@ public class Bookshelf extends AnchorPane {
 		bsImage = new Label();
 		Image image = Resources.bookshelf();
 		ImageView view = new ImageView(image);
+		imageView = view;
 		view.setPreserveRatio(true);
 		view.setFitWidth(screenHeight);
 		view.setFitHeight(screenHeight);
@@ -98,6 +100,10 @@ public class Bookshelf extends AnchorPane {
 				node.setTranslateY(node.getTranslateY() + velocity.getY());
 			}
 		};
+	}
+
+	ImageView getImageView(){
+		return imageView;
 	}
 
 	void setName(String name) {

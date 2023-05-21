@@ -11,10 +11,13 @@ import javafx.scene.shape.Rectangle;
 
 public class CommonGoalGui extends Label {
 
+	private ImageView imageView;
+
 	public CommonGoalGui(int index) {
 		super();
 		Image image = Resources.commonGoal(index);
 		ImageView view = new ImageView(image);
+		imageView = view;
 		view.setPreserveRatio(true);
 		view.setFitWidth(300);
 		view.setFitHeight(300);
@@ -35,5 +38,9 @@ public class CommonGoalGui extends Label {
 
 		view.setImage(img);
 		view.setEffect(new DropShadow(20, Color.WHITE));
+	}
+
+	ImageView getImageView(){
+		return imageView;
 	}
 }
