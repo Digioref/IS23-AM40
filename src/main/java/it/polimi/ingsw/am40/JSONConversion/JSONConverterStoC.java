@@ -71,6 +71,7 @@ public class JSONConverterStoC {
     public static String createJSONPersGoal(PersonalGoal personalGoal) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "PersonalGoal");
+        obj.put("Number", personalGoal.getKey());
         JSONArray arr1 = new JSONArray();
         for (int i = 0; i < NUM; i++) {
             JSONObject obj1 = new JSONObject();

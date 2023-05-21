@@ -5,14 +5,12 @@ import java.util.Map;
 import java.util.Random;
 
 import it.polimi.ingsw.am40.CLI.View;
-import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.Client.SocketClient;
 import it.polimi.ingsw.am40.Model.Position;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -428,7 +426,7 @@ public class ViewController extends AnchorPane implements View {
 	}
 
 	@Override
-	public void showPersonalGoal(Map<String, String> map) {
+	public void showPersonalGoal(Map<String, String> map, int number) {
 
 	}
 

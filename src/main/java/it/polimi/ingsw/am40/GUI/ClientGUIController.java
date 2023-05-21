@@ -38,17 +38,17 @@ public class ClientGUIController implements View {
 
     @Override
     public void showCommonGoals(Map<Integer, Integer> map) {
-
+        runLater(()-> gui.setCommonGoal(map));
     }
 
     @Override
-    public void showPersonalGoal(Map<String, String> map) {
-
+    public void showPersonalGoal(Map<String, String> map, int number) {
+        runLater(()->gui.setPersonalGoal(map, number));
     }
 
     @Override
     public void showBoard(Map<String, String> map) {
-
+        runLater(()->gui.setBoard(map));
     }
 
     @Override

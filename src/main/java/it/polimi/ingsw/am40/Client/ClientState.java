@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am40.Client;
 
-import it.polimi.ingsw.am40.Model.Board;
 import it.polimi.ingsw.am40.Model.Position;
 
 import java.util.ArrayList;
@@ -111,7 +110,7 @@ public class ClientState {
             LaunchClient.getView().showCommonGoals(commongoals);
         }
         if (personalgoal != null) {
-            LaunchClient.getView().showPersonalGoal(personalgoal);
+            LaunchClient.getView().showPersonalGoal(personalgoal, 0);
         }
         if (board != null) {
             LaunchClient.getView().showBoard(board);

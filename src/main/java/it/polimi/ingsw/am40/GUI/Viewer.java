@@ -2,6 +2,7 @@ package it.polimi.ingsw.am40.GUI;
 
 import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
+import it.polimi.ingsw.am40.Model.Position;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
@@ -23,6 +24,7 @@ import javafx.util.Duration;
 import javafx.animation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -37,6 +39,11 @@ public class Viewer extends Application {
 	private Stage primaryStage;
 	private Scene scene;
 	private Pane pane;
+	private Bag bag;
+	private Board board;
+	private CommonGoalGui c1;
+	private CommonGoalGui c2;
+	private PersonalGoal p;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -613,30 +620,49 @@ public class Viewer extends Application {
 	}
 
 	public void startGame() {
-		pane = new Pane();
+		primaryStage.setTitle("MY SHELFIE");
+		pane = new AnchorPane();
 		newScene(pane);
 		setBackground(primaryStage, pane);
+		pane.setPrefSize(Metrics.ROOT_WIDTH, Metrics.ROOT_HEIGHT);
 
-		StackPane stack = new StackPane();
+		bag = new Bag();
+		bag.relocate(50, 60);
+		pane.getChildren().add(bag);
 
-		BorderPane home = new BorderPane();
+		board = new Board();
+		board.relocate(230, 40);
+		pane.getChildren().add(board);
 
-		stack.getChildren().add(home);
+	}
 
+	public void setCommonGoal(Map<Integer, Integer> map) {
+		ArrayList<Integer> arr = new ArrayList<>();
+		for (Integer i: map.keySet()) {
+			arr.add(i);
+		}
+		c1 = new CommonGoalGui(arr.get(0)-1);
+		c2 = new CommonGoalGui(arr.get(1)-1);
+		c1.relocate(20, 200);
+		c2.relocate(20, 350);
+		pane.getChildren().add(c1);
+		pane.getChildren().add(c2);
+	}
 
-		//ScrollPane sp = new ScrollPane();   --- Come mai lo scroll pane non va??????
+	public void setPersonalGoal(Map<String, String> map, int number) {
+		p = new PersonalGoal(number);
+		p.relocate(1150, 200);
+		pane.getChildren().add(p);
+	}
 
-		pane.getChildren().add(stack);
+	public void setBoard(Map<String, String> map) {
+		for (String s: map.keySet()) {
+			if (!map.get(s).equals("NOCOLOR")) {
+				Tile t = new Tile(map.get(s));
+				t.setPosition(s);
+				board.place(t);
+			}
 
-		VBox vLeft = new VBox();
-		vLeft.setSpacing(Screen.getPrimary().getVisualBounds().getHeight() * 0.05);
-		VBox vRight = new VBox();
-		vRight.setSpacing(40);
-		vRight.setAlignment(Pos.CENTER);
-		VBox v = new VBox();
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		Bag b = new Bag();
+		}
 	}
 }

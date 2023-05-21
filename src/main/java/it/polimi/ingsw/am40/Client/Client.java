@@ -86,7 +86,7 @@ public abstract class Client {
                     map2.put(p.getKey(), obj.get("color").toString());
                 }
                 if (!inChat) {
-                    LaunchClient.getView().showPersonalGoal(map2);
+                    LaunchClient.getView().showPersonalGoal(map2, Integer.parseInt(object.get("Number").toString()));
                 }
                 state.savePersonalGoal(map2);
                 break;
@@ -244,6 +244,7 @@ public abstract class Client {
                 break;
             case "Game":
                 LaunchClient.getView().showGame();
+                break;
             default:
                 if (!inChat) {
                     LaunchClient.getView().printMessage(command);

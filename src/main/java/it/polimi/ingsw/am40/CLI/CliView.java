@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CliView implements View{
@@ -252,7 +251,7 @@ public class CliView implements View{
         }
     }
 
-    public void showPersonalGoal(Map<String, String> map) {
+    public void showPersonalGoal(Map<String, String> map, int number) {
         System.out.println(" Here you can see your Personal Goal\n");
         for (int i = 5; i >= 0 ; i--) {
             for (int j = 0; j < 5; j++) {

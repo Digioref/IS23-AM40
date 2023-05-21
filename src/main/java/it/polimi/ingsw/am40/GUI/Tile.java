@@ -1,7 +1,9 @@
 package it.polimi.ingsw.am40.GUI;
 
+import it.polimi.ingsw.am40.Model.Position;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,7 +25,7 @@ public class Tile extends Label {
 	private boolean selected = false;
 	private boolean pickable = false;
 
-	public Tile(int type) {
+	public Tile(String type) {
 		super();
 
 		int index = (int) (Math.random() * 3);
@@ -70,6 +72,11 @@ public class Tile extends Label {
 
 	void setPosition(int x, int y) {
 		this.pos = new Point2D(x, y);
+	}
+	public void setPosition(String s) {
+		Position p = new Position(0,0);
+		p.convertKey(s);
+		pos = new Point2D(p.getX(), p.getY());
 	}
 
 	Point2D getPosition() {
