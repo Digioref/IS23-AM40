@@ -573,8 +573,8 @@ public class Game implements IGame {
                             v.receivePersonalGoal(p.getPersonalGoal());
                         }
                     }
-                    v.receiveListBookshelves(players);
                     v.receiveListPlayers(players);
+                    v.receiveListBookshelves(players);
                     v.receiveNumPlayers(numPlayers);
                     v.receiveCurrentPlayer(currentPlayer);
                 }

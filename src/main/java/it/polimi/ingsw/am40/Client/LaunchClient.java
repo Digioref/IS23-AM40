@@ -94,7 +94,7 @@ public class LaunchClient {
                 break;
             }
             input = input.toUpperCase();
-            if(input.equals("G"))
+            if(input.equals("G") || input.equals(""))
                 input = "GUI";
             else if(input.equals("C"))
                 input = "CLI";

@@ -8,12 +8,14 @@ import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -29,21 +31,27 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 public class Viewer extends Application {
-
-	/*
-	 * This variable is needed only for the test methods. Remove it when removing
-	 * the test methods.
-	 */
+	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
+	private final ArrayList<Arrow> arrowDownList = new ArrayList<Arrow>();
+	private static final int ARROWS_DOWN = 5;
 	private String connectionType;
 	private static Viewer gui;
 	private Stage primaryStage;
 	private Scene scene;
 	private Pane pane;
+	private String nickname;
+	private int numPlayers;
 	private Bag bag;
 	private Board board;
 	private CommonGoalGui c1;
 	private CommonGoalGui c2;
 	private PersonalGoal p;
+	private CommandBoard commandBoard;
+	private Bookshelf bookshelf;
+	private ArrayList<Bookshelf> bookshelves;
+	private ArrayList<String> names;
+
+
 
 	public static void main(String[] args) {
 		launch(args);
@@ -158,8 +166,8 @@ public class Viewer extends Application {
 //		CommonGoalGui cg1 = new CommonGoalGui(1);
 //		CommonGoalGui cg2 = new CommonGoalGui(2);
 //
-//		CommonGoalGuiZOOMEDLabel cg1duplicate = new CommonGoalGuiZOOMEDLabel(1);
-//		CommonGoalGuiZOOMEDLabel cg2duplicate = new CommonGoalGuiZOOMEDLabel(2);
+//		CommonGoalGuiZOOMED cg1duplicate = new CommonGoalGuiZOOMED(1);
+//		CommonGoalGuiZOOMED cg2duplicate = new CommonGoalGuiZOOMED(2);
 //
 //		activateZOOM(cg1, cg1duplicate, stack);
 //		activateZOOM(cg2, cg2duplicate, stack);
@@ -333,6 +341,7 @@ public class Viewer extends Application {
 			if (tf.getText().equals("")) {
 				t1.setText("Insert an username, please!");
 			} else {
+				nickname = tf.getText();
 				JSONConverterCtoS jconv = new JSONConverterCtoS();
 				jconv.toJSON("login " + tf.getText());
 				LaunchClient.getClient().sendMessage(jconv.toString());
@@ -576,10 +585,15 @@ public class Viewer extends Application {
 					t1.setText("Insert an integer, not a string!");
 					return;
 				}
+				if (Integer.parseInt(tf.getText()) < 1 || Integer.parseInt(tf.getText()) > 4) {
+					t1.setText("The number must be between 2 and 4!");
+					return;
+				}
 				JSONConverterCtoS jconv = new JSONConverterCtoS();
 				jconv.toJSON("setplayers " + tf.getText());
 				LaunchClient.getClient().sendMessage(jconv.toString());
 				b1.setDisable(true);
+				numPlayers = Integer.parseInt(tf.getText());
 			}  else {
 				t1.setText("Insert an integer, please!");
 			}
@@ -634,6 +648,54 @@ public class Viewer extends Application {
 		board.relocate(230, 40);
 		pane.getChildren().add(board);
 
+		commandBoard = new CommandBoard();
+		commandBoard.relocate(850, 40);
+		pane.getChildren().add(commandBoard);
+
+		bookshelf = new Bookshelf();
+		bookshelf.relocate(786, 180);
+		bookshelf.setName(nickname);
+		pane.getChildren().add(bookshelf);
+
+
+		for (int i = 0; i < ARROWS_DOWN; i++) {
+			Arrow arrowDown = new Arrow(Arrow.DOWN);
+			arrowDown.setUserData(arrowDown);
+			arrowDown.setVisible(false);
+			arrowDown.setIndex(i);
+			arrowDown.setSize(Metrics.ARROW_DOWN_WIDTH, Metrics.ARROW_DOWN_HEIGHT);
+			arrowDown.relocate(830 + (i * 60), 148);
+			arrowDown.setOnMouseClicked(event -> {
+				Arrow ad = (Arrow) event.getSource();
+				handleArrowDown(event, ad.getIndex());
+			});
+			arrowDownList.add(arrowDown);
+			pane.getChildren().add(arrowDown);
+		}
+
+		arrowRight.setSize(Metrics.ARROW_RIGHT_WIDTH, Metrics.ARROW_RIGHT_HEIGHT);
+		arrowRight.setVisible(false);
+		arrowRight.relocate(770, 50);
+		arrowRight.setOnMouseClicked(event -> {
+			Tile t;
+
+			while (!board.isSelectedEmpty()) {
+				t = (Tile) board.getSelected();
+				t.setPickable(false);
+				commandBoard.addTile(t);
+			}
+
+			arrowRight.setVisible(false);
+
+			int col = 0;
+			for (Arrow a : arrowDownList) {
+				if (!bookshelf.isFull(col++)) {
+					a.setVisible(true);
+				}
+			}
+		});
+		pane.getChildren().add(arrowRight);
+
 	}
 
 	public void setCommonGoal(Map<Integer, Integer> map) {
@@ -665,4 +727,49 @@ public class Viewer extends Application {
 
 		}
 	}
+	private void handleArrowDown(MouseEvent event, int column) {
+		if (commandBoard.checkSequence()) {
+			ArrayList<Node> nodeList = new ArrayList<Node>();
+			Node n;
+
+			if (commandBoard.getNumTile() > bookshelf.getFreeSpace(column)) {
+				System.out.println("No space in bookshelf column.");
+			} else {
+
+				for (Arrow a : arrowDownList) {
+					a.setVisible(false);
+				}
+
+				while ((n = commandBoard.getTile()) != null) {
+					nodeList.add(n);
+				}
+
+				if (nodeList.size() > 0) {
+					bookshelf.insert(nodeList, column);
+				}
+			}
+		}
+	}
+
+	public void numPlayers(ArrayList<String> names) {
+		this.names = new ArrayList<>(names);
+		this.bookshelves = new ArrayList<>();
+		if (numPlayers == 0) {
+			numPlayers = names.size();
+			int j = 0;
+			for (int i = 0; i < numPlayers - 1; i++) {
+				Bookshelf b = new Bookshelf();
+				bookshelves.add(b);
+				pane.getChildren().add(bookshelves.get(i));
+				b.relocate(70+400*i, 1000);
+				if (names.get(j).equals(nickname)) {
+					j += 1;
+				}
+				b.setName(names.get(j));
+				j++;
+			}
+		}
+	}
 }
+
+

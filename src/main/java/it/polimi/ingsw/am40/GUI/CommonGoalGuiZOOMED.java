@@ -9,8 +9,8 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class CommonGoalGuiZOOMEDLabel extends Label {
-    public CommonGoalGuiZOOMEDLabel(int index) {
+public class CommonGoalGuiZOOMED extends Label {
+    public CommonGoalGuiZOOMED(int index) {
         super();
         Image image = Resources.commonGoal(index);
         ImageView view = new ImageView(image);

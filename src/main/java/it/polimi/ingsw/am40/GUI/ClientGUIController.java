@@ -88,7 +88,7 @@ public class ClientGUIController implements View {
 
     @Override
     public void showPlayers(ArrayList<String> names) {
-
+        runLater(()->gui.numPlayers(names));
     }
 
     @Override

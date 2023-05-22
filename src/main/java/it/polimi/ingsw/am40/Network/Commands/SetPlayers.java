@@ -16,15 +16,21 @@ public class SetPlayers implements ICommand {
         if (comm.size() == 1) {
             if (LoggingPhase.SETPLAYERS && c.getLogphase().equals(LoggingPhase.SETTING)) {
                 c.setLogphase(LoggingPhase.WAITING);
+                int i;
                 try {
-                    c.getLobby().setNumPlayers(Integer.parseInt(comm.get(0)));
+                    i = Integer.parseInt(comm.get(0));
                 } catch (NumberFormatException e) {
                     c.sendMessage(JSONConverterStoC.createJSONError("You must type an int, not a string!"));
                     return;
                 }
+                if (i < 2 || i > 4) {
+                    c.sendMessage(JSONConverterStoC.createJSONError("The number of players must be between 2 and 4!"));
+                    return;
+                }
+                c.getLobby().setNumPlayers(i);
 //                c.sendMessage(JSONConverterStoC.normalMessage("Number of players set!"));
 //                c.sendMessage(JSONConverterStoC.normalMessage("You are playing with " + comm.get(0) + " players!"));
-                c.sendMessage(JSONConverterStoC.normalMessage("Waiting"));
+                    c.sendMessage(JSONConverterStoC.normalMessage("Waiting"));
             } else if (c.getLogphase().equals(LoggingPhase.INGAME)) {
                 c.sendMessage(JSONConverterStoC.createJSONError("You can not set the number of players, the game has been already created!"));
             } else if (c.getLogphase().equals(LoggingPhase.LOGGING)) {
