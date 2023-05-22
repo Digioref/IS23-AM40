@@ -37,7 +37,7 @@ public class ViewController extends AnchorPane implements View {
 
 	private static final int ARROWS_DOWN = 5;
 	private final CommandBoard commandBoard = new CommandBoard();
-	private final Bookshelf bookshelf = new Bookshelf();
+	private Bookshelf bookshelf;
 	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
 	private final ArrayList<Arrow> arrowDownList = new ArrayList<Arrow>();
 	private final Board board = new Board();

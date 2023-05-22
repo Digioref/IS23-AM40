@@ -17,10 +17,10 @@ public class PersonalGoal extends Label {
 		Image image = Resources.personalGoal(index);
 		ImageView view = new ImageView(image);
 		view.setPreserveRatio(true);
-		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
+//		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
 		//view.setFitWidth(100);
-		view.setFitHeight(screenHeight);
-		view.setFitWidth(150);
+		view.setFitHeight(Metrics.PERSONAL_GOAL_HEIGHT);
+		view.setFitWidth(Metrics.PERSONAL_GOAL_WIDTH);
 		view.setPreserveRatio(true);
 		setGraphic(view);
 

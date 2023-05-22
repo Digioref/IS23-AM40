@@ -314,7 +314,11 @@ public class Viewer extends Application {
 
 	public void setUsername() {
 //		primaryStage.close();
-
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		pane = new Pane();
 		newScene(pane);
 		setBackground(primaryStage, pane);
@@ -406,16 +410,16 @@ public class Viewer extends Application {
 
 
 	public void setBookshelvesAndPG(VBox vLeft, StackPane stack){
-	    int numPlayers = 4;
-		for(int i=0; i<numPlayers;i++) {
-			HBox row = new HBox();
-			Bookshelf bs1 = new Bookshelf();
-			BookshelfZOOMED bs1zoomed = new BookshelfZOOMED();
-			activateZOOM(bs1,bs1zoomed,stack);
-			PersonalGoal pg = new PersonalGoal(0);
-			row.getChildren().addAll(bs1, pg);
-			vLeft.getChildren().add(row);
-		}
+//	    int numPlayers = 4;
+//		for(int i=0; i<numPlayers;i++) {
+//			HBox row = new HBox();
+//			Bookshelf bs1 = new Bookshelf();
+//			BookshelfZOOMED bs1zoomed = new BookshelfZOOMED();
+//			activateZOOM(bs1,bs1zoomed,stack);
+//			PersonalGoal pg = new PersonalGoal(0);
+//			row.getChildren().addAll(bs1, pg);
+//			vLeft.getChildren().add(row);
+//		}
 
 	}
 
@@ -556,6 +560,11 @@ public class Viewer extends Application {
 	}
 
 	public void setplayers() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		pane = new Pane();
 		newScene(pane);
 		setBackground(primaryStage, pane);
@@ -634,26 +643,34 @@ public class Viewer extends Application {
 	}
 
 	public void startGame() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		primaryStage.setTitle("MY SHELFIE");
 		pane = new AnchorPane();
 		newScene(pane);
 		setBackground(primaryStage, pane);
-		pane.setPrefSize(Metrics.ROOT_WIDTH, Metrics.ROOT_HEIGHT);
+//		pane.setPrefSize(Metrics.ROOT_WIDTH, Metrics.ROOT_HEIGHT);
+		System.out.println(Screen.getPrimary().getVisualBounds().getWidth());
+		System.out.println(Screen.getPrimary().getVisualBounds().getHeight());
 
 		bag = new Bag();
-		bag.relocate(50, 60);
+		bag.relocate(85, 50);
 		pane.getChildren().add(bag);
 
 		board = new Board();
-		board.relocate(230, 40);
+		board.relocate(310, 20);
 		pane.getChildren().add(board);
 
 		commandBoard = new CommandBoard();
-		commandBoard.relocate(850, 40);
+		commandBoard.relocate(1036, 30);
 		pane.getChildren().add(commandBoard);
 
-		bookshelf = new Bookshelf();
-		bookshelf.relocate(786, 180);
+		bookshelf = new Bookshelf(Metrics.BOOKSHELF_WIDTH, Metrics.BOOKSHELF_HEIGHT);
+		bookshelf.relocate(980, 210);
+		bookshelf.createLabelName(104,42, 128, 306);
 		bookshelf.setName(nickname);
 		pane.getChildren().add(bookshelf);
 
@@ -705,19 +722,24 @@ public class Viewer extends Application {
 		}
 		c1 = new CommonGoalGui(arr.get(0)-1);
 		c2 = new CommonGoalGui(arr.get(1)-1);
-		c1.relocate(20, 200);
-		c2.relocate(20, 350);
+		c1.relocate(25, 200);
+		c2.relocate(25, 410);
 		pane.getChildren().add(c1);
 		pane.getChildren().add(c2);
 	}
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
 		p = new PersonalGoal(number);
-		p.relocate(1150, 200);
+		p.relocate(1360, 290);
 		pane.getChildren().add(p);
 	}
 
 	public void setBoard(Map<String, String> map) {
+		if (board == null) {
+			board = new Board();
+			board.relocate(300, 20);
+			pane.getChildren().add(board);
+		}
 		for (String s: map.keySet()) {
 			if (!map.get(s).equals("NOCOLOR")) {
 				Tile t = new Tile(map.get(s));
@@ -756,16 +778,29 @@ public class Viewer extends Application {
 		this.bookshelves = new ArrayList<>();
 		if (numPlayers == 0) {
 			numPlayers = names.size();
+		}
+		if (bookshelves.size() == 0) {
 			int j = 0;
 			for (int i = 0; i < numPlayers - 1; i++) {
-				Bookshelf b = new Bookshelf();
+				Bookshelf b = new Bookshelf(Metrics.OTHER_BOOKSHELF_WIDTH, Metrics.OTHER_BOOKSHELF_HEIGHT);
 				bookshelves.add(b);
 				pane.getChildren().add(bookshelves.get(i));
-				b.relocate(70+400*i, 1000);
+				bookshelves.get(i).createLabelName(79,32, 97, 233);
+				switch (numPlayers) {
+					case 2:
+						bookshelves.get(i).relocate(631, 580);
+						break;
+					case 3:
+						bookshelves.get(i).relocate(329+(329+274)*i, 580);
+						break;
+					case 4:
+						bookshelves.get(i).relocate(178+(178+274)*i, 580);
+						break;
+				}
 				if (names.get(j).equals(nickname)) {
 					j += 1;
 				}
-				b.setName(names.get(j));
+				bookshelves.get(i).setName(names.get(j));
 				j++;
 			}
 		}

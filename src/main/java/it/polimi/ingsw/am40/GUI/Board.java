@@ -20,10 +20,10 @@ public class Board extends AnchorPane {
 
 	private static final int MAX_SELECTABLE = 3;
 
-	private static final int ORIGIN_X = 236;
-	private static final int ORIGIN_Y = 238;
-	private static final int STEP_X = 54;
-	private static final int STEP_Y = 54;
+	private static final int ORIGIN_X = 244;
+	private static final int ORIGIN_Y = 247;
+	private static final int STEP_X = 55;
+	private static final int STEP_Y = 55;
 
 	private final HashMap<String, Node> tiles = new HashMap<String, Node>();
 
@@ -32,8 +32,9 @@ public class Board extends AnchorPane {
 	public Board() {
 		super();
 
-		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.8;
-		setPrefSize(screenHeight, screenHeight);
+//		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.63;
+//		setPrefSize(screenHeight, screenHeight);
+		setPrefSize(Metrics.BOARD_WIDTH, Metrics.BOARD_HEIGHT);
 		Image image = Resources.board();
 
 		BackgroundImage boardImg = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
