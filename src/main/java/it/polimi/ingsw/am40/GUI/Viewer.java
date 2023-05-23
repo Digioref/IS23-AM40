@@ -86,6 +86,7 @@ public class Viewer extends Application {
 	@Override
 	public void start(Stage stage) {
 		this.primaryStage = stage;
+		primaryStage.setResizable(false);
 		gui = this;
 //
 //		// -----------  setup page  -----------
@@ -340,7 +341,7 @@ public class Viewer extends Application {
 //		primaryStage.setFullScreen(true);
 		primaryStage.setTitle("MY SHELFIE LOGIN");
 		primaryStage.getIcons().add(Resources.icon());
-		primaryStage.setResizable(true);
+//		primaryStage.setResizable(true);
 		primaryStage.show();
 
 		b1.setOnAction(e -> {
@@ -404,7 +405,7 @@ public class Viewer extends Application {
 	}
 
 	public void newScene(Pane pane) {
-		scene = new Scene(pane, 500, 300);
+		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
 		primaryStage.setScene(scene);
 		primaryStage.setFullScreen(true);
 	}
@@ -547,7 +548,7 @@ public class Viewer extends Application {
 //		primaryStage.setFullScreen(true);
 		primaryStage.setTitle("MY SHELFIE CONNECTION");
 		primaryStage.getIcons().add(Resources.icon());
-		primaryStage.setResizable(true);
+//		primaryStage.setResizable(true);
 		primaryStage.show();
 
 		b1.setOnAction(e -> {
@@ -585,7 +586,7 @@ public class Viewer extends Application {
 //		primaryStage.setFullScreen(true);
 		primaryStage.setTitle("MY SHELFIE SETPLAYERS");
 		primaryStage.getIcons().add(Resources.icon());
-		primaryStage.setResizable(true);
+//		primaryStage.setResizable(true);
 		primaryStage.show();
 
 		b1.setOnAction(e -> {
@@ -655,24 +656,24 @@ public class Viewer extends Application {
 		newScene(pane);
 		setBackground(primaryStage, pane);
 //		pane.setPrefSize(Metrics.ROOT_WIDTH, Metrics.ROOT_HEIGHT);
-		System.out.println(Screen.getPrimary().getVisualBounds().getWidth());
-		System.out.println(Screen.getPrimary().getVisualBounds().getHeight());
+		System.out.println(primaryStage.getWidth());
+		System.out.println(primaryStage.getHeight());
 
-		bag = new Bag();
-		bag.relocate(85, 50);
+		bag = new Bag(primaryStage);
+		bag.relocate(primaryStage.getWidth()*Metrics.d_x_bag, primaryStage.getHeight()*Metrics.d_y_bag);
 		pane.getChildren().add(bag);
 
-		board = new Board();
-		board.relocate(310, 20);
+		board = new Board(primaryStage);
+		board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
 		pane.getChildren().add(board);
 
-		commandBoard = new CommandBoard();
-		commandBoard.relocate(1036, 30);
+		commandBoard = new CommandBoard(primaryStage);
+		commandBoard.relocate(primaryStage.getWidth()*Metrics.d_x_comb, primaryStage.getHeight()*Metrics.d_y_comb);
 		pane.getChildren().add(commandBoard);
 
-		bookshelf = new Bookshelf(Metrics.BOOKSHELF_WIDTH, Metrics.BOOKSHELF_HEIGHT);
-		bookshelf.relocate(980, 210);
-		bookshelf.createLabelName(104,42, 128, 306);
+		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight());
+		bookshelf.relocate(Metrics.d_x_bookpl*primaryStage.getWidth(), Metrics.d_y_bookpl*primaryStage.getHeight());
+		bookshelf.createLabelName(Metrics.dim_x_targetname*primaryStage.getWidth(),Metrics.dim_y_targetname*primaryStage.getHeight(), primaryStage.getWidth()*Metrics.dim_x_bookpl*Metrics.d_x_targetname, primaryStage.getHeight()*Metrics.dim_y_bookpl*Metrics.d_y_targetname);
 		bookshelf.setName(nickname);
 		pane.getChildren().add(bookshelf);
 
@@ -722,24 +723,24 @@ public class Viewer extends Application {
 		for (Integer i: map.keySet()) {
 			arr.add(i);
 		}
-		c1 = new CommonGoalGui(arr.get(0)-1);
-		c2 = new CommonGoalGui(arr.get(1)-1);
-		c1.relocate(25, 200);
-		c2.relocate(25, 410);
+		c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
+		c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
+		c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
+		c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
 		pane.getChildren().add(c1);
 		pane.getChildren().add(c2);
 	}
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
-		p = new PersonalGoal(number);
-		p.relocate(1360, 290);
+		p = new PersonalGoal(number, primaryStage);
+		p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
 		pane.getChildren().add(p);
 	}
 
 	public void setBoard(Map<String, String> map) {
 		if (board == null) {
-			board = new Board();
-			board.relocate(300, 20);
+			board = new Board(primaryStage);
+			board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
 			pane.getChildren().add(board);
 		}
 		for (String s: map.keySet()) {
@@ -784,19 +785,19 @@ public class Viewer extends Application {
 		if (bookshelves.size() == 0) {
 			int j = 0;
 			for (int i = 0; i < numPlayers - 1; i++) {
-				Bookshelf b = new Bookshelf(Metrics.OTHER_BOOKSHELF_WIDTH, Metrics.OTHER_BOOKSHELF_HEIGHT);
+				Bookshelf b = new Bookshelf(Metrics.dim_x_book*primaryStage.getWidth(), Metrics.dim_y_book*primaryStage.getHeight());
 				bookshelves.add(b);
 				pane.getChildren().add(bookshelves.get(i));
-				bookshelves.get(i).createLabelName(79,32, 97, 233);
+				bookshelves.get(i).createLabelName(Metrics.dim_x_label*primaryStage.getWidth(),Metrics.dim_y_label*primaryStage.getHeight(), Metrics.dim_x_book*Metrics.d_x_label* primaryStage.getWidth(), Metrics.dim_y_book*Metrics.d_y_label*primaryStage.getHeight());
 				switch (numPlayers) {
 					case 2:
-						bookshelves.get(i).relocate(631, 580);
+						bookshelves.get(i).relocate(Metrics.d_x_book2*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 					case 3:
-						bookshelves.get(i).relocate(329+(329+274)*i, 580);
+						bookshelves.get(i).relocate(((329+(329+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 					case 4:
-						bookshelves.get(i).relocate(178+(178+274)*i, 580);
+						bookshelves.get(i).relocate(((178+(178+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 				}
 				if (names.get(j).equals(nickname)) {
@@ -806,6 +807,10 @@ public class Viewer extends Application {
 				j++;
 			}
 		}
+	}
+
+	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
+		this.board.clearUpdate(map, arr, board);
 	}
 }
 

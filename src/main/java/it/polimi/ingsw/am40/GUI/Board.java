@@ -2,7 +2,9 @@ package it.polimi.ingsw.am40.GUI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
+import it.polimi.ingsw.am40.Model.Position;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
@@ -14,29 +16,28 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
-import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 public class Board extends AnchorPane {
 
 	private static final int MAX_SELECTABLE = 3;
 
-	private static final double ORIGIN_X = 244.0/1536.0;
-	private static final double ORIGIN_Y = 247.0/864.0	;
-	private static final double STEP_X = 55.0/1536.0;
-	private static final double STEP_Y = 55.0/864.0;
+	private static double ORIGIN_X = 244.0;
+	private static double ORIGIN_Y = 246.0;
+	private static double STEP_X = 55.0;
+	private static double STEP_Y = 55.0;
 
-	private final HashMap<String, Node> tiles = new HashMap<String, Node>();
+	private final HashMap<String, Node> tiles = new HashMap<>();
 
-	private final ArrayList<String> selected = new ArrayList<String>();
+	private final ArrayList<String> selected = new ArrayList<>();
 
-	public Board() {
+	public Board(Stage primaryStage) {
 		super();
 
 //		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.63;
 //		setPrefSize(screenHeight, screenHeight);
-//		setPrefSize(Metrics.BOARD_WIDTH, Metrics.BOARD_HEIGHT);
-		setWidth(Metrics.BOARD_WIDTH);
-		setHeight(Metrics.BOARD_HEIGHT);
+		setPrefSize(Metrics.dim_x_board*primaryStage.getWidth(), Metrics.dim_y_board*primaryStage.getHeight());
+
 		Image image = Resources.board();
 
 		BackgroundImage boardImg = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -45,6 +46,10 @@ public class Board extends AnchorPane {
 
 		setBackground(new Background(boardImg));
 		setEffect(new DropShadow(20, Color.WHITE));
+		setOriginX((ORIGIN_X/1536.0)* primaryStage.getWidth());
+		setOriginY((ORIGIN_Y/864.0)*primaryStage.getHeight());
+		setStepX((STEP_X/1536)* primaryStage.getWidth());
+		setStepY((STEP_Y/864.0)* primaryStage.getHeight());
 	}
 
 	void place(Tile tile) {
@@ -100,29 +105,53 @@ public class Board extends AnchorPane {
 		}
 		return node;
 	}
+	public void clearUpdate(Map<String, String> map, ArrayList<Position> selected, Map<String, String> board) {
+		getChildren().clear();
+		tiles.clear();
+		selected.clear();
+		for (String s: board.keySet()) {
+			if (!board.get(s).equals("NOCOLOR")) {
+				Tile t = new Tile(board.get(s));
+				t.setPosition(s);
+				place(t);
+			}
+		}
+		for (Position p: selected) {
+			int x = p.getX();
+			int y = p.getY();
+			String key = hashkey(x, y);
+			this.selected.add(key);
+			Tile t = (Tile) tiles.get(key);
+			t.setSelected();
+		}
+		for (String s: map.keySet()) {
+			Position p = new Position();
+			p.convertKey(s);
+			int x = p.getX();
+			int y = p.getY();
+			String key = hashkey(x, y);
+			Tile t = (Tile) tiles.get(key);
+			t.setPickable(true);
+		}
+	}
 
 	private String hashkey(int x, int y) {
 		return new String("tile_" + x + "_" + y);
 	}
 
-	@Override
-	public void resize(double width, double height) {
-		if (width != 0) {
-			setWidth(width);
-			if (!tiles.isEmpty()) {
-				for (String s: tiles.keySet()) {
-					tiles.get(s).resize(width, 0);
-				}
-			}
-		}
-		if (height != 0) {
-			setHeight(height);
-			if (!tiles.isEmpty()) {
-				for (String s: tiles.keySet()) {
-					tiles.get(s).resize(0, height);
-				}
-			}
-		}
+	public static void setOriginX(double originX) {
+		ORIGIN_X = originX;
+	}
 
+	public static void setOriginY(double originY) {
+		ORIGIN_Y = originY;
+	}
+
+	public static void setStepX(double stepX) {
+		STEP_X = stepX;
+	}
+
+	public static void setStepY(double stepY) {
+		STEP_Y = stepY;
 	}
 }

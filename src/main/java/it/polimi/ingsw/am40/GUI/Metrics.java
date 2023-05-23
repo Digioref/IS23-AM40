@@ -76,5 +76,9 @@ public class Metrics {
 	public static final double dim_y_label = 32.0/864.0;
 	public static final double dim_x_tile = 49.0/1536.0;
 	public static final double dim_y_tile = 49.0/864.0;
+	public static final double dim_x_comb = 247.0/1536.0;
+	public static final double dim_y_comb = 110.0/864.0;
+	public static final double d_x_comb = 1036.0/1536.0;
+	public static final double d_y_comb = 30.0/864.0;
 
 }

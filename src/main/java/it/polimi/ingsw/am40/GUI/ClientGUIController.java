@@ -68,7 +68,7 @@ public class ClientGUIController implements View {
 
     @Override
     public void showBoardPickable(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
-
+        runLater(()->gui.setPickableTiles(map, arr, board));
     }
 
     @Override

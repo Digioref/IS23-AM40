@@ -29,7 +29,7 @@ public class Bookshelf extends AnchorPane {
 	private Node node;
 	private ArrayList<Node> nodeList;
 	private Point2D velocity;
-	public Bookshelf(int w, int h) {
+	public Bookshelf(double w, double h) {
 		super();
 
 //		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
@@ -108,7 +108,7 @@ public class Bookshelf extends AnchorPane {
 		this.colIndex = col;
 		animTimer.start();
 	}
-	public void createLabelName(int w, int h, int x, int y) {
+	public void createLabelName(double w, double h, double x, double y) {
 		labelName = new StackPane();
 		Image image = Resources.labelName();
 		ImageView view = new ImageView(image);

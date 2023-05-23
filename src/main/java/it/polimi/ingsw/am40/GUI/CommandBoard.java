@@ -19,6 +19,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 public class CommandBoard extends AnchorPane {
 	private static final int TILES = 3;
@@ -35,9 +36,9 @@ public class CommandBoard extends AnchorPane {
 	private TileRect[] tiles = new TileRect[TILES];
 	private LabelPos[] labels = new LabelPos[TILES];
 
-	public CommandBoard() {
+	public CommandBoard(Stage primaryStage) {
 		super();
-		setPrefSize(Metrics.COMMAND_BOARD_WIDTH, Metrics.COMMAND_BOARD_HEIGHT);
+		setPrefSize(Metrics.dim_x_comb* primaryStage.getWidth(), Metrics.dim_y_comb*primaryStage.getHeight());
 
 		Image image = Resources.background();
 
@@ -56,11 +57,11 @@ public class CommandBoard extends AnchorPane {
 
 		for (int i = 0; i < TILES; i++) {
 			tiles[i] = new TileRect(i);
-			tiles[i].relocate(TILE_LEFT_OFFSET + (i * (TILE_LEFT_OFFSET + Metrics.TILE_WIDTH)), TILE_TOP_OFFSET);
+			tiles[i].relocate(((TILE_LEFT_OFFSET + (i * (TILE_LEFT_OFFSET + Metrics.TILE_WIDTH)))/1536.0)* primaryStage.getWidth(), (TILE_TOP_OFFSET/864.0)*primaryStage.getHeight());
 
 			labels[i] = new LabelPos();
 			labels[i].setEmpty();
-			labels[i].relocate(LABEL_LEFT_OFFSET + (i * (Metrics.TILE_WIDTH + LABEL_SIZE_WIDTH)), LABEL_TOP_OFFSET);
+			labels[i].relocate(((LABEL_LEFT_OFFSET + (i * (Metrics.TILE_WIDTH + LABEL_SIZE_WIDTH)))/1536.0)* primaryStage.getWidth(), (LABEL_TOP_OFFSET/864.0)* primaryStage.getHeight());
 
 			getChildren().add(tiles[i]);
 			getChildren().add(labels[i]);

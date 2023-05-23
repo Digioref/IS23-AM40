@@ -73,10 +73,13 @@ public class SocketClient extends Client {
                 fromUser.interrupt();
             }
             fromServer.interrupt();
-            socket.shutdownInput();
-            socket.shutdownOutput();
-            socket.close();
+            if (!socket.isClosed()) {
+                socket.shutdownInput();
+                socket.shutdownOutput();
+                socket.close();
+            }
             stdIn.close();
+            System.exit(0);
 //            LaunchClient.getView().quit(nickname);
         } catch (IOException e) {
             throw new RuntimeException(e);
