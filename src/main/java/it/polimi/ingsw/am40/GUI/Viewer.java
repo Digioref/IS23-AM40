@@ -659,12 +659,10 @@ public class Viewer extends Application {
 		System.out.println(Screen.getPrimary().getVisualBounds().getHeight());
 
 		bag = new Bag();
-		bag.relocate(Metrics.d_x_bag*primaryStage.getWidth(), Metrics.dim_y_bag*primaryStage.getHeight());
-		bag.resize(primaryStage.getWidth(), primaryStage.getHeight());
+		bag.relocate(85, 50);
 		pane.getChildren().add(bag);
 
 		board = new Board();
-		board.resize(primaryStage.getWidth(), primaryStage.getHeight());
 		board.relocate(310, 20);
 		pane.getChildren().add(board);
 
@@ -717,61 +715,7 @@ public class Viewer extends Application {
 		});
 		pane.getChildren().add(arrowRight);
 
-		resize();
-
 	}
-
-	private void resize() {
-		final double[] x = {primaryStage.getWidth()};
-		final double[] y = {primaryStage.getHeight()};
-		final boolean[] widthResized = {false};
-		final boolean[] heightResized = {false};
-
-		primaryStage.widthProperty().addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-			x[0] = t1.doubleValue();
-			widthResized[0] = true;
-			update(x[0], y[0], widthResized, heightResized);
-		});
-
-		primaryStage.heightProperty().addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-			y[0] = t1.doubleValue();
-			heightResized[0] = true;
-			update(x[0], y[0], widthResized, heightResized);
-		});
-	}
-
-	private void update(double width, double height, boolean[] widthResized, boolean[] heightResized) {
-		if (widthResized[0] && heightResized[0]) {
-			// Resize in entrambe le dimensioni
-			bag.resize(width, height);
-			c1.resize(width, height);
-			c2.resize(width, height);
-			c1.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm1*height);
-			c2.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm2*height);
-			bag.relocate(Metrics.d_x_bag * width, Metrics.d_y_bag * height);
-		} else if (widthResized[0]) {
-			// Resize solo nella larghezza
-			bag.resize(width,0);
-			c1.resize(width, 0);
-			c2.resize(width, 0);
-			c1.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm1*height);
-			c2.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm2*height);
-			bag.relocate(Metrics.d_x_bag * width, Metrics.d_y_bag * height);
-		} else if (heightResized[0]) {
-			// Resize solo nell'altezza
-			bag.resize(0, height);
-			c1.resize(0, height);
-			c2.resize(0, height);
-			c1.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm1*height);
-			c2.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm2*height);
-			bag.relocate(Metrics.d_x_bag * width, Metrics.d_y_bag * height);
-		}
-
-		// Reset dei flag di resize
-		widthResized[0] = false;
-		heightResized[0] = false;
-	}
-
 
 	public void setCommonGoal(Map<Integer, Integer> map) {
 		ArrayList<Integer> arr = new ArrayList<>();
@@ -780,8 +724,8 @@ public class Viewer extends Application {
 		}
 		c1 = new CommonGoalGui(arr.get(0)-1);
 		c2 = new CommonGoalGui(arr.get(1)-1);
-		c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
-		c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
+		c1.relocate(25, 200);
+		c2.relocate(25, 410);
 		pane.getChildren().add(c1);
 		pane.getChildren().add(c2);
 	}

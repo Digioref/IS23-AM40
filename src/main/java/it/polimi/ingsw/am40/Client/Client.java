@@ -223,9 +223,7 @@ public abstract class Client {
                 break;
             case "Ping":
                 sendPong();
-                if (ping != null) {
-                    ping.shutdownNow();
-                }
+                ping.shutdownNow();
                 numPing = 0;
                 startPing();
                 break;
