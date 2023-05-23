@@ -5,14 +5,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Bag extends Label {
+	private ImageView view;
 
 	public Bag() {
 		super();
 		Image image = Resources.bag();
-		ImageView view = new ImageView(image);
+		view = new ImageView(image);
 		view.setPreserveRatio(true);
 		view.setFitWidth(Metrics.BAG_WIDTH);
 		view.setFitHeight(Metrics.BAG_HEIGHT);
 		setGraphic(view);
+	}
+
+	public ImageView getView() {
+		return view;
+	}
+	public void resize(double width, double height) {
+		view.setFitWidth(width * Metrics.dim_x_bag);
+		view.setFitHeight(height * Metrics.dim_y_bag);
 	}
 }

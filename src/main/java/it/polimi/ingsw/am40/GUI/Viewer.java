@@ -8,6 +8,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -315,7 +317,7 @@ public class Viewer extends Application {
 	public void setUsername() {
 //		primaryStage.close();
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -561,7 +563,7 @@ public class Viewer extends Application {
 
 	public void setplayers() {
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -644,7 +646,7 @@ public class Viewer extends Application {
 
 	public void startGame() {
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -657,7 +659,9 @@ public class Viewer extends Application {
 		System.out.println(Screen.getPrimary().getVisualBounds().getHeight());
 
 		bag = new Bag();
-		bag.relocate(85, 50);
+		bag.relocate(Metrics.d_x_bag*primaryStage.getWidth(), Metrics.dim_y_bag*primaryStage.getHeight());
+		bag.getView().setFitWidth(Metrics.dim_x_bag*primaryStage.getWidth());
+		bag.getView().setFitHeight(Metrics.dim_y_bag*primaryStage.getHeight());
 		pane.getChildren().add(bag);
 
 		board = new Board();
@@ -713,7 +717,50 @@ public class Viewer extends Application {
 		});
 		pane.getChildren().add(arrowRight);
 
+		resize();
+
 	}
+
+	private void resize() {
+		final double[] x = {primaryStage.getWidth()};
+		final double[] y = {primaryStage.getHeight()};
+		final boolean[] widthResized = {false};
+		final boolean[] heightResized = {false};
+
+		primaryStage.widthProperty().addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+			x[0] = t1.doubleValue();
+			widthResized[0] = true;
+			update(x[0], y[0], widthResized, heightResized);
+		});
+
+		primaryStage.heightProperty().addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+			y[0] = t1.doubleValue();
+			heightResized[0] = true;
+			update(x[0], y[0], widthResized, heightResized);
+		});
+	}
+
+	private void update(double width, double height, boolean[] widthResized, boolean[] heightResized) {
+		if (widthResized[0] && heightResized[0]) {
+			// Resize in entrambe le dimensioni
+			bag.resize(width, height);
+
+			bag.relocate(Metrics.d_x_bag * width, Metrics.d_y_bag * height);
+		} else if (widthResized[0]) {
+			// Resize solo nella larghezza
+			bag.getView().setFitWidth(width * Metrics.dim_x_bag);
+			bag.relocate(Metrics.d_x_bag * width, Metrics.d_y_bag * height);
+		} else if (heightResized[0]) {
+			// Resize solo nell'altezza
+			bag.getView().setFitHeight(height * Metrics.dim_y_bag);
+			bag.relocate(Metrics.d_x_bag * width, Metrics.d_y_bag * height);
+		}
+
+		// Reset dei flag di resize
+		widthResized[0] = false;
+		heightResized[0] = false;
+	}
+
 
 	public void setCommonGoal(Map<Integer, Integer> map) {
 		ArrayList<Integer> arr = new ArrayList<>();

@@ -36,4 +36,10 @@ public class Metrics {
 	public static final int COMMON_GOAL_HEIGHT = 200;
 	public static final int OTHER_BOOKSHELF_WIDTH = 274;
 	public static final int OTHER_BOOKSHELF_HEIGHT = 274;
+
+	public static final double d_x_bag = 85.0/1536.0;
+	public static final double d_y_bag = 50.0/864.0;
+	public static final double dim_x_bag = 130.0/1536.0;
+	public static final double dim_y_bag = 130.0/864.0;
+
 }
