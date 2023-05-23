@@ -5,14 +5,12 @@ import java.util.Map;
 import java.util.Random;
 
 import it.polimi.ingsw.am40.CLI.View;
-import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.Client.SocketClient;
 import it.polimi.ingsw.am40.Model.Position;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -24,7 +22,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -37,7 +37,7 @@ public class ViewController extends AnchorPane implements View {
 
 	private static final int ARROWS_DOWN = 5;
 	private final CommandBoard commandBoard = new CommandBoard();
-	private final Bookshelf bookshelf = new Bookshelf();
+	private Bookshelf bookshelf;
 	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
 	private final ArrayList<Arrow> arrowDownList = new ArrayList<Arrow>();
 	private final Board board = new Board();
@@ -80,9 +80,10 @@ public class ViewController extends AnchorPane implements View {
 
 
 		Text text = new Text("Scegli un tipo di connessione bro");
-		// Font font1 = loadFont("font_connessione.ttf", 20);
+		// ing conti salvaci tuu
+		//Font font1 = loadFont(getClass().getResource("font_connessione.ttf").toExternalForm(), 20);
 		//text.setFont(font1);
-		text.setFont(Font.font(25));
+		// text.setFont(Font.font(25));
 		vbox.getChildren().add(text);
 
 		//Background background_bottoni = new Background(bgImg);
@@ -115,11 +116,13 @@ public class ViewController extends AnchorPane implements View {
 		Background bg_conferma_pulsante = new Background(bgImg_per_pulsanti);
 
 		Button conferma = new Button("READY?!");
+		conferma.setFont(Font.font("Arial", FontWeight.BOLD,35));
 
 		//conferma.getStyleClass().add("conferma");
 
-		conferma.setFont(Font.font(20));
+		//conferma.setFont(Font.font(20));
 		conferma.setBackground(bg_conferma_pulsante);
+		conferma.setStyle("-fx-border-radius: 20;");
 
 		Button button = new Button("CONTINUA");
 
@@ -164,6 +167,7 @@ public class ViewController extends AnchorPane implements View {
 				vbox.getChildren().add(button);
 			} else {
 				text.setText("Devi selezionare un indirizzo ip se no non ti mando avanti");
+				text.setFill(Color.RED);
 				//////////////////////////////////////////////////////////////////////////////////////////////////////// da rendere rosso con FONT
 			}
 		});
@@ -422,7 +426,7 @@ public class ViewController extends AnchorPane implements View {
 	}
 
 	@Override
-	public void showPersonalGoal(Map<String, String> map) {
+	public void showPersonalGoal(Map<String, String> map, int number) {
 
 	}
 
@@ -490,6 +494,31 @@ public class ViewController extends AnchorPane implements View {
 
 	@Override
 	public void quit(String nickname) {
+
+	}
+
+	@Override
+	public void setplayers() {
+
+	}
+
+	@Override
+	public void waitLobby() {
+
+	}
+
+	@Override
+	public void showSuggestedNicknames(String s, ArrayList<String> array4) {
+
+	}
+
+	@Override
+	public void showError(String error) {
+
+	}
+
+	@Override
+	public void showGame() {
 
 	}
 

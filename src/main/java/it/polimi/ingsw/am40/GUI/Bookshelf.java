@@ -20,43 +20,34 @@ public class Bookshelf extends AnchorPane {
 	private static final int[] rowEnd = { 264, 216, 168, 120, 72, 24 };
 	private final int[] bookshelf = { 0, 0, 0, 0, 0, 0 };
 	private final Label bsImage;
-	private final StackPane labelName;
+	private StackPane labelName;
 	private final AnimationTimer animTimer;
-	private final Text labelText;
+	private Text labelText;
 	private int col;
 	private int colIndex;
 	private int depth;
 	private Node node;
 	private ArrayList<Node> nodeList;
 	private Point2D velocity;
-	public Bookshelf() {
+	public Bookshelf(int w, int h) {
 		super();
 
-		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
-		setPrefSize(screenHeight, screenHeight);
+//		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
+//		setPrefSize(screenHeight, screenHeight);
+		setPrefSize(w, h);
 
 		bsImage = new Label();
 		Image image = Resources.bookshelf();
 		ImageView view = new ImageView(image);
 		view.setPreserveRatio(true);
-		view.setFitWidth(screenHeight);
-		view.setFitHeight(screenHeight);
+//		view.setFitWidth(screenHeight);
+//		view.setFitHeight(screenHeight);
+		view.setFitWidth(w);
+		view.setFitHeight(h);
 		bsImage.setGraphic(view);
 
 		getChildren().add(bsImage);
 
-		labelName = new StackPane();
-		image = Resources.labelName();
-		view = new ImageView(image);
-		view.setPreserveRatio(true);
-		view.setFitWidth(90);
-		view.setFitHeight(36);
-		labelText = new Text("");
-		labelName.getChildren().add(view);
-		labelName.getChildren().add(labelText);
-		labelName.setAlignment(Pos.CENTER);
-		//labelName.relocate(132, 316);
-		getChildren().add(labelName);
 
 		/* Animation timer */
 		animTimer = new AnimationTimer() {
@@ -116,6 +107,20 @@ public class Bookshelf extends AnchorPane {
 		this.col = colStart[col];
 		this.colIndex = col;
 		animTimer.start();
+	}
+	public void createLabelName(int w, int h, int x, int y) {
+		labelName = new StackPane();
+		Image image = Resources.labelName();
+		ImageView view = new ImageView(image);
+		view.setPreserveRatio(true);
+		view.setFitWidth(w);
+		view.setFitHeight(h);
+		labelText = new Text("");
+		labelName.getChildren().add(view);
+		labelName.getChildren().add(labelText);
+		labelName.setAlignment(Pos.CENTER);
+		labelName.relocate(x, y);
+		getChildren().add(labelName);
 	}
 
 	int getFreeSpace(int column) {

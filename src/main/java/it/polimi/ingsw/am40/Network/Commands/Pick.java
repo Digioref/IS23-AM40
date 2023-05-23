@@ -15,7 +15,7 @@ public class Pick implements ICommand {
         if (comm.size() == 0) {
             c.executeCommand(ActionType.PICK, null);
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command pick doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command pick doesn't want arguments!"));
         }
     }
 }

@@ -69,7 +69,9 @@ public class SocketClient extends Client {
         stop = true;
         quitchat = true;
         try {
-            fromUser.interrupt();
+            if (fromUser != null) {
+                fromUser.interrupt();
+            }
             fromServer.interrupt();
             socket.shutdownInput();
             socket.shutdownOutput();

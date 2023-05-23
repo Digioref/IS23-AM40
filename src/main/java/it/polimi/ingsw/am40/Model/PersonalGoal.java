@@ -22,6 +22,7 @@ public class PersonalGoal {
      * An array of colours representing the colours of the tiles in the specific positions contained in the array pos
      */
     private ArrayList<TileColor> color;
+    private int key;
 
     /**
      * Constructor that builds the class using a json file and an index k
@@ -30,6 +31,7 @@ public class PersonalGoal {
     public PersonalGoal(int k) {
         pos = new ArrayList<>(6);
         color = new ArrayList<>(6);
+        key = k;
 /*
         JSONParser jsonParser = new JSONParser();
         FileReader reader;
@@ -170,5 +172,9 @@ public class PersonalGoal {
         }
 
         return "PersonalGoal";
+    }
+
+    public int getKey() {
+        return key;
     }
 }

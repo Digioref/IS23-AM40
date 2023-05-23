@@ -39,12 +39,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     @Override
     public void login(String s, RMIClientInterface client) throws RemoteException {
         if (s.equals("")) {
-            client.receive(JSONConverterStoC.normalMessage("Incomplete command, you must specify your nickname!"));
+            client.receive(JSONConverterStoC.createJSONError("Incomplete command, you must specify your nickname!"));
             return;
         }
         for (String t: clientHandlers.keySet()) {
             if(clientHandlers.get(t).getRmiClient().equals(client)) {
-                client.receive(JSONConverterStoC.normalMessage("You are already logged in!"));
+                client.receive(JSONConverterStoC.createJSONError("You are already logged in!"));
                 return;
             }
         }
@@ -57,13 +57,14 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
                     r.setLogged(true);
                     clientHandlers.put(s, r);
                     client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
-                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby..."));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Waiting"));
                     lobby.addQueue(r);
                     lobby.addNickname(s);
                     if (!lobby.getQueue().isEmpty() && lobby.getQueue().get(0).getNickname().equals(r.getNickname())) {
                         r.setLogphase(LoggingPhase.SETTING);
                         LoggingPhase.setSETPLAYERS(true);
-                        clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You can set the number of players you want to play with:"));
+                        clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
                     }
                     rmiHandlers.remove(r);
                     break;
@@ -86,9 +87,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         } else {
             for (RMIClientHandler r: rmiHandlers) {
                 if (r.getRmiClient().equals(client)) {
-                    if (!(r.getLobby().getGames().containsKey(s)) || (r.getLobby().getGames().containsKey(s) && !r.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s))) {
-                        client.receive(JSONConverterStoC.normalMessage("The nickname you desire is already in use! Please type another nickname:"));
-                        client.receive(JSONConverterStoC.normalMessage("You can choose one of the following nicknames, if you want"));
+                    if ((!(r.getLobby().getGames().containsKey(s)) && r.getLobby().getNicknameInGame().contains(s)) || (r.getLobby().getGames().containsKey(s) && !r.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s))) {
+                        client.receive(JSONConverterStoC.createJSONError("The nickname you desire is already in use! Please type another nickname:"));
+//                        client.receive(JSONConverterStoC.normalMessage("You can choose one of the following nicknames, if you want"));
                         suggestNickname(s, client);
                         break;
                     } else if (r.getLobby().getGames().containsKey(s) && r.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s)) {

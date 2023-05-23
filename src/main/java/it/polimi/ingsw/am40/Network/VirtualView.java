@@ -206,7 +206,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void selectionTurnError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("It's not the SELECTION phase!"));
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not the SELECTION phase!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -215,7 +215,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void selectionError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("This tile can't be selected!"));
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("This tile can't be selected!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -224,7 +224,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void removingTurnError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("It's not the REMOVE phase, you have already picked up the tiles you selected!"));
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not the REMOVE phase, you have already picked up the tiles you selected!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -233,7 +233,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void pickingTurnError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("It's not the PICK phase!"));
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not the PICK phase!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -242,7 +242,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void orderingTurnError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("It's not the ORDER phase!"));
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not the ORDER phase!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -251,7 +251,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void orderingError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("The order specified is not compatible with the number of tiles picked!"));
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("The order specified is not compatible with the number of tiles picked!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -260,7 +260,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void insertTurnError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("It's not the INSERT phase!"));
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not the INSERT phase!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -269,7 +269,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void turnError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("It's not your turn!"));
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not your turn!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -278,7 +278,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void insertError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("The column you selected is full!"));
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("The column you selected is full!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -287,7 +287,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void chatError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.normalMessage("The player you want to send the message is not in this game!"));
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("The player you want to send the message is not in this game!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

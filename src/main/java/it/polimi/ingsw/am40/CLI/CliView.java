@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CliView implements View{
@@ -252,7 +251,7 @@ public class CliView implements View{
         }
     }
 
-    public void showPersonalGoal(Map<String, String> map) {
+    public void showPersonalGoal(Map<String, String> map, int number) {
         System.out.println(" Here you can see your Personal Goal\n");
         for (int i = 5; i >= 0 ; i--) {
             for (int j = 0; j < 5; j++) {
@@ -501,6 +500,35 @@ public class CliView implements View{
             printMessage("Client closed!");
         }
     }
+
+    @Override
+    public void setplayers() {
+        printMessage("The number of players you want to play with: ");
+    }
+
+    @Override
+    public void waitLobby() {
+        printMessage("Waiting in the lobby.....");
+    }
+
+    @Override
+    public void showSuggestedNicknames(String s, ArrayList<String> array4) {
+        printMessage(s);
+        for (String t: array4) {
+            printMessage(t);
+        }
+    }
+
+    @Override
+    public void showError(String error) {
+        System.out.println(color.red() + error + color.rst());
+    }
+
+    @Override
+    public void showGame() {
+        System.out.println(color.green() + "Game is being created" + color.rst());
+    }
+
 
     //    public void showBoard() {
 //        for (int row = 4; row > -5; row--) {

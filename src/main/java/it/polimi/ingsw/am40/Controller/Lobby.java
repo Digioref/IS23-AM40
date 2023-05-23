@@ -34,7 +34,9 @@ public class Lobby implements Runnable {
                 c = queue.remove(0);
                 activePlayers.add(c);
                 try {
-                    c.sendMessage(JSONConverterStoC.normalMessage("You are playing with " + numPlayers + " players!"));
+                    if (numPlayers != 0) {
+                        c.sendMessage(JSONConverterStoC.normalMessage("You are playing with " + numPlayers + " players!"));
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -86,7 +88,7 @@ public class Lobby implements Runnable {
     public void create() {
         System.out.println("Creating game...");
         Game g = new Game(numPlayers);
-        Controller c = new Controller(g);
+        Controller c = new Controller(g, this);
         for (Handlers cl : activePlayers) {
             g.addPlayer(new Player(cl.getNickname()));
             cl.setController(c);
@@ -95,6 +97,11 @@ public class Lobby implements Runnable {
             cl.setLogphase(LoggingPhase.INGAME);
             g.register(v);
             games.put(cl.getNickname(), c.getGameController());
+            try {
+                cl.sendMessage(JSONConverterStoC.normalMessage("Game"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         numPlayers = 0;
         activePlayers.clear();
@@ -103,7 +110,7 @@ public class Lobby implements Runnable {
         LoggingPhase.setSETPLAYERS(false);
         try {
             if (!queue.isEmpty()) {
-                queue.get(0).sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with:"));
+                queue.get(0).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
                 queue.get(0).setLogphase(LoggingPhase.SETTING);
                 LoggingPhase.setSETPLAYERS(true);
             }
@@ -139,6 +146,20 @@ public class Lobby implements Runnable {
                 queue.remove(c);
             }
             if (activePlayers.contains(c)) {
+                if (activePlayers.indexOf(c) == 0) {
+                    numPlayers = 0;
+                    try {
+                        if (activePlayers.size() > 1) {
+                            activePlayers.get(1).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
+                            LoggingPhase.setSETPLAYERS(true);
+                            activePlayers.get(1).setLogphase(LoggingPhase.SETTING);
+                        } else {
+                            LoggingPhase.setSETPLAYERS(false);
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 activePlayers.remove(c);
                 nicknameInGame.remove(c.getNickname());
                 for (Handlers cl: activePlayers) {

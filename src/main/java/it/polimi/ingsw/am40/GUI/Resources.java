@@ -222,6 +222,43 @@ public class Resources {
 		return loadImage(imageFile);
 	}
 
+	public static Image tile(String type, int index) {
+
+		String imageFile;
+
+		imageFile = Resources.resourcesPath;
+		imageFile += Resources.pathSeparator;
+		imageFile += Resources.tilesPath;
+		imageFile += Resources.pathSeparator;
+
+		index %= 3;
+
+		switch (type) {
+		case "BLUE":
+			imageFile += tileFrameFile[index];
+			break;
+		case "GREEN":
+			imageFile += tileCatFile[index];
+			break;
+		case "YELLOW":
+			imageFile += tileGameFile[index];
+			break;
+		case "WHITE":
+			imageFile += tileBookFile[index];
+			break;
+		case "VIOLET":
+			imageFile += tileFlowerFile[index];
+			break;
+		case "CYAN":
+			imageFile += tileTrophyFile[index];
+			break;
+			default:
+				break;
+		}
+
+		return loadImage(imageFile);
+	}
+
 	public static Image tile(int type, int index) {
 
 		String imageFile;
@@ -234,24 +271,26 @@ public class Resources {
 		index %= 3;
 
 		switch (type) {
-		case TILE_TYPE_FRAME:
-			imageFile += tileFrameFile[index];
-			break;
-		case TILE_TYPE_CAT:
-			imageFile += tileCatFile[index];
-			break;
-		case TILE_TYPE_GAME:
-			imageFile += tileGameFile[index];
-			break;
-		case TILE_TYPE_BOOK:
-			imageFile += tileBookFile[index];
-			break;
-		case TILE_TYPE_FLOWER:
-			imageFile += tileFlowerFile[index];
-			break;
-		case TILE_TYPE_TROPHY:
-			imageFile += tileTrophyFile[index];
-			break;
+			case TILE_TYPE_FRAME:
+				imageFile += tileFrameFile[index];
+				break;
+			case TILE_TYPE_CAT:
+				imageFile += tileCatFile[index];
+				break;
+			case TILE_TYPE_GAME:
+				imageFile += tileGameFile[index];
+				break;
+			case TILE_TYPE_BOOK:
+				imageFile += tileBookFile[index];
+				break;
+			case TILE_TYPE_FLOWER:
+				imageFile += tileFlowerFile[index];
+				break;
+			case TILE_TYPE_TROPHY:
+				imageFile += tileTrophyFile[index];
+				break;
+			default:
+				break;
 		}
 
 		return loadImage(imageFile);

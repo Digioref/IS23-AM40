@@ -71,7 +71,7 @@ public class RMIClient extends Client implements RMIClientInterface {
                                 if (line.equals("chat")) {
                                     startChat();
                                 } else {
-                                    parseMessageIn(line);
+                                    sendMessage(line);
                                 }
                             } catch (IOException e) {
                                 close();
@@ -90,22 +90,22 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
 
-    public void parseMessageIn(String line) {
-        String[] command = line.split("\\s");
+    public void sendMessage(String s) {
+        String[] command = s.split("\\s");
         JSONConverterCtoS jconv = new JSONConverterCtoS();
-        jconv.toJSON(line);
+        jconv.toJSON(s);
         switch (command[0]) {
             case "login":
-                String s = "";
+                String s1 = "";
                 try {
                     for (int i = 1; i < command.length; i++) {
-                        if (s.equals("")) {
-                            s = command[i];
+                        if (s1.equals("")) {
+                            s1 = command[i];
                         } else {
-                            s = s + " " + command[i];
+                            s1 = s1 + " " + command[i];
                         }
                     }
-                    stub.login(s, this);
+                    stub.login(s1, this);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }

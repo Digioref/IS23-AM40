@@ -86,7 +86,7 @@ public abstract class Client {
                     map2.put(p.getKey(), obj.get("color").toString());
                 }
                 if (!inChat) {
-                    LaunchClient.getView().showPersonalGoal(map2);
+                    LaunchClient.getView().showPersonalGoal(map2, Integer.parseInt(object.get("Number").toString()));
                 }
                 state.savePersonalGoal(map2);
                 break;
@@ -227,6 +227,24 @@ public abstract class Client {
                 numPing = 0;
                 startPing();
                 break;
+            case "Setplayers":
+                LaunchClient.getView().setplayers();
+                break;
+            case "Waiting":
+                LaunchClient.getView().waitLobby();
+                break;
+            case "Suggest":
+                JSONArray arr16 = (JSONArray) object.get("Nicknames");
+                ArrayList<String> array4 = new ArrayList<>(arr16);
+                String s = (String) object.get("Phrase");
+                LaunchClient.getView().showSuggestedNicknames(s, array4);
+                break;
+            case "Error":
+                LaunchClient.getView().showError((String) object.get("Error"));
+                break;
+            case "Game":
+                LaunchClient.getView().showGame();
+                break;
             default:
                 if (!inChat) {
                     LaunchClient.getView().printMessage(command);
@@ -237,4 +255,5 @@ public abstract class Client {
     public abstract void close();
     public abstract void sendPong();
     public abstract void startPing();
+    public abstract void sendMessage(String s);
 }

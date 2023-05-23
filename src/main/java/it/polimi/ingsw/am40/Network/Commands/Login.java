@@ -23,9 +23,9 @@ public class Login implements ICommand {
                 }
             }
             if (c.checkNickname(s)) {
-                if (!c.getLobby().getGames().containsKey(s) || (c.getLobby().getGames().containsKey(s) && !c.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s))) {
-                    c.sendMessage(JSONConverterStoC.normalMessage("Nickname already used!"));
-                    c.sendMessage(JSONConverterStoC.normalMessage("What about these nicknames:"));
+                if ((!c.getLobby().getGames().containsKey(s) && c.getLobby().getNicknameInGame().contains(s)) || (c.getLobby().getGames().containsKey(s) && !c.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s))) {
+                    c.sendMessage(JSONConverterStoC.createJSONError("Nickname already used!"));
+//                    c.sendMessage(JSONConverterStoC.normalMessage("What about these nicknames:"));
                     c.suggestNickname(s);
                 } else if (c.getLobby().getGames().containsKey(s) && c.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s)) {
                     c.sendMessage(JSONConverterStoC.normalMessage("Welcome back " + s + "!\nReconnecting to the game..."));
@@ -53,15 +53,16 @@ public class Login implements ICommand {
                 c.getLobby().addQueue(c);
                 c.sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
                 c.sendMessage(JSONConverterStoC.createJSONNickname(s));
+                c.sendMessage(JSONConverterStoC.normalMessage("Waiting"));
             }
             if (!LoggingPhase.SETPLAYERS) {
                 LoggingPhase.setSETPLAYERS(true);
-                c.sendMessage(JSONConverterStoC.normalMessage("The number of players you want to play with: "));
+                c.sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
             }
         } else if (comm.size() < 1) {
-            c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));
+            c.sendMessage(JSONConverterStoC.createJSONError("Incomplete command"));
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("You are already logged in!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("You are already logged in!"));
         }
     }
 }
