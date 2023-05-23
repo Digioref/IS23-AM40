@@ -20,10 +20,10 @@ public class Board extends AnchorPane {
 
 	private static final int MAX_SELECTABLE = 3;
 
-	private static final int ORIGIN_X = 244;
-	private static final int ORIGIN_Y = 247;
-	private static final int STEP_X = 55;
-	private static final int STEP_Y = 55;
+	private static final double ORIGIN_X = 244.0/1536.0;
+	private static final double ORIGIN_Y = 247.0/864.0	;
+	private static final double STEP_X = 55.0/1536.0;
+	private static final double STEP_Y = 55.0/864.0;
 
 	private final HashMap<String, Node> tiles = new HashMap<String, Node>();
 
@@ -34,7 +34,9 @@ public class Board extends AnchorPane {
 
 //		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.63;
 //		setPrefSize(screenHeight, screenHeight);
-		setPrefSize(Metrics.BOARD_WIDTH, Metrics.BOARD_HEIGHT);
+//		setPrefSize(Metrics.BOARD_WIDTH, Metrics.BOARD_HEIGHT);
+		setWidth(Metrics.BOARD_WIDTH);
+		setHeight(Metrics.BOARD_HEIGHT);
 		Image image = Resources.board();
 
 		BackgroundImage boardImg = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -103,4 +105,24 @@ public class Board extends AnchorPane {
 		return new String("tile_" + x + "_" + y);
 	}
 
+	@Override
+	public void resize(double width, double height) {
+		if (width != 0) {
+			setWidth(width);
+			if (!tiles.isEmpty()) {
+				for (String s: tiles.keySet()) {
+					tiles.get(s).resize(width, 0);
+				}
+			}
+		}
+		if (height != 0) {
+			setHeight(height);
+			if (!tiles.isEmpty()) {
+				for (String s: tiles.keySet()) {
+					tiles.get(s).resize(0, height);
+				}
+			}
+		}
+
+	}
 }

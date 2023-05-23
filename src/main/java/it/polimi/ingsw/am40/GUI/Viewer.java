@@ -660,11 +660,11 @@ public class Viewer extends Application {
 
 		bag = new Bag();
 		bag.relocate(Metrics.d_x_bag*primaryStage.getWidth(), Metrics.dim_y_bag*primaryStage.getHeight());
-		bag.getView().setFitWidth(Metrics.dim_x_bag*primaryStage.getWidth());
-		bag.getView().setFitHeight(Metrics.dim_y_bag*primaryStage.getHeight());
+		bag.resize(primaryStage.getWidth(), primaryStage.getHeight());
 		pane.getChildren().add(bag);
 
 		board = new Board();
+		board.resize(primaryStage.getWidth(), primaryStage.getHeight());
 		board.relocate(310, 20);
 		pane.getChildren().add(board);
 
@@ -744,15 +744,26 @@ public class Viewer extends Application {
 		if (widthResized[0] && heightResized[0]) {
 			// Resize in entrambe le dimensioni
 			bag.resize(width, height);
-
+			c1.resize(width, height);
+			c2.resize(width, height);
+			c1.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm1*height);
+			c2.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm2*height);
 			bag.relocate(Metrics.d_x_bag * width, Metrics.d_y_bag * height);
 		} else if (widthResized[0]) {
 			// Resize solo nella larghezza
-			bag.getView().setFitWidth(width * Metrics.dim_x_bag);
+			bag.resize(width,0);
+			c1.resize(width, 0);
+			c2.resize(width, 0);
+			c1.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm1*height);
+			c2.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm2*height);
 			bag.relocate(Metrics.d_x_bag * width, Metrics.d_y_bag * height);
 		} else if (heightResized[0]) {
 			// Resize solo nell'altezza
-			bag.getView().setFitHeight(height * Metrics.dim_y_bag);
+			bag.resize(0, height);
+			c1.resize(0, height);
+			c2.resize(0, height);
+			c1.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm1*height);
+			c2.relocate(Metrics.d_x_comm*width, Metrics.d_y_comm2*height);
 			bag.relocate(Metrics.d_x_bag * width, Metrics.d_y_bag * height);
 		}
 
@@ -769,8 +780,8 @@ public class Viewer extends Application {
 		}
 		c1 = new CommonGoalGui(arr.get(0)-1);
 		c2 = new CommonGoalGui(arr.get(1)-1);
-		c1.relocate(25, 200);
-		c2.relocate(25, 410);
+		c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
+		c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
 		pane.getChildren().add(c1);
 		pane.getChildren().add(c2);
 	}

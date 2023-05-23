@@ -92,4 +92,12 @@ public class Tile extends Label {
 			setStyle(border_none);
 		}
 	}
+	public void resize(double width, double height) {
+		if (width != 0) {
+			setWidth(width*Metrics.dim_x_tile);
+		}
+		if (height != 0) {
+			setHeight(height*Metrics.dim_y_tile);
+		}
+	}
 }

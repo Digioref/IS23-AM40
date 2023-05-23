@@ -21,7 +21,11 @@ public class Bag extends Label {
 		return view;
 	}
 	public void resize(double width, double height) {
-		view.setFitWidth(width * Metrics.dim_x_bag);
-		view.setFitHeight(height * Metrics.dim_y_bag);
+		if (width != 0) {
+			view.setFitWidth(width * Metrics.dim_x_bag);
+		}
+		if (height != 0) {
+			view.setFitHeight(height * Metrics.dim_y_bag);
+		}
 	}
 }
