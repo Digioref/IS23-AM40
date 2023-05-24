@@ -574,8 +574,8 @@ public class Game implements IGame {
                         }
                     }
                     v.receiveListPlayers(players);
-                    v.receiveListBookshelves(players);
                     v.receiveNumPlayers(numPlayers);
+                    v.receiveListBookshelves(players);
                     v.receiveCurrentPlayer(currentPlayer);
                 }
                 break;

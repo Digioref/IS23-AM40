@@ -7,8 +7,8 @@ public class Metrics {
 	public static final int BAG_WIDTH = 130;
 	public static final int BAG_HEIGHT = 130;
 
-	public static final int ARROW_RIGHT_WIDTH = 80;
-	public static final int ARROW_RIGHT_HEIGHT = 80;
+	public static final int ARROW_RIGHT_WIDTH = 100;
+	public static final int ARROW_RIGHT_HEIGHT = 100;
 
 	public static final int ARROW_DOWN_WIDTH = 30;
 	public static final int ARROW_DOWN_HEIGHT = 30;

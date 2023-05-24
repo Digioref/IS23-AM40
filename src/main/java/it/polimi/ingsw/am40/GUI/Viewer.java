@@ -8,9 +8,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -25,11 +24,11 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.animation.*;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.regex.Pattern;
 
 public class Viewer extends Application {
@@ -52,6 +51,8 @@ public class Viewer extends Application {
 	private Bookshelf bookshelf;
 	private ArrayList<Bookshelf> bookshelves;
 	private ArrayList<String> names;
+	private Alert alert;
+	private Alert errorAlert;
 
 
 
@@ -86,7 +87,13 @@ public class Viewer extends Application {
 	@Override
 	public void start(Stage stage) {
 		this.primaryStage = stage;
+		this.bookshelves = new ArrayList<>();
+		alert = new Alert(Alert.AlertType.INFORMATION);
+		errorAlert = new Alert(Alert.AlertType.ERROR);
+		alert.getDialogPane().getStylesheets().add("Alert.css");
+		errorAlert.getDialogPane().getStylesheets().add("Error.css");
 		primaryStage.setResizable(false);
+
 		gui = this;
 //
 //		// -----------  setup page  -----------
@@ -199,6 +206,8 @@ public class Viewer extends Application {
 		/* Test: populate the board */
 		//populateBoard();
 	}
+
+
 
 	public void setBackground(Stage stage, Pane pane) {
 		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
@@ -349,9 +358,7 @@ public class Viewer extends Application {
 				t1.setText("Insert an username, please!");
 			} else {
 				nickname = tf.getText();
-				JSONConverterCtoS jconv = new JSONConverterCtoS();
-				jconv.toJSON("login " + tf.getText());
-				LaunchClient.getClient().sendMessage(jconv.toString());
+				LaunchClient.getClient().sendMessage("login " + tf.getText());
 			}
 		});
 //		if (!tf.getText().equals("")) {
@@ -515,6 +522,10 @@ public class Viewer extends Application {
 		pane = new Pane();
 		newScene(pane);
 		setBackground(primaryStage, pane);
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(primaryStage);
+		errorAlert.initModality(Modality.APPLICATION_MODAL);
+		errorAlert.initOwner(primaryStage);
 		//stage.setMaximized(true);
 //		scene.setFullScreen(true);
 //		scene.setTitle("MyShelfie");
@@ -601,9 +612,7 @@ public class Viewer extends Application {
 					t1.setText("The number must be between 2 and 4!");
 					return;
 				}
-				JSONConverterCtoS jconv = new JSONConverterCtoS();
-				jconv.toJSON("setplayers " + tf.getText());
-				LaunchClient.getClient().sendMessage(jconv.toString());
+				LaunchClient.getClient().sendMessage("setplayers " + tf.getText());
 				b1.setDisable(true);
 				numPlayers = Integer.parseInt(tf.getText());
 			}  else {
@@ -613,36 +622,28 @@ public class Viewer extends Application {
 	}
 
 	public void showMessage(String s) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("Information Dialog");
 		alert.setHeaderText(null);
 		alert.setContentText(s);
-		alert.initModality(Modality.APPLICATION_MODAL);
-		alert.initOwner(primaryStage);
 		alert.showAndWait();
 	}
 
 	public void suggestNicknames(String s, ArrayList<String> array4) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("Information Dialog");
 		String r = s;
 		for (String t: array4) {
 			r = r + "\n"+ t;
 		}
 		alert.setContentText(r);
-		alert.initModality(Modality.APPLICATION_MODAL);
-		alert.initOwner(primaryStage);
 		alert.showAndWait();
+
 	}
 
 	public void showError(String error) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle("Error Dialog");
-		alert.setHeaderText("!ERROR!");
-		alert.setContentText(error);
-		alert.initModality(Modality.APPLICATION_MODAL);
-		alert.initOwner(primaryStage);
-		alert.showAndWait();
+		errorAlert.setTitle("Error Dialog");
+		errorAlert.setHeaderText("!ERROR!");
+		errorAlert.setContentText(error);
+		errorAlert.showAndWait();
 	}
 
 	public void startGame() {
@@ -655,6 +656,7 @@ public class Viewer extends Application {
 		pane = new AnchorPane();
 		newScene(pane);
 		setBackground(primaryStage, pane);
+		handleEvent();
 //		pane.setPrefSize(Metrics.ROOT_WIDTH, Metrics.ROOT_HEIGHT);
 		System.out.println(primaryStage.getWidth());
 		System.out.println(primaryStage.getHeight());
@@ -677,6 +679,11 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		pane.getChildren().add(bookshelf);
 
+		Button button = new Button("Chat");
+		button.setVisible(true);
+		pane.getChildren().add(button);
+		button.getStylesheets().add("ChatButton.css");
+		button.relocate(1350, 50);
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
@@ -684,9 +691,14 @@ public class Viewer extends Application {
 			arrowDown.setVisible(false);
 			arrowDown.setIndex(i);
 			arrowDown.setSize(Metrics.ARROW_DOWN_WIDTH, Metrics.ARROW_DOWN_HEIGHT);
-			arrowDown.relocate(830 + (i * 60), 148);
+			arrowDown.relocate(1026 + (i * 60), 168);
 			arrowDown.setOnMouseClicked(event -> {
 				Arrow ad = (Arrow) event.getSource();
+				String s = "order";
+				for (int j = 0; j < commandBoard.getNextTilePos(); j++) {
+					s += " " + commandBoard.getPickupOrder()[j];
+				}
+				LaunchClient.getClient().sendMessage(s);
 				handleArrowDown(event, ad.getIndex());
 			});
 			arrowDownList.add(arrowDown);
@@ -695,16 +707,9 @@ public class Viewer extends Application {
 
 		arrowRight.setSize(Metrics.ARROW_RIGHT_WIDTH, Metrics.ARROW_RIGHT_HEIGHT);
 		arrowRight.setVisible(false);
-		arrowRight.relocate(770, 50);
+		arrowRight.relocate(primaryStage.getWidth()*Metrics.d_x_comb-110, 35);
 		arrowRight.setOnMouseClicked(event -> {
-			Tile t;
-
-			while (!board.isSelectedEmpty()) {
-				t = (Tile) board.getSelected();
-				t.setPickable(false);
-				commandBoard.addTile(t);
-			}
-
+			LaunchClient.getClient().sendMessage("pick");
 			arrowRight.setVisible(false);
 
 			int col = 0;
@@ -715,6 +720,24 @@ public class Viewer extends Application {
 			}
 		});
 		pane.getChildren().add(arrowRight);
+
+	}
+	private void handleEvent() {
+		scene.addEventFilter(CustomEvent.TILE_SELECTED, event -> {
+			Tile obj = (Tile) event.getObj();
+			boolean flag = event.getFlag();
+			int x = (int) obj.getPosition().getX();
+			int y = (int) obj.getPosition().getY();
+			if (flag) {
+				event.consume();
+			}
+//			board.select(x, y);
+
+			arrowRight.setVisible(!board.isSelectedEmpty());
+			LaunchClient.getClient().sendMessage("select " + x + " " + y);
+			/* Stop the event here */
+			event.consume();
+		});
 
 	}
 
@@ -745,7 +768,7 @@ public class Viewer extends Application {
 		}
 		for (String s: map.keySet()) {
 			if (!map.get(s).equals("NOCOLOR")) {
-				Tile t = new Tile(map.get(s));
+				Tile t = new Tile(map.get(s), primaryStage);
 				t.setPosition(s);
 				board.place(t);
 			}
@@ -754,11 +777,11 @@ public class Viewer extends Application {
 	}
 	private void handleArrowDown(MouseEvent event, int column) {
 		if (commandBoard.checkSequence()) {
-			ArrayList<Node> nodeList = new ArrayList<Node>();
+			ArrayList<Node> nodeList = new ArrayList<>();
 			Node n;
 
 			if (commandBoard.getNumTile() > bookshelf.getFreeSpace(column)) {
-				System.out.println("No space in bookshelf column.");
+				showError("No space in bookshelf column.");
 			} else {
 
 				for (Arrow a : arrowDownList) {
@@ -772,16 +795,39 @@ public class Viewer extends Application {
 				if (nodeList.size() > 0) {
 					bookshelf.insert(nodeList, column);
 				}
+				try {
+					Thread.sleep(1500);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+				LaunchClient.getClient().sendMessage("insert " + column);
 			}
 		}
 	}
 
 	public void numPlayers(ArrayList<String> names) {
 		this.names = new ArrayList<>(names);
-		this.bookshelves = new ArrayList<>();
 		if (numPlayers == 0) {
 			numPlayers = names.size();
 		}
+	}
+
+	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
+		this.board.clearUpdate(map, arr, board);
+	}
+
+	public void setPicked(Map<String, String> map) {
+		Tile t;
+		while (!board.isSelectedEmpty()) {
+			t = (Tile) board.getSelected();
+			if (t != null) {
+				t.setPickable(false);
+				commandBoard.addTile(t);
+			}
+		}
+	}
+
+	public void updateBookshelves(Map<String, Map<String, String>> map) {
 		if (bookshelves.size() == 0) {
 			int j = 0;
 			for (int i = 0; i < numPlayers - 1; i++) {
@@ -807,10 +853,26 @@ public class Viewer extends Application {
 				j++;
 			}
 		}
-	}
+		for (int i = 0; i < bookshelves.size(); i++) {
+			if (!bookshelves.get(i).getLabelText().getText().equals(nickname)) {
+				Map<String, String > m = map.get(bookshelves.get(i).getLabelText().getText());
+				ArrayList<Node> nodelist = new ArrayList<>();
+				bookshelves.get(i).resetDepth();
+				for (int j = 0; j < 5; j++) {
+					for (int k = 0; k < 6; k++) {
+						if (m.get("(" + j + "," + k + ")").equals("NOCOLOR")) {
+							bookshelves.get(i).modifyDepth(j);
+						} else {
+							nodelist.add(new Tile(m.get("(" + j + "," + k + ")"), primaryStage));
+							bookshelves.get(i).update(nodelist, j);
+							System.out.println(j + " --- "+ k);
+							nodelist.clear();
+						}
+					}
 
-	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
-		this.board.clearUpdate(map, arr, board);
+				}
+			}
+		}
 	}
 }
 

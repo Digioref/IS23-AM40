@@ -30,10 +30,11 @@ public class Board extends AnchorPane {
 	private final HashMap<String, Node> tiles = new HashMap<>();
 
 	private final ArrayList<String> selected = new ArrayList<>();
+	private Stage primaryStage;
 
 	public Board(Stage primaryStage) {
 		super();
-
+		this.primaryStage = primaryStage;
 //		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.63;
 //		setPrefSize(screenHeight, screenHeight);
 		setPrefSize(Metrics.dim_x_board*primaryStage.getWidth(), Metrics.dim_y_board*primaryStage.getHeight());
@@ -77,14 +78,9 @@ public class Board extends AnchorPane {
 		}
 	}
 
-	boolean select(boolean flag, int x, int y) {
+	boolean select(int x, int y) {
 		String key = hashkey(x, y);
-		if (flag) {
 			selected.add(key);
-		} else {
-			selected.remove(key);
-		}
-
 		return (selected.size() == MAX_SELECTABLE);
 	}
 
@@ -108,31 +104,30 @@ public class Board extends AnchorPane {
 	public void clearUpdate(Map<String, String> map, ArrayList<Position> selected, Map<String, String> board) {
 		getChildren().clear();
 		tiles.clear();
-		selected.clear();
+//		this.selected.clear();
 		for (String s: board.keySet()) {
+			Tile t = new Tile(board.get(s), primaryStage);
 			if (!board.get(s).equals("NOCOLOR")) {
-				Tile t = new Tile(board.get(s));
 				t.setPosition(s);
+				if (!map.containsKey(s)) {
+					t.setPickable(false);
+				} else {
+					t.setPickable(true);
+				}
+				Position p = new Position();
+				p.convertKey(s);
+				if (selected.contains(p)) {
+					t.setSelected();
+					String key = hashkey(p.getX(), p.getY());
+					if (!this.selected.contains(key)) {
+						this.selected.add(key);
+					}
+				}
 				place(t);
 			}
 		}
-		for (Position p: selected) {
-			int x = p.getX();
-			int y = p.getY();
-			String key = hashkey(x, y);
-			this.selected.add(key);
-			Tile t = (Tile) tiles.get(key);
-			t.setSelected();
-		}
-		for (String s: map.keySet()) {
-			Position p = new Position();
-			p.convertKey(s);
-			int x = p.getX();
-			int y = p.getY();
-			String key = hashkey(x, y);
-			Tile t = (Tile) tiles.get(key);
-			t.setPickable(true);
-		}
+		System.out.println(this.selected);
+
 	}
 
 	private String hashkey(int x, int y) {

@@ -23,11 +23,11 @@ import javafx.stage.Stage;
 
 public class CommandBoard extends AnchorPane {
 	private static final int TILES = 3;
-	private static final int TILE_LEFT_OFFSET = 20;
+	private static final int TILE_LEFT_OFFSET = 25;
 	private static final int TILE_TOP_OFFSET = 20;
 	private static final int LABEL_SIZE_WIDTH = 20;
-	private static final int LABEL_LEFT_OFFSET = 34;
-	private static final int LABEL_TOP_OFFSET = 72;
+	private static final int LABEL_LEFT_OFFSET = 39;
+	private static final int LABEL_TOP_OFFSET = 74;
 
 	private int nextTilePos;
 	private int[] pickupOrder = { 1, 1, 1 };
@@ -156,7 +156,7 @@ public class CommandBoard extends AnchorPane {
 	}
 
 	private class LabelPos extends Label {
-		private static final int SIZE = 24;
+		private static final int SIZE = 26;
 		private final ImageView[] view = { null, null, null };
 
 		public LabelPos() {
@@ -181,5 +181,13 @@ public class CommandBoard extends AnchorPane {
 		void setEmpty() {
 			setGraphic(null);
 		}
+	}
+
+	public int getNextTilePos() {
+		return nextTilePos;
+	}
+
+	public int[] getPickupOrder() {
+		return pickupOrder;
 	}
 }
