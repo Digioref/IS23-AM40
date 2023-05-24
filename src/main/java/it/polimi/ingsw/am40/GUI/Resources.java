@@ -2,8 +2,12 @@ package it.polimi.ingsw.am40.GUI;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
+import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Resources {
 
@@ -54,19 +58,17 @@ public class Resources {
 
 	private static final String titleFile = "Title 2000x618px.png";
 
-	private static Image loadImage(String imageFile) {
-		Image image = null;
-
-		try {
-			image = new Image(new FileInputStream(imageFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	private static Image loadImage(String imageFile){
+		Image image = new Image("it/polimi/ingsw/am40/GUI/Resources/"+imageFile);
+		//System.out.println(Resources.class.getClassLoader());
+		//InputStream is = Resources.class.getClassLoader().getResourceAsStream(imageFile);
+		//image = new Image(Resources.class.getClassLoader().getResource(imageFile).toString());
+		//image = new Image(Resources.class.getResource("/it/polimi/ingsw/am40/GUI/Resources/" + imageFile));
 		return image;
 	}
 
 	public static Image icon() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -74,12 +76,13 @@ public class Resources {
 		imageFile += Resources.publisherPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.iconFile;
-
-		return loadImage(imageFile);
+*/
+		//loadImage(iconFile);
+		return loadImage(iconFile);
 	}
 
 	public static Image arrowDown() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -87,18 +90,13 @@ public class Resources {
 		imageFile += Resources.customPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.arrowdownFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(arrowdownFile);
 	}
 
 	public static Image number(int num) {
 
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.customPath;
-		imageFile += Resources.pathSeparator;
+		String imageFile=null;
 
 		switch (num) {
 		case 1:
@@ -119,7 +117,7 @@ public class Resources {
 	}
 
 	public static Image labelName() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -127,12 +125,12 @@ public class Resources {
 		imageFile += Resources.customPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += labelNameFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(labelNameFile);
 	}
 
 	public static Image background() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -140,12 +138,12 @@ public class Resources {
 		imageFile += Resources.miscPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.backgroundFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(backgroundFile);
 	}
 
 	public static Image bag() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -153,12 +151,12 @@ public class Resources {
 		imageFile += Resources.miscPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.bagFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(bagFile);
 	}
 
 	public static Image basePage() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -166,12 +164,12 @@ public class Resources {
 		imageFile += Resources.miscPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.basePageFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(basePageFile);
 	}
 
 	public static Image board() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -179,12 +177,12 @@ public class Resources {
 		imageFile += Resources.boardsPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.boardFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(boardFile);
 	}
 
 	public static Image bookshelf() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -192,12 +190,12 @@ public class Resources {
 		imageFile += Resources.boardsPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.bookshelfFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(bookshelfFile);
 	}
 
 	public static Image commonGoal(int index) {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -205,12 +203,12 @@ public class Resources {
 		imageFile += Resources.commonGoalPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.commonGoalFile[index];
-
-		return loadImage(imageFile);
+*/
+		return loadImage(commonGoalFile[index]);
 	}
 
 	public static Image personalGoal(int index) {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -218,19 +216,19 @@ public class Resources {
 		imageFile += Resources.personalGoalPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.personalGoalFile[index];
-
-		return loadImage(imageFile);
+*/
+		return loadImage(personalGoalFile[index]);
 	}
 
 	public static Image tile(String type, int index) {
 
-		String imageFile;
-
+		String imageFile=null;
+/*
 		imageFile = Resources.resourcesPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.tilesPath;
 		imageFile += Resources.pathSeparator;
-
+*/
 		index %= 3;
 
 		switch (type) {
@@ -261,13 +259,13 @@ public class Resources {
 
 	public static Image tile(int type, int index) {
 
-		String imageFile;
-
+		String imageFile=null;
+/*
 		imageFile = Resources.resourcesPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.tilesPath;
 		imageFile += Resources.pathSeparator;
-
+*/
 		index %= 3;
 
 		switch (type) {
@@ -297,6 +295,7 @@ public class Resources {
 	}
 
 	public static Image title() {
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -304,7 +303,7 @@ public class Resources {
 		imageFile += Resources.publisherPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.titleFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(titleFile);
 	}
 }

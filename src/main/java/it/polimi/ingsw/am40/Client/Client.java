@@ -20,6 +20,8 @@ public abstract class Client {
 
     protected String nickname;
     protected ScheduledExecutorService ping;
+
+    protected Thread parse;
     protected int numPing;
     protected boolean inChat;
     protected ClientState state;
@@ -223,7 +225,9 @@ public abstract class Client {
                 break;
             case "Ping":
                 sendPong();
-                ping.shutdownNow();
+                if(ping!=null){
+                    ping.shutdownNow();
+                }
                 numPing = 0;
                 startPing();
                 break;

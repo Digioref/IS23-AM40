@@ -17,7 +17,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +35,9 @@ public class RMIClient extends Client implements RMIClientInterface {
     private boolean quitchat;
     private ScheduledExecutorService sendPing;
 
+    private Queue<String> message;
+
+
     public RMIClient(String serverIp) throws RemoteException {
         super();
         stop = false;
@@ -40,6 +45,7 @@ public class RMIClient extends Client implements RMIClientInterface {
         inChat = false;
         state = new ClientState(this);
         color = new Colors();
+        message = new ArrayDeque<>();
     }
 
     public void connect() {
@@ -60,6 +66,7 @@ public class RMIClient extends Client implements RMIClientInterface {
 //            throw new RuntimeException(e);
         }
         startPing();
+        startParsing();
         if (LaunchClient.getView() instanceof CliView) {
             rmiThread = new Thread(() -> {
                 do {
@@ -202,6 +209,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     public void close() {
         if (ping != null) {
             ping.shutdownNow();
+            parse.interrupt();
         }
         stop = true;
         if (rmiThread != null) {
@@ -242,15 +250,37 @@ public class RMIClient extends Client implements RMIClientInterface {
         ping.scheduleAtFixedRate(task, WAIT_PING_2, WAIT_PING_2, TimeUnit.MILLISECONDS);
     }
 
+    private void startParsing(){
+        parse= new Thread( ()-> {
+            do{
+                synchronized (message){
+                    if(!message.isEmpty()){
+                        try {
+                            parseMessage(message.poll());
+                        } catch (ParseException e) {
+                            System.out.println("Error in parsing");
+                            break;
+                        }
+                    }
+                }
+            }while (!stop);
+        });
+        parse.setName("PARSING MESSAGE");
+        parse.start();
+    }
 
     @Override
     public void receive(String s) throws RemoteException {
+        message.add(s);
+        /*
         try {
             parseMessage(s);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+        */
     }
+
 
     @Override
     public void receiveNickname(String s) throws RemoteException {

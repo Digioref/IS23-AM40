@@ -8,6 +8,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -216,17 +219,42 @@ public class Viewer extends Application {
 		VBox vbox = new VBox();
 		vbox.setSpacing(10);
 		vbox.setAlignment(Pos.CENTER);
+		vbox.setMaxWidth(primaryStage.getWidth());
+		primaryStage.widthProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				vbox.setMaxWidth((double) newValue);
+			}
+		});
+//		vbox.autosize();
 		pane.getChildren().add(vbox);
 		return vbox;
 	}
 
+
 	public void setTitle(Pane pane) {
 		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+		//double sceneWidth = scene.getWindow().getWidth();
 		Image title = Resources.title();
 		ImageView imageView = new ImageView(title);
-		imageView.setFitWidth(screenWidth);
+//  	imageView.setFitWidth(screenWidth);
+//		imageView.setFitWidth(sceneWidth);
+		imageView.setFitWidth(primaryStage.getWidth());
+		imageView.setFitHeight(primaryStage.getHeight());
 		imageView.setPreserveRatio(true);
 		pane.getChildren().addAll(imageView);
+		primaryStage.widthProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				imageView.setFitWidth((double)newValue);
+			}
+		});
+		primaryStage.heightProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				imageView.setFitHeight((double) newValue);
+			}
+		});
 	}
 
 	public Text addDescription(Pane pane, String tmp) {
@@ -240,6 +268,7 @@ public class Viewer extends Application {
 		TextField textField = new TextField();
 		textField.setMaxWidth(200);
 		pane.getChildren().add(textField);
+		textField.setAlignment(Pos.CENTER);
 		return textField;
 	}
 
@@ -561,7 +590,7 @@ public class Viewer extends Application {
 
 	public void setplayers() {
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -644,7 +673,7 @@ public class Viewer extends Application {
 
 	public void startGame() {
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}

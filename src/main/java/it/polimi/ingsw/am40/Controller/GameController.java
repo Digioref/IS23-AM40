@@ -107,25 +107,19 @@ public class GameController {
             if (p.getNickname().equals(s)) {
                 p.setDisconnected(true);
                 game.getDiscPlayers().add(p.getNickname());
-                if (game.getCurrentPlayer().getNickname().equals(s)) {
-                    game.setTurn(TurnPhase.ENDTURN);
-                    game.endTurn();
-                    game.startTurn();
-                }
                 break;
             }
+        }
+        if (game.getCurrentPlayer().getNickname().equals(s)) {
+            game.setTurn(TurnPhase.ENDTURN);
+            game.nextPlayer();
+            game.startTurn();
         }
         if (game.checkDisconnection() == 1) {
             game.startTimer();
         }
         for (VirtualView v: game.getObservers()) {
             v.receiveDisconnection(s);
-        }
-        if (game.getDiscPlayers().size() == game.getNumPlayers()) {
-            for (String nickname: game.getDiscPlayers()) {
-                controller.getLobby().getGames().remove(nickname);
-                controller.getLobby().getNicknameInGame().remove(nickname);
-            }
         }
     }
 
@@ -148,7 +142,6 @@ public class GameController {
                 break;
             }
         }
-        System.out.println("qui3");
         if (game.isTimerStarted()) {
             game.stopTimer();
         }
