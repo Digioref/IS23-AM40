@@ -12,6 +12,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -26,11 +27,11 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.animation.*;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.regex.Pattern;
 
 public class Viewer extends Application {
@@ -53,6 +54,8 @@ public class Viewer extends Application {
 	private Bookshelf bookshelf;
 	private ArrayList<Bookshelf> bookshelves;
 	private ArrayList<String> names;
+	private Alert alert;
+	private Alert errorAlert;
 
 
 
@@ -87,6 +90,13 @@ public class Viewer extends Application {
 	@Override
 	public void start(Stage stage) {
 		this.primaryStage = stage;
+		this.bookshelves = new ArrayList<>();
+		alert = new Alert(Alert.AlertType.INFORMATION);
+		errorAlert = new Alert(Alert.AlertType.ERROR);
+		alert.getDialogPane().getStylesheets().add("Alert.css");
+		errorAlert.getDialogPane().getStylesheets().add("Error.css");
+		primaryStage.setResizable(false);
+
 		gui = this;
 //
 //		// -----------  setup page  -----------
@@ -199,6 +209,8 @@ public class Viewer extends Application {
 		/* Test: populate the board */
 		//populateBoard();
 	}
+
+
 
 	public void setBackground(Stage stage, Pane pane) {
 		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
@@ -344,7 +356,7 @@ public class Viewer extends Application {
 	public void setUsername() {
 //		primaryStage.close();
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -367,7 +379,7 @@ public class Viewer extends Application {
 //		primaryStage.setFullScreen(true);
 		primaryStage.setTitle("MY SHELFIE LOGIN");
 		primaryStage.getIcons().add(Resources.icon());
-		primaryStage.setResizable(true);
+//		primaryStage.setResizable(true);
 		primaryStage.show();
 
 		b1.setOnAction(e -> {
@@ -375,9 +387,7 @@ public class Viewer extends Application {
 				t1.setText("Insert an username, please!");
 			} else {
 				nickname = tf.getText();
-				JSONConverterCtoS jconv = new JSONConverterCtoS();
-				jconv.toJSON("login " + tf.getText());
-				LaunchClient.getClient().sendMessage(jconv.toString());
+				LaunchClient.getClient().sendMessage("login " + tf.getText());
 			}
 		});
 //		if (!tf.getText().equals("")) {
@@ -431,7 +441,7 @@ public class Viewer extends Application {
 	}
 
 	public void newScene(Pane pane) {
-		scene = new Scene(pane, 500, 300);
+		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
 		primaryStage.setScene(scene);
 		primaryStage.setFullScreen(true);
 	}
@@ -541,6 +551,10 @@ public class Viewer extends Application {
 		pane = new Pane();
 		newScene(pane);
 		setBackground(primaryStage, pane);
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(primaryStage);
+		errorAlert.initModality(Modality.APPLICATION_MODAL);
+		errorAlert.initOwner(primaryStage);
 		//stage.setMaximized(true);
 //		scene.setFullScreen(true);
 //		scene.setTitle("MyShelfie");
@@ -574,7 +588,7 @@ public class Viewer extends Application {
 //		primaryStage.setFullScreen(true);
 		primaryStage.setTitle("MY SHELFIE CONNECTION");
 		primaryStage.getIcons().add(Resources.icon());
-		primaryStage.setResizable(true);
+//		primaryStage.setResizable(true);
 		primaryStage.show();
 
 		b1.setOnAction(e -> {
@@ -612,7 +626,7 @@ public class Viewer extends Application {
 //		primaryStage.setFullScreen(true);
 		primaryStage.setTitle("MY SHELFIE SETPLAYERS");
 		primaryStage.getIcons().add(Resources.icon());
-		primaryStage.setResizable(true);
+//		primaryStage.setResizable(true);
 		primaryStage.show();
 
 		b1.setOnAction(e -> {
@@ -627,9 +641,7 @@ public class Viewer extends Application {
 					t1.setText("The number must be between 2 and 4!");
 					return;
 				}
-				JSONConverterCtoS jconv = new JSONConverterCtoS();
-				jconv.toJSON("setplayers " + tf.getText());
-				LaunchClient.getClient().sendMessage(jconv.toString());
+				LaunchClient.getClient().sendMessage("setplayers " + tf.getText());
 				b1.setDisable(true);
 				numPlayers = Integer.parseInt(tf.getText());
 			}  else {
@@ -639,36 +651,28 @@ public class Viewer extends Application {
 	}
 
 	public void showMessage(String s) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("Information Dialog");
 		alert.setHeaderText(null);
 		alert.setContentText(s);
-		alert.initModality(Modality.APPLICATION_MODAL);
-		alert.initOwner(primaryStage);
 		alert.showAndWait();
 	}
 
 	public void suggestNicknames(String s, ArrayList<String> array4) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("Information Dialog");
 		String r = s;
 		for (String t: array4) {
 			r = r + "\n"+ t;
 		}
 		alert.setContentText(r);
-		alert.initModality(Modality.APPLICATION_MODAL);
-		alert.initOwner(primaryStage);
 		alert.showAndWait();
+
 	}
 
 	public void showError(String error) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle("Error Dialog");
-		alert.setHeaderText("!ERROR!");
-		alert.setContentText(error);
-		alert.initModality(Modality.APPLICATION_MODAL);
-		alert.initOwner(primaryStage);
-		alert.showAndWait();
+		errorAlert.setTitle("Error Dialog");
+		errorAlert.setHeaderText("!ERROR!");
+		errorAlert.setContentText(error);
+		errorAlert.showAndWait();
 	}
 
 	public void startGame() {
@@ -681,28 +685,34 @@ public class Viewer extends Application {
 		pane = new AnchorPane();
 		newScene(pane);
 		setBackground(primaryStage, pane);
+		handleEvent();
 //		pane.setPrefSize(Metrics.ROOT_WIDTH, Metrics.ROOT_HEIGHT);
-		System.out.println(Screen.getPrimary().getVisualBounds().getWidth());
-		System.out.println(Screen.getPrimary().getVisualBounds().getHeight());
+		System.out.println(primaryStage.getWidth());
+		System.out.println(primaryStage.getHeight());
 
-		bag = new Bag();
-		bag.relocate(85, 50);
+		bag = new Bag(primaryStage);
+		bag.relocate(primaryStage.getWidth()*Metrics.d_x_bag, primaryStage.getHeight()*Metrics.d_y_bag);
 		pane.getChildren().add(bag);
 
-		board = new Board();
-		board.relocate(310, 20);
+		board = new Board(primaryStage);
+		board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
 		pane.getChildren().add(board);
 
-		commandBoard = new CommandBoard();
-		commandBoard.relocate(1036, 30);
+		commandBoard = new CommandBoard(primaryStage);
+		commandBoard.relocate(primaryStage.getWidth()*Metrics.d_x_comb, primaryStage.getHeight()*Metrics.d_y_comb);
 		pane.getChildren().add(commandBoard);
 
-		bookshelf = new Bookshelf(Metrics.BOOKSHELF_WIDTH, Metrics.BOOKSHELF_HEIGHT);
-		bookshelf.relocate(980, 210);
-		bookshelf.createLabelName(104,42, 128, 306);
+		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight());
+		bookshelf.relocate(Metrics.d_x_bookpl*primaryStage.getWidth(), Metrics.d_y_bookpl*primaryStage.getHeight());
+		bookshelf.createLabelName(Metrics.dim_x_targetname*primaryStage.getWidth(),Metrics.dim_y_targetname*primaryStage.getHeight(), primaryStage.getWidth()*Metrics.dim_x_bookpl*Metrics.d_x_targetname, primaryStage.getHeight()*Metrics.dim_y_bookpl*Metrics.d_y_targetname);
 		bookshelf.setName(nickname);
 		pane.getChildren().add(bookshelf);
 
+		Button button = new Button("Chat");
+		button.setVisible(true);
+		pane.getChildren().add(button);
+		button.getStylesheets().add("ChatButton.css");
+		button.relocate(1350, 50);
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
@@ -710,9 +720,14 @@ public class Viewer extends Application {
 			arrowDown.setVisible(false);
 			arrowDown.setIndex(i);
 			arrowDown.setSize(Metrics.ARROW_DOWN_WIDTH, Metrics.ARROW_DOWN_HEIGHT);
-			arrowDown.relocate(830 + (i * 60), 148);
+			arrowDown.relocate(1026 + (i * 60), 168);
 			arrowDown.setOnMouseClicked(event -> {
 				Arrow ad = (Arrow) event.getSource();
+				String s = "order";
+				for (int j = 0; j < commandBoard.getNextTilePos(); j++) {
+					s += " " + commandBoard.getPickupOrder()[j];
+				}
+				LaunchClient.getClient().sendMessage(s);
 				handleArrowDown(event, ad.getIndex());
 			});
 			arrowDownList.add(arrowDown);
@@ -721,16 +736,9 @@ public class Viewer extends Application {
 
 		arrowRight.setSize(Metrics.ARROW_RIGHT_WIDTH, Metrics.ARROW_RIGHT_HEIGHT);
 		arrowRight.setVisible(false);
-		arrowRight.relocate(770, 50);
+		arrowRight.relocate(primaryStage.getWidth()*Metrics.d_x_comb-110, 35);
 		arrowRight.setOnMouseClicked(event -> {
-			Tile t;
-
-			while (!board.isSelectedEmpty()) {
-				t = (Tile) board.getSelected();
-				t.setPickable(false);
-				commandBoard.addTile(t);
-			}
-
+			LaunchClient.getClient().sendMessage("pick");
 			arrowRight.setVisible(false);
 
 			int col = 0;
@@ -743,35 +751,53 @@ public class Viewer extends Application {
 		pane.getChildren().add(arrowRight);
 
 	}
+	private void handleEvent() {
+		scene.addEventFilter(CustomEvent.TILE_SELECTED, event -> {
+			Tile obj = (Tile) event.getObj();
+			boolean flag = event.getFlag();
+			int x = (int) obj.getPosition().getX();
+			int y = (int) obj.getPosition().getY();
+			if (flag) {
+				event.consume();
+			}
+//			board.select(x, y);
+
+			arrowRight.setVisible(!board.isSelectedEmpty());
+			LaunchClient.getClient().sendMessage("select " + x + " " + y);
+			/* Stop the event here */
+			event.consume();
+		});
+
+	}
 
 	public void setCommonGoal(Map<Integer, Integer> map) {
 		ArrayList<Integer> arr = new ArrayList<>();
 		for (Integer i: map.keySet()) {
 			arr.add(i);
 		}
-		c1 = new CommonGoalGui(arr.get(0)-1);
-		c2 = new CommonGoalGui(arr.get(1)-1);
-		c1.relocate(25, 200);
-		c2.relocate(25, 410);
+		c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
+		c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
+		c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
+		c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
 		pane.getChildren().add(c1);
 		pane.getChildren().add(c2);
 	}
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
-		p = new PersonalGoal(number);
-		p.relocate(1360, 290);
+		p = new PersonalGoal(number, primaryStage);
+		p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
 		pane.getChildren().add(p);
 	}
 
 	public void setBoard(Map<String, String> map) {
 		if (board == null) {
-			board = new Board();
-			board.relocate(300, 20);
+			board = new Board(primaryStage);
+			board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
 			pane.getChildren().add(board);
 		}
 		for (String s: map.keySet()) {
 			if (!map.get(s).equals("NOCOLOR")) {
-				Tile t = new Tile(map.get(s));
+				Tile t = new Tile(map.get(s), primaryStage);
 				t.setPosition(s);
 				board.place(t);
 			}
@@ -780,11 +806,11 @@ public class Viewer extends Application {
 	}
 	private void handleArrowDown(MouseEvent event, int column) {
 		if (commandBoard.checkSequence()) {
-			ArrayList<Node> nodeList = new ArrayList<Node>();
+			ArrayList<Node> nodeList = new ArrayList<>();
 			Node n;
 
 			if (commandBoard.getNumTile() > bookshelf.getFreeSpace(column)) {
-				System.out.println("No space in bookshelf column.");
+				showError("No space in bookshelf column.");
 			} else {
 
 				for (Arrow a : arrowDownList) {
@@ -798,32 +824,55 @@ public class Viewer extends Application {
 				if (nodeList.size() > 0) {
 					bookshelf.insert(nodeList, column);
 				}
+				try {
+					Thread.sleep(1500);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+				LaunchClient.getClient().sendMessage("insert " + column);
 			}
 		}
 	}
 
 	public void numPlayers(ArrayList<String> names) {
 		this.names = new ArrayList<>(names);
-		this.bookshelves = new ArrayList<>();
 		if (numPlayers == 0) {
 			numPlayers = names.size();
 		}
+	}
+
+	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
+		this.board.clearUpdate(map, arr, board);
+	}
+
+	public void setPicked(Map<String, String> map) {
+		Tile t;
+		while (!board.isSelectedEmpty()) {
+			t = (Tile) board.getSelected();
+			if (t != null) {
+				t.setPickable(false);
+				commandBoard.addTile(t);
+			}
+		}
+	}
+
+	public void updateBookshelves(Map<String, Map<String, String>> map) {
 		if (bookshelves.size() == 0) {
 			int j = 0;
 			for (int i = 0; i < numPlayers - 1; i++) {
-				Bookshelf b = new Bookshelf(Metrics.OTHER_BOOKSHELF_WIDTH, Metrics.OTHER_BOOKSHELF_HEIGHT);
+				Bookshelf b = new Bookshelf(Metrics.dim_x_book*primaryStage.getWidth(), Metrics.dim_y_book*primaryStage.getHeight());
 				bookshelves.add(b);
 				pane.getChildren().add(bookshelves.get(i));
-				bookshelves.get(i).createLabelName(79,32, 97, 233);
+				bookshelves.get(i).createLabelName(Metrics.dim_x_label*primaryStage.getWidth(),Metrics.dim_y_label*primaryStage.getHeight(), Metrics.dim_x_book*Metrics.d_x_label* primaryStage.getWidth(), Metrics.dim_y_book*Metrics.d_y_label*primaryStage.getHeight());
 				switch (numPlayers) {
 					case 2:
-						bookshelves.get(i).relocate(631, 580);
+						bookshelves.get(i).relocate(Metrics.d_x_book2*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 					case 3:
-						bookshelves.get(i).relocate(329+(329+274)*i, 580);
+						bookshelves.get(i).relocate(((329+(329+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 					case 4:
-						bookshelves.get(i).relocate(178+(178+274)*i, 580);
+						bookshelves.get(i).relocate(((178+(178+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 				}
 				if (names.get(j).equals(nickname)) {
@@ -831,6 +880,26 @@ public class Viewer extends Application {
 				}
 				bookshelves.get(i).setName(names.get(j));
 				j++;
+			}
+		}
+		for (int i = 0; i < bookshelves.size(); i++) {
+			if (!bookshelves.get(i).getLabelText().getText().equals(nickname)) {
+				Map<String, String > m = map.get(bookshelves.get(i).getLabelText().getText());
+				ArrayList<Node> nodelist = new ArrayList<>();
+				bookshelves.get(i).resetDepth();
+				for (int j = 0; j < 5; j++) {
+					for (int k = 0; k < 6; k++) {
+						if (m.get("(" + j + "," + k + ")").equals("NOCOLOR")) {
+							bookshelves.get(i).modifyDepth(j);
+						} else {
+							nodelist.add(new Tile(m.get("(" + j + "," + k + ")"), primaryStage));
+							bookshelves.get(i).update(nodelist, j);
+							System.out.println(j + " --- "+ k);
+							nodelist.clear();
+						}
+					}
+
+				}
 			}
 		}
 	}

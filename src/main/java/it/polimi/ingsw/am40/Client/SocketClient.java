@@ -62,12 +62,16 @@ public class SocketClient extends Client {
 
 
     public void sendPong() {
-        JSONConverterCtoS jconv = new JSONConverterCtoS();
-        jconv.toJSON("Pong");
-        sendMessage(jconv.toString());
+        sendMessage("Pong");
     }
     public synchronized void sendMessage(String s) {
-        out.println(s);
+        JSONConverterCtoS jconv = new JSONConverterCtoS();
+        jconv.toJSON(s);
+        if (jconv.getObj().get("Command").toString().equals("insert")) {
+            state.setSelectedtiles(null);
+            state.setPickedtiles(null);
+        }
+        out.println(jconv.toString());
         out.flush();
     }
 
@@ -81,10 +85,13 @@ public class SocketClient extends Client {
                 fromUser.interrupt();
             }
             fromServer.interrupt();
-            socket.shutdownInput();
-            socket.shutdownOutput();
-            socket.close();
+            if (!socket.isClosed()) {
+                socket.shutdownInput();
+                socket.shutdownOutput();
+                socket.close();
+            }
             stdIn.close();
+            System.exit(0);
 //            LaunchClient.getView().quit(nickname);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -133,13 +140,7 @@ public class SocketClient extends Client {
                                 inChat = false;
                                 state.refresh();
                             } else {
-                                JSONConverterCtoS jconv = new JSONConverterCtoS();
-                                jconv.toJSON(userInput);
-                                if (jconv.getObj().get("Command").toString().equals("insert")) {
-                                    state.setSelectedtiles(null);
-                                    state.setPickedtiles(null);
-                                }
-                                sendMessage(jconv.toString());
+                                sendMessage(userInput);
                             }
                         }
                     } catch (IOException e) {

@@ -52,33 +52,27 @@ public class ClientGUIController implements View {
     }
 
     @Override
-    public void showCurrentBookshelf(Map<String, String> map) {
-
-    }
+    public void showCurrentBookshelf(Map<String, String> map) {}
 
     @Override
     public void showAllBookshelves(Map<String, Map<String, String>> map) {
-
+        runLater(()->gui.updateBookshelves(map));
     }
 
     @Override
-    public void showBookshelf(Map<String, String> map) {
-
-    }
+    public void showBookshelf(Map<String, String> map) {}
 
     @Override
     public void showBoardPickable(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
-
+        runLater(()->gui.setPickableTiles(map, arr, board));
     }
 
     @Override
-    public void showSelectedTiles(Map<String, String> map, String s) {
-
-    }
+    public void showSelectedTiles(Map<String, String> map, String s) {}
 
     @Override
     public void showPickedTiles(Map<String, String> map, String s) {
-
+        runLater(()->gui.setPicked(map));
     }
 
     @Override

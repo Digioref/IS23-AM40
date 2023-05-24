@@ -8,16 +8,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 public class CommonGoalGui extends Label {
-
-	public CommonGoalGui(int index) {
+	private ImageView view;
+	public CommonGoalGui(int index, Stage primaryStage) {
 		super();
 		Image image = Resources.commonGoal(index);
-		ImageView view = new ImageView(image);
+		view = new ImageView(image);
 		view.setPreserveRatio(true);
-		view.setFitWidth(Metrics.COMMON_GOAL_WIDTH);
-		view.setFitHeight(Metrics.COMMON_GOAL_HEIGHT);
+		view.setFitWidth(Metrics.dim_x_comm*primaryStage.getWidth());
+		view.setFitHeight(Metrics.dim_y_comm*primaryStage.getHeight());
 		setGraphic(view);
 
 		Rectangle clip = new Rectangle(view.getFitWidth(), view.getFitHeight());
@@ -36,4 +37,6 @@ public class CommonGoalGui extends Label {
 		view.setImage(img);
 		view.setEffect(new DropShadow(20, Color.WHITE));
 	}
+
+
 }

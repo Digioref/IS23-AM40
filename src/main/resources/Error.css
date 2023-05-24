@@ -1,0 +1,12 @@
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 50;
+    -fx-background-color: linear-gradient(#e82626, #7b0505);
+}
+.button:hover {
+    -fx-effect: dropshadow(three-pass-box, #9f0d73, 10, 0.6, 0, 0);
+}
+.alert {
+    -fx-background-color: linear-gradient(to right, #d29610, #8a0f77);
+    -fx-font-size: 13px;
+}
