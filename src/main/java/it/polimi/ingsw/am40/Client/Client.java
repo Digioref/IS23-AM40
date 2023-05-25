@@ -168,17 +168,18 @@ public abstract class Client {
                 JSONArray arr10 = (JSONArray) object.get("SelectedTiles");
                 Map<String, String> map9 = new HashMap<>();
                 ArrayList <ArrayList<String>> selected = new ArrayList<>();
-                ArrayList <String> tmp = new ArrayList<>();
 
                 for (int i = 0; i < arr10.size(); i++) {
+                    ArrayList <String> tmp = new ArrayList<>();
                     JSONObject obj = (JSONObject) arr10.get(i);
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     String tile = obj.get("color").toString();
                     map9.put(p.getKey(), tile);
                     tmp.add(tile);
                     tmp.add(p.getKey());
+                    selected.add(tmp);
                 }
-                selected.add(tmp);
+
                 if (!inChat) {
                     LaunchClient.getView().showSelectedTiles(map9, object.get("Nickname").toString(),selected);
                 }
@@ -187,15 +188,21 @@ public abstract class Client {
             case "PickedTiles":
                 JSONArray arr11 = (JSONArray) object.get("PickedTiles");
                 Map<String, String> map10 = new HashMap<>();
+                ArrayList <ArrayList<String>> picked = new ArrayList<>();
                 for (int i = 0; i < arr11.size(); i++) {
+                    ArrayList <String> tmp = new ArrayList<>();
                     JSONObject obj = (JSONObject) arr11.get(i);
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
-                    map10.put(p.getKey(), obj.get("color").toString());
+                    String tile = obj.get("color").toString();
+                    map10.put(p.getKey(), tile);
+                    tmp.add(tile);
+                    tmp.add(p.getKey());
+                    picked.add(tmp);
                 }
                 if (!inChat) {
-                    LaunchClient.getView().showPickedTiles(map10, object.get("Nickname").toString());
+                    LaunchClient.getView().showPickedTiles(map10, object.get("Nickname").toString(),picked);
                 }
-                state.savePickedTiles(map10);
+                state.savePickedTiles(map10,picked);
                 break;
             case "FinalScores":
                 JSONArray arr12 = (JSONArray) object.get("FinalScores");

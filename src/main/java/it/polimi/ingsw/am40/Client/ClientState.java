@@ -28,6 +28,7 @@ public class ClientState {
     private ArrayList<String> receivers;
     private ArrayList<String> messages;
     private ArrayList<ArrayList<String>> tileselected;
+    private ArrayList<ArrayList<String>> tilespicked;
 
     public ClientState(Client client) {
         this.client = client;
@@ -80,8 +81,9 @@ public class ClientState {
         tileselected =  selected;
     }
 
-    public void savePickedTiles(Map<String, String> map10) {
+    public void savePickedTiles(Map<String, String> map10,ArrayList<ArrayList<String>> picked) {
         pickedtiles = map10;
+        tilespicked = picked;
     }
 
     public void saveFinalScores(Map<String, Integer> map11, String s) {
@@ -128,7 +130,7 @@ public class ClientState {
             LaunchClient.getView().showSelectedTiles(selectedtiles, nickname,tileselected);
         }
         if (currplayer.equals(nickname) && pickedtiles != null) {
-            LaunchClient.getView().showPickedTiles(pickedtiles, nickname);
+            LaunchClient.getView().showPickedTiles(pickedtiles, nickname,tilespicked);
         }
         if (finalscores != null && winner != null) {
             LaunchClient.getView().showFinalScore(finalscores, winner);

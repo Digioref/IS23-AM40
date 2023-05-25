@@ -71,7 +71,7 @@ public class ClientGUIController implements View {
     public void showSelectedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String >> sel) {}
 
     @Override
-    public void showPickedTiles(Map<String, String> map, String s) {
+    public void showPickedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> picked) {
         runLater(()->gui.setPicked(map));
     }
 

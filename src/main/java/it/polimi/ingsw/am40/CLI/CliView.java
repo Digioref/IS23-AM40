@@ -371,7 +371,7 @@ public class CliView implements View{
         } else {
             System.out.println( "Player " + s + " has selected the following Tiles");
 
-/*
+
            // System.out.println("size of selected: " + selected.size() +"\n");
             //System.out.println("tile: "+ selected.get(0).get(0) + "pos: " + selected.get(0).get(1));
             for(ArrayList<String> tmp : selected){
@@ -379,15 +379,14 @@ public class CliView implements View{
                 System.out.printf(printTile(tmp.get(0))+ tmp.get(1) + " ");
             }
 
- */
 
-
-
-
+            /*
             for (String s1 : map.keySet()) {
                 System.out.println("tile: " + map.get(s1) + " pos "+ s1);
                 System.out.printf(printTile(map.get(s1)) + s1 + " ");
             }
+
+             */
 
 
 
@@ -396,14 +395,22 @@ public class CliView implements View{
         }
     }
 
-    public void showPickedTiles(Map<String, String> map, String s) {
+    public void showPickedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> picked) {
         if (map.isEmpty()) {
             System.out.println("You haven't picked Tiles yet\n");
         } else {
             System.out.println("Player " + s + " has picked the following Tiles");
+
+            for(ArrayList<String> tmp : picked){
+                System.out.printf(printTile(tmp.get(0))+ tmp.get(1) + " ");
+            }
+/*
             for (String s1: map.keySet()) {
                 System.out.printf(printTile(map.get(s1)) + s1 + " ");
             }
+
+ */
+
             System.out.println("\n");
         }
     }
