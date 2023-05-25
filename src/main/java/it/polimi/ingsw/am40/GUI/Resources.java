@@ -100,16 +100,16 @@ public class Resources {
 
 		switch (num) {
 		case 1:
-			imageFile += number1File;
+			imageFile = number1File;
 			break;
 		case 2:
-			imageFile += number2File;
+			imageFile = number2File;
 			break;
 		case 3:
-			imageFile += number3File;
+			imageFile = number3File;
 			break;
 		default:
-			imageFile += number1File;
+			imageFile = number1File;
 			break;
 		}
 
@@ -233,22 +233,22 @@ public class Resources {
 
 		switch (type) {
 		case "BLUE":
-			imageFile += tileFrameFile[index];
+			imageFile = tileFrameFile[index];
 			break;
 		case "GREEN":
-			imageFile += tileCatFile[index];
+			imageFile = tileCatFile[index];
 			break;
 		case "YELLOW":
-			imageFile += tileGameFile[index];
+			imageFile = tileGameFile[index];
 			break;
 		case "WHITE":
-			imageFile += tileBookFile[index];
+			imageFile = tileBookFile[index];
 			break;
 		case "VIOLET":
-			imageFile += tileFlowerFile[index];
+			imageFile = tileFlowerFile[index];
 			break;
 		case "CYAN":
-			imageFile += tileTrophyFile[index];
+			imageFile = tileTrophyFile[index];
 			break;
 			default:
 				break;
@@ -270,22 +270,22 @@ public class Resources {
 
 		switch (type) {
 			case TILE_TYPE_FRAME:
-				imageFile += tileFrameFile[index];
+				imageFile = tileFrameFile[index];
 				break;
 			case TILE_TYPE_CAT:
-				imageFile += tileCatFile[index];
+				imageFile = tileCatFile[index];
 				break;
 			case TILE_TYPE_GAME:
-				imageFile += tileGameFile[index];
+				imageFile = tileGameFile[index];
 				break;
 			case TILE_TYPE_BOOK:
-				imageFile += tileBookFile[index];
+				imageFile = tileBookFile[index];
 				break;
 			case TILE_TYPE_FLOWER:
-				imageFile += tileFlowerFile[index];
+				imageFile = tileFlowerFile[index];
 				break;
 			case TILE_TYPE_TROPHY:
-				imageFile += tileTrophyFile[index];
+				imageFile = tileTrophyFile[index];
 				break;
 			default:
 				break;

@@ -167,15 +167,22 @@ public abstract class Client {
             case "SelectedTiles":
                 JSONArray arr10 = (JSONArray) object.get("SelectedTiles");
                 Map<String, String> map9 = new HashMap<>();
+                ArrayList <ArrayList<String>> selected = new ArrayList<>();
+                ArrayList <String> tmp = new ArrayList<>();
+
                 for (int i = 0; i < arr10.size(); i++) {
                     JSONObject obj = (JSONObject) arr10.get(i);
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
-                    map9.put(p.getKey(), obj.get("color").toString());
+                    String tile = obj.get("color").toString();
+                    map9.put(p.getKey(), tile);
+                    tmp.add(tile);
+                    tmp.add(p.getKey());
                 }
+                selected.add(tmp);
                 if (!inChat) {
-                    LaunchClient.getView().showSelectedTiles(map9, object.get("Nickname").toString());
+                    LaunchClient.getView().showSelectedTiles(map9, object.get("Nickname").toString(),selected);
                 }
-                state.saveSelectedTiles(map9);
+                state.saveSelectedTiles(map9,selected);
                 break;
             case "PickedTiles":
                 JSONArray arr11 = (JSONArray) object.get("PickedTiles");

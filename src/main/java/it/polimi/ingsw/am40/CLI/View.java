@@ -18,7 +18,7 @@ public interface View {
     public void showAllBookshelves(Map<String, Map<String, String>> map);
     public void showBookshelf(Map<String, String> map);
     public void showBoardPickable(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board);
-    public void showSelectedTiles(Map<String, String> map, String s);
+    public void showSelectedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> selected);
     public void showPickedTiles(Map<String, String> map, String s);
     public void showFinalScore(Map<String, Integer> map, String winner);
     public void showPlayers(ArrayList<String> names);

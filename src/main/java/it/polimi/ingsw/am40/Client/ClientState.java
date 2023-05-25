@@ -27,6 +27,7 @@ public class ClientState {
     private ArrayList<String> authors;
     private ArrayList<String> receivers;
     private ArrayList<String> messages;
+    private ArrayList<ArrayList<String>> tileselected;
 
     public ClientState(Client client) {
         this.client = client;
@@ -74,8 +75,9 @@ public class ClientState {
         boardsel = map8;
     }
 
-    public void saveSelectedTiles(Map<String, String> map9) {
+    public void saveSelectedTiles(Map<String, String> map9,ArrayList<ArrayList<String>> selected) {
         selectedtiles = map9;
+        tileselected =  selected;
     }
 
     public void savePickedTiles(Map<String, String> map10) {
@@ -123,7 +125,7 @@ public class ClientState {
             LaunchClient.getView().showBoardPickable(pickabletiles, alreadysel, boardsel);
         }
         if (currplayer.equals(nickname) && selectedtiles != null) {
-            LaunchClient.getView().showSelectedTiles(selectedtiles, nickname);
+            LaunchClient.getView().showSelectedTiles(selectedtiles, nickname,tileselected);
         }
         if (currplayer.equals(nickname) && pickedtiles != null) {
             LaunchClient.getView().showPickedTiles(pickedtiles, nickname);

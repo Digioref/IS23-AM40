@@ -8,6 +8,7 @@ import it.polimi.ingsw.am40.Model.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -364,14 +365,33 @@ public class CliView implements View{
         System.out.println("\n");
     }
 
-    public void showSelectedTiles(Map<String, String> map, String s) {
+    public void showSelectedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> selected) {
         if (map.isEmpty()) {
             System.out.println("You haven't selected any Tile\n");
         } else {
             System.out.println( "Player " + s + " has selected the following Tiles");
+
+/*
+           // System.out.println("size of selected: " + selected.size() +"\n");
+            //System.out.println("tile: "+ selected.get(0).get(0) + "pos: " + selected.get(0).get(1));
+            for(ArrayList<String> tmp : selected){
+                //System.out.println("tile: "+ tmp.get(0) + " pos: " + tmp.get(1));
+                System.out.printf(printTile(tmp.get(0))+ tmp.get(1) + " ");
+            }
+
+ */
+
+
+
+
             for (String s1 : map.keySet()) {
+                System.out.println("tile: " + map.get(s1) + " pos "+ s1);
                 System.out.printf(printTile(map.get(s1)) + s1 + " ");
             }
+
+
+
+
             System.out.println("\n");
         }
     }
