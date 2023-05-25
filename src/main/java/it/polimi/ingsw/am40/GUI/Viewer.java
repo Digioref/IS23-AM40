@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -56,6 +57,9 @@ public class Viewer extends Application {
 	private ArrayList<String> names;
 	private Alert alert;
 	private Alert errorAlert;
+	@FXML
+	private Button ChatButton;
+
 
 
 
@@ -91,10 +95,10 @@ public class Viewer extends Application {
 	public void start(Stage stage) {
 		this.primaryStage = stage;
 		this.bookshelves = new ArrayList<>();
-		alert = new Alert(Alert.AlertType.INFORMATION);
-		errorAlert = new Alert(Alert.AlertType.ERROR);
-		alert.getDialogPane().getStylesheets().add("Alert.css");
-		errorAlert.getDialogPane().getStylesheets().add("Error.css");
+//		alert = new Alert(Alert.AlertType.INFORMATION);
+//		errorAlert = new Alert(Alert.AlertType.ERROR);
+//		alert.getDialogPane().getStylesheets().add("Alert.css");
+//		errorAlert.getDialogPane().getStylesheets().add("Error.css");
 		primaryStage.setResizable(false);
 
 		gui = this;
@@ -551,10 +555,6 @@ public class Viewer extends Application {
 		pane = new Pane();
 		newScene(pane);
 		setBackground(primaryStage, pane);
-		alert.initModality(Modality.APPLICATION_MODAL);
-		alert.initOwner(primaryStage);
-		errorAlert.initModality(Modality.APPLICATION_MODAL);
-		errorAlert.initOwner(primaryStage);
 		//stage.setMaximized(true);
 //		scene.setFullScreen(true);
 //		scene.setTitle("MyShelfie");
@@ -651,6 +651,10 @@ public class Viewer extends Application {
 	}
 
 	public void showMessage(String s) {
+		alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.getDialogPane().getStylesheets().add("Alert.css");
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(primaryStage);
 		alert.setTitle("Information Dialog");
 		alert.setHeaderText(null);
 		alert.setContentText(s);
@@ -658,6 +662,10 @@ public class Viewer extends Application {
 	}
 
 	public void suggestNicknames(String s, ArrayList<String> array4) {
+		alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.getDialogPane().getStylesheets().add("Alert.css");
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(primaryStage);
 		alert.setTitle("Information Dialog");
 		String r = s;
 		for (String t: array4) {
@@ -669,8 +677,11 @@ public class Viewer extends Application {
 	}
 
 	public void showError(String error) {
+		errorAlert = new Alert(Alert.AlertType.ERROR);
+		errorAlert.getDialogPane().getStylesheets().add("Error.css");
+		errorAlert.initModality(Modality.APPLICATION_MODAL);
+		errorAlert.initOwner(primaryStage);
 		errorAlert.setTitle("Error Dialog");
-		errorAlert.setHeaderText("!ERROR!");
 		errorAlert.setContentText(error);
 		errorAlert.showAndWait();
 	}
@@ -708,11 +719,10 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		pane.getChildren().add(bookshelf);
 
-		Button button = new Button("Chat");
-		button.setVisible(true);
-		pane.getChildren().add(button);
-		button.getStylesheets().add("ChatButton.css");
-		button.relocate(1350, 50);
+		ChatButton = new Button();
+		ChatButton.setVisible(true);
+		pane.getChildren().add(ChatButton);
+		ChatButton.relocate(1350, 50);
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
@@ -757,13 +767,13 @@ public class Viewer extends Application {
 			boolean flag = event.getFlag();
 			int x = (int) obj.getPosition().getX();
 			int y = (int) obj.getPosition().getY();
-			if (flag) {
-				event.consume();
+			board.select(x, y);
+			if (!flag) {
+				arrowRight.setVisible(!board.isSelectedEmpty());
+				LaunchClient.getClient().sendMessage("select " + x + " " + y);
 			}
 //			board.select(x, y);
 
-			arrowRight.setVisible(!board.isSelectedEmpty());
-			LaunchClient.getClient().sendMessage("select " + x + " " + y);
 			/* Stop the event here */
 			event.consume();
 		});
@@ -829,7 +839,7 @@ public class Viewer extends Application {
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
-				LaunchClient.getClient().sendMessage("insert " + column);
+				LaunchClient.getClient().sendMessage("insert " + (column+1));
 			}
 		}
 	}
