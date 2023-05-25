@@ -1,10 +1,8 @@
 .button {
     -fx-cursor: hand;
-    -fx-font-size:30px;
     -fx-background-color: #121212;
-    -fx-effect: dropshadow(three-pass-box, #00ffff, 10, 0.6, 0, 0);
+    -fx-font-size: 20px;
     -fx-text-alignment: center;
-    -fx-border-width: 4px;
     -fx-text-fill:white;
     -fx-background-radius: 50;
 }
