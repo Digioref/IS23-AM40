@@ -19,14 +19,15 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 public class CommandBoard extends AnchorPane {
 	private static final int TILES = 3;
-	private static final int TILE_LEFT_OFFSET = 20;
+	private static final int TILE_LEFT_OFFSET = 25;
 	private static final int TILE_TOP_OFFSET = 20;
 	private static final int LABEL_SIZE_WIDTH = 20;
-	private static final int LABEL_LEFT_OFFSET = 34;
-	private static final int LABEL_TOP_OFFSET = 72;
+	private static final int LABEL_LEFT_OFFSET = 39;
+	private static final int LABEL_TOP_OFFSET = 74;
 
 	private int nextTilePos;
 	private int[] pickupOrder = { 1, 1, 1 };
@@ -35,9 +36,9 @@ public class CommandBoard extends AnchorPane {
 	private TileRect[] tiles = new TileRect[TILES];
 	private LabelPos[] labels = new LabelPos[TILES];
 
-	public CommandBoard() {
+	public CommandBoard(Stage primaryStage) {
 		super();
-		setPrefSize(Metrics.COMMAND_BOARD_WIDTH, Metrics.COMMAND_BOARD_HEIGHT);
+		setPrefSize(Metrics.dim_x_comb* primaryStage.getWidth(), Metrics.dim_y_comb*primaryStage.getHeight());
 
 		Image image = Resources.background();
 
@@ -56,11 +57,11 @@ public class CommandBoard extends AnchorPane {
 
 		for (int i = 0; i < TILES; i++) {
 			tiles[i] = new TileRect(i);
-			tiles[i].relocate(TILE_LEFT_OFFSET + (i * (TILE_LEFT_OFFSET + Metrics.TILE_WIDTH)), TILE_TOP_OFFSET);
+			tiles[i].relocate(((TILE_LEFT_OFFSET + (i * (TILE_LEFT_OFFSET + Metrics.TILE_WIDTH)))/1536.0)* primaryStage.getWidth(), (TILE_TOP_OFFSET/864.0)*primaryStage.getHeight());
 
 			labels[i] = new LabelPos();
 			labels[i].setEmpty();
-			labels[i].relocate(LABEL_LEFT_OFFSET + (i * (Metrics.TILE_WIDTH + LABEL_SIZE_WIDTH)), LABEL_TOP_OFFSET);
+			labels[i].relocate(((LABEL_LEFT_OFFSET + (i * (Metrics.TILE_WIDTH + LABEL_SIZE_WIDTH)))/1536.0)* primaryStage.getWidth(), (LABEL_TOP_OFFSET/864.0)* primaryStage.getHeight());
 
 			getChildren().add(tiles[i]);
 			getChildren().add(labels[i]);
@@ -155,7 +156,7 @@ public class CommandBoard extends AnchorPane {
 	}
 
 	private class LabelPos extends Label {
-		private static final int SIZE = 24;
+		private static final int SIZE = 26;
 		private final ImageView[] view = { null, null, null };
 
 		public LabelPos() {
@@ -180,5 +181,13 @@ public class CommandBoard extends AnchorPane {
 		void setEmpty() {
 			setGraphic(null);
 		}
+	}
+
+	public int getNextTilePos() {
+		return nextTilePos;
+	}
+
+	public int[] getPickupOrder() {
+		return pickupOrder;
 	}
 }

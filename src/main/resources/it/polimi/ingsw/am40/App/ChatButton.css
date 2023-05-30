@@ -1,0 +1,13 @@
+.button {
+    -fx-cursor: hand;
+    -fx-background-color: #121212;
+    -fx-font-size: 20px;
+    -fx-text-alignment: center;
+    -fx-text-fill:white;
+    -fx-background-radius: 50;
+}
+
+.button:pressed {
+    -fx-background-color: cyan;
+    -fx-text-fill: black;
+}

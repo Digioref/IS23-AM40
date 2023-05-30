@@ -13,7 +13,7 @@ public class Select implements ICommand {
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (comm.size() != 2) {
-            c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));
+            c.sendMessage(JSONConverterStoC.createJSONError("Incomplete command"));
         }
         else {
 //            System.out.println(("qui"));
@@ -22,7 +22,7 @@ public class Select implements ICommand {
                 x = Integer.parseInt(comm.get(0));
                 y = Integer.parseInt(comm.get(1));
             } catch (NumberFormatException e) {
-                c.sendMessage(JSONConverterStoC.normalMessage("You must type an int, not a string!"));
+                c.sendMessage(JSONConverterStoC.createJSONError("You must type an int, not a string!"));
                 return;
             }
             ArrayList<Integer> arr = new ArrayList<>();

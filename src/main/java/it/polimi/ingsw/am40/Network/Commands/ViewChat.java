@@ -11,13 +11,13 @@ public class ViewChat implements ICommand {
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (!c.isLogged()) {
-            c.sendMessage(JSONConverterStoC.normalMessage("You are not logged in!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("You are not logged in!"));
         }
         else if (!c.getLogphase().equals(LoggingPhase.INGAME)) {
-            c.sendMessage(JSONConverterStoC.normalMessage("You are not in any game yet!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("You are not in any game yet!"));
         }
         else if (comm.size() != 0) {
-            c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("Incomplete command!"));
         }
         else {
             c.getChat();

@@ -20,7 +20,7 @@ public class GetCurScore implements ICommand {
             }
             c.sendMessage(JSONConverterStoC.createJSONCurrentScore(map));
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command getcurscore doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command getcurscore doesn't want arguments!"));
         }
     }
 }

@@ -19,7 +19,7 @@ public class GetBook implements ICommand {
                 }
             }
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command getbook doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command getbook doesn't want arguments!"));
         }
     }
 }

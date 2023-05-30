@@ -13,7 +13,7 @@ public class GetBookAll implements ICommand {
         if (comm.size() == 0) {
             c.sendMessage(JSONConverterStoC.createJSONBookAll(c.getController().getGame().getPlayers()));
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command getbookall doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command getbookall doesn't want arguments!"));
         }
     }
 }

@@ -20,5 +20,7 @@ public interface IGameObserver {
     public void receiveFinalScore(ArrayList<Player> players, Player winner);
     public void receivePickedTiles(Player player);
     public void receiveSelectedTiles(Player player);
+    public void receiveTimer();
+    public void receiveDisconnection(String s);
 
 }

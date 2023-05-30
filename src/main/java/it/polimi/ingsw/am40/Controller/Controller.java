@@ -5,10 +5,11 @@ import it.polimi.ingsw.am40.Model.*;
 public class Controller {
     Game game;
     GameController gameController;
-    public Controller(Game game) {
+    Lobby lobby;
+    public Controller(Game game, Lobby lobby) {
         this.game = game;
-        gameController = new GameController(game);
-        gameController.setController(this);
+        gameController = new GameController(game, this);
+        this.lobby = lobby;
     }
 
 
@@ -28,6 +29,9 @@ public class Controller {
         this.gameController = gameController;
     }
 
+    public Lobby getLobby() {
+        return lobby;
+    }
     //    public void pick (Position p) {
 //        game.selectTiles(game.getCurrentPlayer(), p);
 //    }

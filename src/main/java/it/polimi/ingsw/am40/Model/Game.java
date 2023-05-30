@@ -7,11 +7,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Represents a game of MyShelfie
  */
 public class Game implements IGame {
+    private static final int WAIT_TIME = 10000;
     /**
      * Number of players in game
      */
@@ -62,6 +67,9 @@ public class Game implements IGame {
     private TurnPhase turn;
     private Player winner;
     private GroupChat groupChat;
+    private ScheduledExecutorService timer;
+    private boolean timerstate;
+    private ArrayList<String> discPlayers;
 
     /**
      * Constructor which builds the class assigning the number of players and creating the array of players
@@ -73,6 +81,8 @@ public class Game implements IGame {
         pJSONm = new ParsingJSONManager();
         observers = new ArrayList<>();
         groupChat = new GroupChat();
+        discPlayers = new ArrayList<>();
+        timerstate = false;
     }
 
     /**
@@ -180,10 +190,47 @@ public class Game implements IGame {
         if (checkEndGame() || turn != TurnPhase.ENDTURN) {
             return;
         }
-        currentPlayer = currentPlayer.getNext();
+        boolean ok = false;
+        do {
+            currentPlayer = currentPlayer.getNext();
+            if (!currentPlayer.isDisconnected()) {
+                ok = true;
+            }
+        } while (!ok);
 
     }
 
+    public int checkDisconnection() {
+        int count = 0;
+        for (Player p: players) {
+            if (p.isDisconnected()) {
+                count++;
+            }
+        }
+        return (numPlayers - count);
+    }
+
+    public void startTimer() {
+        timer = Executors.newScheduledThreadPool(1);
+        Runnable task = () -> {
+            setTurn(TurnPhase.ENDGAME);
+            setHasEnded(true);
+            endGame();
+        };
+        timer.schedule(task, WAIT_TIME, TimeUnit.MILLISECONDS);
+        timerstate = true;
+        for (VirtualView v: observers) {
+            for (Player p: players) {
+                if (!p.isDisconnected() && p.getNickname().equals(v.getNickname())) {
+                    v.receiveTimer();
+                }
+            }
+        }
+    }
+    public void stopTimer() {
+        timerstate = false;
+        timer.shutdownNow();
+    }
     public boolean checkEndGame () {
         if (endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer) && turn == TurnPhase.ENDTURN) {
             setHasEnded(true);
@@ -327,7 +374,18 @@ public class Game implements IGame {
                 setWinner();
             }
         }
+        if (checkDisconnection() == 1) {
+            setDiscWinner();
+        }
         notifyObservers(turn);
+    }
+    private void setDiscWinner() {
+        for (Player p: players) {
+            if (!p.isDisconnected()) {
+                winner = p;
+                break;
+            }
+        }
     }
 
     public boolean controlRefill () {
@@ -515,11 +573,11 @@ public class Game implements IGame {
                             v.receivePersonalGoal(p.getPersonalGoal());
                         }
                     }
-                    v.receiveListBookshelves(players);
                     v.receiveListPlayers(players);
                     v.receiveNumPlayers(numPlayers);
+                    v.receiveListBookshelves(players);
                     v.receiveCurrentPlayer(currentPlayer);
-                };
+                }
                 break;
 
             case SELECTION:
@@ -564,11 +622,12 @@ public class Game implements IGame {
             case ENDGAME:
                 for (VirtualView v : observers) {
                     for (Player p : players) {
-                        if (p.getNickname().equals(v.getNickname())) {
+                        if (p.getNickname().equals(v.getNickname()) && !p.isDisconnected()) {
                             v.receiveFinalScore(players, winner);
                         }
                     }
-                };
+                }
+                setHasEnded(true);
                 break;
 
         }
@@ -589,5 +648,40 @@ public class Game implements IGame {
 
     public GroupChat getGroupChat() {
         return groupChat;
+    }
+
+    public ArrayList<String> getDiscPlayers() {
+        return discPlayers;
+    }
+
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+    public boolean isTimerStarted() {
+        return timerstate;
+    }
+
+
+    public void notifyReconnection(String s) {
+        for (VirtualView v: observers) {
+            if (v.getNickname().equals(s)) {
+                v.receiveBoard(board);
+                if (currentPlayer.getNickname().equals(v.getNickname())) {
+                    v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
+                }
+//                    v.receiveCurrentPlayer(currentPlayer);
+                v.receiveCommonGoals(currentComGoals);
+                for (Player p : players) {
+                    if (p.getNickname().equals(v.getNickname())) {
+                        v.receiveHiddenScore(p.getHiddenScore());
+                        v.receivePersonalGoal(p.getPersonalGoal());
+                    }
+                }
+                v.receiveListBookshelves(players);
+                v.receiveListPlayers(players);
+                v.receiveNumPlayers(numPlayers);
+                v.receiveCurrentPlayer(currentPlayer);
+            }
+        }
     }
 }

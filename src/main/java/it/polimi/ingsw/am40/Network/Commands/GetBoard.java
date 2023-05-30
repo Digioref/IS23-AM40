@@ -19,7 +19,7 @@ public class GetBoard implements ICommand {
                 }
             }
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command getboard doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command getboard doesn't want arguments!"));
         }
     }
 }

@@ -13,13 +13,13 @@ public class Insert implements ICommand {
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (comm.size() != 1) {
-            c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));
+            c.sendMessage(JSONConverterStoC.createJSONError("Incomplete command"));
         }
         else {
             try {
                 Integer i = Integer.parseInt(comm.get(0));
             } catch (NumberFormatException e) {
-                c.sendMessage(JSONConverterStoC.normalMessage("You must type an int, not a string!"));
+                c.sendMessage(JSONConverterStoC.createJSONError("You must type an int, not a string!"));
                 return;
             }
             if (Integer.parseInt(comm.get(0)) > 0 && Integer.parseInt(comm.get(0)) <= 5) {
@@ -27,9 +27,9 @@ public class Insert implements ICommand {
                 arr.add(Integer.parseInt(comm.get(0)));
                 c.executeCommand(ActionType.INSERT, arr);
             } else if (Integer.parseInt(comm.get(0)) <= 0) {
-                c.sendMessage(JSONConverterStoC.normalMessage("The index of the column is too low"));
+                c.sendMessage(JSONConverterStoC.createJSONError("The index of the column is too low"));
             } else {
-                c.sendMessage(JSONConverterStoC.normalMessage("The index of the column is too high"));
+                c.sendMessage(JSONConverterStoC.createJSONError("The index of the column is too high"));
             }
         }
     }

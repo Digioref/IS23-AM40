@@ -14,5 +14,7 @@ public interface RMIServerInterface extends Remote {
     void chat(String s, String command) throws RemoteException;
     void getChat(String s, String command) throws RemoteException;
     void close(String s) throws RemoteException;
+    void receivePong(RMIClientInterface client) throws RemoteException;
+    void init(RMIClientInterface client) throws RemoteException;
 
 }

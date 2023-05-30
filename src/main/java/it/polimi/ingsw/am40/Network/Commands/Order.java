@@ -17,22 +17,22 @@ public class Order implements ICommand {
                     try {
                         Integer j = Integer.parseInt(comm.get(i));
                     } catch (NumberFormatException e) {
-                        c.sendMessage(JSONConverterStoC.normalMessage("You must type an int, not a string!"));
+                        c.sendMessage(JSONConverterStoC.createJSONError("You must type an int, not a string!"));
                         return;
                     }
                     if (Integer.parseInt(comm.get(i)) <= comm.size() && Integer.parseInt(comm.get(i)) > 0) {
                         arr.add(Integer.parseInt(comm.get(i)));
                     } else if (Integer.parseInt(comm.get(i)) > comm.size()) {
-                        c.sendMessage(JSONConverterStoC.normalMessage("A number of the order is too high!"));
+                        c.sendMessage(JSONConverterStoC.createJSONError("A number of the order is too high!"));
                         return;
                     } else {
-                        c.sendMessage(JSONConverterStoC.normalMessage("A number of the order is too low!"));
+                        c.sendMessage(JSONConverterStoC.createJSONError("A number of the order is too low!"));
                         return;
                     }
                 }
                 c.executeCommand(ActionType.ORDER, arr);
             } else {
-                c.sendMessage(JSONConverterStoC.normalMessage("Incomplete command"));
+                c.sendMessage(JSONConverterStoC.createJSONError("Incomplete command"));
             }
     }
 }
