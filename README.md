@@ -17,9 +17,9 @@
 | Basic Rules | :green_circle: | 90 % |
 | Complete Rules | :green_circle: | 90 % |
 | CLI | :yellow_circle: | 80 % |
-| GUI | 🟡: | 60 % |
-| RMI | :green_circle | 90 % |
-| Socket | 🟢_circle: | 90 % |
+| GUI | 🟡 | 60 % |
+| RMI | :green_circle: | 90 % |
+| Socket | 🟢 | 90 % |
 | Multiple Matches | 🟢 | 80 % |
 | Connections' Resilience | 🟡 | 50 % |
 | Chat | 🟡 | 50 % |
