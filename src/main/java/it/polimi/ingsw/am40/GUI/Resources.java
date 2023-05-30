@@ -1,9 +1,7 @@
 package it.polimi.ingsw.am40.GUI;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.Objects;
 
 import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import javafx.scene.image.Image;
@@ -59,7 +57,9 @@ public class Resources {
 	private static final String titleFile = "Title 2000x618px.png";
 
 	private static Image loadImage(String imageFile){
+		System.out.println(imageFile);
 		Image image = new Image("it/polimi/ingsw/am40/GUI/Resources/"+imageFile);
+		//Image image = new Image(Objects.requireNonNull(Resources.class.getResource("it/polimi/ingsw/am40/GUI/Resources/" + imageFile)).toExternalForm());
 		//System.out.println(Resources.class.getClassLoader());
 		//InputStream is = Resources.class.getClassLoader().getResourceAsStream(imageFile);
 		//image = new Image(Resources.class.getClassLoader().getResource(imageFile).toString());
@@ -222,7 +222,7 @@ public class Resources {
 
 	public static Image tile(String type, int index) {
 
-		String imageFile=null;
+		String imageFile = "";
 /*
 		imageFile = Resources.resourcesPath;
 		imageFile += Resources.pathSeparator;
