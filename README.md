@@ -13,28 +13,28 @@
 
 | Project Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
-| UML | :green_circle: | 85 % |
-| Basic Rules | :green_circle: | 90 % |
-| Complete Rules | :green_circle: | 90 % |
-| CLI | :yellow_circle: | 80 % |
+| UML | 🟢 | 85 % |
+| Basic Rules | 🟢 | 90 % |
+| Complete Rules | 🟢 | 90 % |
+| CLI | 🟡 | 80 % |
 | GUI | 🟡 | 60 % |
-| RMI | :green_circle: | 90 % |
+| RMI | 🟢 | 90 % |
 | Socket | 🟢 | 90 % |
+
+| Advanced Features | Status | Current | Notes |
+| -------------- | ------ | ------- | ------- |
 | Multiple Matches | 🟢 | 80 % |
 | Connections' Resilience | 🟡 | 50 % |
 | Chat | 🟡 | 50 % |
 
 | Test Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
-| Test Basic Rules | :green_circle: | 75 % |
-| Test Complete Rules | :green_circle: | 75 % |
-| Test CLI | :yellow_circle: | 20 % |
+| Test Basic Rules | 🟢 | 75 % |
+| Test Complete Rules | 🟢 | 75 % |
+| Test CLI | 🟡 | 20 % |
 | Test GUI | 🔴 | 0 % |
 | Test RMI | 🔴 | 0 % |
 | Test Socket | 🔴 | 0 % |
 | Test Multiple Matches | 🔴 | 0 % |
-| Test Persistency | 🔴 | 0 % |
 | Test Connections' Resilience | 🔴 | 0 % |
 | Test Chat | 🔴 | 0 % |
-
-
