@@ -58,7 +58,8 @@ public class Resources {
 
 	private static Image loadImage(String imageFile){
 		System.out.println(imageFile);
-		Image image = new Image("it/polimi/ingsw/am40/GUI/Resources/"+imageFile);
+
+		Image image = new Image("it/polimi/ingsw/am40/GUI/Resources/" + imageFile);
 		//Image image = new Image(Objects.requireNonNull(Resources.class.getResource("it/polimi/ingsw/am40/GUI/Resources/" + imageFile)).toExternalForm());
 		//System.out.println(Resources.class.getClassLoader());
 		//InputStream is = Resources.class.getClassLoader().getResourceAsStream(imageFile);

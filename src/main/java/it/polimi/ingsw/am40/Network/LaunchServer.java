@@ -16,6 +16,8 @@ import java.util.Scanner;
 import java.net.BindException;
 
 
+
+
 public class LaunchServer {
     private static String hostName;
     private static String IPAddress;
@@ -70,7 +72,7 @@ public class LaunchServer {
         try {
 //            ClassLoader classLoader = LaunchServer.class.getClassLoader();
 //            File file = new File(Objects.requireNonNull(classLoader.getResource("Server.json")).getFile());
-            File file = new File("resources/Server.json");
+            File file = new File("src/main/resources/Server.json");
             reader = new FileReader(file);
             JSONObject obj = (JSONObject) jsonParser.parse(reader);
             JSONObject server = (JSONObject) obj.get("Server");
@@ -87,7 +89,7 @@ public class LaunchServer {
         try {
 //            ClassLoader classLoader = LaunchServer.class.getClassLoader();
 //            File file = new File(Objects.requireNonNull(classLoader.getResource("C:/Users/digio/OneDrive/Documents/Francesco/Universita'/Terzo Anno/Progetto di Ingegneria del SoftwareIS23-AM40 2/IS23-AM40/src/main/resources/Server.json")).getFile());
-            File file = new File("resources/Server.json");
+            File file = new File("src/main/resources/Server.json");
             reader = new FileReader(file);
             JSONObject obj = (JSONObject) jsonParser.parse(reader);
             JSONObject server = (JSONObject) obj.get("Server");
