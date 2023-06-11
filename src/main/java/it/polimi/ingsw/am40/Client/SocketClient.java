@@ -18,7 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.Queue;
+import java.util.ArrayDeque;
 
 public class SocketClient extends Client {
 
@@ -29,8 +32,11 @@ public class SocketClient extends Client {
     private PrintWriter out;
     private Thread fromUser;
     private Thread fromServer;
+
     private boolean stop;
     private Socket socket;
+    private boolean quitchat;
+    private Queue<String> message;
 
 
     public SocketClient(Socket socket) {
@@ -43,34 +49,49 @@ public class SocketClient extends Client {
             throw new RuntimeException(e);
         }
         stop = false;
+        inChat = false;
+        state = new ClientState(this);
+        message = new ArrayDeque<>();
     }
     public void init() {
         createThreadFU();
         createThreadFS();
         startPing();
+        startParsing();
     }
 
 
     public void sendPong() {
-        JSONConverterCtoS jconv = new JSONConverterCtoS();
-        jconv.toJSON("Pong");
-        sendMessage(jconv.toString());
+        sendMessage("Pong");
     }
     public synchronized void sendMessage(String s) {
-        out.println(s);
+        JSONConverterCtoS jconv = new JSONConverterCtoS();
+        jconv.toJSON(s);
+        if (jconv.getObj().get("Command").toString().equals("insert")) {
+            state.setSelectedtiles(null);
+            state.setPickedtiles(null);
+        }
+        out.println(jconv.toString());
         out.flush();
     }
 
     public void close() {
         ping.shutdownNow();
+        parse.interrupt();
         stop = true;
+        quitchat = true;
         try {
-            fromUser.interrupt();
+            if (fromUser != null) {
+                fromUser.interrupt();
+            }
             fromServer.interrupt();
-            socket.shutdownInput();
-            socket.shutdownOutput();
-            socket.close();
+            if (!socket.isClosed()) {
+                socket.shutdownInput();
+                socket.shutdownOutput();
+                socket.close();
+            }
             stdIn.close();
+            System.exit(0);
 //            LaunchClient.getView().quit(nickname);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -114,11 +135,12 @@ public class SocketClient extends Client {
                                 break;
                             }
                             if (userInput.equals("chat")) {
+                                inChat = true;
                                 LaunchClient.getView().chat(this);
+                                inChat = false;
+                                state.refresh();
                             } else {
-                                JSONConverterCtoS jconv = new JSONConverterCtoS();
-                                jconv.toJSON(userInput);
-                                sendMessage(jconv.toString());
+                                sendMessage(userInput);
                             }
                         }
                     } catch (IOException e) {
@@ -136,13 +158,20 @@ public class SocketClient extends Client {
                 String line = null;
                 try {
                     line = in.readLine();
+                    if (line == null) {
+                        close();
+                        break;
+                    }
                 } catch (IOException e) {
                     System.out.println("Server crashed! Closing client...");
                     close();
                     break;
 //                    throw new RuntimeException(e);
                 }
+
+                message.add(line);
 //                print(line);
+                /*
                 try {
                     parseMessage(line);
                 } catch (ParseException e) {
@@ -150,10 +179,49 @@ public class SocketClient extends Client {
                     break;
 //                    throw new RuntimeException(e);
                 }
+                */
             } while (!stop);
         });
 
         fromServer.setName("READ FROM SERVER");
         fromServer.start();
+    }
+
+    private void startParsing(){
+        parse= new Thread( ()-> {
+            do{
+                synchronized (message){
+                    if(!message.isEmpty()){
+                        try {
+                            parseMessage(message.poll());
+                        } catch (ParseException e) {
+                            System.out.println("Error in parsing");
+                            break;
+                        }
+                    }
+                }
+            }while (!stop);
+        });
+        parse.setName("PARSING MESSAGE");
+        parse.start();
+    }
+
+    public void startPing() {
+        Runnable task = () -> {
+            numPing++;
+            if (numPing == NUMPINGLOST) {
+                close();
+            }
+        };
+        ping = Executors.newSingleThreadScheduledExecutor();
+        ping.scheduleAtFixedRate(task, WAIT_PING, WAIT_PING, TimeUnit.MILLISECONDS);
+    }
+
+    public void setQuitchat(boolean quitchat) {
+        this.quitchat = quitchat;
+    }
+
+    public boolean isQuitchat() {
+        return quitchat;
     }
 }

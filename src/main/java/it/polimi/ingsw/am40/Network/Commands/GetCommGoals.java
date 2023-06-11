@@ -23,7 +23,7 @@ public class GetCommGoals implements ICommand {
                 }
             }
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command getcommgoals doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command getcommgoals doesn't want arguments!"));
         }
     }
 }

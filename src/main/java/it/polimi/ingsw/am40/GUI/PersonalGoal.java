@@ -8,16 +8,21 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 public class PersonalGoal extends Label {
 
-	public PersonalGoal(int index) {
+	public PersonalGoal(int index, Stage primaryStage) {
 		super();
 		Image image = Resources.personalGoal(index);
 		ImageView view = new ImageView(image);
 		view.setPreserveRatio(true);
-		view.setFitWidth(100);
-		view.setFitHeight(160);
+//		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
+		//view.setFitWidth(100);
+		view.setFitWidth(Metrics.dim_x_pers*primaryStage.getWidth());
+		view.setFitHeight(Metrics.dim_y_pers*primaryStage.getHeight());
+		view.setPreserveRatio(true);
 		setGraphic(view);
 
 		Rectangle clip = new Rectangle(view.getFitWidth(), view.getFitHeight());

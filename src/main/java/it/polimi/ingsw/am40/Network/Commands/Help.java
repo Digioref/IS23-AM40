@@ -32,7 +32,7 @@ public class Help implements ICommand {
                 }
             }
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command help doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command help doesn't want arguments!"));
         }
     }
 }

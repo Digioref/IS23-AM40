@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class ClientHandler extends Handlers implements Runnable {
     private final static int WAIT_PING = 10000;
     private final static int SEND_PING = 4000;
+    private final static int NUMLOST = 3;
     private Socket socket;
     private Scanner in;
     private PrintWriter out;
@@ -106,7 +107,6 @@ public class ClientHandler extends Handlers implements Runnable {
             sendPing.shutdownNow();
         if(waitPing != null)
             waitPing.shutdownNow();
-        waitPing = Executors.newSingleThreadScheduledExecutor();
         sendPing = Executors.newScheduledThreadPool(1);
         Runnable task = () -> {
             ping();
@@ -122,8 +122,8 @@ public class ClientHandler extends Handlers implements Runnable {
         }
         Runnable task = () -> {
             nPingLost++;
-            if(nPingLost >= 3){
-                System.out.println("Disconesso il Client per aver perso 3 PING!");
+            if (nPingLost >= NUMLOST) {
+                System.out.println("Client disconnected for having lost " + NUMLOST +  " PING!");
                 close();
             }
         };
@@ -135,15 +135,17 @@ public class ClientHandler extends Handlers implements Runnable {
 
     public void suggestNickname(String nickname) {
         Random random = new Random();
+        ArrayList<String> arr = new ArrayList<>();
         for (int i = 0; i < NSUGGEST; i++) {
             int x = random.nextInt(10);
             int y = random.nextInt(10);
             int z = random.nextInt(10);
-            try {
-                sendMessage(JSONConverterStoC.normalMessage(nickname + x + y + z));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            arr.add(nickname + x + y + z);
+        }
+        try {
+            sendMessage(JSONConverterStoC.createJSONNicknames(arr));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -190,10 +192,15 @@ public class ClientHandler extends Handlers implements Runnable {
     }
 
     public void close() {
-        //TODO impact on game
         nPingLost = 0;
-        waitPing.shutdownNow();
-        sendPing.shutdownNow();
+        waitPing.shutdown();
+        sendPing.shutdown();
+        if (virtualView != null) {
+            virtualView.setClientHandler(null);
+        }
+        if (controller != null) {
+            controller.getGameController().disconnectPlayer(nickname);
+        }
         lobby.removeQuit(this);
         try {
             sendMessage(JSONConverterStoC.normalMessage("Quit"));
@@ -201,6 +208,7 @@ public class ClientHandler extends Handlers implements Runnable {
             throw new RuntimeException(e);
         }
         stop = true;
+        gameServer.shutdownHandler(this);
 //        in.close();
 //        out.close();
 //        try {
@@ -208,12 +216,19 @@ public class ClientHandler extends Handlers implements Runnable {
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
-        gameServer.shutdownHandler(this);
     }
 
     @Override
     public synchronized void handlePong() {
-        waitPing.shutdown();
+        waitPing.shutdownNow();
         nPingLost = 0;
+    }
+
+    @Override
+    public void closeGame() {
+        close();
+        virtualView = null;
+        controller = null;
+        lobby.closeGame(this);
     }
 }

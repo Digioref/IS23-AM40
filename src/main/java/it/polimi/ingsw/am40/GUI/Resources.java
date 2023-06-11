@@ -1,7 +1,6 @@
 package it.polimi.ingsw.am40.GUI;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 
 import javafx.scene.image.Image;
 
@@ -54,19 +53,31 @@ public class Resources {
 
 	private static final String titleFile = "Title 2000x618px.png";
 
-	private static Image loadImage(String imageFile) {
-		Image image = null;
+	private static Image loadImage(String imageFile){
+		System.out.println(imageFile);
+		//Class<?> clazz = Resources.class;
 
-		try {
-			image = new Image(new FileInputStream(imageFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		// Get the class loader and load the resource using getResourceAsStream
+		InputStream inputStream =Resources.class.getResourceAsStream("/Images/"+imageFile);
+
+		// Check if the resource exists
+		if (inputStream == null) {
+			throw new IllegalArgumentException("Resource not found: " + imageFile);
 		}
+
+		// Create the image from the input stream
+		Image image = new Image(inputStream);
+		//Image image = new Image("it/polimi/ingsw/am40/GUI/Resources/"+imageFile);
+		//Image image = new Image(Objects.requireNonNull(Resources.class.getResource("it/polimi/ingsw/am40/GUI/Resources/" + imageFile)).toExternalForm());
+		//System.out.println(Resources.class.getClassLoader());
+		//InputStream is = Resources.class.getClassLoader().getResourceAsStream(imageFile);
+		//image = new Image(Resources.class.getClassLoader().getResource(imageFile).toString());
+		//image = new Image(Resources.class.getResource("/it/polimi/ingsw/am40/GUI/Resources/" + imageFile));
 		return image;
 	}
 
 	public static Image icon() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -74,12 +85,13 @@ public class Resources {
 		imageFile += Resources.publisherPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.iconFile;
-
-		return loadImage(imageFile);
+*/
+		//loadImage(iconFile);
+		return loadImage(iconFile);
 	}
 
 	public static Image arrowDown() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -87,31 +99,26 @@ public class Resources {
 		imageFile += Resources.customPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.arrowdownFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(arrowdownFile);
 	}
 
 	public static Image number(int num) {
 
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.customPath;
-		imageFile += Resources.pathSeparator;
+		String imageFile=null;
 
 		switch (num) {
 		case 1:
-			imageFile += number1File;
+			imageFile = number1File;
 			break;
 		case 2:
-			imageFile += number2File;
+			imageFile = number2File;
 			break;
 		case 3:
-			imageFile += number3File;
+			imageFile = number3File;
 			break;
 		default:
-			imageFile += number1File;
+			imageFile = number1File;
 			break;
 		}
 
@@ -119,7 +126,7 @@ public class Resources {
 	}
 
 	public static Image labelName() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -127,12 +134,12 @@ public class Resources {
 		imageFile += Resources.customPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += labelNameFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(labelNameFile);
 	}
 
 	public static Image background() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -140,12 +147,12 @@ public class Resources {
 		imageFile += Resources.miscPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.backgroundFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(backgroundFile);
 	}
 
 	public static Image bag() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -153,12 +160,12 @@ public class Resources {
 		imageFile += Resources.miscPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.bagFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(bagFile);
 	}
 
 	public static Image basePage() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -166,12 +173,12 @@ public class Resources {
 		imageFile += Resources.miscPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.basePageFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(basePageFile);
 	}
 
 	public static Image board() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -179,12 +186,12 @@ public class Resources {
 		imageFile += Resources.boardsPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.boardFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(boardFile);
 	}
 
 	public static Image bookshelf() {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -192,12 +199,12 @@ public class Resources {
 		imageFile += Resources.boardsPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.bookshelfFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(bookshelfFile);
 	}
 
 	public static Image commonGoal(int index) {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -205,12 +212,12 @@ public class Resources {
 		imageFile += Resources.commonGoalPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.commonGoalFile[index];
-
-		return loadImage(imageFile);
+*/
+		return loadImage(commonGoalFile[index]);
 	}
 
 	public static Image personalGoal(int index) {
-
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -218,46 +225,86 @@ public class Resources {
 		imageFile += Resources.personalGoalPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.personalGoalFile[index];
+*/
+		return loadImage(personalGoalFile[index]);
+	}
+
+	public static Image tile(String type, int index) {
+
+		String imageFile = "";
+/*
+		imageFile = Resources.resourcesPath;
+		imageFile += Resources.pathSeparator;
+		imageFile += Resources.tilesPath;
+		imageFile += Resources.pathSeparator;
+*/
+		index %= 3;
+
+		switch (type) {
+		case "BLUE":
+			imageFile = tileFrameFile[index];
+			break;
+		case "GREEN":
+			imageFile = tileCatFile[index];
+			break;
+		case "YELLOW":
+			imageFile = tileGameFile[index];
+			break;
+		case "WHITE":
+			imageFile = tileBookFile[index];
+			break;
+		case "VIOLET":
+			imageFile = tileFlowerFile[index];
+			break;
+		case "CYAN":
+			imageFile = tileTrophyFile[index];
+			break;
+			default:
+				break;
+		}
 
 		return loadImage(imageFile);
 	}
 
 	public static Image tile(int type, int index) {
 
-		String imageFile;
-
+		String imageFile=null;
+/*
 		imageFile = Resources.resourcesPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.tilesPath;
 		imageFile += Resources.pathSeparator;
-
+*/
 		index %= 3;
 
 		switch (type) {
-		case TILE_TYPE_FRAME:
-			imageFile += tileFrameFile[index];
-			break;
-		case TILE_TYPE_CAT:
-			imageFile += tileCatFile[index];
-			break;
-		case TILE_TYPE_GAME:
-			imageFile += tileGameFile[index];
-			break;
-		case TILE_TYPE_BOOK:
-			imageFile += tileBookFile[index];
-			break;
-		case TILE_TYPE_FLOWER:
-			imageFile += tileFlowerFile[index];
-			break;
-		case TILE_TYPE_TROPHY:
-			imageFile += tileTrophyFile[index];
-			break;
+			case TILE_TYPE_FRAME:
+				imageFile = tileFrameFile[index];
+				break;
+			case TILE_TYPE_CAT:
+				imageFile = tileCatFile[index];
+				break;
+			case TILE_TYPE_GAME:
+				imageFile = tileGameFile[index];
+				break;
+			case TILE_TYPE_BOOK:
+				imageFile = tileBookFile[index];
+				break;
+			case TILE_TYPE_FLOWER:
+				imageFile = tileFlowerFile[index];
+				break;
+			case TILE_TYPE_TROPHY:
+				imageFile = tileTrophyFile[index];
+				break;
+			default:
+				break;
 		}
 
 		return loadImage(imageFile);
 	}
 
 	public static Image title() {
+/*
 		String imageFile;
 
 		imageFile = Resources.resourcesPath;
@@ -265,7 +312,7 @@ public class Resources {
 		imageFile += Resources.publisherPath;
 		imageFile += Resources.pathSeparator;
 		imageFile += Resources.titleFile;
-
-		return loadImage(imageFile);
+*/
+		return loadImage(titleFile);
 	}
 }

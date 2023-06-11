@@ -6,6 +6,7 @@ import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.ParsingJSONManager;
 import it.polimi.ingsw.am40.Network.LoggingPhase;
 import it.polimi.ingsw.am40.Network.RMIClientHandler;
+import it.polimi.ingsw.am40.Network.VirtualView;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static it.polimi.ingsw.am40.Network.Handlers.NSUGGEST;
 
@@ -22,6 +25,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     private Lobby lobby;
     private Map<String,RMIClientHandler> clientHandlers;
     private ArrayList<String> commands;
+    private ArrayList<RMIClientHandler> rmiHandlers;
 
 
     public RMIServer() throws RemoteException {
@@ -29,42 +33,86 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         clientHandlers = new HashMap<>();
         commands = new ArrayList<>();
         ParsingJSONManager.commands(commands);
+        rmiHandlers = new ArrayList<>();
     }
 
     @Override
     public void login(String s, RMIClientInterface client) throws RemoteException {
         if (s.equals("")) {
-            client.receive(JSONConverterStoC.normalMessage("Incomplete command, you must specify your nickname!"));
+            client.receive(JSONConverterStoC.createJSONError("Incomplete command, you must specify your nickname!"));
             return;
         }
         for (String t: clientHandlers.keySet()) {
             if(clientHandlers.get(t).getRmiClient().equals(client)) {
-                client.receive(JSONConverterStoC.normalMessage("You are already logged in!"));
+                client.receive(JSONConverterStoC.createJSONError("You are already logged in!"));
                 return;
             }
         }
-        RMIClientHandler rmiClientHandler = null;
+//        RMIClientHandler rmiClientHandler = null;
         if(!checkNickname(s)) {
-            rmiClientHandler = new RMIClientHandler();
-            rmiClientHandler.setLobby(lobby);
-            rmiClientHandler.setNickname(s);
-            rmiClientHandler.setLogged(true);
-            rmiClientHandler.setRmiClient(client);
-            clientHandlers.put(s, rmiClientHandler);
-            client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
-            clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby..."));
-            lobby.addQueue(rmiClientHandler);
-            lobby.addNickname(s);
-            if (!lobby.getQueue().isEmpty() && lobby.getQueue().get(0).getNickname().equals(rmiClientHandler.getNickname())) {
-                rmiClientHandler.setLogphase(LoggingPhase.SETTING);
-                LoggingPhase.setSETPLAYERS(true);
-                clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You can set the number of players you want to play with:"));
-                return;
+//            rmiClientHandler = new RMIClientHandler();
+            for (RMIClientHandler r: rmiHandlers) {
+                if (r.getRmiClient().equals(client)) {
+                    r.setNickname(s);
+                    r.setLogged(true);
+                    clientHandlers.put(s, r);
+                    client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Waiting"));
+                    lobby.addQueue(r);
+                    lobby.addNickname(s);
+                    if (!lobby.getQueue().isEmpty() && lobby.getQueue().get(0).getNickname().equals(r.getNickname())) {
+                        r.setLogphase(LoggingPhase.SETTING);
+                        LoggingPhase.setSETPLAYERS(true);
+                        clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
+                    }
+                    rmiHandlers.remove(r);
+                    break;
+                }
             }
+//            rmiClientHandler.setLobby(lobby);
+//            rmiClientHandler.setNickname(s);
+//            rmiClientHandler.setLogged(true);
+//            rmiClientHandler.setRmiClient(client);
+//            clientHandlers.put(s, rmiClientHandler);
+//            client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
+//            clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby..."));
+//            lobby.addQueue(rmiClientHandler);
+//            lobby.addNickname(s);
+//            if (!lobby.getQueue().isEmpty() && lobby.getQueue().get(0).getNickname().equals(rmiClientHandler.getNickname())) {
+//                rmiClientHandler.setLogphase(LoggingPhase.SETTING);
+//                LoggingPhase.setSETPLAYERS(true);
+//                clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You can set the number of players you want to play with:"));
+//            }
         } else {
-            client.receive(JSONConverterStoC.normalMessage("The nickname you desire is already in use! Please type another nickname:"));
-            client.receive(JSONConverterStoC.normalMessage("You can choose one of the following nicknames, if you want"));
-            suggestNickname(s, client);
+            for (RMIClientHandler r: rmiHandlers) {
+                if (r.getRmiClient().equals(client)) {
+                    if ((!(r.getLobby().getGames().containsKey(s)) && r.getLobby().getNicknameInGame().contains(s)) || (r.getLobby().getGames().containsKey(s) && !r.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s))) {
+                        client.receive(JSONConverterStoC.createJSONError("The nickname you desire is already in use! Please type another nickname:"));
+//                        client.receive(JSONConverterStoC.normalMessage("You can choose one of the following nicknames, if you want"));
+                        suggestNickname(s, client);
+                        break;
+                    } else if (r.getLobby().getGames().containsKey(s) && r.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s)) {
+                        r.sendMessage(JSONConverterStoC.normalMessage("Welcome back " + s + "!\nReconnecting to the game..."));
+                        r.setNickname(s);
+                        r.setLogged(true);
+                        r.setLogphase(LoggingPhase.INGAME);
+                        r.setController(r.getLobby().getGames().get(s).getController());
+                        clientHandlers.put(s, r);
+                        client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
+                        r.setNumPlayers(r.getLobby().getGames().get(s).getGame().getNumPlayers());
+                        for (VirtualView v: r.getLobby().getGames().get(s).getGame().getObservers()) {
+                            if (v.getNickname().equals(s)) {
+                                v.setClientHandler(r);
+                            }
+                        }
+                        r.getController().getGameController().reconnect(s);
+                        rmiHandlers.remove(r);
+                        break;
+                    }
+                }
+            }
+
         }
 
     }
@@ -148,12 +196,39 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 
     @Override
     public void close(String s) throws RemoteException {
-        // TODO impact on game
         if (clientHandlers.containsKey(s)) {
             lobby.removeQuit(clientHandlers.get(s));
-            clientHandlers.get(s).close();
-            clientHandlers.remove(s);
+            RMIClientHandler r = clientHandlers.remove(s);
+            r.close();
+            System.out.println("Client " + s + " closed!");
+            if(lobby.getGames().containsKey(s)) {
+                lobby.getGames().get(s).disconnectPlayer(s);
+            }
         }
+    }
+
+    @Override
+    public void receivePong(RMIClientInterface client) throws RemoteException {
+        for (RMIClientHandler r: rmiHandlers) {
+            if (r.getRmiClient().equals(client)) {
+                r.handlePong();
+                break;
+            }
+        }
+        for (String s: clientHandlers.keySet()) {
+            if (clientHandlers.get(s).getRmiClient().equals(client)) {
+                clientHandlers.get(s).handlePong();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void init(RMIClientInterface client) throws RemoteException {
+        RMIClientHandler rmiClientHandler = new RMIClientHandler(this);
+        rmiClientHandler.setRmiClient(client);
+        rmiHandlers.add(rmiClientHandler);
+        rmiClientHandler.setLobby(lobby);
     }
 
     public void setLobby(Lobby lobby) {
@@ -189,5 +264,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public ArrayList<RMIClientHandler> getRmiHandlers() {
+        return rmiHandlers;
     }
 }

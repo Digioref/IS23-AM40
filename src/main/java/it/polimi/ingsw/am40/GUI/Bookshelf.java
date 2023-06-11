@@ -12,49 +12,43 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 
 public class Bookshelf extends AnchorPane {
 	private static final int COLUMN_SPACES = 6;
 	private static final int[] colStart = { 42, 98, 154, 210, 266 };
 	private static final int[] rowEnd = { 264, 216, 168, 120, 72, 24 };
-	private final int[] bookshelf = { 0, 0, 0, 0, 0, 0 };
+	private int[] bookshelf;
 	private final Label bsImage;
-	private final StackPane labelName;
+	private StackPane labelName;
 	private final AnimationTimer animTimer;
-	private final Text labelText;
+	private Text labelText;
 	private int col;
 	private int colIndex;
 	private int depth;
 	private Node node;
 	private ArrayList<Node> nodeList;
 	private Point2D velocity;
-	public Bookshelf() {
+	public Bookshelf(double w, double h) {
 		super();
 
-		setPrefSize(Metrics.BOOKSHELF_WIDTH, Metrics.BOOKSHELF_HEIGHT);
+//		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
+//		setPrefSize(screenHeight, screenHeight);
+		setPrefSize(w, h);
 
 		bsImage = new Label();
 		Image image = Resources.bookshelf();
 		ImageView view = new ImageView(image);
 		view.setPreserveRatio(true);
-		view.setFitWidth(Metrics.BOOKSHELF_WIDTH);
-		view.setFitHeight(Metrics.BOOKSHELF_HEIGHT);
+//		view.setFitWidth(screenHeight);
+//		view.setFitHeight(screenHeight);
+		view.setFitWidth(w);
+		view.setFitHeight(h);
 		bsImage.setGraphic(view);
 
 		getChildren().add(bsImage);
+		bookshelf = new int[]{0, 0, 0, 0, 0, 0};
 
-		labelName = new StackPane();
-		image = Resources.labelName();
-		view = new ImageView(image);
-		view.setPreserveRatio(true);
-		view.setFitWidth(90);
-		view.setFitHeight(36);
-		labelText = new Text("");
-		labelName.getChildren().add(view);
-		labelName.getChildren().add(labelText);
-		labelName.setAlignment(Pos.CENTER);
-		labelName.relocate(132, 316);
-		getChildren().add(labelName);
 
 		/* Animation timer */
 		animTimer = new AnimationTimer() {
@@ -115,6 +109,36 @@ public class Bookshelf extends AnchorPane {
 		this.colIndex = col;
 		animTimer.start();
 	}
+	public void update(ArrayList<Node> nodeList, int col){
+		this.node = null;
+		this.nodeList = nodeList;
+		this.col = colStart[col];
+		this.colIndex = col;
+		for (int i = 0; i < nodeList.size();) {
+			node = nodeList.remove(0);
+			node.setTranslateX(col);
+			node.setTranslateY(0);
+			depth = bookshelf[colIndex];
+			bookshelf[colIndex]++;
+			getChildren().add(node);
+			bsImage.toFront();
+			labelName.toFront();
+		}
+	}
+	public void createLabelName(double w, double h, double x, double y) {
+		labelName = new StackPane();
+		Image image = Resources.labelName();
+		ImageView view = new ImageView(image);
+		view.setPreserveRatio(true);
+		view.setFitWidth(w);
+		view.setFitHeight(h);
+		labelText = new Text("");
+		labelName.getChildren().add(view);
+		labelName.getChildren().add(labelText);
+		labelName.setAlignment(Pos.CENTER);
+		labelName.relocate(x, y);
+		getChildren().add(labelName);
+	}
 
 	int getFreeSpace(int column) {
 		return (COLUMN_SPACES - bookshelf[column]);
@@ -124,4 +148,17 @@ public class Bookshelf extends AnchorPane {
 		return (COLUMN_SPACES == bookshelf[column]);
 	}
 
+	public Text getLabelText() {
+		return labelText;
+	}
+	public void modifyDepth(int col) {
+		bookshelf[col]++;
+	}
+
+	public void resetDepth() {
+		this.bookshelf = new int[]{0, 0, 0, 0, 0, 0};
+		getChildren().clear();
+		getChildren().add(bsImage);
+		getChildren().add(labelName);
+	}
 }

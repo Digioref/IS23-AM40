@@ -14,7 +14,7 @@ public class GetCurrent implements ICommand {
             String s = c.getController().getGame().getCurrentPlayer().getNickname();
             c.sendMessage(JSONConverterStoC.createJSONCurrentPlayer(s));
         } else {
-            c.sendMessage(JSONConverterStoC.normalMessage("The command getcurrent doesn't want arguments!"));
+            c.sendMessage(JSONConverterStoC.createJSONError("The command getcurrent doesn't want arguments!"));
         }
     }
 }

@@ -8,9 +8,9 @@ import it.polimi.ingsw.am40.Model.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CliView implements View{
@@ -252,7 +252,7 @@ public class CliView implements View{
         }
     }
 
-    public void showPersonalGoal(Map<String, String> map) {
+    public void showPersonalGoal(Map<String, String> map, int number) {
         System.out.println(" Here you can see your Personal Goal\n");
         for (int i = 5; i >= 0 ; i--) {
             for (int j = 0; j < 5; j++) {
@@ -365,26 +365,52 @@ public class CliView implements View{
         System.out.println("\n");
     }
 
-    public void showSelectedTiles(Map<String, String> map, String s) {
+    public void showSelectedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> selected) {
         if (map.isEmpty()) {
             System.out.println("You haven't selected any Tile\n");
         } else {
             System.out.println( "Player " + s + " has selected the following Tiles");
+
+
+           // System.out.println("size of selected: " + selected.size() +"\n");
+            //System.out.println("tile: "+ selected.get(0).get(0) + "pos: " + selected.get(0).get(1));
+            for(ArrayList<String> tmp : selected){
+                //System.out.println("tile: "+ tmp.get(0) + " pos: " + tmp.get(1));
+                System.out.printf(printTile(tmp.get(0))+ tmp.get(1) + " ");
+            }
+
+
+            /*
             for (String s1 : map.keySet()) {
+                System.out.println("tile: " + map.get(s1) + " pos "+ s1);
                 System.out.printf(printTile(map.get(s1)) + s1 + " ");
             }
+
+             */
+
+
+
+
             System.out.println("\n");
         }
     }
 
-    public void showPickedTiles(Map<String, String> map, String s) {
+    public void showPickedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> picked) {
         if (map.isEmpty()) {
             System.out.println("You haven't picked Tiles yet\n");
         } else {
             System.out.println("Player " + s + " has picked the following Tiles");
+
+            for(ArrayList<String> tmp : picked){
+                System.out.printf(printTile(tmp.get(0))+ tmp.get(1) + " ");
+            }
+/*
             for (String s1: map.keySet()) {
                 System.out.printf(printTile(map.get(s1)) + s1 + " ");
             }
+
+ */
+
             System.out.println("\n");
         }
     }
@@ -399,6 +425,7 @@ public class CliView implements View{
                 System.out.println(color.yellowBg() + color.black() + " " + s + " " + map.get(s) + " " + color.rst());
             }
         }
+        System.out.println(color.blackBg() + " The winner is: " + color.rst() + color.greenBg() + color.black() + winner + color.rst());
         System.out.println();
     }
 
@@ -408,24 +435,28 @@ public class CliView implements View{
 
     @Override
     public void chat(SocketClient socketClient) {
-        boolean quit = false;
-
-        while (!quit) {
-            System.out.println(color.blackBg() + " You are in the Chat!" + color.rst());
-            System.out.println("Write the message (-q to quit): ");
+        socketClient.setQuitchat(false);
+        System.out.println(color.cyanBg() + " You are in the Chat!" + color.rst());
+        System.out.println("Write the message (-q to quit): ");
+        while (!socketClient.isQuitchat()) {
             try {
-                String message = socketClient.getStdIn().readLine();
-                if (message.toLowerCase().equals("-q")) {
-                    quit = true;
-                } else {
-                    System.out.println("to [playerName] (leave it blank if it is a broadcast message): ");
-                    String receiver = socketClient.getStdIn().readLine();
-                    if (receiver.length() == 0)
-                        receiver = null;
-                    JSONConverterCtoS jconv = new JSONConverterCtoS();
-                    jconv.toJSONChat(receiver, message);
-                    socketClient.getOut().println(jconv.toString());
-                    socketClient.getOut().flush();
+                String message = null;
+                if (socketClient.getStdIn().ready()) {
+                    message = socketClient.getStdIn().readLine();
+                    if (message.toLowerCase().equals("-q")) {
+                        socketClient.setQuitchat(true);
+                    } else {
+                        System.out.println("to [playerName] (leave it blank if it is a broadcast message): ");
+                        String receiver = socketClient.getStdIn().readLine();
+                        if (receiver.length() == 0)
+                            receiver = null;
+                        JSONConverterCtoS jconv = new JSONConverterCtoS();
+                        jconv.toJSONChat(receiver, message);
+                        socketClient.getOut().println(jconv.toString());
+                        socketClient.getOut().flush();
+                        System.out.println(color.cyanBg() + " You are in the Chat!" + color.rst());
+                        System.out.println("Write the message (-q to quit): ");
+                    }
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -438,7 +469,7 @@ public class CliView implements View{
     public void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname) {
         System.out.println(color.cyanBg() + " Chat " + color.rst() + "\n");
         for (int i = 0; i < array1.size(); i++) {
-            if(nickname.equals(array2.get(i)) || array2.get(i).equals("all")) {
+            if(nickname.equals(array2.get(i)) || array2.get(i).equals("all") || nickname.equals(array1.get(i))) {
                 System.out.println(color.greenBg() + array1.get(i) + color.rst() + "  -->  " + color.yellowBg() + array2.get(i) + color.rst() + " : " + array3.get(i) + "\n");
             }
         }
@@ -456,6 +487,9 @@ public class CliView implements View{
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            if (choice == null) {
+                return;
+            }
             choice = choice.toUpperCase();
             if(choice.equals("S"))
                 choice = "SOCKET";
@@ -471,12 +505,15 @@ public class CliView implements View{
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            if (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L")) {
+            if (ip == null) {
+                return;
+            }
+            if (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L") && !ip.equals("")) {
                 printMessage("Insert a valid ip address, please:");
             }
-        } while (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L"));
+        } while (!p.matcher(ip).matches() && !ip.equalsIgnoreCase("L") && !ip.equals(""));
 
-        if(ip.equalsIgnoreCase("L")) {
+        if(ip.equalsIgnoreCase("L") || ip.equals("")) {
             ip = "localhost";
         }
         LaunchClient.startConnection(choice, ip);
@@ -490,6 +527,35 @@ public class CliView implements View{
             printMessage("Client closed!");
         }
     }
+
+    @Override
+    public void setplayers() {
+        printMessage("The number of players you want to play with: ");
+    }
+
+    @Override
+    public void waitLobby() {
+        printMessage("Waiting in the lobby.....");
+    }
+
+    @Override
+    public void showSuggestedNicknames(String s, ArrayList<String> array4) {
+        printMessage(s);
+        for (String t: array4) {
+            printMessage(t);
+        }
+    }
+
+    @Override
+    public void showError(String error) {
+        System.out.println(color.red() + error + color.rst());
+    }
+
+    @Override
+    public void showGame() {
+        System.out.println(color.green() + "Game is being created" + color.rst());
+    }
+
 
     //    public void showBoard() {
 //        for (int row = 4; row > -5; row--) {

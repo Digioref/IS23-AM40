@@ -7,10 +7,9 @@ import it.polimi.ingsw.am40.Network.RMI.RMIServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.rmi.RemoteException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -19,7 +18,8 @@ import java.util.concurrent.Executors;
 public class GameServer implements Runnable {
 
     private String hostName;
-    private int portNumber = 1234;
+    private int portNumber;
+    private String IPAddress;
     private ServerSocket serverSocket;
     private Lobby lobby;
     private static GameServer instance;
@@ -70,14 +70,22 @@ public class GameServer implements Runnable {
         }
     }
 
-    public void connect(int port) throws IOException {
+    public void connect(int port, String IPAddress, String hostName) throws IOException {
+        portNumber = port;
+        this.hostName = hostName;
+        this.IPAddress = IPAddress;
+        System.setProperty("java.rmi.server.hostname", IPAddress);
         rmiserver = new RMIServer();
         rmiserver.setLobby(lobby);
         Registry registry = LocateRegistry.createRegistry(5000);
-        registry.rebind("RMIRegistry", rmiserver);
+        try {
+            registry.bind("RMIRegistry", rmiserver);
+        } catch (AlreadyBoundException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("GameServer bound on RMI registry");
         serverSocket = new ServerSocket(port);
-        System.out.println("GameServer listening on port 1234");
+        System.out.println("GameServer listening on port " + portNumber);
     }
 
     public void close() throws IOException {
@@ -94,7 +102,6 @@ public class GameServer implements Runnable {
     }
     public void shutdownHandler(ClientHandler clientHandler) {
         clientHandlers.remove(clientHandler);
-        clientHandler.close();
     }
 
     public List<ClientHandler> getClientHandlers() {

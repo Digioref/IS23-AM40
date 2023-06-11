@@ -52,6 +52,7 @@ public class Player {
     private ArrayList<Position> selectedPositions;
     private int hiddenScore;
     private ParsingJSONManager pJSONm;
+    private boolean disconnected;
 
 
     /**
@@ -68,6 +69,7 @@ public class Player {
         doneCG2 = false;
         pJSONm = new ParsingJSONManager();
         selectedPositions = new ArrayList<>();
+        disconnected = false;
     }
 
     /**
@@ -279,6 +281,11 @@ public class Player {
         return hiddenScore;
     }
 
+    public boolean isDisconnected() {
+        return disconnected;
+    }
 
-
+    public void setDisconnected(boolean disconnected) {
+        this.disconnected = disconnected;
+    }
 }

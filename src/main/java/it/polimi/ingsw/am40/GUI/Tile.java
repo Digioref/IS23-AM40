@@ -1,7 +1,9 @@
 package it.polimi.ingsw.am40.GUI;
 
+import it.polimi.ingsw.am40.Model.Position;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,6 +12,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 public class Tile extends Label {
 
@@ -22,16 +25,17 @@ public class Tile extends Label {
 
 	private boolean selected = false;
 	private boolean pickable = false;
+	private boolean nocolor = false;
 
-	public Tile(int type) {
+	public Tile(String type, Stage primaryStage) {
 		super();
 
 		int index = (int) (Math.random() * 3);
 		Image image = Resources.tile(type, index);
 		ImageView view = new ImageView(image);
 		view.setPreserveRatio(true);
-		view.setFitWidth(Metrics.TILE_WIDTH);
-		view.setFitHeight(Metrics.TILE_HEIGHT);
+		view.setFitWidth(Metrics.dim_x_tile*primaryStage.getWidth());
+		view.setFitHeight(Metrics.dim_y_tile*primaryStage.getHeight());
 		setGraphic(view);
 
 		Rectangle clip = new Rectangle(view.getFitWidth(), view.getFitHeight());
@@ -46,23 +50,21 @@ public class Tile extends Label {
 		view.setClip(null);
 
 		view.setImage(img);
-
 		setStyle(border_none);
 
 		setUserData(this);
+
 
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				if (pickable) {
 					Tile tile = (Tile) event.getSource();
-					selected = !selected;
-					if (selected) {
+					if (!selected) {
 						setStyle(border_selected);
-					} else {
-						setStyle(border_pickable);
 					}
 					fireEvent(new CustomEvent(CustomEvent.TILE_SELECTED, tile, selected));
+					selected = true;
 				}
 			}
 		});
@@ -70,6 +72,11 @@ public class Tile extends Label {
 
 	void setPosition(int x, int y) {
 		this.pos = new Point2D(x, y);
+	}
+	public void setPosition(String s) {
+		Position p = new Position(0,0);
+		p.convertKey(s);
+		pos = new Point2D(p.getX(), p.getY());
 	}
 
 	Point2D getPosition() {
@@ -84,5 +91,12 @@ public class Tile extends Label {
 			pickable = false;
 			setStyle(border_none);
 		}
+	}
+	public void setSelected() {
+		setStyle(border_selected);
+	}
+
+	public boolean isNocolor() {
+		return nocolor;
 	}
 }
