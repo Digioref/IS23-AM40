@@ -1,11 +1,8 @@
 package it.polimi.ingsw.am40.GUI;
 
 import java.io.*;
-import java.util.Objects;
 
-import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class Resources {
 
@@ -58,7 +55,19 @@ public class Resources {
 
 	private static Image loadImage(String imageFile){
 		System.out.println(imageFile);
-		Image image = new Image("it/polimi/ingsw/am40/GUI/Resources/"+imageFile);
+		//Class<?> clazz = Resources.class;
+
+		// Get the class loader and load the resource using getResourceAsStream
+		InputStream inputStream =Resources.class.getResourceAsStream("/Images/"+imageFile);
+
+		// Check if the resource exists
+		if (inputStream == null) {
+			throw new IllegalArgumentException("Resource not found: " + imageFile);
+		}
+
+		// Create the image from the input stream
+		Image image = new Image(inputStream);
+		//Image image = new Image("it/polimi/ingsw/am40/GUI/Resources/"+imageFile);
 		//Image image = new Image(Objects.requireNonNull(Resources.class.getResource("it/polimi/ingsw/am40/GUI/Resources/" + imageFile)).toExternalForm());
 		//System.out.println(Resources.class.getClassLoader());
 		//InputStream is = Resources.class.getClassLoader().getResourceAsStream(imageFile);
