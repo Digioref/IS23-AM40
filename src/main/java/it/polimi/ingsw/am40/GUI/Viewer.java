@@ -650,9 +650,10 @@ public class Viewer extends Application {
 		});
 	}
 
+
 	public void showMessage(String s) {
 		alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.getDialogPane().getStylesheets().add("Alert.css");
+		//alert.getDialogPane().getStylesheets().add("Alert.css");
 		alert.initModality(Modality.APPLICATION_MODAL);
 		alert.initOwner(primaryStage);
 		alert.setTitle("Information Dialog");

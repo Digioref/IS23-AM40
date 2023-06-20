@@ -106,25 +106,26 @@ public class Board extends AnchorPane {
 		tiles.clear();
 //		this.selected.clear();
 		for (String s: board.keySet()) {
-			Tile t = new Tile(board.get(s), primaryStage);
-			if (!board.get(s).equals("NOCOLOR")) {
-				t.setPosition(s);
-				if (!map.containsKey(s)) {
-					t.setPickable(false);
-				} else {
-					t.setPickable(true);
-				}
-				Position p = new Position();
-				p.convertKey(s);
-				if (selected.contains(p)) {
-					t.setSelected();
-					String key = hashkey(p.getX(), p.getY());
-					if (!this.selected.contains(key)) {
-						this.selected.add(key);
+				Tile t = new Tile(board.get(s), primaryStage);
+				if (!board.get(s).equals("NOCOLOR")) {
+					t.setPosition(s);
+					if (!map.containsKey(s)) {
+						t.setPickable(false);
+					} else {
+						t.setPickable(true);
 					}
+					Position p = new Position();
+					p.convertKey(s);
+					if (selected.contains(p)) {
+						t.setSelected();
+						String key = hashkey(p.getX(), p.getY());
+						if (!this.selected.contains(key)) {
+							this.selected.add(key);
+						}
+					}
+					place(t);
 				}
-				place(t);
-			}
+
 		}
 		System.out.println(this.selected);
 
