@@ -26,6 +26,11 @@ public abstract class Client {
     protected boolean inChat;
     protected ClientState state;
 
+    /**
+     * TODO
+     * @param line
+     * @throws ParseException
+     */
     public void parseMessage(String line) throws ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject object = (JSONObject) jsonParser.parse(line);
@@ -270,8 +275,25 @@ public abstract class Client {
                 break;
         }
     }
+
+    /**
+     * TODO
+     */
     public abstract void close();
+
+    /**
+     * TODO
+     */
     public abstract void sendPong();
+
+    /**
+     * TODO
+     */
     public abstract void startPing();
+
+    /**
+     * TODO
+     * @param s
+     */
     public abstract void sendMessage(String s);
 }
