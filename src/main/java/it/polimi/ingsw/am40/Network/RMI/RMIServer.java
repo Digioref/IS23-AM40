@@ -23,7 +23,13 @@ import static it.polimi.ingsw.am40.Network.Handlers.NSUGGEST;
 
 public class RMIServer extends UnicastRemoteObject implements RMIServerInterface {
     private Lobby lobby;
+    /**
+     * Maps the name of the player to its ClientHandler
+     */
     private Map<String,RMIClientHandler> clientHandlers;
+    /**
+     * List of the available commands (to be used with the help command)
+     */
     private ArrayList<String> commands;
     private ArrayList<RMIClientHandler> rmiHandlers;
 

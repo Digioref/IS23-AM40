@@ -29,13 +29,6 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>19.0.2.1</version>
-            <classifier>linux</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>19.0.2.1</version>
-            <classifier>win</classifier>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

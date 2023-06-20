@@ -12,15 +12,21 @@ import java.io.IOException;
 
 public class MyShelfieApplication extends Application {
 
+    /**
+     * Start method, passing the stage where to show the user interface
+     * @param stage
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(MyShelfieApplication.class.getResource("hello-view.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-//        stage.setTitle("Hello!");
-//        stage.setScene(scene);
-//        stage.show();
     }
 
+    /**
+     * Starts the server or the client based on the args passed
+     * @param args
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws IOException, InterruptedException {
         if (args.length > 0) {
             String param0 = args[0];
@@ -33,9 +39,20 @@ public class MyShelfieApplication extends Application {
         }
     }
 
+    /**
+     * Launch the main of LaunchClient passing the args
+     * @param args
+     */
     static void runAsClient(String[] args){
         LaunchClient.main(args);
     }
+
+    /**
+     * Launch the main of LaunchServer passing the args
+     * @param args
+     * @throws IOException
+     * @throws InterruptedException
+     */
     static void runAsServer(String[] args) throws IOException, InterruptedException {
         LaunchServer.main(args);
     }
