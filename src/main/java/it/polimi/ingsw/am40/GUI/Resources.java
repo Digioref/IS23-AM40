@@ -231,7 +231,7 @@ public class Resources {
 
 	public static Image tile(String type, int index) {
 
-		String imageFile = "";
+		String imageFile = null;
 /*
 		imageFile = Resources.resourcesPath;
 		imageFile += Resources.pathSeparator;
@@ -262,7 +262,9 @@ public class Resources {
 			default:
 				break;
 		}
-
+		if(imageFile==null){
+			System.out.println(type + "   " + index);
+		}
 		return loadImage(imageFile);
 	}
 

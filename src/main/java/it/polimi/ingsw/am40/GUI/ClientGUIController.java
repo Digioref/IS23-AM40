@@ -87,7 +87,10 @@ public class ClientGUIController implements View {
 
     @Override
     public void printMessage(String s) {
-        runLater(()->gui.showMessage(s));
+        if(s.equals("Error")){
+            runLater(()->gui.showMessage(s));
+        }
+
     }
 
     @Override

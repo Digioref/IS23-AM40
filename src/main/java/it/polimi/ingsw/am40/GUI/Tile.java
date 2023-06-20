@@ -29,45 +29,48 @@ public class Tile extends Label {
 
 	public Tile(String type, Stage primaryStage) {
 		super();
+		if(!type.equals("NOCOLOR")){
+			int index = (int) (Math.random() * 3);
+			Image image = Resources.tile(type, index);
+			ImageView view = new ImageView(image);
+			view.setPreserveRatio(true);
+			view.setFitWidth(Metrics.dim_x_tile*primaryStage.getWidth());
+			view.setFitHeight(Metrics.dim_y_tile*primaryStage.getHeight());
+			setGraphic(view);
 
-		int index = (int) (Math.random() * 3);
-		Image image = Resources.tile(type, index);
-		ImageView view = new ImageView(image);
-		view.setPreserveRatio(true);
-		view.setFitWidth(Metrics.dim_x_tile*primaryStage.getWidth());
-		view.setFitHeight(Metrics.dim_y_tile*primaryStage.getHeight());
-		setGraphic(view);
+			Rectangle clip = new Rectangle(view.getFitWidth(), view.getFitHeight());
+			clip.setArcWidth(Metrics.TILE_ROUND_WIDTH);
+			clip.setArcHeight(Metrics.TILE_ROUND_HEIGHT);
+			view.setClip(clip);
 
-		Rectangle clip = new Rectangle(view.getFitWidth(), view.getFitHeight());
-		clip.setArcWidth(Metrics.TILE_ROUND_WIDTH);
-		clip.setArcHeight(Metrics.TILE_ROUND_HEIGHT);
-		view.setClip(clip);
+			/* snapshot the rounded image */
+			SnapshotParameters parameters = new SnapshotParameters();
+			parameters.setFill(Color.TRANSPARENT);
+			WritableImage img = view.snapshot(parameters, null);
+			view.setClip(null);
 
-		/* snapshot the rounded image */
-		SnapshotParameters parameters = new SnapshotParameters();
-		parameters.setFill(Color.TRANSPARENT);
-		WritableImage img = view.snapshot(parameters, null);
-		view.setClip(null);
+			view.setImage(img);
+			setStyle(border_none);
 
-		view.setImage(img);
-		setStyle(border_none);
-
-		setUserData(this);
+			setUserData(this);
 
 
-		setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				if (pickable) {
-					Tile tile = (Tile) event.getSource();
-					if (!selected) {
-						setStyle(border_selected);
+			setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					if (pickable) {
+						Tile tile = (Tile) event.getSource();
+						if (!selected) {
+							setStyle(border_selected);
+						}
+						fireEvent(new CustomEvent(CustomEvent.TILE_SELECTED, tile, selected));
+						selected = true;
 					}
-					fireEvent(new CustomEvent(CustomEvent.TILE_SELECTED, tile, selected));
-					selected = true;
 				}
-			}
-		});
+			});
+		}
+
+
 	}
 
 	void setPosition(int x, int y) {
