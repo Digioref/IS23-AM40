@@ -268,7 +268,7 @@ public class Resources {
 
 	public static Image tile(int type, int index) {
 
-		String imageFile=null;
+		String imageFile="";
 /*
 		imageFile = Resources.resourcesPath;
 		imageFile += Resources.pathSeparator;
