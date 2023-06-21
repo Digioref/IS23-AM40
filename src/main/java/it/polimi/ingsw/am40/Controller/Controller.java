@@ -25,18 +25,9 @@ public class Controller {
         return gameController;
     }
 
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
-    }
-
     public Lobby getLobby() {
         return lobby;
     }
-    //    public void pick (Position p) {
-//        game.selectTiles(game.getCurrentPlayer(), p);
-//    }
-//    public void changePlayer() {
-//        game.nextPlayer();
-//    }
+
 
 }

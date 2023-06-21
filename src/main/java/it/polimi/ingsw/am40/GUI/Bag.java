@@ -6,7 +6,10 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class Bag extends Label {
-
+	/**
+	 * Class that represents the graphic element bag (to be shown on the primaryStage)
+	 * @param primaryStage
+	 */
 	public Bag(Stage primaryStage) {
 		super();
 		Image image = Resources.bag();

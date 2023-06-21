@@ -12,15 +12,25 @@ import static javafx.application.Platform.runLater;
 public class ClientGUIController implements View {
     private Viewer gui;
 
+    /**
+     * todo
+     */
     public ClientGUIController() {
         gui = Viewer.getGUI();
     }
 
+    /**
+     * todo
+     */
     @Override
     public void chooseConnection() {
         runLater(gui::chooseConnection);
     }
 
+    /**
+     * TODO
+     * @param s
+     */
     @Override
     public void showCurrentPlayer(String s) {
 

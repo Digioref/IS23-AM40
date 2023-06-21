@@ -14,6 +14,10 @@ public class Arrow extends Label {
 	private int index;
 	private int direction;
 
+	/**
+	 * Class representing arrow (graphic element)
+	 * @param dir
+	 */
 	public Arrow(int dir) {
 		super();
 
@@ -47,6 +51,11 @@ public class Arrow extends Label {
 		setGraphic(view);
 	}
 
+	/**
+	 *
+	 * @param w
+	 * @param h
+	 */
 	public void setSize(double w, double h) {
 		ImageView v;
 		switch (direction) {
@@ -71,10 +80,17 @@ public class Arrow extends Label {
 		}
 	}
 
+	/**
+	 * @return the index of the Arrow
+	 */
 	public int getIndex() {
 		return index;
 	}
 
+	/**
+	 * sets the index of the arrow
+	 * @param index
+	 */
 	public void setIndex(int index) {
 		this.index = index;
 	}

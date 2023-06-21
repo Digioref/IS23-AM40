@@ -13,6 +13,11 @@ import javafx.stage.Stage;
 
 public class PersonalGoal extends Label {
 
+	/**
+	 * TODO
+	 * @param index
+	 * @param primaryStage
+	 */
 	public PersonalGoal(int index, Stage primaryStage) {
 		super();
 		Image image = Resources.personalGoal(index);

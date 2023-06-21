@@ -53,6 +53,11 @@ public class Resources {
 
 	private static final String titleFile = "Title 2000x618px.png";
 
+	/**
+	 * TODO
+	 * @param imageFile
+	 * @return
+	 */
 	private static Image loadImage(String imageFile){
 		System.out.println(imageFile);
 		//Class<?> clazz = Resources.class;
@@ -76,6 +81,10 @@ public class Resources {
 		return image;
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	public static Image icon() {
 /*
 		String imageFile;
@@ -90,6 +99,10 @@ public class Resources {
 		return loadImage(iconFile);
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	public static Image arrowDown() {
 /*
 		String imageFile;
@@ -103,6 +116,11 @@ public class Resources {
 		return loadImage(arrowdownFile);
 	}
 
+	/**
+	 * TODO
+	 * @param num
+	 * @return
+	 */
 	public static Image number(int num) {
 
 		String imageFile=null;
@@ -125,6 +143,10 @@ public class Resources {
 		return loadImage(imageFile);
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	public static Image labelName() {
 /*
 		String imageFile;
@@ -138,6 +160,10 @@ public class Resources {
 		return loadImage(labelNameFile);
 	}
 
+	/**
+	 * todo
+	 * @return
+	 */
 	public static Image background() {
 /*
 		String imageFile;
@@ -151,6 +177,10 @@ public class Resources {
 		return loadImage(backgroundFile);
 	}
 
+	/**
+	 * todo
+	 * @return
+	 */
 	public static Image bag() {
 /*
 		String imageFile;
@@ -164,19 +194,11 @@ public class Resources {
 		return loadImage(bagFile);
 	}
 
-	public static Image basePage() {
-/*
-		String imageFile;
 
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.miscPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.basePageFile;
-*/
-		return loadImage(basePageFile);
-	}
-
+	/**
+	 * todo
+	 * @return
+	 */
 	public static Image board() {
 /*
 		String imageFile;
@@ -190,6 +212,10 @@ public class Resources {
 		return loadImage(boardFile);
 	}
 
+	/**
+	 * todo
+	 * @return
+	 */
 	public static Image bookshelf() {
 /*
 		String imageFile;
@@ -203,6 +229,11 @@ public class Resources {
 		return loadImage(bookshelfFile);
 	}
 
+	/**
+	 * todo
+	 * @param index
+	 * @return
+	 */
 	public static Image commonGoal(int index) {
 /*
 		String imageFile;
@@ -216,6 +247,11 @@ public class Resources {
 		return loadImage(commonGoalFile[index]);
 	}
 
+	/**
+	 * todo
+	 * @param index
+	 * @return
+	 */
 	public static Image personalGoal(int index) {
 /*
 		String imageFile;
@@ -229,6 +265,12 @@ public class Resources {
 		return loadImage(personalGoalFile[index]);
 	}
 
+	/**
+	 * todo
+	 * @param type
+	 * @param index
+	 * @return
+	 */
 	public static Image tile(String type, int index) {
 
 		String imageFile = "";
@@ -266,6 +308,12 @@ public class Resources {
 		return loadImage(imageFile);
 	}
 
+	/**
+	 * todo
+	 * @param type
+	 * @param index
+	 * @return
+	 */
 	public static Image tile(int type, int index) {
 
 		String imageFile=null;
@@ -303,6 +351,10 @@ public class Resources {
 		return loadImage(imageFile);
 	}
 
+	/**
+	 * todo
+	 * @return
+	 */
 	public static Image title() {
 /*
 		String imageFile;

@@ -9,6 +9,14 @@ import javafx.stage.Stage;
 
 public class MenuObj {
 
+	/**
+	 * TODO
+	 *
+	 * DA DECIDERE SE DA TOGLIERE
+	 *
+	 * @param stage
+	 * @return
+	 */
 	private static Menu createFileMenu(Stage stage) {
 		Menu menuFile = new Menu("_File");
 
@@ -23,6 +31,11 @@ public class MenuObj {
 		return menuFile;
 	}
 
+	/**
+	 * TODO
+	 * @param stage
+	 * @return
+	 */
 	private static Menu createHelpMenu(Stage stage) {
 		Menu menuHelp = new Menu("_Help");
 

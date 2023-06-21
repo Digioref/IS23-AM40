@@ -27,7 +27,7 @@ public abstract class Client {
     protected ClientState state;
 
     /**
-     * TODO
+     *
      * @param line
      * @throws ParseException
      */

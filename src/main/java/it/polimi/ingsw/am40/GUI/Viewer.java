@@ -61,8 +61,10 @@ public class Viewer extends Application {
 	private Button ChatButton;
 
 
-
-
+	/**
+	 * todo
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -91,6 +93,10 @@ public class Viewer extends Application {
 		return false;
 	}
 
+	/**
+	 * todo
+	 * @param stage
+	 */
 	@Override
 	public void start(Stage stage) {
 		this.primaryStage = stage;
@@ -215,7 +221,11 @@ public class Viewer extends Application {
 	}
 
 
-
+	/**
+	 * todo
+	 * @param stage
+	 * @param pane
+	 */
 	public void setBackground(Stage stage, Pane pane) {
 		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
 		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
@@ -247,7 +257,10 @@ public class Viewer extends Application {
 		return vbox;
 	}
 
-
+	/**
+	 * todo
+	 * @param pane
+	 */
 	public void setTitle(Pane pane) {
 		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
 		//double sceneWidth = scene.getWindow().getWidth();
@@ -273,6 +286,12 @@ public class Viewer extends Application {
 		});
 	}
 
+	/**
+	 * todo
+	 * @param pane
+	 * @param tmp
+	 * @return
+	 */
 	public Text addDescription(Pane pane, String tmp) {
 		Text text = new Text(tmp);
 		text.setFont(Font.font(25));
@@ -280,6 +299,11 @@ public class Viewer extends Application {
 		return text;
 	}
 
+	/**
+	 * TODO
+	 * @param pane
+	 * @return
+	 */
 	public TextField addTextField(Pane pane) {
 		TextField textField = new TextField();
 		textField.setMaxWidth(200);
@@ -288,6 +312,13 @@ public class Viewer extends Application {
 		return textField;
 	}
 
+	/**
+	 * todo
+	 * @param pane
+	 * @param tmp
+	 * @param isSelected
+	 * @return
+	 */
 	public RadioButton addToggle(Pane pane, String tmp, Boolean isSelected) {
 		RadioButton button = new RadioButton(tmp);
 		button.setFont(Font.font(20));
@@ -296,6 +327,11 @@ public class Viewer extends Application {
 		return button;
 	}
 
+	/**
+	 * todo
+	 * @param rmi
+	 * @param socket
+	 */
 	public void setToggles(RadioButton rmi, RadioButton socket) {
 		ToggleGroup tg = new ToggleGroup();
 
@@ -313,6 +349,13 @@ public class Viewer extends Application {
 
 	}
 
+	/**
+	 * todo
+	 * @param pane
+	 * @param tmp
+	 * @param isVisible
+	 * @return
+	 */
 	public Button addButton(Pane pane, String tmp, Boolean isVisible) {
 //		Image background_per_pulsanti = new Image("colore_pulsanti.jpg");
 //		BackgroundImage bgImg_per_pulsanti = new BackgroundImage(background_per_pulsanti, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
@@ -334,6 +377,11 @@ public class Viewer extends Application {
 
 	}
 
+	/**
+	 * todo
+	 * @param tf
+	 * @param t1
+	 */
 	public void setConnection( TextField tf, Text t1) {
 		String connectionIp = tf.getText();
 		Pattern p = Pattern.compile("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
@@ -357,6 +405,9 @@ public class Viewer extends Application {
 //		newB.setVisible(true);			//////////////////////////////////////////////////////////////////////////////////////////////////////// da rendere rosso con FONT
 	}
 
+	/**
+	 * todo
+	 */
 	public void setUsername() {
 //		primaryStage.close();
 		try {
@@ -412,6 +463,9 @@ public class Viewer extends Application {
 //		}
 	}
 
+	/**
+	 * todo
+	 */
 	public void waitingAnimation() {
 		Image im = Resources.tile(1,0);
 		ImageView loadImage = new ImageView(im);
@@ -444,6 +498,10 @@ public class Viewer extends Application {
 		timeline.play();
 	}
 
+	/**
+	 * todo
+	 * @param pane
+	 */
 	public void newScene(Pane pane) {
 		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
 		primaryStage.setScene(scene);
@@ -452,32 +510,10 @@ public class Viewer extends Application {
 
 
 
-	public void setBookshelvesAndPG(VBox vLeft, StackPane stack){
-//	    int numPlayers = 4;
-//		for(int i=0; i<numPlayers;i++) {
-//			HBox row = new HBox();
-//			Bookshelf bs1 = new Bookshelf();
-//			BookshelfZOOMED bs1zoomed = new BookshelfZOOMED();
-//			activateZOOM(bs1,bs1zoomed,stack);
-//			PersonalGoal pg = new PersonalGoal(0);
-//			row.getChildren().addAll(bs1, pg);
-//			vLeft.getChildren().add(row);
-//		}
-
-	}
 
 
-	public void activateZOOM(Node notZOOMED, Node zoomedLabel, StackPane stack){
-		notZOOMED.setOnMouseEntered(e -> {
-			System.out.println("entro");
-			stack.getChildren().add(zoomedLabel);
-		});
 
-		notZOOMED.setOnMouseExited(e -> {
-			System.out.println("esco");
-			stack.getChildren().remove(zoomedLabel);
-		});
-	}
+
 
 
 	/* Test methods */
@@ -793,12 +829,21 @@ public class Viewer extends Application {
 		pane.getChildren().add(c2);
 	}
 
+	/**
+	 * TODO
+	 * @param map
+	 * @param number
+	 */
 	public void setPersonalGoal(Map<String, String> map, int number) {
 		p = new PersonalGoal(number, primaryStage);
 		p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
 		pane.getChildren().add(p);
 	}
 
+	/**
+	 * TODO
+	 * @param map
+	 */
 	public void setBoard(Map<String, String> map) {
 		if (board == null) {
 			board = new Board(primaryStage);
@@ -814,6 +859,13 @@ public class Viewer extends Application {
 
 		}
 	}
+
+
+	/**
+	 * TODO
+	 * @param event
+	 * @param column
+	 */
 	private void handleArrowDown(MouseEvent event, int column) {
 		if (commandBoard.checkSequence()) {
 			ArrayList<Node> nodeList = new ArrayList<>();
@@ -844,6 +896,10 @@ public class Viewer extends Application {
 		}
 	}
 
+	/**
+	 * TODO
+	 * @param names
+	 */
 	public void numPlayers(ArrayList<String> names) {
 		this.names = new ArrayList<>(names);
 		if (numPlayers == 0) {
@@ -851,10 +907,23 @@ public class Viewer extends Application {
 		}
 	}
 
+	/**
+	 * TODO
+	 * @param map
+	 * @param arr
+	 * @param board
+	 */
 	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
 		this.board.clearUpdate(map, arr, board);
 	}
 
+	/**
+	 * TODO
+	 *
+	 * MAP NON E' MAI USATO
+	 *
+	 * @param map
+	 */
 	public void setPicked(Map<String, String> map) {
 		Tile t;
 		while (!board.isSelectedEmpty()) {
@@ -866,6 +935,11 @@ public class Viewer extends Application {
 		}
 	}
 
+
+	/**
+	 * TODO
+	 * @param map
+	 */
 	public void updateBookshelves(Map<String, Map<String, String>> map) {
 		if (bookshelves.size() == 0) {
 			int j = 0;

@@ -27,6 +27,11 @@ public class Tile extends Label {
 	private boolean pickable = false;
 	private boolean nocolor = false;
 
+	/**
+	 * TODO
+	 * @param type
+	 * @param primaryStage
+	 */
 	public Tile(String type, Stage primaryStage) {
 		super();
 
@@ -70,19 +75,37 @@ public class Tile extends Label {
 		});
 	}
 
+	/**
+	 * TODO
+	 * @param x
+	 * @param y
+	 */
 	void setPosition(int x, int y) {
 		this.pos = new Point2D(x, y);
 	}
+
+	/**
+	 * TODO
+	 * @param s
+	 */
 	public void setPosition(String s) {
 		Position p = new Position(0,0);
 		p.convertKey(s);
 		pos = new Point2D(p.getX(), p.getY());
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	Point2D getPosition() {
 		return this.pos;
 	}
 
+	/**
+	 * TODO
+	 * @param flag
+	 */
 	void setPickable(boolean flag) {
 		if (flag) {
 			pickable = true;
@@ -92,10 +115,18 @@ public class Tile extends Label {
 			setStyle(border_none);
 		}
 	}
+
+	/**
+	 * Sets the style of the tile on "tile selected"
+	 */
 	public void setSelected() {
 		setStyle(border_selected);
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	public boolean isNocolor() {
 		return nocolor;
 	}

@@ -23,6 +23,11 @@ public class RMIClientHandler extends Handlers {
     private final static int WAIT_PING = 10000;
     private final static int SEND_PING = 4000;
     private final static int NUMLOST = 3;
+
+    /**
+     * TODO
+     * @param server
+     */
     public RMIClientHandler(RMIServer server) {
         this.server = server;
         logged = false;
@@ -36,6 +41,9 @@ public class RMIClientHandler extends Handlers {
         startPing();
     }
 
+    /**
+     * TODO
+     */
     private void startPing() {
         if(sendPing != null)
             sendPing.shutdownNow();
@@ -49,6 +57,9 @@ public class RMIClientHandler extends Handlers {
         sendPing.scheduleAtFixedRate(task, 0, SEND_PING, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * TODO
+     */
     private void ping() {
         sendMessage(JSONConverterStoC.createJSONPing());
         Runnable task = () -> {
@@ -64,6 +75,10 @@ public class RMIClientHandler extends Handlers {
         }
     }
 
+    /**
+     * TODO
+     * @param s
+     */
     @Override
     public void sendMessage(String s) {
         try {
@@ -75,6 +90,10 @@ public class RMIClientHandler extends Handlers {
         }
     }
 
+    /**
+     * TODO
+     * @param s
+     */
     @Override
     public void suggestNickname(String s) {
         Random random = new Random();
@@ -92,6 +111,11 @@ public class RMIClientHandler extends Handlers {
         }
     }
 
+    /**
+     * TODO
+     * @param at
+     * @param arr
+     */
     @Override
     public void executeCommand(ActionType at, ArrayList<Integer> arr) {
         if (logphase.equals(LoggingPhase.INGAME)) {
@@ -119,16 +143,28 @@ public class RMIClientHandler extends Handlers {
         }
     }
 
+    /**
+     * TODO
+     * @param message
+     * @param name
+     */
     @Override
     public void chat(String message, String name) {
         controller.getGameController().chat(name, message, nickname);
     }
 
+    /**
+     * TODO
+     */
     @Override
     public void getChat() {
         controller.getGameController().getChat(nickname);
     }
 
+    /**
+     * TODO
+     * @param s
+     */
     @Override
     public void sendChat(String s) {
         try {
@@ -138,6 +174,9 @@ public class RMIClientHandler extends Handlers {
         }
     }
 
+    /**
+     * TODO
+     */
     @Override
     public void close() {
         rmiClient = null;
@@ -160,6 +199,9 @@ public class RMIClientHandler extends Handlers {
         }
     }
 
+    /**
+     * TODO
+     */
     @Override
     public void handlePong() {
         waitPing.shutdownNow();
@@ -168,6 +210,9 @@ public class RMIClientHandler extends Handlers {
 //        startPing();
     }
 
+    /**
+     * TODO
+     */
     @Override
     public void closeGame() {
         close();
@@ -176,11 +221,17 @@ public class RMIClientHandler extends Handlers {
         lobby.closeGame(this);
     }
 
+    /**
+     * Sets the attribute rmiClient to the parameter passed
+     * @param rmiClient
+     */
     public void setRmiClient(RMIClientInterface rmiClient) {
         this.rmiClient = rmiClient;
     }
 
-
+    /**
+     * @return the attribute rmiClient
+     */
     public RMIClientInterface getRmiClient() {
         return rmiClient;
     }

@@ -32,6 +32,10 @@ import javafx.util.Duration;
 
 import static javafx.scene.text.Font.loadFont;
 
+/**
+ * DA TOGLIERE ??
+ */
+
 
 //public class ViewController extends AnchorPane implements View {
 
