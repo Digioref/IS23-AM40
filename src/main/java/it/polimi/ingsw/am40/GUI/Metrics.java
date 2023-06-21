@@ -7,14 +7,14 @@ public class Metrics {
 	public static final int BAG_WIDTH = 130;
 	public static final int BAG_HEIGHT = 130;
 
-	public static final int ARROW_RIGHT_WIDTH = 100;
-	public static final int ARROW_RIGHT_HEIGHT = 100;
+	public static final double ARROW_RIGHT_WIDTH = 100.0/1536.0;
+	public static final double ARROW_RIGHT_HEIGHT = 100.0/864.0;
 
-	public static final int ARROW_DOWN_WIDTH = 30;
-	public static final int ARROW_DOWN_HEIGHT = 30;
+	public static final double ARROW_DOWN_WIDTH = 30.0/1536.0;
+	public static final double ARROW_DOWN_HEIGHT = 30.0/864.0;
 
-	public static final int TILE_WIDTH = 49;
-	public static final int TILE_HEIGHT = 49;
+	public static final double TILE_WIDTH = 49.0/1536.0;
+	public static final double TILE_HEIGHT = 49.0/864.0;
 
 	public static final int TILE_ROUND_WIDTH = 20;
 	public static final int TILE_ROUND_HEIGHT = 20;

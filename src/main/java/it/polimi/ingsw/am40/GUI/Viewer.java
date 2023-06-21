@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -44,6 +45,8 @@ public class Viewer extends Application {
 	private Stage primaryStage;
 	private Scene scene;
 	private Pane pane;
+
+	private AnchorPane gameBoard;
 	private String nickname;
 	private int numPlayers;
 	private Bag bag;
@@ -59,6 +62,8 @@ public class Viewer extends Application {
 	private Alert errorAlert;
 	@FXML
 	private Button ChatButton;
+
+	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
 
 
 
@@ -99,7 +104,7 @@ public class Viewer extends Application {
 //		errorAlert = new Alert(Alert.AlertType.ERROR);
 //		alert.getDialogPane().getStylesheets().add("Alert.css");
 //		errorAlert.getDialogPane().getStylesheets().add("Error.css");
-		primaryStage.setResizable(false);
+		primaryStage.setResizable(true);
 
 		gui = this;
 //
@@ -219,17 +224,24 @@ public class Viewer extends Application {
 	public void setBackground(Stage stage, Pane pane) {
 		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
 		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
-		pane.setPrefSize(screenWidth, screenHeight);
+		//pane.setPrefSize(screenWidth, screenHeight);
+		pane.setPrefSize(15.5,8.7);
 
-		Image background = Resources.background();
-		BackgroundImage bgImg = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
-				BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
-		pane.setBackground(new Background(bgImg));
+		//setting the background
+		Image backGroundImage = Resources.background();
+		ImageView backGroundView = new ImageView(backGroundImage);
+		pane.getChildren().add(backGroundView);
 
-//		MenuBar topMenu = MenuObj.createMenuBar(stage);
-//		pane.getChildren().add(topMenu);
+		//setting the background
+		AnchorPane.setTopAnchor(backGroundView,0.0);
+		AnchorPane.setRightAnchor(backGroundView,0.0);
+		AnchorPane.setLeftAnchor(backGroundView,0.0);
+		AnchorPane.setBottomAnchor(backGroundView,0.0);
 
+		backGroundView.fitWidthProperty().bind(scene.widthProperty());
+		backGroundView.fitHeightProperty().bind(scene.heightProperty());
 	}
+
 
 	public VBox createVbox(Pane pane) {
 		VBox vbox = new VBox();
@@ -653,7 +665,7 @@ public class Viewer extends Application {
 
 	public void showMessage(String s) {
 		alert = new Alert(Alert.AlertType.INFORMATION);
-		//alert.getDialogPane().getStylesheets().add("Alert.css");
+		alert.getDialogPane().getStylesheets().add("Alert.css");
 		alert.initModality(Modality.APPLICATION_MODAL);
 		alert.initOwner(primaryStage);
 		alert.setTitle("Information Dialog");
@@ -687,6 +699,8 @@ public class Viewer extends Application {
 		errorAlert.showAndWait();
 	}
 
+
+
 	public void startGame() {
 		try {
 			Thread.sleep(1500);
@@ -694,35 +708,49 @@ public class Viewer extends Application {
 			throw new RuntimeException(e);
 		}
 		primaryStage.setTitle("MY SHELFIE");
-		pane = new AnchorPane();
-		newScene(pane);
-		setBackground(primaryStage, pane);
+		gameBoard = new AnchorPane();
+		newScene(gameBoard);
+		setBackground(primaryStage, gameBoard);
+
 		handleEvent();
-//		pane.setPrefSize(Metrics.ROOT_WIDTH, Metrics.ROOT_HEIGHT);
-		System.out.println(primaryStage.getWidth());
-		System.out.println(primaryStage.getHeight());
+
+		////////////////////////////
+		System.out.println("PRIMARY STAGE W: "+ primaryStage.getWidth());
+		System.out.println("PRIMARY STAGE H: " +primaryStage.getHeight());
+		////////////////////////////
 
 		bag = new Bag(primaryStage);
-		bag.relocate(primaryStage.getWidth()*Metrics.d_x_bag, primaryStage.getHeight()*Metrics.d_y_bag);
-		pane.getChildren().add(bag);
+		//System.out.println("BAG PERC: top: " + (Metrics.d_y_bag) + "  left: " + (Metrics.d_x_bag));
+		AnchorPane.setTopAnchor(bag, gameBoard.getHeight() * Metrics.d_y_bag );
+		AnchorPane.setLeftAnchor(bag, gameBoard.getWidth() * Metrics.d_x_bag);
+		//bag.relocate(primaryStage.getWidth()*Metrics.d_x_bag, primaryStage.getHeight()*Metrics.d_y_bag);
+		gameBoard.getChildren().add(bag);
 
 		board = new Board(primaryStage);
-		board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
-		pane.getChildren().add(board);
+		//System.out.println("BAG PERC: top: " + (Metrics.d_y_board) + "  left: " + (Metrics.d_x_board) );
+		//board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
+		AnchorPane.setTopAnchor(board, gameBoard.getHeight() * Metrics.d_y_board );
+		AnchorPane.setLeftAnchor(board, gameBoard.getWidth() * Metrics.d_x_board);
+		gameBoard.getChildren().add(board);
 
 		commandBoard = new CommandBoard(primaryStage);
-		commandBoard.relocate(primaryStage.getWidth()*Metrics.d_x_comb, primaryStage.getHeight()*Metrics.d_y_comb);
-		pane.getChildren().add(commandBoard);
+		AnchorPane.setTopAnchor(commandBoard, gameBoard.getHeight() * Metrics.d_y_comb );
+		AnchorPane.setLeftAnchor(commandBoard, gameBoard.getWidth() * Metrics.d_x_comb);
+		//commandBoard.relocate(primaryStage.getWidth()*Metrics.d_x_comb, primaryStage.getHeight()*Metrics.d_y_comb);
+		gameBoard.getChildren().add(commandBoard);
 
+		System.out.println("PRIMARYSTAGE W: " + primaryStage.getWidth() + " H: "+primaryStage.getHeight());
 		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight());
-		bookshelf.relocate(Metrics.d_x_bookpl*primaryStage.getWidth(), Metrics.d_y_bookpl*primaryStage.getHeight());
+		//bookshelf.relocate(Metrics.d_x_bookpl*primaryStage.getWidth(), Metrics.d_y_bookpl*primaryStage.getHeight());
+		AnchorPane.setTopAnchor(bookshelf, gameBoard.getHeight() * Metrics.d_y_bookpl );
+		AnchorPane.setLeftAnchor(bookshelf, gameBoard.getWidth() * Metrics.d_x_bookpl);
 		bookshelf.createLabelName(Metrics.dim_x_targetname*primaryStage.getWidth(),Metrics.dim_y_targetname*primaryStage.getHeight(), primaryStage.getWidth()*Metrics.dim_x_bookpl*Metrics.d_x_targetname, primaryStage.getHeight()*Metrics.dim_y_bookpl*Metrics.d_y_targetname);
 		bookshelf.setName(nickname);
-		pane.getChildren().add(bookshelf);
+		gameBoard.getChildren().add(bookshelf);
 
 		ChatButton = new Button();
 		ChatButton.setVisible(true);
-		pane.getChildren().add(ChatButton);
+		gameBoard.getChildren().add(ChatButton);
 		ChatButton.relocate(1350, 50);
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
@@ -730,8 +758,9 @@ public class Viewer extends Application {
 			arrowDown.setUserData(arrowDown);
 			arrowDown.setVisible(false);
 			arrowDown.setIndex(i);
-			arrowDown.setSize(Metrics.ARROW_DOWN_WIDTH, Metrics.ARROW_DOWN_HEIGHT);
-			arrowDown.relocate(1026 + (i * 60), 168);
+			arrowDown.setSize(gameBoard.getWidth() * Metrics.ARROW_DOWN_WIDTH,gameBoard.getHeight() * Metrics.ARROW_DOWN_HEIGHT);
+			AnchorPane.setLeftAnchor(arrowDown, gameBoard.getWidth() * (1026.0/1536.0) + gameBoard.getWidth()* (i*60)/1536.0);
+			AnchorPane.setTopAnchor(arrowDown, gameBoard.getHeight()* 168.0/864.0);
 			arrowDown.setOnMouseClicked(event -> {
 				Arrow ad = (Arrow) event.getSource();
 				String s = "order";
@@ -742,12 +771,14 @@ public class Viewer extends Application {
 				handleArrowDown(event, ad.getIndex());
 			});
 			arrowDownList.add(arrowDown);
-			pane.getChildren().add(arrowDown);
+			gameBoard.getChildren().add(arrowDown);
 		}
 
-		arrowRight.setSize(Metrics.ARROW_RIGHT_WIDTH, Metrics.ARROW_RIGHT_HEIGHT);
+		arrowRight.setSize(gameBoard.getWidth() *Metrics.ARROW_RIGHT_WIDTH, gameBoard.getHeight()* Metrics.ARROW_RIGHT_HEIGHT);
 		arrowRight.setVisible(false);
-		arrowRight.relocate(primaryStage.getWidth()*Metrics.d_x_comb-110, 35);
+		AnchorPane.setTopAnchor(arrowRight, gameBoard.getHeight()  * 0.0451);
+		AnchorPane.setLeftAnchor(arrowRight, gameBoard.getWidth() * 0.601);
+		//arrowRight.relocate(primaryStage.getWidth()*Metrics.d_x_comb-110, 35);
 		arrowRight.setOnMouseClicked(event -> {
 			LaunchClient.getClient().sendMessage("pick");
 			arrowRight.setVisible(false);
@@ -759,7 +790,7 @@ public class Viewer extends Application {
 				}
 			}
 		});
-		pane.getChildren().add(arrowRight);
+		gameBoard.getChildren().add(arrowRight);
 
 	}
 	private void handleEvent() {
@@ -788,23 +819,33 @@ public class Viewer extends Application {
 		}
 		c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
 		c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
-		c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
-		c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
-		pane.getChildren().add(c1);
-		pane.getChildren().add(c2);
+		AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
+		AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
+		AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2 );
+		AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
+
+		//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
+		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
+		gameBoard.getChildren().add(c1);
+		gameBoard.getChildren().add(c2);
 	}
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
 		p = new PersonalGoal(number, primaryStage);
-		p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
-		pane.getChildren().add(p);
+		AnchorPane.setTopAnchor(p, gameBoard.getHeight() * Metrics.d_y_pers );
+		AnchorPane.setLeftAnchor(p, gameBoard.getWidth() * Metrics.d_x_pers);
+		//p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
+		gameBoard.getChildren().add(p);
 	}
 
 	public void setBoard(Map<String, String> map) {
 		if (board == null) {
 			board = new Board(primaryStage);
-			board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
-			pane.getChildren().add(board);
+			AnchorPane.setTopAnchor(board, gameBoard.getHeight() * Metrics.d_y_board );
+			AnchorPane.setLeftAnchor(board, gameBoard.getWidth() * Metrics.d_x_board);
+
+			//board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
+			gameBoard.getChildren().add(board);
 		}
 		for (String s: map.keySet()) {
 			if (!map.get(s).equals("NOCOLOR")) {
@@ -873,7 +914,7 @@ public class Viewer extends Application {
 			for (int i = 0; i < numPlayers - 1; i++) {
 				Bookshelf b = new Bookshelf(Metrics.dim_x_book*primaryStage.getWidth(), Metrics.dim_y_book*primaryStage.getHeight());
 				bookshelves.add(b);
-				pane.getChildren().add(bookshelves.get(i));
+				gameBoard.getChildren().add(bookshelves.get(i));
 				bookshelves.get(i).createLabelName(Metrics.dim_x_label*primaryStage.getWidth(),Metrics.dim_y_label*primaryStage.getHeight(), Metrics.dim_x_book*Metrics.d_x_label* primaryStage.getWidth(), Metrics.dim_y_book*Metrics.d_y_label*primaryStage.getHeight());
 				switch (numPlayers) {
 					case 2:
