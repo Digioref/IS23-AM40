@@ -13,11 +13,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 public class Bookshelf extends AnchorPane {
 	private static final int COLUMN_SPACES = 6;
-	private static final double[] colStart = { 42.0, 98.0, 154.0, 210.0, 266.0 };
-	private static final double[] rowEnd = { 264.0, 216.0, 168.0, 120.0, 72.0, 24.0 };
+	private double[] colStart = { 42.0/1536.0, 98.0/1536.0, 154.0/1536.0, 210.0/1536.0, 266.0/1536.0 };
+	private double[] rowEnd = { 264.0/864.0, 216.0/864.0, 168.0/864.0, 120.0/864.0, 72.0/864.0, 24.0/864.0 };
 	private int[] bookshelf;
 	private final Label bsImage;
 	private StackPane labelName;
@@ -30,16 +31,13 @@ public class Bookshelf extends AnchorPane {
 	private ArrayList<Node> nodeList;
 	private Point2D velocity;
 
-	private double j;
-	private double f;
 
-	public Bookshelf(double w, double h) {
+	public Bookshelf(double w, double h, Stage primaryStage) {
 		super();
 
 //		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
 //		setPrefSize(screenHeight, screenHeight);
 		setPrefSize(w, h);
-
 		bsImage = new Label();
 		Image image = Resources.bookshelf();
 		ImageView view = new ImageView(image);
@@ -49,9 +47,22 @@ public class Bookshelf extends AnchorPane {
 		view.setFitWidth(w);
 		view.setFitHeight(h);
 		bsImage.setGraphic(view);
-		j= w;
-		f=h;
-		System.out.println("W: "+ j +"  H: "+ f);
+
+		/*
+		for(int i=0; i<6; i++){
+			if(i==5){
+				rowEnd[i]=rowEnd[i]*primaryStage.getHeight();
+				System.out.println("ROWEND[" + i + "]:  " + rowEnd[i] + "PRIMARYSTAGE H: "+ primaryStage.getHeight());
+			}
+			else {
+				rowEnd[i] = rowEnd[i] * primaryStage.getHeight();
+				colStart[i] = colStart[i] * primaryStage.getWidth();
+				System.out.println("ROWEND[" + i + "]:  " + rowEnd[i] + "  COLSTART[" + i + "]:  " + colStart[i] +  "PRIMARYSTAGE W: "+ primaryStage.getWidth()+ "PRIMARYSTAGE H: "+ primaryStage.getHeight());
+			}
+		}
+
+		 */
+
 		getChildren().add(bsImage);
 		bookshelf = new int[]{0, 0, 0, 0, 0, 0};
 

@@ -740,7 +740,7 @@ public class Viewer extends Application {
 		gameBoard.getChildren().add(commandBoard);
 
 		System.out.println("PRIMARYSTAGE W: " + primaryStage.getWidth() + " H: "+primaryStage.getHeight());
-		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight());
+		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight(), primaryStage);
 		//bookshelf.relocate(Metrics.d_x_bookpl*primaryStage.getWidth(), Metrics.d_y_bookpl*primaryStage.getHeight());
 		AnchorPane.setTopAnchor(bookshelf, gameBoard.getHeight() * Metrics.d_y_bookpl );
 		AnchorPane.setLeftAnchor(bookshelf, gameBoard.getWidth() * Metrics.d_x_bookpl);
@@ -912,7 +912,7 @@ public class Viewer extends Application {
 		if (bookshelves.size() == 0) {
 			int j = 0;
 			for (int i = 0; i < numPlayers - 1; i++) {
-				Bookshelf b = new Bookshelf(Metrics.dim_x_book*primaryStage.getWidth(), Metrics.dim_y_book*primaryStage.getHeight());
+				Bookshelf b = new Bookshelf(Metrics.dim_x_book*primaryStage.getWidth(), Metrics.dim_y_book*primaryStage.getHeight(), primaryStage);
 				bookshelves.add(b);
 				gameBoard.getChildren().add(bookshelves.get(i));
 				bookshelves.get(i).createLabelName(Metrics.dim_x_label*primaryStage.getWidth(),Metrics.dim_y_label*primaryStage.getHeight(), Metrics.dim_x_book*Metrics.d_x_label* primaryStage.getWidth(), Metrics.dim_y_book*Metrics.d_y_label*primaryStage.getHeight());
