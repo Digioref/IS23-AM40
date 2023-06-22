@@ -450,7 +450,7 @@ public class Viewer extends Application {
 		timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
 
 //		pane.getChildren().add(loadImage);
-		Pane x = (Pane) pane.getChildren().get(0);
+		Pane x = (Pane) pane.getChildren().get(1);
 		x.getChildren().add(loadImage);
 		rotateTransition.play();
 		timeline.play();
