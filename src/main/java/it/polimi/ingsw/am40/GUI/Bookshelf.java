@@ -16,19 +16,23 @@ import javafx.stage.Screen;
 
 public class Bookshelf extends AnchorPane {
 	private static final int COLUMN_SPACES = 6;
-	private static final int[] colStart = { 42, 98, 154, 210, 266 };
-	private static final int[] rowEnd = { 264, 216, 168, 120, 72, 24 };
+	private static final double[] colStart = { 42.0, 98.0, 154.0, 210.0, 266.0 };
+	private static final double[] rowEnd = { 264.0, 216.0, 168.0, 120.0, 72.0, 24.0 };
 	private int[] bookshelf;
 	private final Label bsImage;
 	private StackPane labelName;
 	private final AnimationTimer animTimer;
 	private Text labelText;
-	private int col;
+	private double col;
 	private int colIndex;
 	private int depth;
 	private Node node;
 	private ArrayList<Node> nodeList;
 	private Point2D velocity;
+
+	private double j;
+	private double f;
+
 	public Bookshelf(double w, double h) {
 		super();
 
@@ -45,7 +49,9 @@ public class Bookshelf extends AnchorPane {
 		view.setFitWidth(w);
 		view.setFitHeight(h);
 		bsImage.setGraphic(view);
-
+		j= w;
+		f=h;
+		System.out.println("W: "+ j +"  H: "+ f);
 		getChildren().add(bsImage);
 		bookshelf = new int[]{0, 0, 0, 0, 0, 0};
 
@@ -57,6 +63,7 @@ public class Bookshelf extends AnchorPane {
 
 				if (node == null) {
 					node = nodeList.remove(0);
+					AnchorPane.clearConstraints(node);
 					node.setTranslateX(col);
 					node.setTranslateY(0);
 					depth = bookshelf[colIndex];
@@ -73,6 +80,7 @@ public class Bookshelf extends AnchorPane {
 				if (velocity.getY() <= 0) {
 					if (nodeList.size() != 0) {
 						node = nodeList.remove(0);
+						AnchorPane.clearConstraints(node);
 						node.setTranslateX(col);
 						node.setTranslateY(0);
 						depth = bookshelf[colIndex];
@@ -105,6 +113,7 @@ public class Bookshelf extends AnchorPane {
 	void insert(ArrayList<Node> nodeList, int col) {
 		this.node = null;
 		this.nodeList = nodeList;
+		System.out.println("COLSTART[" + col + "] = " + colStart[col]);
 		this.col = colStart[col];
 		this.colIndex = col;
 		animTimer.start();

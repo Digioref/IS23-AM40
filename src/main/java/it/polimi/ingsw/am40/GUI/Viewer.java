@@ -870,7 +870,7 @@ public class Viewer extends Application {
 				}
 
 				while ((n = commandBoard.getTile()) != null) {
-					nodeList.add(n);
+					nodeList.add(n);  //add the tiles picked and ordered
 				}
 
 				if (nodeList.size() > 0) {
@@ -918,13 +918,19 @@ public class Viewer extends Application {
 				bookshelves.get(i).createLabelName(Metrics.dim_x_label*primaryStage.getWidth(),Metrics.dim_y_label*primaryStage.getHeight(), Metrics.dim_x_book*Metrics.d_x_label* primaryStage.getWidth(), Metrics.dim_y_book*Metrics.d_y_label*primaryStage.getHeight());
 				switch (numPlayers) {
 					case 2:
-						bookshelves.get(i).relocate(Metrics.d_x_book2*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
+						AnchorPane.setLeftAnchor(bookshelves.get(i),Metrics.d_x_book2 * primaryStage.getWidth());
+						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
+						//bookshelves.get(i).relocate(Metrics.d_x_book2*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 					case 3:
-						bookshelves.get(i).relocate(((329+(329+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
+						AnchorPane.setLeftAnchor(bookshelves.get(i),((329+(329+274)*i)/1536.0)* primaryStage.getWidth());
+						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
+						//bookshelves.get(i).relocate(((329+(329+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 					case 4:
-						bookshelves.get(i).relocate(((178+(178+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
+						AnchorPane.setLeftAnchor(bookshelves.get(i),((178+(178+274)*i)/1536.0)* primaryStage.getWidth());
+						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
+						//bookshelves.get(i).relocate(((178+(178+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 				}
 				if (names.get(j).equals(nickname)) {
