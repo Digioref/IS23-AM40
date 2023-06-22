@@ -44,7 +44,8 @@ public class CommandBoard extends AnchorPane {
 
 		BackgroundImage boardImg = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
 				BackgroundPosition.DEFAULT,
-				new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
+				new BackgroundSize(1, 1, true, true, false, false));
+
 
 		setBackground(new Background(boardImg));
 		setEffect(new DropShadow(20, Color.BLACK));

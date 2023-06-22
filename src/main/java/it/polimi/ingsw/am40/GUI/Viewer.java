@@ -748,10 +748,12 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		gameBoard.getChildren().add(bookshelf);
 
+		/*
 		ChatButton = new Button();
 		ChatButton.setVisible(true);
 		gameBoard.getChildren().add(ChatButton);
 		ChatButton.relocate(1350, 50);
+		*/
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
@@ -950,6 +952,7 @@ public class Viewer extends Application {
 						if (m.get("(" + j + "," + k + ")").equals("NOCOLOR")) {
 							bookshelves.get(i).modifyDepth(j);
 						} else {
+							System.out.println();
 							nodelist.add(new Tile(m.get("(" + j + "," + k + ")"), primaryStage));
 							bookshelves.get(i).update(nodelist, j);
 							System.out.println(j + " --- "+ k);

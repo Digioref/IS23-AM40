@@ -38,12 +38,12 @@ public class Metrics {
 	public static final int OTHER_BOOKSHELF_HEIGHT = 274;
 
 	public static final double d_x_bag = 85.0/1536.0;
-	public static final double d_y_bag = 50.0/864.0;
+	public static final double d_y_bag = 35.0/864.0;
 	public static final double dim_x_bag = 130.0/1536.0;
 	public static final double dim_y_bag = 130.0/864.0;
 	public static final double d_x_comm = 25.0/1536.0;
-	public static final double d_y_comm1 = 200.0/864.0;
-	public static final double d_y_comm2 = 410.0/864.0;
+	public static final double d_y_comm1 = 185.0/864.0;
+	public static final double d_y_comm2 = 395/864.0;
 	public static final double dim_x_comm = 250.0/1536.0;
 	public static final double dim_y_comm = 200.0/864.0;
 	public static final double d_x_board = 310.0/1536.0;

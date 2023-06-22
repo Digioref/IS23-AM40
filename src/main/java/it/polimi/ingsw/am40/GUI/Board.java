@@ -152,4 +152,5 @@ public class Board extends AnchorPane {
 	public static void setStepY(double stepY) {
 		STEP_Y = stepY;
 	}
+
 }

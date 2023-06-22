@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
@@ -17,8 +18,8 @@ import javafx.stage.Stage;
 
 public class Bookshelf extends AnchorPane {
 	private static final int COLUMN_SPACES = 6;
-	private double[] colStart = { 42.0/1536.0, 98.0/1536.0, 154.0/1536.0, 210.0/1536.0, 266.0/1536.0 };
-	private double[] rowEnd = { 264.0/864.0, 216.0/864.0, 168.0/864.0, 120.0/864.0, 72.0/864.0, 24.0/864.0 };
+	private double[] colStart = { 39.5/1536.0, 95.5/1536.0, 151.5/1536.0, 207.5/1536.0, 263.5/1536.0 };
+	private double[] rowEnd = { 261.0/864.0, 213.0/864.0, 165.0/864.0, 117.0/864.0, 69.0/864.0, 21.0/864.0 };
 	private int[] bookshelf;
 	private final Label bsImage;
 	private StackPane labelName;
@@ -31,6 +32,8 @@ public class Bookshelf extends AnchorPane {
 	private ArrayList<Node> nodeList;
 	private Point2D velocity;
 
+	private double widthStage;
+	private double heightStage;
 
 	public Bookshelf(double w, double h, Stage primaryStage) {
 		super();
@@ -47,21 +50,25 @@ public class Bookshelf extends AnchorPane {
 		view.setFitWidth(w);
 		view.setFitHeight(h);
 		bsImage.setGraphic(view);
+		heightStage=primaryStage.getHeight();
+		widthStage=primaryStage.getWidth();
+		System.out.println("WWWWWWW : "+ w + "  HHHHHH: " + h);
 
-		/*
+
+
 		for(int i=0; i<6; i++){
 			if(i==5){
 				rowEnd[i]=rowEnd[i]*primaryStage.getHeight();
-				System.out.println("ROWEND[" + i + "]:  " + rowEnd[i] + "PRIMARYSTAGE H: "+ primaryStage.getHeight());
+				//System.out.println("ROWEND[" + i + "]:  " + rowEnd[i] + "PRIMARYSTAGE H: "+ primaryStage.getHeight());
 			}
 			else {
 				rowEnd[i] = rowEnd[i] * primaryStage.getHeight();
 				colStart[i] = colStart[i] * primaryStage.getWidth();
-				System.out.println("ROWEND[" + i + "]:  " + rowEnd[i] + "  COLSTART[" + i + "]:  " + colStart[i] +  "PRIMARYSTAGE W: "+ primaryStage.getWidth()+ "PRIMARYSTAGE H: "+ primaryStage.getHeight());
+				//System.out.println("ROWEND[" + i + "]:  " + rowEnd[i] + "  COLSTART[" + i + "]:  " + colStart[i] +  "PRIMARYSTAGE W: "+ primaryStage.getWidth()+ "PRIMARYSTAGE H: "+ primaryStage.getHeight());
 			}
 		}
 
-		 */
+
 
 		getChildren().add(bsImage);
 		bookshelf = new int[]{0, 0, 0, 0, 0, 0};
@@ -129,7 +136,29 @@ public class Bookshelf extends AnchorPane {
 		this.colIndex = col;
 		animTimer.start();
 	}
-	public void update(ArrayList<Node> nodeList, int col){
+	public void update(ArrayList<Node> nodeList, int cols){
+		double width = this.getWidth();
+		double height = this.getHeight();
+		System.out.println("WWW : "+ width + "  HHH: " + height);
+		System.out.println("COLONNA: "+ col);
+		for (int i = 0; i < nodeList.size();) {
+			node = nodeList.remove(0);
+			AnchorPane.clearConstraints(node);
+			//node.prefWidth(274.0/360.0 * Metrics.TILE_WIDTH *widthStage);
+			//node.prefHeight(274.0/360.0 * Metrics.TILE_HEIGHT *widthStage);
+			//node.setScaleX(274.0/360.0);
+			//node.setScaleY(274.0/360);
+			Tile t = (Tile) node;
+			t.getTileView().setFitWidth(274.0/360 * Metrics.dim_x_tile * widthStage);
+			t.getTileView().setFitHeight(274.0/360.0 * Metrics.dim_y_tile * heightStage);
+			AnchorPane.setLeftAnchor(t, 274.0/360.0 * colStart[cols]);
+			AnchorPane.setTopAnchor(t,  274.0/360 * rowEnd[bookshelf[cols]]);
+			bookshelf[cols]++;
+			getChildren().add(t);
+			bsImage.toFront();
+			labelName.toFront();
+		}
+		/*
 		this.node = null;
 		this.nodeList = nodeList;
 		this.col = colStart[col];
@@ -144,6 +173,8 @@ public class Bookshelf extends AnchorPane {
 			bsImage.toFront();
 			labelName.toFront();
 		}
+
+		 */
 	}
 	public void createLabelName(double w, double h, double x, double y) {
 		labelName = new StackPane();

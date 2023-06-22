@@ -27,12 +27,15 @@ public class Tile extends Label {
 	private boolean pickable = false;
 	private boolean nocolor = false;
 
+	private ImageView tileView;
+
 	public Tile(String type, Stage primaryStage) {
 		super();
 		if(!type.equals("NOCOLOR")){
 			int index = (int) (Math.random() * 3);
 			Image image = Resources.tile(type, index);
 			ImageView view = new ImageView(image);
+			tileView = view;
 			view.setPreserveRatio(true);
 			view.setFitWidth(Metrics.dim_x_tile*primaryStage.getWidth());
 			view.setFitHeight(Metrics.dim_y_tile*primaryStage.getHeight());
@@ -101,5 +104,9 @@ public class Tile extends Label {
 
 	public boolean isNocolor() {
 		return nocolor;
+	}
+
+	public ImageView getTileView(){
+		return tileView;
 	}
 }
