@@ -60,7 +60,9 @@ public class Board extends AnchorPane {
 		String key = hashkey(x, y);
 
 		/* Relocate the tile on the grid */
-		tile.relocate(ORIGIN_X + (x * STEP_X), ORIGIN_Y - (y * STEP_Y));
+		//tile.relocate(ORIGIN_X + (x * STEP_X), ORIGIN_Y - (y * STEP_Y));
+		AnchorPane.setLeftAnchor(tile, ORIGIN_X + x*STEP_X);
+		AnchorPane.setTopAnchor(tile, ORIGIN_Y - (y*STEP_Y));
 
 		/* Store into the hash-map */
 		tiles.put(key, tile);

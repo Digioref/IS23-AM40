@@ -67,39 +67,14 @@ public class Resources {
 
 		// Create the image from the input stream
 		Image image = new Image(inputStream);
-		//Image image = new Image("it/polimi/ingsw/am40/GUI/Resources/"+imageFile);
-		//Image image = new Image(Objects.requireNonNull(Resources.class.getResource("it/polimi/ingsw/am40/GUI/Resources/" + imageFile)).toExternalForm());
-		//System.out.println(Resources.class.getClassLoader());
-		//InputStream is = Resources.class.getClassLoader().getResourceAsStream(imageFile);
-		//image = new Image(Resources.class.getClassLoader().getResource(imageFile).toString());
-		//image = new Image(Resources.class.getResource("/it/polimi/ingsw/am40/GUI/Resources/" + imageFile));
 		return image;
 	}
 
 	public static Image icon() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.publisherPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.iconFile;
-*/
-		//loadImage(iconFile);
 		return loadImage(iconFile);
 	}
 
 	public static Image arrowDown() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.customPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.arrowdownFile;
-*/
 		return loadImage(arrowdownFile);
 	}
 
@@ -126,118 +101,41 @@ public class Resources {
 	}
 
 	public static Image labelName() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.customPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += labelNameFile;
-*/
 		return loadImage(labelNameFile);
 	}
 
 	public static Image background() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.miscPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.backgroundFile;
-*/
 		return loadImage(backgroundFile);
 	}
 
 	public static Image bag() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.miscPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.bagFile;
-*/
 		return loadImage(bagFile);
 	}
 
 	public static Image basePage() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.miscPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.basePageFile;
-*/
 		return loadImage(basePageFile);
 	}
 
 	public static Image board() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.boardsPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.boardFile;
-*/
 		return loadImage(boardFile);
 	}
 
 	public static Image bookshelf() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.boardsPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.bookshelfFile;
-*/
 		return loadImage(bookshelfFile);
 	}
 
 	public static Image commonGoal(int index) {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.commonGoalPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.commonGoalFile[index];
-*/
 		return loadImage(commonGoalFile[index]);
 	}
 
 	public static Image personalGoal(int index) {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.personalGoalPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.personalGoalFile[index];
-*/
 		return loadImage(personalGoalFile[index]);
 	}
 
 	public static Image tile(String type, int index) {
 
 		String imageFile = null;
-/*
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.tilesPath;
-		imageFile += Resources.pathSeparator;
-*/
+
 		index %= 3;
 
 		switch (type) {
