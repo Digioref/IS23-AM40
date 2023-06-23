@@ -13,6 +13,11 @@ public class Resources {
 	public static final int TILE_TYPE_FLOWER = 5;
 	public static final int TILE_TYPE_TROPHY = 6;
 
+	private static final int SCORE_TWO = 2;
+	private static final int SCORE_FOUR = 4;
+	private static final int SCORE_SIX = 6;
+	private static final int SCORE_EIGHT = 8;
+
 	private static final String pathSeparator = "/";
 
 	private static final String resourcesPath = "17_MyShelfie_BGA";
@@ -50,8 +55,9 @@ public class Resources {
 	private static final String tileBookFile[] = { "Libri1.1.png", "Libri1.2.png", "Libri1.3.png", };
 	private static final String tileFlowerFile[] = { "Piante1.1.png", "Piante1.2.png", "Piante1.3.png", };
 	private static final String tileTrophyFile[] = { "Trofei1.1.png", "Trofei1.2.png", "Trofei1.3.png", };
-
 	private static final String titleFile = "Title 2000x618px.png";
+	private static final String scoringFile []= {"scoring_2.jpg","scoring_4.jpg","scoring_6.jpg","scoring_8.jpg"};
+
 
 	private static Image loadImage(String imageFile){
 		System.out.println(imageFile);
@@ -214,5 +220,26 @@ public class Resources {
 		imageFile += Resources.titleFile;
 */
 		return loadImage(titleFile);
+	}
+
+	public static Image score(int index){
+		String imagefile = "";
+		switch (index){
+			case SCORE_TWO :
+				imagefile = scoringFile[0];
+				break;
+			case SCORE_FOUR:
+				imagefile = scoringFile[1];
+				break;
+			case SCORE_SIX:
+				imagefile = scoringFile[2];
+				break;
+			case SCORE_EIGHT:
+				imagefile = scoringFile[3];
+				break;
+			default:
+				break;
+		}
+		return loadImage(imagefile);
 	}
 }

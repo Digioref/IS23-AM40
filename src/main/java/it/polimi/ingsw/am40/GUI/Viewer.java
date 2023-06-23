@@ -65,6 +65,10 @@ public class Viewer extends Application {
 
 	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
 
+	private ArrayList<ScoreToken> scoringTokenOne;
+	private ArrayList<ScoreToken> scoringTokenTwo;
+	private int[] order;
+
 
 
 
@@ -830,6 +834,39 @@ public class Viewer extends Application {
 		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
 		gameBoard.getChildren().add(c1);
 		gameBoard.getChildren().add(c2);
+		setOrder();
+		setToken(1);
+		setToken(2);
+	}
+	private void setOrder(){
+		switch(numPlayers){
+			case(2):
+				order = new int[]{1, 2};
+				break;
+			case(3):
+				order = new int[]{1,3,2};
+				break;
+			case(4):
+				order = new int[]{4,1,3,2};
+		}
+	}
+	private void setToken(int obj){
+		if(obj==1){
+			scoringTokenOne = new ArrayList<>();
+			for(int i=0; i<numPlayers; i++){
+				scoringTokenOne.add(new ScoreToken(order[i],obj,primaryStage));
+				gameBoard.getChildren().add(scoringTokenOne.get(i));
+			}
+		}
+		else {
+			scoringTokenTwo = new ArrayList<>();
+			for(int i=0; i<numPlayers; i++){
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				scoringTokenTwo.add(new ScoreToken(order[i],obj,primaryStage));
+				gameBoard.getChildren().add(scoringTokenTwo.get(i));
+
+			}
+		}
 	}
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
@@ -858,6 +895,7 @@ public class Viewer extends Application {
 
 		}
 	}
+
 	private void handleArrowDown(MouseEvent event, int column) {
 		if (commandBoard.checkSequence()) {
 			ArrayList<Node> nodeList = new ArrayList<>();
@@ -964,6 +1002,8 @@ public class Viewer extends Application {
 			}
 		}
 	}
+
+
 }
 
 
