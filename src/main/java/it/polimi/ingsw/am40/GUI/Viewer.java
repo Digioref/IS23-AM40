@@ -71,6 +71,9 @@ public class Viewer extends Application {
 	private boolean isNew;
 	private VBox chatContainer = new VBox();
 	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
+	private Circle dotIndicator;
+
+	private VBox messages;
 
 	private ArrayList<ScoreToken> scoringTokenOne;
 	private ArrayList<ScoreToken> scoringTokenTwo;
@@ -590,8 +593,14 @@ public class Viewer extends Application {
 	private void createChatContainer() {
 
 		isVisible = false;
-		Button chatButton = new Button("Show chat");
-		chatButton.setOnAction(e -> showChat(chatButton));
+		ChatButton = new Button();
+		ChatButton.getStylesheets().add("Button.css");
+		ChatButton.setFont(Font.font(20));
+		ChatButton.setVisible(true);
+		ChatButton.setText("CHAT");
+
+		gameBoard.getChildren().add(ChatButton);
+		ChatButton.setOnAction(e -> showChat(ChatButton));
 
 		// Red dot indicator for unread messages
 		dotIndicator = new Circle(5);
@@ -599,10 +608,12 @@ public class Viewer extends Application {
 		dotIndicator.setVisible(true);
 
 		StackPane chatButtonPane = new StackPane();
-		chatButtonPane.getChildren().addAll(chatButton, dotIndicator);
+		chatButtonPane.getChildren().addAll(ChatButton, dotIndicator);
 		StackPane.setAlignment(dotIndicator, Pos.TOP_RIGHT);
+		AnchorPane.setLeftAnchor(chatButtonPane, gameBoard.getWidth()*(1340/1536.0));
+		AnchorPane.setTopAnchor(chatButtonPane, gameBoard.getHeight()*(65/864.0));
 
-		pane.getChildren().add(chatButtonPane);
+		gameBoard.getChildren().add(chatButtonPane);
 
 		chatContainer.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-padding: 10px;");
 		chatContainer.setMaxHeight(200);
@@ -632,6 +643,7 @@ public class Viewer extends Application {
 		// text field to write the message
 		TextField messageInput = new TextField();
 		Button sendButton = new Button("Send");
+		sendButton.getStylesheets().add("Button.css");
 
 		HBox inputBox = new HBox(messageInput, sendButton);
 		inputBox.setSpacing(10);
@@ -676,14 +688,14 @@ public class Viewer extends Application {
 		messages.getChildren().add(newMessage);
 
 		// Add the chat container to the main pane
-		pane.getChildren().add(chatContainer);
+		gameBoard.getChildren().add(chatContainer);
 
 		chatContainer.setTranslateX(100);
 		chatContainer.setTranslateY(100);
 
 	}
 
-	public class NewMessage extends HBox {
+	private class NewMessage extends HBox {
 		public NewMessage(String from, String to, String message) {
 			Label senderLabel = new Label("from " + from + " to " + to + ": ");
 			if (from == null || from.equals(nickname)) {
@@ -701,11 +713,11 @@ public class Viewer extends Application {
 		dotIndicator.setVisible(false);
 		isVisible = !isVisible;
 		chatContainer.setVisible(isVisible);
-		if (isVisible) {
-			button.setText("Hide chat");
-		} else {
-			button.setText("Show chat");
-		}
+//		if (isVisible) {
+//			button.setText("Hide chat");
+//		} else {
+//			button.setText("Show chat");
+//		}
 	}
 
 	public void chooseConnection() {
@@ -757,8 +769,6 @@ public class Viewer extends Application {
 //		b2.setOnAction(e -> {
 //			setUsername(vbox, tf, t1, b2, b3);
 //		});
-
-		createChatContainer();
 	}
 
 	public void setplayers() {
@@ -895,15 +905,7 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		gameBoard.getChildren().add(bookshelf);
 
-		ChatButton = new Button();
-		ChatButton.getStylesheets().add("Button.css");
-		ChatButton.setFont(Font.font(20));
-		ChatButton.setVisible(true);
-		ChatButton.setText("CHAT");
-		AnchorPane.setLeftAnchor(ChatButton, gameBoard.getWidth()*(1340/1536.0));
-		AnchorPane.setTopAnchor(ChatButton, gameBoard.getHeight()*(65/864.0));
-		gameBoard.getChildren().add(ChatButton);
-		ChatButton.relocate(1350, 50);
+		createChatContainer();
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
@@ -963,6 +965,7 @@ public class Viewer extends Application {
 			board.clearSelected();
 			LaunchClient.getClient().sendMessage("remove");
 			redCross.setVisible(false);
+			arrowRight.setVisible(false);
 		});
 		gameBoard.getChildren().add(redCross);
 
