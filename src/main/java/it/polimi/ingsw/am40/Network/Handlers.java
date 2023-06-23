@@ -19,45 +19,88 @@ public abstract class Handlers {
     protected int nPingLost;
 //    protected ArrayList<String> commands;
 
+    /**
+     * TODO
+     * @return
+     */
     public VirtualView getVirtualViewInstance() {
         return this.virtualView;
     }
 
+    /**
+     * TODO
+     * @param nickname
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
-
+    /**
+     * TODO
+     * @return
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * TODO
+     * @return
+     */
     public Controller getController() {
         return controller;
     }
 
+    /**
+     * Sets the attribute controller to the passed parameter
+     * @param controller
+     */
     public void setController(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * @return the valure of the attribute numplayers
+     */
     public int getNumPlayers() {
         return numPlayers;
     }
 
+    /**
+     * @return the valure of the attribute lobby
+     */
     public Lobby getLobby() {
         return lobby;
     }
 
+    /**
+     * Sets the attribute lobby to the parameter passed
+     * @param lobby
+     */
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
+
+    /**
+     * Sets the parameter logged to the parameter passed
+     * @param logged
+     */
     public void setLogged(boolean logged) {
         this.logged = logged;
     }
 
+    /**
+     * todo
+     * @return
+     */
     public boolean isLogged() {
         return logged;
     }
+
+    /**
+     * @param nickname
+     * @return true if the nickname passed is already used
+     */
     public boolean checkNickname(String nickname) {
         if(nickname.equals("")) {
             return false;
@@ -72,9 +115,19 @@ public abstract class Handlers {
         }
         return false;
     }
+
+    /**
+     * Sets the attribute numPlayers to the parameter passed
+     * @param numPlayers
+     */
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }
+
+    /**
+     * Sets the attribute virtualView to the parameter passed
+     * @param v
+     */
     public void setVirtualView(VirtualView v) {
         this.virtualView = v;
     }

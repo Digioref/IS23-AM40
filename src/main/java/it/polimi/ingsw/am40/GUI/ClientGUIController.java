@@ -12,15 +12,25 @@ import static javafx.application.Platform.runLater;
 public class ClientGUIController implements View {
     private Viewer gui;
 
+    /**
+     * todo
+     */
     public ClientGUIController() {
         gui = Viewer.getGUI();
     }
 
+    /**
+     * todo
+     */
     @Override
     public void chooseConnection() {
         runLater(gui::chooseConnection);
     }
 
+    /**
+     * TODO
+     * @param s
+     */
     @Override
     public void showCurrentPlayer(String s) {
 
@@ -68,10 +78,10 @@ public class ClientGUIController implements View {
     }
 
     @Override
-    public void showSelectedTiles(Map<String, String> map, String s) {}
+    public void showSelectedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String >> sel) {}
 
     @Override
-    public void showPickedTiles(Map<String, String> map, String s) {
+    public void showPickedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> picked) {
         runLater(()->gui.setPicked(map));
     }
 

@@ -29,6 +29,12 @@ public class Bookshelf extends AnchorPane {
 	private Node node;
 	private ArrayList<Node> nodeList;
 	private Point2D velocity;
+
+	/**
+	 * Represents the graphic element bookshelf
+	 * @param w is width
+	 * @param h is height
+	 */
 	public Bookshelf(double w, double h) {
 		super();
 
@@ -92,16 +98,29 @@ public class Bookshelf extends AnchorPane {
 		};
 	}
 
+	/**
+	 * TODO
+	 * @param name
+	 */
 	void setName(String name) {
 		labelText.setText(name);
 	}
 
+	/**
+	 * TODO
+	 * @param node
+	 */
 	void addTile(Node node) {
 		getChildren().add(node);
 		bsImage.toFront();
 		labelName.toFront();
 	}
 
+	/**
+	 * TODO
+	 * @param nodeList
+	 * @param col
+	 */
 	void insert(ArrayList<Node> nodeList, int col) {
 		this.node = null;
 		this.nodeList = nodeList;
@@ -109,6 +128,12 @@ public class Bookshelf extends AnchorPane {
 		this.colIndex = col;
 		animTimer.start();
 	}
+
+	/**
+	 * TODO
+	 * @param nodeList
+	 * @param col
+	 */
 	public void update(ArrayList<Node> nodeList, int col){
 		this.node = null;
 		this.nodeList = nodeList;
@@ -125,6 +150,14 @@ public class Bookshelf extends AnchorPane {
 			labelName.toFront();
 		}
 	}
+
+	/**
+	 * TODO
+	 * @param w
+	 * @param h
+	 * @param x
+	 * @param y
+	 */
 	public void createLabelName(double w, double h, double x, double y) {
 		labelName = new StackPane();
 		Image image = Resources.labelName();
@@ -140,21 +173,43 @@ public class Bookshelf extends AnchorPane {
 		getChildren().add(labelName);
 	}
 
+	/**
+	 * TODO
+	 * @param column
+	 * @return
+	 */
 	int getFreeSpace(int column) {
 		return (COLUMN_SPACES - bookshelf[column]);
 	}
 
+	/**
+	 * TODO
+	 * @param column
+	 * @return
+	 */
 	boolean isFull(int column) {
 		return (COLUMN_SPACES == bookshelf[column]);
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	public Text getLabelText() {
 		return labelText;
 	}
+
+	/**
+	 * TODO
+	 * @param col
+	 */
 	public void modifyDepth(int col) {
 		bookshelf[col]++;
 	}
 
+	/**
+	 * TODO
+	 */
 	public void resetDepth() {
 		this.bookshelf = new int[]{0, 0, 0, 0, 0, 0};
 		getChildren().clear();

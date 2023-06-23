@@ -18,7 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.Queue;
+import java.util.ArrayDeque;
 
 public class SocketClient extends Client {
 
@@ -29,9 +32,11 @@ public class SocketClient extends Client {
     private PrintWriter out;
     private Thread fromUser;
     private Thread fromServer;
+
     private boolean stop;
     private Socket socket;
     private boolean quitchat;
+    private Queue<String> message;
 
 
     public SocketClient(Socket socket) {
@@ -46,11 +51,13 @@ public class SocketClient extends Client {
         stop = false;
         inChat = false;
         state = new ClientState(this);
+        message = new ArrayDeque<>();
     }
     public void init() {
         createThreadFU();
         createThreadFS();
         startPing();
+        startParsing();
     }
 
 
@@ -70,6 +77,7 @@ public class SocketClient extends Client {
 
     public void close() {
         ping.shutdownNow();
+        parse.interrupt();
         stop = true;
         quitchat = true;
         try {
@@ -160,7 +168,10 @@ public class SocketClient extends Client {
                     break;
 //                    throw new RuntimeException(e);
                 }
+
+                message.add(line);
 //                print(line);
+                /*
                 try {
                     parseMessage(line);
                 } catch (ParseException e) {
@@ -168,12 +179,33 @@ public class SocketClient extends Client {
                     break;
 //                    throw new RuntimeException(e);
                 }
+                */
             } while (!stop);
         });
 
         fromServer.setName("READ FROM SERVER");
         fromServer.start();
     }
+
+    private void startParsing(){
+        parse= new Thread( ()-> {
+            do{
+                synchronized (message){
+                    if(!message.isEmpty()){
+                        try {
+                            parseMessage(message.poll());
+                        } catch (ParseException e) {
+                            System.out.println("Error in parsing");
+                            break;
+                        }
+                    }
+                }
+            }while (!stop);
+        });
+        parse.setName("PARSING MESSAGE");
+        parse.start();
+    }
+
     public void startPing() {
         Runnable task = () -> {
             numPing++;

@@ -20,10 +20,17 @@ public abstract class Client {
 
     protected String nickname;
     protected ScheduledExecutorService ping;
+
+    protected Thread parse;
     protected int numPing;
     protected boolean inChat;
     protected ClientState state;
 
+    /**
+     *
+     * @param line
+     * @throws ParseException
+     */
     public void parseMessage(String line) throws ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject object = (JSONObject) jsonParser.parse(line);
@@ -165,28 +172,42 @@ public abstract class Client {
             case "SelectedTiles":
                 JSONArray arr10 = (JSONArray) object.get("SelectedTiles");
                 Map<String, String> map9 = new HashMap<>();
+                ArrayList <ArrayList<String>> selected = new ArrayList<>();
+
                 for (int i = 0; i < arr10.size(); i++) {
+                    ArrayList <String> tmp = new ArrayList<>();
                     JSONObject obj = (JSONObject) arr10.get(i);
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
-                    map9.put(p.getKey(), obj.get("color").toString());
+                    String tile = obj.get("color").toString();
+                    map9.put(p.getKey(), tile);
+                    tmp.add(tile);
+                    tmp.add(p.getKey());
+                    selected.add(tmp);
                 }
+
                 if (!inChat) {
-                    LaunchClient.getView().showSelectedTiles(map9, object.get("Nickname").toString());
+                    LaunchClient.getView().showSelectedTiles(map9, object.get("Nickname").toString(),selected);
                 }
-                state.saveSelectedTiles(map9);
+                state.saveSelectedTiles(map9,selected);
                 break;
             case "PickedTiles":
                 JSONArray arr11 = (JSONArray) object.get("PickedTiles");
                 Map<String, String> map10 = new HashMap<>();
+                ArrayList <ArrayList<String>> picked = new ArrayList<>();
                 for (int i = 0; i < arr11.size(); i++) {
+                    ArrayList <String> tmp = new ArrayList<>();
                     JSONObject obj = (JSONObject) arr11.get(i);
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
-                    map10.put(p.getKey(), obj.get("color").toString());
+                    String tile = obj.get("color").toString();
+                    map10.put(p.getKey(), tile);
+                    tmp.add(tile);
+                    tmp.add(p.getKey());
+                    picked.add(tmp);
                 }
                 if (!inChat) {
-                    LaunchClient.getView().showPickedTiles(map10, object.get("Nickname").toString());
+                    LaunchClient.getView().showPickedTiles(map10, object.get("Nickname").toString(),picked);
                 }
-                state.savePickedTiles(map10);
+                state.savePickedTiles(map10,picked);
                 break;
             case "FinalScores":
                 JSONArray arr12 = (JSONArray) object.get("FinalScores");
@@ -223,7 +244,9 @@ public abstract class Client {
                 break;
             case "Ping":
                 sendPong();
-                ping.shutdownNow();
+                if(ping!=null){
+                    ping.shutdownNow();
+                }
                 numPing = 0;
                 startPing();
                 break;
@@ -252,8 +275,25 @@ public abstract class Client {
                 break;
         }
     }
+
+    /**
+     * TODO
+     */
     public abstract void close();
+
+    /**
+     * TODO
+     */
     public abstract void sendPong();
+
+    /**
+     * TODO
+     */
     public abstract void startPing();
+
+    /**
+     * TODO
+     * @param s
+     */
     public abstract void sendMessage(String s);
 }

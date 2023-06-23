@@ -27,63 +27,92 @@ public class ClientState {
     private ArrayList<String> authors;
     private ArrayList<String> receivers;
     private ArrayList<String> messages;
+    private ArrayList<ArrayList<String>> tileselected;
+    private ArrayList<ArrayList<String>> tilespicked;
 
+    /**
+     * TODO
+     * Che cosa fa???
+     * @param client
+     */
     public ClientState(Client client) {
         this.client = client;
     }
 
+    /**
+     * Saves the name of the current player in currplayer
+     * @param nickname
+     */
     public void saveCurrentPlayer(String nickname) {
         currplayer = nickname;
     }
 
+    /**
+     * Saves the map made of name of the player and score
+     * @param map
+     */
     public void saveCurrentScore(Map<String, Integer> map) {
         currscore = map;
     }
 
+    /**
+     * Saves the map made of name of the player and hidden score
+     * @param score
+     */
     public void saveHiddenScore(int score) {
         hiddenscore = score;
     }
 
+    /**
+     * Saves the names of the players
+     * @param names
+     */
     public void savePlayers(ArrayList<String> names) {
         players = names;
     }
 
-    public void saveCommonGoals(Map<Integer, Integer> map1) {
-        commongoals = map1;
+    /**
+     * Saves the commongoals
+     * @param commonGoals
+     */
+    public void saveCommonGoals(Map<Integer, Integer> commonGoals) {
+        commongoals = commonGoals;
     }
 
-    public void savePersonalGoal(Map<String, String> map2) {
-        personalgoal = map2;
+    public void savePersonalGoal(Map<String, String> personalGoal) {
+        personalgoal = personalGoal;
     }
 
-    public void saveBoard(Map<String, String> map3) {
-        board = map3;
+    public void saveBoard(Map<String, String> board_map) {
+        board = board_map;
     }
 
-    public void saveBookshelf(Map<String, String> map4) {
-        bookshelf = map4;
+    public void saveBookshelf(Map<String, String> bookshelf_map) {
+        bookshelf = bookshelf_map;
     }
 
-    public void saveBookshelves(Map<String, Map<String, String>> map5) {
-        bookshelves = map5;
+    public void saveBookshelves(Map<String, Map<String, String>> bookshelves_map) {
+        bookshelves = bookshelves_map;
     }
 
-    public void savePickable(Map<String, String> map7, ArrayList<Position> arrayList, Map<String, String> map8) {
-        pickabletiles = map7;
+    public void savePickable(Map<String, String> pickabletiles_map, ArrayList<Position> arrayList, Map<String, String> boardsel_map) {
+        pickabletiles = pickabletiles_map;
         alreadysel = arrayList;
-        boardsel = map8;
+        boardsel = boardsel_map;
     }
 
-    public void saveSelectedTiles(Map<String, String> map9) {
-        selectedtiles = map9;
+    public void saveSelectedTiles(Map<String, String> selectedtiles_map,ArrayList<ArrayList<String>> selected) {
+        selectedtiles = selectedtiles_map;
+        tileselected =  selected;
     }
 
-    public void savePickedTiles(Map<String, String> map10) {
-        pickedtiles = map10;
+    public void savePickedTiles(Map<String, String> pickabletiles_map,ArrayList<ArrayList<String>> picked) {
+        pickedtiles = pickabletiles_map;
+        tilespicked = picked;
     }
 
-    public void saveFinalScores(Map<String, Integer> map11, String s) {
-        finalscores = map11;
+    public void saveFinalScores(Map<String, Integer> finalscores_map, String s) {
+        finalscores = finalscores_map;
         winner = s;
     }
 
@@ -123,10 +152,10 @@ public class ClientState {
             LaunchClient.getView().showBoardPickable(pickabletiles, alreadysel, boardsel);
         }
         if (currplayer.equals(nickname) && selectedtiles != null) {
-            LaunchClient.getView().showSelectedTiles(selectedtiles, nickname);
+            LaunchClient.getView().showSelectedTiles(selectedtiles, nickname,tileselected);
         }
         if (currplayer.equals(nickname) && pickedtiles != null) {
-            LaunchClient.getView().showPickedTiles(pickedtiles, nickname);
+            LaunchClient.getView().showPickedTiles(pickedtiles, nickname,tilespicked);
         }
         if (finalscores != null && winner != null) {
             LaunchClient.getView().showFinalScore(finalscores, winner);
