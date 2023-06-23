@@ -25,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -65,9 +66,11 @@ public class Viewer extends Application {
 
 	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
 
-	private ArrayList<ScoreToken> scoringTokenOne;
-	private ArrayList<ScoreToken> scoringTokenTwo;
-	private int[] order;
+	private ArrayList<Integer> currentToken;
+
+	private ArrayList<ScoreToken> scoringToken;
+
+	private ImageView endToken;
 
 
 
@@ -742,6 +745,7 @@ public class Viewer extends Application {
 		AnchorPane.setLeftAnchor(commandBoard, gameBoard.getWidth() * Metrics.d_x_comb);
 		//commandBoard.relocate(primaryStage.getWidth()*Metrics.d_x_comb, primaryStage.getHeight()*Metrics.d_y_comb);
 		gameBoard.getChildren().add(commandBoard);
+		setEndToken();
 
 		System.out.println("PRIMARYSTAGE W: " + primaryStage.getWidth() + " H: "+primaryStage.getHeight());
 		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight(), primaryStage);
@@ -820,8 +824,10 @@ public class Viewer extends Application {
 
 	public void setCommonGoal(Map<Integer, Integer> map) {
 		ArrayList<Integer> arr = new ArrayList<>();
+		currentToken = new ArrayList<>();
 		for (Integer i: map.keySet()) {
 			arr.add(i);
+			currentToken.add(map.get(i));
 		}
 		c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
 		c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
@@ -834,40 +840,19 @@ public class Viewer extends Application {
 		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
 		gameBoard.getChildren().add(c1);
 		gameBoard.getChildren().add(c2);
-		setOrder();
-		setToken(1);
-		setToken(2);
+		setToken();
 	}
-	private void setOrder(){
-		switch(numPlayers){
-			case(2):
-				order = new int[]{1, 2};
-				break;
-			case(3):
-				order = new int[]{1,3,2};
-				break;
-			case(4):
-				order = new int[]{4,1,3,2};
-		}
-	}
-	private void setToken(int obj){
-		if(obj==1){
-			scoringTokenOne = new ArrayList<>();
-			for(int i=0; i<numPlayers; i++){
-				scoringTokenOne.add(new ScoreToken(order[i],obj,primaryStage));
-				gameBoard.getChildren().add(scoringTokenOne.get(i));
-			}
-		}
-		else {
-			scoringTokenTwo = new ArrayList<>();
-			for(int i=0; i<numPlayers; i++){
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				scoringTokenTwo.add(new ScoreToken(order[i],obj,primaryStage));
-				gameBoard.getChildren().add(scoringTokenTwo.get(i));
 
-			}
+	private void setToken(){
+		scoringToken = new ArrayList<>();
+		for(int i = 0; i<currentToken.size(); i++){
+			scoringToken.add(new ScoreToken(currentToken.get(i),primaryStage));
+			AnchorPane.setLeftAnchor(scoringToken.get(i),7.17*Metrics.d_x_comm*gameBoard.getWidth());
+			AnchorPane.setTopAnchor(scoringToken.get(i),(i*(210.0/864) + Metrics.d_y_commToken)*gameBoard.getHeight());
+			gameBoard.getChildren().add(scoringToken.get(i));
 		}
 	}
+
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
 		p = new PersonalGoal(number, primaryStage);
@@ -882,7 +867,6 @@ public class Viewer extends Application {
 			board = new Board(primaryStage);
 			AnchorPane.setTopAnchor(board, gameBoard.getHeight() * Metrics.d_y_board );
 			AnchorPane.setLeftAnchor(board, gameBoard.getWidth() * Metrics.d_x_board);
-
 			//board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
 			gameBoard.getChildren().add(board);
 		}
@@ -946,6 +930,21 @@ public class Viewer extends Application {
 				commandBoard.addTile(t);
 			}
 		}
+	}
+
+	public void setEndToken(){
+		endToken = new ImageView(Resources.endToken());
+		endToken.setPreserveRatio(true);
+		endToken.setFitWidth(0.3*Metrics.dim_x_comm*primaryStage.getWidth());
+		endToken.setFitHeight(0.3*Metrics.dim_y_comm*primaryStage.getHeight());
+		// Rotate the ImageView by 10 degrees
+		double rotationAngle = 10.0;
+		Rotate rotate = new Rotate(rotationAngle, endToken.getFitWidth() / 2, endToken.getFitHeight() / 2);
+		endToken.getTransforms().add(rotate);
+		AnchorPane.setLeftAnchor(endToken,Metrics.d_x_endToken*gameBoard.getWidth());
+		AnchorPane.setTopAnchor(endToken,Metrics.d_y_endToken*gameBoard.getHeight());
+		gameBoard.getChildren().add(endToken);
+
 	}
 
 	public void updateBookshelves(Map<String, Map<String, String>> map) {

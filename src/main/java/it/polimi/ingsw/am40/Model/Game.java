@@ -566,6 +566,7 @@ public class Game implements IGame {
                         v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
                     }
 //                    v.receiveCurrentPlayer(currentPlayer);
+                    v.receiveListPlayers(players);
                     v.receiveCommonGoals(currentComGoals);
                     for (Player p : players) {
                         if (p.getNickname().equals(v.getNickname())) {
@@ -573,7 +574,6 @@ public class Game implements IGame {
                             v.receivePersonalGoal(p.getPersonalGoal());
                         }
                     }
-                    v.receiveListPlayers(players);
                     v.receiveNumPlayers(numPlayers);
                     v.receiveListBookshelves(players);
                     v.receiveCurrentPlayer(currentPlayer);
