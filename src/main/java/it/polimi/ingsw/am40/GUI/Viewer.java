@@ -25,6 +25,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -65,8 +67,14 @@ public class Viewer extends Application {
 	@FXML
 	private Button ChatButton;
 	private boolean isVisible;
+	private boolean isNew;
 	private VBox chatContainer = new VBox();
 	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
+
+	private Circle dotIndicator;
+
+	private VBox messages;
+
 
 
 
@@ -567,11 +575,32 @@ public class Viewer extends Application {
 	}
 	*/
 
+	public void newMessage(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String receiver) {
+		if (nickname.equals(receiver)) {
+			if (!isVisible) {
+				dotIndicator.setVisible(true);
+			}
+			NewMessage t = new NewMessage(array1.get(array1.size()-1), array2.get(array2.size()-1), array3.get(array3.size()-1));
+			messages.getChildren().add(t);
+		}
+	}
+
 	private void createChatContainer() {
-		boolean isVisible = false;
-		Button chatToggleButton = new Button("Show chat");
-		chatToggleButton.setOnAction(e -> showChat(chatToggleButton));
-		pane.getChildren().add(chatToggleButton);
+
+		isVisible = false;
+		Button chatButton = new Button("Show chat");
+		chatButton.setOnAction(e -> showChat(chatButton));
+
+		// Red dot indicator for unread messages
+		dotIndicator = new Circle(5);
+		dotIndicator.setFill(Color.RED);
+		dotIndicator.setVisible(true);
+
+		StackPane chatButtonPane = new StackPane();
+		chatButtonPane.getChildren().addAll(chatButton, dotIndicator);
+		StackPane.setAlignment(dotIndicator, Pos.TOP_RIGHT);
+
+		pane.getChildren().add(chatButtonPane);
 
 		chatContainer.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-padding: 10px;");
 		chatContainer.setMaxHeight(200);
@@ -584,7 +613,7 @@ public class Viewer extends Application {
 		chatScrollPane.setFitToHeight(true);
 		chatContainer.getChildren().add(chatScrollPane);
 
-		VBox messages = new VBox();
+		messages = new VBox();
 		//messages.setSpacing(10);
 		chatScrollPane.setContent(messages);
 
@@ -595,6 +624,7 @@ public class Viewer extends Application {
 		sendTo.add("pippo");
 		sendTo.add("marco");
 		selectReceivers.getItems().addAll(sendTo);
+		selectReceivers.setValue("everyOne");
 		chatContainer.getChildren().add(selectReceivers);
 
 		// text field to write the message
@@ -666,6 +696,7 @@ public class Viewer extends Application {
 	}
 
 	private void showChat(Button button) {
+		dotIndicator.setVisible(false);
 		isVisible = !isVisible;
 		chatContainer.setVisible(isVisible);
 		if (isVisible) {
