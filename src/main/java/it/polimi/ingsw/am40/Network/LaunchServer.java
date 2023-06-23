@@ -110,4 +110,50 @@ public class LaunchServer {
         return null;
     }
 
+//    private static void setServerHostname() {
+//        String localIP = null;
+////        String localIP = getCorrectLocalIP();
+//        if(localIP == null)
+//        {
+//            Scanner scanner = new Scanner(System.in);
+//            InetAddress inetAddress;
+//            try {
+//                inetAddress = InetAddress.getLocalHost();
+//                System.out.println("Java host address: " + inetAddress.getHostAddress());
+//                System.out.println("Unable to verify the correct local ip address, insert Y if it is correct or otherwise insert the correct local ip:");
+//                localIP = scanner.nextLine();
+//                if(localIP.equalsIgnoreCase("Y"))
+//                    localIP = inetAddress.getHostAddress();
+//            } catch (UnknownHostException e) {
+//                System.out.println("Unable to find the local ip address, please provide it");
+//                localIP = scanner.nextLine();
+//            }
+//
+//
+//        }
+////        System.setProperty("java.rmi.server.hostname",localIP);
+//        hostName = localIP;
+//
+//    }
+
+//    /**
+//     * Return che correct local ip address
+//     * It is necessary because the rmi system property java.rmi.server.hostname it's automatically set to InetAddress.getLocalHost().getHostAddress() which can be an incorrect address in same cases (eg: in presence of Wireshark or Virtualbox it seems to take the address of their interfaces, which are not the ones used to communicate in the lan)
+//     * @return the correct ip address, null in case of error
+//     */
+//    private static String getCorrectLocalIP()
+//    {
+//        String ip;
+//        try(final DatagramSocket socket = new DatagramSocket()){
+//            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+//            ip = socket.getLocalAddress().getHostAddress();
+//            if(ip.equals("0.0.0.0"))
+//                return null;
+//            return ip;
+//        }catch(Exception e)
+//        {
+//            return null;
+//        }
+//    }
+
 }

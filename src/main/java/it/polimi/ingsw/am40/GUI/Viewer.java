@@ -2,12 +2,14 @@ package it.polimi.ingsw.am40.GUI;
 
 import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
+import it.polimi.ingsw.am40.Model.GroupChat;
 import it.polimi.ingsw.am40.Model.Position;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -23,6 +25,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -63,7 +67,9 @@ public class Viewer extends Application {
 	private Alert errorAlert;
 	@FXML
 	private Button ChatButton;
-
+	private boolean isVisible;
+	private boolean isNew;
+	private VBox chatContainer = new VBox();
 	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
 
 	private ArrayList<ScoreToken> scoringTokenOne;
@@ -103,7 +109,6 @@ public class Viewer extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		this.numPlayers = 0;
 		this.primaryStage = stage;
 		this.bookshelves = new ArrayList<>();
 //		alert = new Alert(Alert.AlertType.INFORMATION);
@@ -571,6 +576,138 @@ public class Viewer extends Application {
 		viewController.fireEvent(new CustomEvent(CustomEvent.BOARD_TILE_PICKABLE, x, y));
 	}
 	*/
+
+	public void newMessage(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String receiver) {
+		if (nickname.equals(receiver)) {
+			if (!isVisible) {
+				dotIndicator.setVisible(true);
+			}
+			NewMessage t = new NewMessage(array1.get(array1.size()-1), array2.get(array2.size()-1), array3.get(array3.size()-1));
+			messages.getChildren().add(t);
+		}
+	}
+
+	private void createChatContainer() {
+
+		isVisible = false;
+		Button chatButton = new Button("Show chat");
+		chatButton.setOnAction(e -> showChat(chatButton));
+
+		// Red dot indicator for unread messages
+		dotIndicator = new Circle(5);
+		dotIndicator.setFill(Color.RED);
+		dotIndicator.setVisible(true);
+
+		StackPane chatButtonPane = new StackPane();
+		chatButtonPane.getChildren().addAll(chatButton, dotIndicator);
+		StackPane.setAlignment(dotIndicator, Pos.TOP_RIGHT);
+
+		pane.getChildren().add(chatButtonPane);
+
+		chatContainer.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-padding: 10px;");
+		chatContainer.setMaxHeight(200);
+		chatContainer.setVisible(isVisible);
+
+
+		// scrollpane to see the messages
+		ScrollPane chatScrollPane = new ScrollPane();
+		chatScrollPane.setFitToWidth(true);
+		chatScrollPane.setFitToHeight(true);
+		chatContainer.getChildren().add(chatScrollPane);
+
+		messages = new VBox();
+		//messages.setSpacing(10);
+		chatScrollPane.setContent(messages);
+
+		// drop to select the receiver
+		ComboBox<String> selectReceivers = new ComboBox<>();
+		ArrayList<String> sendTo = new ArrayList<>();
+		sendTo.add("everyOne");
+		sendTo.add("pippo");
+		sendTo.add("marco");
+		selectReceivers.getItems().addAll(sendTo);
+		selectReceivers.setValue("everyOne");
+		chatContainer.getChildren().add(selectReceivers);
+
+		// text field to write the message
+		TextField messageInput = new TextField();
+		Button sendButton = new Button("Send");
+
+		HBox inputBox = new HBox(messageInput, sendButton);
+		inputBox.setSpacing(10);
+		inputBox.setAlignment(Pos.CENTER_RIGHT);
+		chatContainer.getChildren().add(inputBox);
+
+		// update the full message list, I can add one message at a time if I am notified when I recive one
+		GroupChat chatClass = new GroupChat();
+		ArrayList<String> messagesList = chatClass.getMessage();
+		ArrayList<String> sendersList = chatClass.getPublisher();
+		ArrayList<String> receiversList = chatClass.getToplayer();
+		for (int i = 0; i < messagesList.size(); i++) {
+			String sender = sendersList.get(i);
+			String m = messagesList.get(i);
+			String receiver = receiversList.get(i);
+			NewMessage newMessage = new NewMessage(sender, receiver, m);
+			messages.getChildren().add(newMessage);
+
+		}
+
+		sendButton.setOnAction(e -> {
+			String sender = nickname;
+			String message = messageInput.getText();
+			String receiver = selectReceivers.getValue();
+
+			if (!message.isEmpty()) {
+				NewMessage newMessage = new NewMessage(sender, receiver, message);
+				messages.getChildren().add(newMessage);
+				messageInput.clear();
+
+				chatScrollPane.setVvalue(1.0);
+
+			}
+		});
+
+
+		// test, this will be automatic
+		NewMessage newMessage = new NewMessage("fil", "marc","funziona");
+		messages.getChildren().add(newMessage);
+
+		newMessage = new NewMessage("marc", "fil","bravo!");
+		messages.getChildren().add(newMessage);
+
+		// Add the chat container to the main pane
+		pane.getChildren().add(chatContainer);
+
+		chatContainer.setTranslateX(100);
+		chatContainer.setTranslateY(100);
+
+	}
+
+	public class NewMessage extends HBox {
+		public NewMessage(String from, String to, String message) {
+			Label senderLabel = new Label("from " + from + " to " + to + ": ");
+			if (from == null || from.equals(nickname)) {
+				senderLabel.setStyle("-fx-text-fill: red;");
+			}
+			Label messageLabel = new Label(message);
+			messageLabel.setWrapText(true);
+			//messageLabel.setMaxWidth(100);
+
+			getChildren().addAll(senderLabel, messageLabel);
+		}
+	}
+
+	private void showChat(Button button) {
+		dotIndicator.setVisible(false);
+		isVisible = !isVisible;
+		chatContainer.setVisible(isVisible);
+		if (isVisible) {
+			button.setText("Hide chat");
+		} else {
+			button.setText("Show chat");
+		}
+	}
+
 	public void chooseConnection() {
 		pane = new Pane();
 		newScene(pane);
@@ -620,6 +757,8 @@ public class Viewer extends Application {
 //		b2.setOnAction(e -> {
 //			setUsername(vbox, tf, t1, b2, b3);
 //		});
+
+		createChatContainer();
 	}
 
 	public void setplayers() {
@@ -703,7 +842,6 @@ public class Viewer extends Application {
 		errorAlert.initModality(Modality.APPLICATION_MODAL);
 		errorAlert.initOwner(primaryStage);
 		errorAlert.setTitle("Error Dialog");
-		errorAlert.setHeaderText(null);
 		errorAlert.setContentText(error);
 		errorAlert.showAndWait();
 	}
@@ -765,6 +903,7 @@ public class Viewer extends Application {
 		AnchorPane.setLeftAnchor(ChatButton, gameBoard.getWidth()*(1340/1536.0));
 		AnchorPane.setTopAnchor(ChatButton, gameBoard.getHeight()*(65/864.0));
 		gameBoard.getChildren().add(ChatButton);
+		ChatButton.relocate(1350, 50);
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
