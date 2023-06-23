@@ -13,6 +13,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Abstract class representing the client handler from client side. Two classes extend this class:
+ * <ul>
+ *     <li> RMIClient</li>
+ *     <li> SocketCLient</li>
+ * </ul>
+ */
 public abstract class Client {
 
     protected final static int NUMPINGLOST = 5;
@@ -27,7 +34,8 @@ public abstract class Client {
     protected ClientState state;
 
     /**
-     *
+     * <p> This method takes in input a String and parses it, identifying the command and the parameters.</p>
+     * <p> Then, according to which command is identified, it calls the corresponding method of the UI, to show the information coded by the parameters. </p>
      * @param line
      * @throws ParseException
      */
@@ -277,23 +285,23 @@ public abstract class Client {
     }
 
     /**
-     * TODO
+     * Abstract method used to close the corresponding client handler.
      */
     public abstract void close();
 
     /**
-     * TODO
+     * Abstract method used to send the Pong message, answering a Ping message received by the Server.
      */
     public abstract void sendPong();
 
     /**
-     * TODO
+     * Abstract method used to start a timer waiting for a Ping message from the Server.
      */
     public abstract void startPing();
 
     /**
-     * TODO
-     * @param s
+     * Abstract method used to send messages to the Server.
+     * @param s the message to be sent
      */
     public abstract void sendMessage(String s);
 }
