@@ -136,7 +136,7 @@ public class CommandBoard extends AnchorPane {
 
 			this.index = index;
 
-			setOnMouseClicked(new EventHandler<MouseEvent>() {
+			setOnMouseClicked(new EventHandler<>() {
 				@Override
 				public void handle(MouseEvent event) {
 					if (getChildren().isEmpty()) {

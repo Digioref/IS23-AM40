@@ -38,13 +38,14 @@ import java.util.regex.Pattern;
 
 public class Viewer extends Application {
 	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
-	private final ArrayList<Arrow> arrowDownList = new ArrayList<Arrow>();
+	private final ArrayList<Arrow> arrowDownList = new ArrayList<>();
 	private static final int ARROWS_DOWN = 5;
 	private String connectionType;
 	private static Viewer gui;
 	private Stage primaryStage;
 	private Scene scene;
 	private Pane pane;
+	private final RedCross redCross = new RedCross();
 
 	private AnchorPane gameBoard;
 	private String nickname;
@@ -102,6 +103,7 @@ public class Viewer extends Application {
 
 	@Override
 	public void start(Stage stage) {
+		this.numPlayers = 0;
 		this.primaryStage = stage;
 		this.bookshelves = new ArrayList<>();
 //		alert = new Alert(Alert.AlertType.INFORMATION);
@@ -109,8 +111,10 @@ public class Viewer extends Application {
 //		alert.getDialogPane().getStylesheets().add("Alert.css");
 //		errorAlert.getDialogPane().getStylesheets().add("Error.css");
 		primaryStage.setResizable(true);
-
+		scoringTokenOne = new ArrayList<>();
+		scoringTokenTwo = new ArrayList<>();
 		gui = this;
+
 //
 //		// -----------  setup page  -----------
 //		Pane rootBox = new Pane();
@@ -699,6 +703,7 @@ public class Viewer extends Application {
 		errorAlert.initModality(Modality.APPLICATION_MODAL);
 		errorAlert.initOwner(primaryStage);
 		errorAlert.setTitle("Error Dialog");
+		errorAlert.setHeaderText(null);
 		errorAlert.setContentText(error);
 		errorAlert.showAndWait();
 	}
@@ -752,12 +757,14 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		gameBoard.getChildren().add(bookshelf);
 
-		/*
 		ChatButton = new Button();
+		ChatButton.getStylesheets().add("Button.css");
+		ChatButton.setFont(Font.font(20));
 		ChatButton.setVisible(true);
+		ChatButton.setText("CHAT");
+		AnchorPane.setLeftAnchor(ChatButton, gameBoard.getWidth()*(1340/1536.0));
+		AnchorPane.setTopAnchor(ChatButton, gameBoard.getHeight()*(65/864.0));
 		gameBoard.getChildren().add(ChatButton);
-		ChatButton.relocate(1350, 50);
-		*/
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
@@ -773,8 +780,12 @@ public class Viewer extends Application {
 				for (int j = 0; j < commandBoard.getNextTilePos(); j++) {
 					s += " " + commandBoard.getPickupOrder()[j];
 				}
-				LaunchClient.getClient().sendMessage(s);
-				handleArrowDown(event, ad.getIndex());
+				if (commandBoard.checkSequence()) {
+					LaunchClient.getClient().sendMessage(s);
+					handleArrowDown(event, ad.getIndex());
+				} else {
+					showError("Two numbers in the order are the same!");
+				}
 			});
 			arrowDownList.add(arrowDown);
 			gameBoard.getChildren().add(arrowDown);
@@ -784,10 +795,17 @@ public class Viewer extends Application {
 		arrowRight.setVisible(false);
 		AnchorPane.setTopAnchor(arrowRight, gameBoard.getHeight()  * 0.0451);
 		AnchorPane.setLeftAnchor(arrowRight, gameBoard.getWidth() * 0.601);
+
+
 		//arrowRight.relocate(primaryStage.getWidth()*Metrics.d_x_comb-110, 35);
 		arrowRight.setOnMouseClicked(event -> {
 			LaunchClient.getClient().sendMessage("pick");
 			arrowRight.setVisible(false);
+			redCross.setVisible(false);
+			for (String s: board.getTiles().keySet()) {
+				Tile t = (Tile) board.getTiles().get(s);
+				t.setPickable(false);
+			}
 
 			int col = 0;
 			for (Arrow a : arrowDownList) {
@@ -798,6 +816,17 @@ public class Viewer extends Application {
 		});
 		gameBoard.getChildren().add(arrowRight);
 
+		redCross.setSize(gameBoard.getWidth() *Metrics.ARROW_RIGHT_WIDTH*0.8, gameBoard.getHeight()* Metrics.ARROW_RIGHT_HEIGHT*0.8);
+		redCross.setVisible(false);
+		AnchorPane.setTopAnchor(redCross, gameBoard.getHeight()  * 0.5);
+		AnchorPane.setLeftAnchor(redCross, gameBoard.getWidth() * 0.580);
+		redCross.setOnMouseClicked(event -> {
+			board.clearSelected();
+			LaunchClient.getClient().sendMessage("remove");
+			redCross.setVisible(false);
+		});
+		gameBoard.getChildren().add(redCross);
+
 	}
 	private void handleEvent() {
 		scene.addEventFilter(CustomEvent.TILE_SELECTED, event -> {
@@ -807,6 +836,7 @@ public class Viewer extends Application {
 			int y = (int) obj.getPosition().getY();
 			board.select(x, y);
 			if (!flag) {
+				redCross.setVisible(!board.isSelectedEmpty());
 				arrowRight.setVisible(!board.isSelectedEmpty());
 				LaunchClient.getClient().sendMessage("select " + x + " " + y);
 			}
@@ -835,8 +865,11 @@ public class Viewer extends Application {
 		gameBoard.getChildren().add(c1);
 		gameBoard.getChildren().add(c2);
 		setOrder();
+//		System.out.println("qui1");
 		setToken(1);
+//		System.out.println("qui2");
 		setToken(2);
+//		System.out.println("qui3");
 	}
 	private void setOrder(){
 		switch(numPlayers){
@@ -848,18 +881,17 @@ public class Viewer extends Application {
 				break;
 			case(4):
 				order = new int[]{4,1,3,2};
+				break;
 		}
 	}
 	private void setToken(int obj){
 		if(obj==1){
-			scoringTokenOne = new ArrayList<>();
 			for(int i=0; i<numPlayers; i++){
 				scoringTokenOne.add(new ScoreToken(order[i],obj,primaryStage));
 				gameBoard.getChildren().add(scoringTokenOne.get(i));
 			}
 		}
 		else {
-			scoringTokenTwo = new ArrayList<>();
 			for(int i=0; i<numPlayers; i++){
 				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				scoringTokenTwo.add(new ScoreToken(order[i],obj,primaryStage));
@@ -990,7 +1022,7 @@ public class Viewer extends Application {
 						if (m.get("(" + j + "," + k + ")").equals("NOCOLOR")) {
 							bookshelves.get(i).modifyDepth(j);
 						} else {
-							System.out.println();
+//							System.out.println();
 							nodelist.add(new Tile(m.get("(" + j + "," + k + ")"), primaryStage));
 							bookshelves.get(i).update(nodelist, j);
 							System.out.println(j + " --- "+ k);
@@ -1002,7 +1034,6 @@ public class Viewer extends Application {
 			}
 		}
 	}
-
 
 }
 

@@ -63,6 +63,14 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
                     r.setLogged(true);
                     clientHandlers.put(s, r);
                     client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("\n" +
+                            " ____    ____  ____  ____    ______   ____  ____  ________  _____     ________  _____  ________  \n" +
+                            "|_   \\  /   _||_  _||_  _| .' ____ \\ |_   ||   _||_   __  ||_   _|   |_   __  ||_   _||_   __  | \n" +
+                            "  |   \\/   |    \\ \\  / /   | (___ \\_|  | |__| |    | |_ \\_|  | |       | |_ \\_|  | |    | |_ \\_| \n" +
+                            "  | |\\  /| |     \\ \\/ /     _.____`.   |  __  |    |  _| _   | |   _   |  _|     | |    |  _| _  \n" +
+                            " _| |_\\/_| |_    _|  |_    | \\____) | _| |  | |_  _| |__/ | _| |__/ | _| |_     _| |_  _| |__/ | \n" +
+                            "|_____||_____|  |______|    \\______.'|____||____||________||________||_____|   |_____||________| \n" +
+                            "                                                                                                 \n"));
                     clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
                     clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Waiting"));
                     lobby.addQueue(r);

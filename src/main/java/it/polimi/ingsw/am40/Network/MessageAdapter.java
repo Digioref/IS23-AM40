@@ -68,6 +68,14 @@ public class MessageAdapter {
      * @throws IOException
      */
     public void startMessage(Handlers c) throws IOException {
+        c.sendMessage((JSONConverterStoC.normalMessage("\n" +
+                " ____    ____  ____  ____    ______   ____  ____  ________  _____     ________  _____  ________  \n" +
+                "|_   \\  /   _||_  _||_  _| .' ____ \\ |_   ||   _||_   __  ||_   _|   |_   __  ||_   _||_   __  | \n" +
+                "  |   \\/   |    \\ \\  / /   | (___ \\_|  | |__| |    | |_ \\_|  | |       | |_ \\_|  | |    | |_ \\_| \n" +
+                "  | |\\  /| |     \\ \\/ /     _.____`.   |  __  |    |  _| _   | |   _   |  _|     | |    |  _| _  \n" +
+                " _| |_\\/_| |_    _|  |_    | \\____) | _| |  | |_  _| |__/ | _| |__/ | _| |_     _| |_  _| |__/ | \n" +
+                "|_____||_____|  |______|    \\______.'|____||____||________||________||_____|   |_____||________| \n" +
+                "                                                                                                 \n")));
         c.sendMessage(JSONConverterStoC.normalMessage("Welcome to MyShelfie game! (type 'help' for available commands)"));
     }
 

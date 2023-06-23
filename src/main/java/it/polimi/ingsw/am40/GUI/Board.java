@@ -116,7 +116,7 @@ public class Board extends AnchorPane {
 	 * TODO
 	 * @return
 	 */
-	Node getSelected() {
+	public Node getSelected() {
 		Node node = null;
 		String key;
 
@@ -207,5 +207,11 @@ public class Board extends AnchorPane {
 	public static void setStepY(double stepY) {
 		STEP_Y = stepY;
 	}
+	public void clearSelected() {
+		this.selected.clear();
+	}
 
+	public HashMap<String, Node> getTiles() {
+		return tiles;
+	}
 }

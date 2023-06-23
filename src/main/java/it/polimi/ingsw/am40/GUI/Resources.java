@@ -37,6 +37,7 @@ public class Resources {
 	private static final String boardsPath = "boards";
 	private static final String boardFile = "livingroom.png";
 	private static final String bookshelfFile = "bookshelf.png";
+	private static final String redCrossFile = "red_cross.png";
 
 	private static final String commonGoalPath = "common goal cards";
 	private static final String commonGoalFile[] = { "1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg",
@@ -60,7 +61,7 @@ public class Resources {
 
 
 	private static Image loadImage(String imageFile){
-		System.out.println(imageFile);
+//		System.out.println(imageFile);
 		//Class<?> clazz = Resources.class;
 
 		// Get the class loader and load the resource using getResourceAsStream
@@ -136,6 +137,9 @@ public class Resources {
 
 	public static Image personalGoal(int index) {
 		return loadImage(personalGoalFile[index]);
+	}
+	public static Image redCross() {
+		return loadImage(redCrossFile);
 	}
 
 	public static Image tile(String type, int index) {
