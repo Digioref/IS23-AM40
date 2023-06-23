@@ -70,6 +70,8 @@ public class Lobby implements Runnable {
         }
     }
 
+
+
     public Game findGame(ClientHandler c) {
         return c.getController().getGame();
     }
@@ -181,4 +183,6 @@ public class Lobby implements Runnable {
         games.remove(c);
         nicknameInGame.remove(c.getNickname());
     }
+
+
 }

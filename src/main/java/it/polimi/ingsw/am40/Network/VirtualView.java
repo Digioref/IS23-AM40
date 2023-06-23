@@ -284,7 +284,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     @Override
     public void turnError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not your turn!"));
+            if(clientHandler != null)
+              clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not your turn!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -315,4 +316,6 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     public void setClientHandler(Handlers clientHandler) {
         this.clientHandler = clientHandler;
     }
+
+
 }

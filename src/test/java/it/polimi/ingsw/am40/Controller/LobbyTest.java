@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am40.Controller;
 
+import it.polimi.ingsw.am40.Network.ClientHandler;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,6 +9,15 @@ class LobbyTest {
 
     @Test
     void removeFromQueue() {
+        Lobby lobby = new Lobby();
+        ClientHandler clientHandler = new ClientHandler();
+        lobby.getQueue().add(clientHandler);
+        lobby.removeFromQueue();
+
+        lobby.setNumPlayers(2);
+        lobby.getQueue().add(clientHandler);
+        ClientHandler clientHandler1 = new ClientHandler();
+        lobby.removeFromQueue();
     }
 
     @Test

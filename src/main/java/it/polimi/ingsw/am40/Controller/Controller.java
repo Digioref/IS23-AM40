@@ -29,5 +29,7 @@ public class Controller {
         return lobby;
     }
 
-
+    public void setGameController(GameController gameController){
+        this.gameController = gameController;
+    }
 }

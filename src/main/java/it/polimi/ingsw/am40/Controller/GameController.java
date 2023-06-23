@@ -70,6 +70,7 @@ public class GameController {
             game.getGroupChat().addMessage(name, message, from);
             for (VirtualView v: game.getObservers()) {
                 v.receiveChat(game.getGroupChat());
+
             }
         } else {
             for (Player p: game.getPlayers()) {
@@ -84,6 +85,7 @@ public class GameController {
                 }
             }
             for (VirtualView v: game.getObservers()) {
+
                 if (from.equals(v.getNickname())) {
                     v.chatError();
                 }
@@ -98,8 +100,7 @@ public class GameController {
             }
         }
     }
-    public void setController(Controller controller) {
-    }
+
 
     public void disconnectPlayer(String s) {
         for (Player p: game.getPlayers()) {
@@ -146,4 +147,9 @@ public class GameController {
         }
         game.notifyReconnection(s);
     }
+
+    public void setGame(Game game){
+        this.game = game;
+    }
+
 }

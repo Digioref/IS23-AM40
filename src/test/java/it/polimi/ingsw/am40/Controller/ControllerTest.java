@@ -40,7 +40,9 @@ class ControllerTest {
         Lobby lobby = new Lobby();
         Game game = new Game(4);
         Controller controller = new Controller(game, lobby);
-        assertEquals(controller.getGameController(), null);
+        GameController gameController = new GameController(null, null);
+        controller.setGameController(gameController);
+        assertEquals(controller.getGameController(), gameController);
     }
 
 

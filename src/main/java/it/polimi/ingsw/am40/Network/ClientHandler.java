@@ -28,6 +28,7 @@ public class ClientHandler extends Handlers implements Runnable {
     private ScheduledExecutorService sendPing;
     private ScheduledExecutorService waitPing;
 
+
     public ClientHandler(Socket socket, GameServer gameServer) {
         nPingLost = 0;
         stop = false;
@@ -218,6 +219,9 @@ public class ClientHandler extends Handlers implements Runnable {
 //        }
     }
 
+    public ClientHandler(){
+    }
+
     @Override
     public synchronized void handlePong() {
         waitPing.shutdownNow();
@@ -231,4 +235,10 @@ public class ClientHandler extends Handlers implements Runnable {
         controller = null;
         lobby.closeGame(this);
     }
+
+    public void setOut(PrintWriter out){
+        this.out = out;
+    }
+
+
 }
