@@ -67,7 +67,9 @@ public class Board extends AnchorPane {
 		String key = hashkey(x, y);
 
 		/* Relocate the tile on the grid */
-		tile.relocate(ORIGIN_X + (x * STEP_X), ORIGIN_Y - (y * STEP_Y));
+		//tile.relocate(ORIGIN_X + (x * STEP_X), ORIGIN_Y - (y * STEP_Y));
+		AnchorPane.setLeftAnchor(tile, ORIGIN_X + x*STEP_X);
+		AnchorPane.setTopAnchor(tile, ORIGIN_Y - (y*STEP_Y));
 
 		/* Store into the hash-map */
 		tiles.put(key, tile);
@@ -139,25 +141,26 @@ public class Board extends AnchorPane {
 		tiles.clear();
 //		this.selected.clear();
 		for (String s: board.keySet()) {
-			Tile t = new Tile(board.get(s), primaryStage);
-			if (!board.get(s).equals("NOCOLOR")) {
-				t.setPosition(s);
-				if (!map.containsKey(s)) {
-					t.setPickable(false);
-				} else {
-					t.setPickable(true);
-				}
-				Position p = new Position();
-				p.convertKey(s);
-				if (selected.contains(p)) {
-					t.setSelected();
-					String key = hashkey(p.getX(), p.getY());
-					if (!this.selected.contains(key)) {
-						this.selected.add(key);
+				Tile t = new Tile(board.get(s), primaryStage);
+				if (!board.get(s).equals("NOCOLOR")) {
+					t.setPosition(s);
+					if (!map.containsKey(s)) {
+						t.setPickable(false);
+					} else {
+						t.setPickable(true);
 					}
+					Position p = new Position();
+					p.convertKey(s);
+					if (selected.contains(p)) {
+						t.setSelected();
+						String key = hashkey(p.getX(), p.getY());
+						if (!this.selected.contains(key)) {
+							this.selected.add(key);
+						}
+					}
+					place(t);
 				}
-				place(t);
-			}
+
 		}
 		System.out.println(this.selected);
 
@@ -204,4 +207,5 @@ public class Board extends AnchorPane {
 	public static void setStepY(double stepY) {
 		STEP_Y = stepY;
 	}
+
 }
