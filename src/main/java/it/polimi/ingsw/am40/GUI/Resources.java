@@ -13,6 +13,11 @@ public class Resources {
 	public static final int TILE_TYPE_FLOWER = 5;
 	public static final int TILE_TYPE_TROPHY = 6;
 
+	private static final int SCORE_TWO = 2;
+	private static final int SCORE_FOUR = 4;
+	private static final int SCORE_SIX = 6;
+	private static final int SCORE_EIGHT = 8;
+
 	private static final String pathSeparator = "/";
 
 	private static final String resourcesPath = "17_MyShelfie_BGA";
@@ -32,6 +37,7 @@ public class Resources {
 	private static final String boardsPath = "boards";
 	private static final String boardFile = "livingroom.png";
 	private static final String bookshelfFile = "bookshelf.png";
+	private static final String redCrossFile = "red_cross.png";
 
 	private static final String commonGoalPath = "common goal cards";
 	private static final String commonGoalFile[] = { "1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg",
@@ -50,16 +56,12 @@ public class Resources {
 	private static final String tileBookFile[] = { "Libri1.1.png", "Libri1.2.png", "Libri1.3.png", };
 	private static final String tileFlowerFile[] = { "Piante1.1.png", "Piante1.2.png", "Piante1.3.png", };
 	private static final String tileTrophyFile[] = { "Trofei1.1.png", "Trofei1.2.png", "Trofei1.3.png", };
-
 	private static final String titleFile = "Title 2000x618px.png";
+	private static final String scoringFile []= {"scoring_2.jpg","scoring_4.jpg","scoring_6.jpg","scoring_8.jpg"};
 
-	/**
-	 * TODO
-	 * @param imageFile
-	 * @return
-	 */
+
 	private static Image loadImage(String imageFile){
-		System.out.println(imageFile);
+//		System.out.println(imageFile);
 		//Class<?> clazz = Resources.class;
 
 		// Get the class loader and load the resource using getResourceAsStream
@@ -72,55 +74,17 @@ public class Resources {
 
 		// Create the image from the input stream
 		Image image = new Image(inputStream);
-		//Image image = new Image("it/polimi/ingsw/am40/GUI/Resources/"+imageFile);
-		//Image image = new Image(Objects.requireNonNull(Resources.class.getResource("it/polimi/ingsw/am40/GUI/Resources/" + imageFile)).toExternalForm());
-		//System.out.println(Resources.class.getClassLoader());
-		//InputStream is = Resources.class.getClassLoader().getResourceAsStream(imageFile);
-		//image = new Image(Resources.class.getClassLoader().getResource(imageFile).toString());
-		//image = new Image(Resources.class.getResource("/it/polimi/ingsw/am40/GUI/Resources/" + imageFile));
 		return image;
 	}
 
-	/**
-	 * TODO
-	 * @return
-	 */
 	public static Image icon() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.publisherPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.iconFile;
-*/
-		//loadImage(iconFile);
 		return loadImage(iconFile);
 	}
 
-	/**
-	 * TODO
-	 * @return
-	 */
 	public static Image arrowDown() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.customPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.arrowdownFile;
-*/
 		return loadImage(arrowdownFile);
 	}
 
-	/**
-	 * TODO
-	 * @param num
-	 * @return
-	 */
 	public static Image number(int num) {
 
 		String imageFile=null;
@@ -143,143 +107,45 @@ public class Resources {
 		return loadImage(imageFile);
 	}
 
-	/**
-	 * TODO
-	 * @return
-	 */
 	public static Image labelName() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.customPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += labelNameFile;
-*/
 		return loadImage(labelNameFile);
 	}
 
-	/**
-	 * todo
-	 * @return
-	 */
 	public static Image background() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.miscPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.backgroundFile;
-*/
 		return loadImage(backgroundFile);
 	}
 
-	/**
-	 * todo
-	 * @return
-	 */
 	public static Image bag() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.miscPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.bagFile;
-*/
 		return loadImage(bagFile);
 	}
 
+	public static Image basePage() {
+		return loadImage(basePageFile);
+	}
 
-	/**
-	 * todo
-	 * @return
-	 */
 	public static Image board() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.boardsPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.boardFile;
-*/
 		return loadImage(boardFile);
 	}
 
-	/**
-	 * todo
-	 * @return
-	 */
 	public static Image bookshelf() {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.boardsPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.bookshelfFile;
-*/
 		return loadImage(bookshelfFile);
 	}
 
-	/**
-	 * todo
-	 * @param index
-	 * @return
-	 */
 	public static Image commonGoal(int index) {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.commonGoalPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.commonGoalFile[index];
-*/
 		return loadImage(commonGoalFile[index]);
 	}
 
-	/**
-	 * todo
-	 * @param index
-	 * @return
-	 */
 	public static Image personalGoal(int index) {
-/*
-		String imageFile;
-
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.personalGoalPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.personalGoalFile[index];
-*/
 		return loadImage(personalGoalFile[index]);
 	}
+	public static Image redCross() {
+		return loadImage(redCrossFile);
+	}
 
-	/**
-	 * todo
-	 * @param type
-	 * @param index
-	 * @return
-	 */
 	public static Image tile(String type, int index) {
 
-		String imageFile = "";
-/*
-		imageFile = Resources.resourcesPath;
-		imageFile += Resources.pathSeparator;
-		imageFile += Resources.tilesPath;
-		imageFile += Resources.pathSeparator;
-*/
+		String imageFile = null;
+
 		index %= 3;
 
 		switch (type) {
@@ -304,19 +170,15 @@ public class Resources {
 			default:
 				break;
 		}
-
+		if(imageFile==null){
+			System.out.println(type + "   " + index);
+		}
 		return loadImage(imageFile);
 	}
 
-	/**
-	 * todo
-	 * @param type
-	 * @param index
-	 * @return
-	 */
 	public static Image tile(int type, int index) {
 
-		String imageFile=null;
+		String imageFile="";
 /*
 		imageFile = Resources.resourcesPath;
 		imageFile += Resources.pathSeparator;
@@ -351,10 +213,6 @@ public class Resources {
 		return loadImage(imageFile);
 	}
 
-	/**
-	 * todo
-	 * @return
-	 */
 	public static Image title() {
 /*
 		String imageFile;
@@ -366,5 +224,26 @@ public class Resources {
 		imageFile += Resources.titleFile;
 */
 		return loadImage(titleFile);
+	}
+
+	public static Image score(int index){
+		String imagefile = "";
+		switch (index){
+			case SCORE_TWO :
+				imagefile = scoringFile[0];
+				break;
+			case SCORE_FOUR:
+				imagefile = scoringFile[1];
+				break;
+			case SCORE_SIX:
+				imagefile = scoringFile[2];
+				break;
+			case SCORE_EIGHT:
+				imagefile = scoringFile[3];
+				break;
+			default:
+				break;
+		}
+		return loadImage(imagefile);
 	}
 }

@@ -23,6 +23,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.Queue;
 import java.util.ArrayDeque;
 
+/**
+ * The class representing the Client handler from client side using the Socket communication. It extends from the Client abstract class.
+ */
 public class SocketClient extends Client {
 
     final static String hostName = "localhost";
@@ -38,7 +41,13 @@ public class SocketClient extends Client {
     private boolean quitchat;
     private Queue<String> message;
 
-
+    /**
+     * <p> The public constructor which takes in input the socket which will be used for the communication with the Server.</p>
+     * <p> Moreover, It creates, from the socket, a BufferedReader for the input communication, a PrintWriter for the output communication and
+     *  a BufferedReader for the communication with the user through standard input</p>
+     *
+     * @param socket Socket used for the communication with the server
+     */
     public SocketClient(Socket socket) {
         try {
             this.socket = socket;
@@ -53,6 +62,11 @@ public class SocketClient extends Client {
         state = new ClientState(this);
         message = new ArrayDeque<>();
     }
+
+    /**
+     * It creates a thread for the communication with the user, another thread for the communication with the server, finally it starts the Ping
+     * and the parsing of the messages in the queue
+     */
     public void init() {
         createThreadFU();
         createThreadFS();
@@ -60,10 +74,17 @@ public class SocketClient extends Client {
         startParsing();
     }
 
-
+    /**
+     * It sends a Pong message
+     */
     public void sendPong() {
         sendMessage("Pong");
     }
+
+    /**
+     * It sends the message converted to a JSON String
+     * @param s the message to be sent
+     */
     public synchronized void sendMessage(String s) {
         JSONConverterCtoS jconv = new JSONConverterCtoS();
         jconv.toJSON(s);
@@ -75,6 +96,9 @@ public class SocketClient extends Client {
         out.flush();
     }
 
+    /**
+     * It closes the timer of the Ping, the parsing messages thread, the user communication thread, the server communication server and the socket
+     */
     public void close() {
         ping.shutdownNow();
         parse.interrupt();
@@ -115,6 +139,9 @@ public class SocketClient extends Client {
         System.out.flush();
     }
 
+    /**
+     * It creates the thread used to communicate with the user. It takes in input what the user writes and, according to the message, it sends it to the server or does specific actions
+     */
     private void createThreadFU() {
         if (LaunchClient.getView() instanceof CliView) {
             fromUser = new Thread(() -> {
@@ -152,6 +179,10 @@ public class SocketClient extends Client {
             fromUser.start();
         }
     }
+
+    /**
+     * It creates the thread used to communicate with server. It receives the messages form the server and adds them to the message queue
+     */
     private void createThreadFS() {
         fromServer = new Thread(() -> {
             do {
@@ -187,6 +218,9 @@ public class SocketClient extends Client {
         fromServer.start();
     }
 
+    /**
+     * It creates a thread which polls the messages in the queue and parses them
+     */
     private void startParsing(){
         parse= new Thread( ()-> {
             do{
@@ -206,6 +240,9 @@ public class SocketClient extends Client {
         parse.start();
     }
 
+    /**
+     * It starts a timer waiting for Ping messages from the Server. If it misses 5 Pings, it closes the Client
+     */
     public void startPing() {
         Runnable task = () -> {
             numPing++;

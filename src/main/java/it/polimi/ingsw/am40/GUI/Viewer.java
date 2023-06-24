@@ -2,12 +2,14 @@ package it.polimi.ingsw.am40.GUI;
 
 import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
+import it.polimi.ingsw.am40.Model.GroupChat;
 import it.polimi.ingsw.am40.Model.Position;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -15,6 +17,7 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -22,6 +25,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -37,13 +42,16 @@ import java.util.regex.Pattern;
 
 public class Viewer extends Application {
 	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
-	private final ArrayList<Arrow> arrowDownList = new ArrayList<Arrow>();
+	private final ArrayList<Arrow> arrowDownList = new ArrayList<>();
 	private static final int ARROWS_DOWN = 5;
 	private String connectionType;
 	private static Viewer gui;
 	private Stage primaryStage;
 	private Scene scene;
 	private Pane pane;
+	private final RedCross redCross = new RedCross();
+
+	private AnchorPane gameBoard;
 	private String nickname;
 	private int numPlayers;
 	private Bag bag;
@@ -59,12 +67,21 @@ public class Viewer extends Application {
 	private Alert errorAlert;
 	@FXML
 	private Button ChatButton;
+	private boolean isVisible;
+	private boolean isNew;
+	private VBox chatContainer = new VBox();
+	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
+	private Circle dotIndicator;
+
+	private VBox messages;
+
+	private ArrayList<ScoreToken> scoringTokenOne;
+	private ArrayList<ScoreToken> scoringTokenTwo;
+	private int[] order;
 
 
-	/**
-	 * todo
-	 * @param args
-	 */
+
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -93,10 +110,6 @@ public class Viewer extends Application {
 		return false;
 	}
 
-	/**
-	 * todo
-	 * @param stage
-	 */
 	@Override
 	public void start(Stage stage) {
 		this.primaryStage = stage;
@@ -105,9 +118,11 @@ public class Viewer extends Application {
 //		errorAlert = new Alert(Alert.AlertType.ERROR);
 //		alert.getDialogPane().getStylesheets().add("Alert.css");
 //		errorAlert.getDialogPane().getStylesheets().add("Error.css");
-		primaryStage.setResizable(false);
-
+		primaryStage.setResizable(true);
+		scoringTokenOne = new ArrayList<>();
+		scoringTokenTwo = new ArrayList<>();
 		gui = this;
+
 //
 //		// -----------  setup page  -----------
 //		Pane rootBox = new Pane();
@@ -221,25 +236,28 @@ public class Viewer extends Application {
 	}
 
 
-	/**
-	 * todo
-	 * @param stage
-	 * @param pane
-	 */
+
 	public void setBackground(Stage stage, Pane pane) {
 		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
 		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
-		pane.setPrefSize(screenWidth, screenHeight);
+		//pane.setPrefSize(screenWidth, screenHeight);
+		pane.setPrefSize(15.5,8.7);
 
-		Image background = Resources.background();
-		BackgroundImage bgImg = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
-				BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
-		pane.setBackground(new Background(bgImg));
+		//setting the background
+		Image backGroundImage = Resources.background();
+		ImageView backGroundView = new ImageView(backGroundImage);
+		pane.getChildren().add(backGroundView);
 
-//		MenuBar topMenu = MenuObj.createMenuBar(stage);
-//		pane.getChildren().add(topMenu);
+		//setting the background
+		AnchorPane.setTopAnchor(backGroundView,0.0);
+		AnchorPane.setRightAnchor(backGroundView,0.0);
+		AnchorPane.setLeftAnchor(backGroundView,0.0);
+		AnchorPane.setBottomAnchor(backGroundView,0.0);
 
+		backGroundView.fitWidthProperty().bind(scene.widthProperty());
+		backGroundView.fitHeightProperty().bind(scene.heightProperty());
 	}
+
 
 	public VBox createVbox(Pane pane) {
 		VBox vbox = new VBox();
@@ -257,10 +275,7 @@ public class Viewer extends Application {
 		return vbox;
 	}
 
-	/**
-	 * todo
-	 * @param pane
-	 */
+
 	public void setTitle(Pane pane) {
 		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
 		//double sceneWidth = scene.getWindow().getWidth();
@@ -286,12 +301,6 @@ public class Viewer extends Application {
 		});
 	}
 
-	/**
-	 * todo
-	 * @param pane
-	 * @param tmp
-	 * @return
-	 */
 	public Text addDescription(Pane pane, String tmp) {
 		Text text = new Text(tmp);
 		text.setFont(Font.font(25));
@@ -299,11 +308,6 @@ public class Viewer extends Application {
 		return text;
 	}
 
-	/**
-	 * TODO
-	 * @param pane
-	 * @return
-	 */
 	public TextField addTextField(Pane pane) {
 		TextField textField = new TextField();
 		textField.setMaxWidth(200);
@@ -312,13 +316,6 @@ public class Viewer extends Application {
 		return textField;
 	}
 
-	/**
-	 * todo
-	 * @param pane
-	 * @param tmp
-	 * @param isSelected
-	 * @return
-	 */
 	public RadioButton addToggle(Pane pane, String tmp, Boolean isSelected) {
 		RadioButton button = new RadioButton(tmp);
 		button.setFont(Font.font(20));
@@ -327,11 +324,6 @@ public class Viewer extends Application {
 		return button;
 	}
 
-	/**
-	 * todo
-	 * @param rmi
-	 * @param socket
-	 */
 	public void setToggles(RadioButton rmi, RadioButton socket) {
 		ToggleGroup tg = new ToggleGroup();
 
@@ -349,13 +341,6 @@ public class Viewer extends Application {
 
 	}
 
-	/**
-	 * todo
-	 * @param pane
-	 * @param tmp
-	 * @param isVisible
-	 * @return
-	 */
 	public Button addButton(Pane pane, String tmp, Boolean isVisible) {
 //		Image background_per_pulsanti = new Image("colore_pulsanti.jpg");
 //		BackgroundImage bgImg_per_pulsanti = new BackgroundImage(background_per_pulsanti, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
@@ -377,11 +362,6 @@ public class Viewer extends Application {
 
 	}
 
-	/**
-	 * todo
-	 * @param tf
-	 * @param t1
-	 */
 	public void setConnection( TextField tf, Text t1) {
 		String connectionIp = tf.getText();
 		Pattern p = Pattern.compile("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
@@ -405,9 +385,6 @@ public class Viewer extends Application {
 //		newB.setVisible(true);			//////////////////////////////////////////////////////////////////////////////////////////////////////// da rendere rosso con FONT
 	}
 
-	/**
-	 * todo
-	 */
 	public void setUsername() {
 //		primaryStage.close();
 		try {
@@ -463,9 +440,6 @@ public class Viewer extends Application {
 //		}
 	}
 
-	/**
-	 * todo
-	 */
 	public void waitingAnimation() {
 		Image im = Resources.tile(1,0);
 		ImageView loadImage = new ImageView(im);
@@ -492,16 +466,12 @@ public class Viewer extends Application {
 		timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
 
 //		pane.getChildren().add(loadImage);
-		Pane x = (Pane) pane.getChildren().get(0);
+		Pane x = (Pane) pane.getChildren().get(1);
 		x.getChildren().add(loadImage);
 		rotateTransition.play();
 		timeline.play();
 	}
 
-	/**
-	 * todo
-	 * @param pane
-	 */
 	public void newScene(Pane pane) {
 		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
 		primaryStage.setScene(scene);
@@ -510,10 +480,32 @@ public class Viewer extends Application {
 
 
 
+	public void setBookshelvesAndPG(VBox vLeft, StackPane stack){
+//	    int numPlayers = 4;
+//		for(int i=0; i<numPlayers;i++) {
+//			HBox row = new HBox();
+//			Bookshelf bs1 = new Bookshelf();
+//			BookshelfZOOMED bs1zoomed = new BookshelfZOOMED();
+//			activateZOOM(bs1,bs1zoomed,stack);
+//			PersonalGoal pg = new PersonalGoal(0);
+//			row.getChildren().addAll(bs1, pg);
+//			vLeft.getChildren().add(row);
+//		}
+
+	}
 
 
+	public void activateZOOM(Node notZOOMED, Node zoomedLabel, StackPane stack){
+		notZOOMED.setOnMouseEntered(e -> {
+			System.out.println("entro");
+			stack.getChildren().add(zoomedLabel);
+		});
 
-
+		notZOOMED.setOnMouseExited(e -> {
+			System.out.println("esco");
+			stack.getChildren().remove(zoomedLabel);
+		});
+	}
 
 
 	/* Test methods */
@@ -587,6 +579,147 @@ public class Viewer extends Application {
 		viewController.fireEvent(new CustomEvent(CustomEvent.BOARD_TILE_PICKABLE, x, y));
 	}
 	*/
+
+	public void newMessage(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String receiver) {
+		if (nickname.equals(receiver)) {
+			if (!isVisible) {
+				dotIndicator.setVisible(true);
+			}
+			NewMessage t = new NewMessage(array1.get(array1.size()-1), array2.get(array2.size()-1), array3.get(array3.size()-1));
+			messages.getChildren().add(t);
+		}
+	}
+
+	private void createChatContainer() {
+
+		isVisible = false;
+		ChatButton = new Button();
+		ChatButton.getStylesheets().add("Button.css");
+		ChatButton.setFont(Font.font(20));
+		ChatButton.setVisible(true);
+		ChatButton.setText("CHAT");
+
+		gameBoard.getChildren().add(ChatButton);
+		ChatButton.setOnAction(e -> showChat(ChatButton));
+
+		// Red dot indicator for unread messages
+		dotIndicator = new Circle(5);
+		dotIndicator.setFill(Color.RED);
+		dotIndicator.setVisible(true);
+
+		StackPane chatButtonPane = new StackPane();
+		chatButtonPane.getChildren().addAll(ChatButton, dotIndicator);
+		StackPane.setAlignment(dotIndicator, Pos.TOP_RIGHT);
+		AnchorPane.setLeftAnchor(chatButtonPane, gameBoard.getWidth()*(1340/1536.0));
+		AnchorPane.setTopAnchor(chatButtonPane, gameBoard.getHeight()*(65/864.0));
+
+		gameBoard.getChildren().add(chatButtonPane);
+
+		chatContainer.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-padding: 10px;");
+		chatContainer.setMaxHeight(200);
+		chatContainer.setVisible(isVisible);
+
+
+		// scrollpane to see the messages
+		ScrollPane chatScrollPane = new ScrollPane();
+		chatScrollPane.setFitToWidth(true);
+		chatScrollPane.setFitToHeight(true);
+		chatContainer.getChildren().add(chatScrollPane);
+
+		messages = new VBox();
+		//messages.setSpacing(10);
+		chatScrollPane.setContent(messages);
+
+		// drop to select the receiver
+		ComboBox<String> selectReceivers = new ComboBox<>();
+		ArrayList<String> sendTo = new ArrayList<>();
+		sendTo.add("everyOne");
+		sendTo.add("pippo");
+		sendTo.add("marco");
+		selectReceivers.getItems().addAll(sendTo);
+		selectReceivers.setValue("everyOne");
+		chatContainer.getChildren().add(selectReceivers);
+
+		// text field to write the message
+		TextField messageInput = new TextField();
+		Button sendButton = new Button("Send");
+		sendButton.getStylesheets().add("Button.css");
+
+		HBox inputBox = new HBox(messageInput, sendButton);
+		inputBox.setSpacing(10);
+		inputBox.setAlignment(Pos.CENTER_RIGHT);
+		chatContainer.getChildren().add(inputBox);
+
+		// update the full message list, I can add one message at a time if I am notified when I recive one
+		GroupChat chatClass = new GroupChat();
+		ArrayList<String> messagesList = chatClass.getMessage();
+		ArrayList<String> sendersList = chatClass.getPublisher();
+		ArrayList<String> receiversList = chatClass.getToplayer();
+		for (int i = 0; i < messagesList.size(); i++) {
+			String sender = sendersList.get(i);
+			String m = messagesList.get(i);
+			String receiver = receiversList.get(i);
+			NewMessage newMessage = new NewMessage(sender, receiver, m);
+			messages.getChildren().add(newMessage);
+
+		}
+
+		sendButton.setOnAction(e -> {
+			String sender = nickname;
+			String message = messageInput.getText();
+			String receiver = selectReceivers.getValue();
+
+			if (!message.isEmpty()) {
+				NewMessage newMessage = new NewMessage(sender, receiver, message);
+				messages.getChildren().add(newMessage);
+				messageInput.clear();
+
+				chatScrollPane.setVvalue(1.0);
+
+			}
+		});
+
+
+		// test, this will be automatic
+		NewMessage newMessage = new NewMessage("fil", "marc","funziona");
+		messages.getChildren().add(newMessage);
+
+		newMessage = new NewMessage("marc", "fil","bravo!");
+		messages.getChildren().add(newMessage);
+
+		// Add the chat container to the main pane
+		gameBoard.getChildren().add(chatContainer);
+
+		chatContainer.setTranslateX(100);
+		chatContainer.setTranslateY(100);
+
+	}
+
+	private class NewMessage extends HBox {
+		public NewMessage(String from, String to, String message) {
+			Label senderLabel = new Label("from " + from + " to " + to + ": ");
+			if (from == null || from.equals(nickname)) {
+				senderLabel.setStyle("-fx-text-fill: red;");
+			}
+			Label messageLabel = new Label(message);
+			messageLabel.setWrapText(true);
+			//messageLabel.setMaxWidth(100);
+
+			getChildren().addAll(senderLabel, messageLabel);
+		}
+	}
+
+	private void showChat(Button button) {
+		dotIndicator.setVisible(false);
+		isVisible = !isVisible;
+		chatContainer.setVisible(isVisible);
+//		if (isVisible) {
+//			button.setText("Hide chat");
+//		} else {
+//			button.setText("Show chat");
+//		}
+	}
+
 	public void chooseConnection() {
 		pane = new Pane();
 		newScene(pane);
@@ -686,6 +819,7 @@ public class Viewer extends Application {
 		});
 	}
 
+
 	public void showMessage(String s) {
 		alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.getDialogPane().getStylesheets().add("Alert.css");
@@ -722,6 +856,8 @@ public class Viewer extends Application {
 		errorAlert.showAndWait();
 	}
 
+
+
 	public void startGame() {
 		try {
 			Thread.sleep(1500);
@@ -729,63 +865,88 @@ public class Viewer extends Application {
 			throw new RuntimeException(e);
 		}
 		primaryStage.setTitle("MY SHELFIE");
-		pane = new AnchorPane();
-		newScene(pane);
-		setBackground(primaryStage, pane);
+		gameBoard = new AnchorPane();
+		newScene(gameBoard);
+		setBackground(primaryStage, gameBoard);
+
 		handleEvent();
-//		pane.setPrefSize(Metrics.ROOT_WIDTH, Metrics.ROOT_HEIGHT);
-		System.out.println(primaryStage.getWidth());
-		System.out.println(primaryStage.getHeight());
+
+		////////////////////////////
+		System.out.println("PRIMARY STAGE W: "+ primaryStage.getWidth());
+		System.out.println("PRIMARY STAGE H: " +primaryStage.getHeight());
+		////////////////////////////
 
 		bag = new Bag(primaryStage);
-		bag.relocate(primaryStage.getWidth()*Metrics.d_x_bag, primaryStage.getHeight()*Metrics.d_y_bag);
-		pane.getChildren().add(bag);
+		//System.out.println("BAG PERC: top: " + (Metrics.d_y_bag) + "  left: " + (Metrics.d_x_bag));
+		AnchorPane.setTopAnchor(bag, gameBoard.getHeight() * Metrics.d_y_bag );
+		AnchorPane.setLeftAnchor(bag, gameBoard.getWidth() * Metrics.d_x_bag);
+		//bag.relocate(primaryStage.getWidth()*Metrics.d_x_bag, primaryStage.getHeight()*Metrics.d_y_bag);
+		gameBoard.getChildren().add(bag);
 
 		board = new Board(primaryStage);
-		board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
-		pane.getChildren().add(board);
+		//System.out.println("BAG PERC: top: " + (Metrics.d_y_board) + "  left: " + (Metrics.d_x_board) );
+		//board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
+		AnchorPane.setTopAnchor(board, gameBoard.getHeight() * Metrics.d_y_board );
+		AnchorPane.setLeftAnchor(board, gameBoard.getWidth() * Metrics.d_x_board);
+		gameBoard.getChildren().add(board);
 
 		commandBoard = new CommandBoard(primaryStage);
-		commandBoard.relocate(primaryStage.getWidth()*Metrics.d_x_comb, primaryStage.getHeight()*Metrics.d_y_comb);
-		pane.getChildren().add(commandBoard);
+		AnchorPane.setTopAnchor(commandBoard, gameBoard.getHeight() * Metrics.d_y_comb );
+		AnchorPane.setLeftAnchor(commandBoard, gameBoard.getWidth() * Metrics.d_x_comb);
+		//commandBoard.relocate(primaryStage.getWidth()*Metrics.d_x_comb, primaryStage.getHeight()*Metrics.d_y_comb);
+		gameBoard.getChildren().add(commandBoard);
 
-		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight());
-		bookshelf.relocate(Metrics.d_x_bookpl*primaryStage.getWidth(), Metrics.d_y_bookpl*primaryStage.getHeight());
+		System.out.println("PRIMARYSTAGE W: " + primaryStage.getWidth() + " H: "+primaryStage.getHeight());
+		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight(), primaryStage);
+		//bookshelf.relocate(Metrics.d_x_bookpl*primaryStage.getWidth(), Metrics.d_y_bookpl*primaryStage.getHeight());
+		AnchorPane.setTopAnchor(bookshelf, gameBoard.getHeight() * Metrics.d_y_bookpl );
+		AnchorPane.setLeftAnchor(bookshelf, gameBoard.getWidth() * Metrics.d_x_bookpl);
 		bookshelf.createLabelName(Metrics.dim_x_targetname*primaryStage.getWidth(),Metrics.dim_y_targetname*primaryStage.getHeight(), primaryStage.getWidth()*Metrics.dim_x_bookpl*Metrics.d_x_targetname, primaryStage.getHeight()*Metrics.dim_y_bookpl*Metrics.d_y_targetname);
 		bookshelf.setName(nickname);
-		pane.getChildren().add(bookshelf);
+		gameBoard.getChildren().add(bookshelf);
 
-		ChatButton = new Button();
-		ChatButton.setVisible(true);
-		pane.getChildren().add(ChatButton);
-		ChatButton.relocate(1350, 50);
+		createChatContainer();
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
 			arrowDown.setUserData(arrowDown);
 			arrowDown.setVisible(false);
 			arrowDown.setIndex(i);
-			arrowDown.setSize(Metrics.ARROW_DOWN_WIDTH, Metrics.ARROW_DOWN_HEIGHT);
-			arrowDown.relocate(1026 + (i * 60), 168);
+			arrowDown.setSize(gameBoard.getWidth() * Metrics.ARROW_DOWN_WIDTH,gameBoard.getHeight() * Metrics.ARROW_DOWN_HEIGHT);
+			AnchorPane.setLeftAnchor(arrowDown, gameBoard.getWidth() * (1026.0/1536.0) + gameBoard.getWidth()* (i*60)/1536.0);
+			AnchorPane.setTopAnchor(arrowDown, gameBoard.getHeight()* 168.0/864.0);
 			arrowDown.setOnMouseClicked(event -> {
 				Arrow ad = (Arrow) event.getSource();
 				String s = "order";
 				for (int j = 0; j < commandBoard.getNextTilePos(); j++) {
 					s += " " + commandBoard.getPickupOrder()[j];
 				}
-				LaunchClient.getClient().sendMessage(s);
-				handleArrowDown(event, ad.getIndex());
+				if (commandBoard.checkSequence()) {
+					LaunchClient.getClient().sendMessage(s);
+					handleArrowDown(event, ad.getIndex());
+				} else {
+					showError("Two numbers in the order are the same!");
+				}
 			});
 			arrowDownList.add(arrowDown);
-			pane.getChildren().add(arrowDown);
+			gameBoard.getChildren().add(arrowDown);
 		}
 
-		arrowRight.setSize(Metrics.ARROW_RIGHT_WIDTH, Metrics.ARROW_RIGHT_HEIGHT);
+		arrowRight.setSize(gameBoard.getWidth() *Metrics.ARROW_RIGHT_WIDTH, gameBoard.getHeight()* Metrics.ARROW_RIGHT_HEIGHT);
 		arrowRight.setVisible(false);
-		arrowRight.relocate(primaryStage.getWidth()*Metrics.d_x_comb-110, 35);
+		AnchorPane.setTopAnchor(arrowRight, gameBoard.getHeight()  * 0.0451);
+		AnchorPane.setLeftAnchor(arrowRight, gameBoard.getWidth() * 0.601);
+
+
+		//arrowRight.relocate(primaryStage.getWidth()*Metrics.d_x_comb-110, 35);
 		arrowRight.setOnMouseClicked(event -> {
 			LaunchClient.getClient().sendMessage("pick");
 			arrowRight.setVisible(false);
+			redCross.setVisible(false);
+			for (String s: board.getTiles().keySet()) {
+				Tile t = (Tile) board.getTiles().get(s);
+				t.setPickable(false);
+			}
 
 			int col = 0;
 			for (Arrow a : arrowDownList) {
@@ -794,7 +955,19 @@ public class Viewer extends Application {
 				}
 			}
 		});
-		pane.getChildren().add(arrowRight);
+		gameBoard.getChildren().add(arrowRight);
+
+		redCross.setSize(gameBoard.getWidth() *Metrics.ARROW_RIGHT_WIDTH*0.8, gameBoard.getHeight()* Metrics.ARROW_RIGHT_HEIGHT*0.8);
+		redCross.setVisible(false);
+		AnchorPane.setTopAnchor(redCross, gameBoard.getHeight()  * 0.5);
+		AnchorPane.setLeftAnchor(redCross, gameBoard.getWidth() * 0.580);
+		redCross.setOnMouseClicked(event -> {
+			board.clearSelected();
+			LaunchClient.getClient().sendMessage("remove");
+			redCross.setVisible(false);
+			arrowRight.setVisible(false);
+		});
+		gameBoard.getChildren().add(redCross);
 
 	}
 	private void handleEvent() {
@@ -805,6 +978,7 @@ public class Viewer extends Application {
 			int y = (int) obj.getPosition().getY();
 			board.select(x, y);
 			if (!flag) {
+				redCross.setVisible(!board.isSelectedEmpty());
 				arrowRight.setVisible(!board.isSelectedEmpty());
 				LaunchClient.getClient().sendMessage("select " + x + " " + y);
 			}
@@ -823,32 +997,68 @@ public class Viewer extends Application {
 		}
 		c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
 		c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
-		c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
-		c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
-		pane.getChildren().add(c1);
-		pane.getChildren().add(c2);
+		AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
+		AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
+		AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2 );
+		AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
+
+		//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
+		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
+		gameBoard.getChildren().add(c1);
+		gameBoard.getChildren().add(c2);
+		setOrder();
+//		System.out.println("qui1");
+		setToken(1);
+//		System.out.println("qui2");
+		setToken(2);
+//		System.out.println("qui3");
+	}
+	private void setOrder(){
+		switch(numPlayers){
+			case(2):
+				order = new int[]{1, 2};
+				break;
+			case(3):
+				order = new int[]{1,3,2};
+				break;
+			case(4):
+				order = new int[]{4,1,3,2};
+				break;
+		}
+	}
+	private void setToken(int obj){
+		if(obj==1){
+			for(int i=0; i<numPlayers; i++){
+				scoringTokenOne.add(new ScoreToken(order[i],obj,primaryStage));
+				gameBoard.getChildren().add(scoringTokenOne.get(i));
+			}
+		}
+		else {
+			for(int i=0; i<numPlayers; i++){
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				scoringTokenTwo.add(new ScoreToken(order[i],obj,primaryStage));
+				gameBoard.getChildren().add(scoringTokenTwo.get(i));
+
+			}
+		}
 	}
 
-	/**
-	 * TODO
-	 * @param map
-	 * @param number
-	 */
 	public void setPersonalGoal(Map<String, String> map, int number) {
 		p = new PersonalGoal(number, primaryStage);
-		p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
-		pane.getChildren().add(p);
+		AnchorPane.setTopAnchor(p, gameBoard.getHeight() * Metrics.d_y_pers );
+		AnchorPane.setLeftAnchor(p, gameBoard.getWidth() * Metrics.d_x_pers);
+		//p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
+		gameBoard.getChildren().add(p);
 	}
 
-	/**
-	 * TODO
-	 * @param map
-	 */
 	public void setBoard(Map<String, String> map) {
 		if (board == null) {
 			board = new Board(primaryStage);
-			board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
-			pane.getChildren().add(board);
+			AnchorPane.setTopAnchor(board, gameBoard.getHeight() * Metrics.d_y_board );
+			AnchorPane.setLeftAnchor(board, gameBoard.getWidth() * Metrics.d_x_board);
+
+			//board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
+			gameBoard.getChildren().add(board);
 		}
 		for (String s: map.keySet()) {
 			if (!map.get(s).equals("NOCOLOR")) {
@@ -860,12 +1070,6 @@ public class Viewer extends Application {
 		}
 	}
 
-
-	/**
-	 * TODO
-	 * @param event
-	 * @param column
-	 */
 	private void handleArrowDown(MouseEvent event, int column) {
 		if (commandBoard.checkSequence()) {
 			ArrayList<Node> nodeList = new ArrayList<>();
@@ -880,7 +1084,7 @@ public class Viewer extends Application {
 				}
 
 				while ((n = commandBoard.getTile()) != null) {
-					nodeList.add(n);
+					nodeList.add(n);  //add the tiles picked and ordered
 				}
 
 				if (nodeList.size() > 0) {
@@ -896,10 +1100,6 @@ public class Viewer extends Application {
 		}
 	}
 
-	/**
-	 * TODO
-	 * @param names
-	 */
 	public void numPlayers(ArrayList<String> names) {
 		this.names = new ArrayList<>(names);
 		if (numPlayers == 0) {
@@ -907,23 +1107,10 @@ public class Viewer extends Application {
 		}
 	}
 
-	/**
-	 * TODO
-	 * @param map
-	 * @param arr
-	 * @param board
-	 */
 	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
 		this.board.clearUpdate(map, arr, board);
 	}
 
-	/**
-	 * TODO
-	 *
-	 * MAP NON E' MAI USATO
-	 *
-	 * @param map
-	 */
 	public void setPicked(Map<String, String> map) {
 		Tile t;
 		while (!board.isSelectedEmpty()) {
@@ -935,28 +1122,29 @@ public class Viewer extends Application {
 		}
 	}
 
-
-	/**
-	 * TODO
-	 * @param map
-	 */
 	public void updateBookshelves(Map<String, Map<String, String>> map) {
 		if (bookshelves.size() == 0) {
 			int j = 0;
 			for (int i = 0; i < numPlayers - 1; i++) {
-				Bookshelf b = new Bookshelf(Metrics.dim_x_book*primaryStage.getWidth(), Metrics.dim_y_book*primaryStage.getHeight());
+				Bookshelf b = new Bookshelf(Metrics.dim_x_book*primaryStage.getWidth(), Metrics.dim_y_book*primaryStage.getHeight(), primaryStage);
 				bookshelves.add(b);
-				pane.getChildren().add(bookshelves.get(i));
+				gameBoard.getChildren().add(bookshelves.get(i));
 				bookshelves.get(i).createLabelName(Metrics.dim_x_label*primaryStage.getWidth(),Metrics.dim_y_label*primaryStage.getHeight(), Metrics.dim_x_book*Metrics.d_x_label* primaryStage.getWidth(), Metrics.dim_y_book*Metrics.d_y_label*primaryStage.getHeight());
 				switch (numPlayers) {
 					case 2:
-						bookshelves.get(i).relocate(Metrics.d_x_book2*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
+						AnchorPane.setLeftAnchor(bookshelves.get(i),Metrics.d_x_book2 * primaryStage.getWidth());
+						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
+						//bookshelves.get(i).relocate(Metrics.d_x_book2*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 					case 3:
-						bookshelves.get(i).relocate(((329+(329+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
+						AnchorPane.setLeftAnchor(bookshelves.get(i),((329+(329+274)*i)/1536.0)* primaryStage.getWidth());
+						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
+						//bookshelves.get(i).relocate(((329+(329+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 					case 4:
-						bookshelves.get(i).relocate(((178+(178+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
+						AnchorPane.setLeftAnchor(bookshelves.get(i),((178+(178+274)*i)/1536.0)* primaryStage.getWidth());
+						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
+						//bookshelves.get(i).relocate(((178+(178+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 				}
 				if (names.get(j).equals(nickname)) {
@@ -976,6 +1164,7 @@ public class Viewer extends Application {
 						if (m.get("(" + j + "," + k + ")").equals("NOCOLOR")) {
 							bookshelves.get(i).modifyDepth(j);
 						} else {
+//							System.out.println();
 							nodelist.add(new Tile(m.get("(" + j + "," + k + ")"), primaryStage));
 							bookshelves.get(i).update(nodelist, j);
 							System.out.println(j + " --- "+ k);
@@ -987,6 +1176,7 @@ public class Viewer extends Application {
 			}
 		}
 	}
+
 }
 
 

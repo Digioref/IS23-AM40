@@ -23,11 +23,11 @@ import javafx.stage.Stage;
 
 public class CommandBoard extends AnchorPane {
 	private static final int TILES = 3;
-	private static final int TILE_LEFT_OFFSET = 25;
-	private static final int TILE_TOP_OFFSET = 20;
-	private static final int LABEL_SIZE_WIDTH = 20;
-	private static final int LABEL_LEFT_OFFSET = 39;
-	private static final int LABEL_TOP_OFFSET = 74;
+	private static final double TILE_LEFT_OFFSET = 25.0/1536.0;
+	private static final double TILE_TOP_OFFSET = 20.0/864.0;
+	private static final double LABEL_SIZE_WIDTH = 20.0/1536.0;
+	private static final double LABEL_LEFT_OFFSET = 39.0/1536.0;
+	private static final double LABEL_TOP_OFFSET = 74.0/864.0;
 
 	private int nextTilePos;
 	private int[] pickupOrder = { 1, 1, 1 };
@@ -44,7 +44,8 @@ public class CommandBoard extends AnchorPane {
 
 		BackgroundImage boardImg = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
 				BackgroundPosition.DEFAULT,
-				new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
+				new BackgroundSize(1, 1, true, true, false, false));
+
 
 		setBackground(new Background(boardImg));
 		setEffect(new DropShadow(20, Color.BLACK));
@@ -56,12 +57,16 @@ public class CommandBoard extends AnchorPane {
 		pickupIndex = 1;
 
 		for (int i = 0; i < TILES; i++) {
-			tiles[i] = new TileRect(i);
-			tiles[i].relocate(((TILE_LEFT_OFFSET + (i * (TILE_LEFT_OFFSET + Metrics.TILE_WIDTH)))/1536.0)* primaryStage.getWidth(), (TILE_TOP_OFFSET/864.0)*primaryStage.getHeight());
+			tiles[i] = new TileRect(i,primaryStage.getWidth(), primaryStage.getHeight());
+			//tiles[i].relocate(((TILE_LEFT_OFFSET + (i * (TILE_LEFT_OFFSET + Metrics.TILE_WIDTH)))/1536.0)* primaryStage.getWidth(), (TILE_TOP_OFFSET/864.0)*primaryStage.getHeight());
+			AnchorPane.setLeftAnchor(tiles[i],(TILE_LEFT_OFFSET + (i *(TILE_LEFT_OFFSET + Metrics.TILE_WIDTH))) * primaryStage.getWidth());
+			AnchorPane.setTopAnchor(tiles[i], (TILE_TOP_OFFSET * primaryStage.getHeight()));
 
-			labels[i] = new LabelPos();
+			labels[i] = new LabelPos(primaryStage.getWidth(),primaryStage.getHeight());
 			labels[i].setEmpty();
-			labels[i].relocate(((LABEL_LEFT_OFFSET + (i * (Metrics.TILE_WIDTH + LABEL_SIZE_WIDTH)))/1536.0)* primaryStage.getWidth(), (LABEL_TOP_OFFSET/864.0)* primaryStage.getHeight());
+			//labels[i].relocate(((LABEL_LEFT_OFFSET + (i * (Metrics.TILE_WIDTH + LABEL_SIZE_WIDTH)))/1536.0)* primaryStage.getWidth(), (LABEL_TOP_OFFSET/864.0)* primaryStage.getHeight());
+			AnchorPane.setLeftAnchor(labels[i], (LABEL_LEFT_OFFSET + (i* 0.0465)) * primaryStage.getWidth());
+			AnchorPane.setTopAnchor(labels[i], (LABEL_TOP_OFFSET * primaryStage.getHeight()));
 
 			getChildren().add(tiles[i]);
 			getChildren().add(labels[i]);
@@ -116,13 +121,13 @@ public class CommandBoard extends AnchorPane {
 	private class TileRect extends StackPane {
 		private final int index;
 
-		public TileRect(int index) {
+		public TileRect(int index,double width, double height) {
 			super();
 
-			setPrefSize(Metrics.TILE_WIDTH, Metrics.TILE_HEIGHT);
-			setMinSize(Metrics.TILE_WIDTH, Metrics.TILE_HEIGHT);
+			setPrefSize(width* Metrics.TILE_WIDTH,height* Metrics.TILE_HEIGHT);
+			//setMinSize(Metrics.TILE_WIDTH, Metrics.TILE_HEIGHT);
 
-			Rectangle clip = new Rectangle(Metrics.TILE_WIDTH, Metrics.TILE_HEIGHT);
+			Rectangle clip = new Rectangle(width * Metrics.TILE_WIDTH,height* Metrics.TILE_HEIGHT);
 			clip.setArcWidth(Metrics.TILE_ROUND_WIDTH);
 			clip.setArcHeight(Metrics.TILE_ROUND_HEIGHT);
 			setClip(clip);
@@ -131,7 +136,7 @@ public class CommandBoard extends AnchorPane {
 
 			this.index = index;
 
-			setOnMouseClicked(new EventHandler<MouseEvent>() {
+			setOnMouseClicked(new EventHandler<>() {
 				@Override
 				public void handle(MouseEvent event) {
 					if (getChildren().isEmpty()) {
@@ -156,10 +161,10 @@ public class CommandBoard extends AnchorPane {
 	}
 
 	private class LabelPos extends Label {
-		private static final int SIZE = 26;
+		private static final double SIZE = 26.0/1536.0;
 		private final ImageView[] view = { null, null, null };
 
-		public LabelPos() {
+		public LabelPos( double x, double y) {
 			super();
 
 			for (int i = 0; i < 3; i++) {
@@ -167,8 +172,8 @@ public class CommandBoard extends AnchorPane {
 				Image image = Resources.number(i + 1);
 				view[i] = new ImageView(image);
 				view[i].setPreserveRatio(true);
-				view[i].setFitWidth(SIZE);
-				view[i].setFitHeight(SIZE);
+				view[i].setFitWidth(SIZE * x);
+				view[i].setFitHeight(SIZE * x);
 			}
 
 			setGraphic(null);

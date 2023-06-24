@@ -97,7 +97,10 @@ public class ClientGUIController implements View {
 
     @Override
     public void printMessage(String s) {
-        runLater(()->gui.showMessage(s));
+        if(s.equals("Error")){
+            runLater(()->gui.showMessage(s));
+        }
+
     }
 
     @Override
@@ -107,7 +110,7 @@ public class ClientGUIController implements View {
 
     @Override
     public void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname) {
-
+        runLater(() -> gui.newMessage(array1,array2,array3,nickname));
     }
 
     @Override
@@ -139,4 +142,5 @@ public class ClientGUIController implements View {
     public void showGame() {
         runLater(gui::startGame);
     }
+
 }
