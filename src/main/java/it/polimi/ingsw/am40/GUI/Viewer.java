@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -51,10 +52,13 @@ public class Viewer extends Application {
 	private Scene scene;
 	private Pane pane;
 	private final RedCross redCross = new RedCross();
-
+	private Map<String, Integer> players;
+	private String currentPlayer;
 	private AnchorPane gameBoard;
 	private String nickname;
+	private String firstPlayer;
 	private int numPlayers;
+	private int hiddenScore;
 	private Bag bag;
 	private Board board;
 	private CommonGoalGui c1;
@@ -81,6 +85,8 @@ public class Viewer extends Application {
 	private ArrayList<ScoreToken> scoringToken;
 
 	private ImageView endToken;
+	private PlayersPointBoard ppboard;
+	private CirclePoints cp;
 
 
 
@@ -477,6 +483,7 @@ public class Viewer extends Application {
 		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
 		primaryStage.setScene(scene);
 		primaryStage.setFullScreen(true);
+		primaryStage.setFullScreenExitHint("");
 	}
 
 
@@ -611,8 +618,8 @@ public class Viewer extends Application {
 		StackPane chatButtonPane = new StackPane();
 		chatButtonPane.getChildren().addAll(ChatButton, dotIndicator);
 		StackPane.setAlignment(dotIndicator, Pos.TOP_RIGHT);
-		AnchorPane.setLeftAnchor(chatButtonPane, gameBoard.getWidth()*(1340/1536.0));
-		AnchorPane.setTopAnchor(chatButtonPane, gameBoard.getHeight()*(65/864.0));
+		AnchorPane.setLeftAnchor(chatButtonPane, gameBoard.getWidth()*(1430/1536.0));
+		AnchorPane.setTopAnchor(chatButtonPane, gameBoard.getHeight()*(225/864.0));
 
 		gameBoard.getChildren().add(chatButtonPane);
 
@@ -694,6 +701,43 @@ public class Viewer extends Application {
 		chatContainer.setTranslateX(100);
 		chatContainer.setTranslateY(100);
 
+	}
+
+	public void setCurrentPlayer(String s) {
+		currentPlayer = s;
+		ppboard.setCurrentPlayer(s);
+	}
+
+	public void showCurrentScore(Map<String, Integer> map) {
+		this.players = new HashMap<>(map);
+		ppboard.addScores(map);
+	}
+
+	public void showHiddenScore(int score) {
+		hiddenScore = score;
+		cp.setScore(hiddenScore);
+	}
+
+	public void setFirstPlayer(String nickname) {
+		if (firstPlayer == null) {
+			firstPlayer = nickname;
+			if (firstPlayer.equals(this.nickname)) {
+				bookshelf.setChair();
+				gameBoard.getChildren().add(bookshelf.getChair());
+				AnchorPane.setLeftAnchor(bookshelf.getChair(), gameBoard.getWidth()*Metrics.d_x_chair);
+				AnchorPane.setTopAnchor(bookshelf.getChair(), gameBoard.getHeight()*Metrics.d_y_chair);
+			}
+			else {
+				for (Bookshelf b: bookshelves) {
+					if (firstPlayer.equals(b.getLabelText().getText())) {
+						b.setChair();
+						gameBoard.getChildren().add(b.getChair());
+						AnchorPane.setLeftAnchor(b.getChair(), b.getPos_x()+ (Metrics.dim_x_book+(10/1536.0))*gameBoard.getWidth());
+						AnchorPane.setTopAnchor(b.getChair(), b.getPos_y()+ (220/864.0)*gameBoard.getHeight());
+					}
+				}
+			}
+		}
 	}
 
 	private class NewMessage extends HBox {
@@ -971,6 +1015,15 @@ public class Viewer extends Application {
 		});
 		gameBoard.getChildren().add(redCross);
 
+		ppboard = new PlayersPointBoard(primaryStage);
+		AnchorPane.setTopAnchor(ppboard,gameBoard.getHeight()*Metrics.d_y_ppb);
+		AnchorPane.setLeftAnchor(ppboard, gameBoard.getWidth()*Metrics.d_x_ppb);
+		gameBoard.getChildren().add(ppboard);
+
+		cp = new CirclePoints();
+		gameBoard.getChildren().add(cp);
+		AnchorPane.setTopAnchor(cp, gameBoard.getHeight()*Metrics.d_y_cp);
+		AnchorPane.setLeftAnchor(cp, gameBoard.getWidth()*Metrics.d_x_cp);
 	}
 	private void handleEvent() {
 		scene.addEventFilter(CustomEvent.TILE_SELECTED, event -> {
@@ -1085,6 +1138,10 @@ public class Viewer extends Application {
 		if (numPlayers == 0) {
 			numPlayers = names.size();
 		}
+		if (ppboard.getHboxes().size() != numPlayers)
+		for (String s: names) {
+			ppboard.addPlayer(s);
+		}
 	}
 
 	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
@@ -1129,19 +1186,27 @@ public class Viewer extends Application {
 					case 2:
 						AnchorPane.setLeftAnchor(bookshelves.get(i),Metrics.d_x_book2 * primaryStage.getWidth());
 						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
+						bookshelves.get(i).setPos_x(Metrics.d_x_book2 * primaryStage.getWidth());
+						bookshelves.get(i).setPos_y(Metrics.d_y_book2 * primaryStage.getHeight());
 						//bookshelves.get(i).relocate(Metrics.d_x_book2*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 					case 3:
 						AnchorPane.setLeftAnchor(bookshelves.get(i),((329+(329+274)*i)/1536.0)* primaryStage.getWidth());
 						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
+						bookshelves.get(i).setPos_x(((329+(329+274)*i)/1536.0)* primaryStage.getWidth());
+						bookshelves.get(i).setPos_y(Metrics.d_y_book2 * primaryStage.getHeight());
 						//bookshelves.get(i).relocate(((329+(329+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 					case 4:
 						AnchorPane.setLeftAnchor(bookshelves.get(i),((178+(178+274)*i)/1536.0)* primaryStage.getWidth());
 						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
+						bookshelves.get(i).setPos_x(((178+(178+274)*i)/1536.0)* primaryStage.getWidth());
+						bookshelves.get(i).setPos_y(Metrics.d_y_book2 * primaryStage.getHeight());
 						//bookshelves.get(i).relocate(((178+(178+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
 						break;
 				}
+				bookshelves.get(i).setPersonalGoal(primaryStage, gameBoard);
+				gameBoard.getChildren().add(bookshelves.get(i).getPgBack());
 				if (names.get(j).equals(nickname)) {
 					j += 1;
 				}

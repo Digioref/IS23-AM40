@@ -22,7 +22,6 @@ public class PersonalGoal extends Label {
 		super();
 		Image image = Resources.personalGoal(index);
 		ImageView view = new ImageView(image);
-		view.setPreserveRatio(true);
 //		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
 		//view.setFitWidth(100);
 		view.setFitWidth(Metrics.dim_x_pers*primaryStage.getWidth());

@@ -33,17 +33,17 @@ public class ClientGUIController implements View {
      */
     @Override
     public void showCurrentPlayer(String s) {
-
+        runLater(()->gui.setCurrentPlayer(s));
     }
 
     @Override
     public void showCurrentScore(Map<String, Integer> map) {
-
+        runLater(()->gui.showCurrentScore(map));
     }
 
     @Override
     public void showHiddenScore(int score) {
-
+        runLater(()->gui.showHiddenScore(score));
     }
 
     @Override
@@ -141,6 +141,11 @@ public class ClientGUIController implements View {
     @Override
     public void showGame() {
         runLater(gui::startGame);
+    }
+
+    @Override
+    public void showFirstPlayer(String nickname) {
+        runLater(()->gui.setFirstPlayer(nickname));
     }
 
 }

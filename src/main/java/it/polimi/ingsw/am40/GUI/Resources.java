@@ -38,6 +38,9 @@ public class Resources {
 	private static final String boardFile = "livingroom.png";
 	private static final String bookshelfFile = "bookshelf.png";
 	private static final String redCrossFile = "red_cross.png";
+	private static final String chair = "firstplayertoken.png";
+	private static final String personalGoalBack = "back.jpg";
+	private static final String circlepoints = "points_circle.png";
 
 	private static final String commonGoalPath = "common goal cards";
 	private static final String commonGoalFile[] = { "1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg",
@@ -142,6 +145,9 @@ public class Resources {
 	}
 	public static Image redCross() {
 		return loadImage(redCrossFile);
+	}
+	public static Image chair() {
+		return loadImage(chair);
 	}
 
 	public static Image tile(String type, int index) {
@@ -252,4 +258,11 @@ public class Resources {
 	public static Image endToken(){
 		return loadImage(endGameToken);
 	}
+	public static Image personalGoalBack() {
+		return loadImage(personalGoalBack);
+	}
+	public static Image pointsCircle() {
+		return loadImage(circlepoints);
+	}
+
 }

@@ -653,5 +653,10 @@ public class CliView implements View{
         System.out.println(color.green() + "Game is being created" + color.rst());
     }
 
+    @Override
+    public void showFirstPlayer(String nickname) {
+        System.out.println(color.blackBg() + "First player:" + color.rst() + " " + nickname + "\n");
+    }
+
 
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.am40.Network;
 import it.polimi.ingsw.am40.Model.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface IGameObserver {
 
@@ -22,5 +23,7 @@ public interface IGameObserver {
     public void receiveSelectedTiles(Player player);
     public void receiveTimer();
     public void receiveDisconnection(String s);
+    public void receiveCurrentScore(Map<String, Integer> map);
+    void receiveFirstPlayer(Player p);
 
 }

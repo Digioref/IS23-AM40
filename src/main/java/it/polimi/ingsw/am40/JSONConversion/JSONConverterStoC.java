@@ -281,5 +281,10 @@ public class JSONConverterStoC {
     }
 
 
-
+    public static String createJSONFirstPlayer(String nickname) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "FirstPlayer");
+        obj.put("Nickname", nickname);
+        return obj.toJSONString();
+    }
 }

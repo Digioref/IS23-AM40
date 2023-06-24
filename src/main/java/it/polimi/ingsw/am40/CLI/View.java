@@ -32,4 +32,5 @@ public interface View {
     void showError(String error);
     void showGame();
 
+    void showFirstPlayer(String nickname);
 }

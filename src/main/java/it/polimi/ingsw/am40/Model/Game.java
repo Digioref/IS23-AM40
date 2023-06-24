@@ -4,10 +4,7 @@ import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.VirtualView;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
-import java.util.Timer;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -574,9 +571,15 @@ public class Game implements IGame {
                             v.receivePersonalGoal(p.getPersonalGoal());
                         }
                     }
+                    Map<String, Integer> map = new HashMap<>();
+                    for (Player p: players) {
+                        map.put(p.getNickname(), p.getCurrentScore());
+                    }
+                    v.receiveCurrentScore(map);
                     v.receiveNumPlayers(numPlayers);
                     v.receiveListBookshelves(players);
                     v.receiveCurrentPlayer(currentPlayer);
+                    v.receiveFirstPlayer(firstPlayer);
                 }
                 break;
 

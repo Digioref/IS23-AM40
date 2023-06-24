@@ -84,5 +84,18 @@ public class Metrics {
 	public static final double dim_y_comb = 110.0/864.0;
 	public static final double d_x_comb = 1036.0/1536.0;
 	public static final double d_y_comb = 30.0/864.0;
+	public static final double dim_x_ppb = 190.0/1536.0;
+	public static final double dim_y_ppb = 170.0/864.0;
+	public static final double d_x_ppb = 1346.0/1536.0;
+	public static final double d_y_ppb = 30.0/864.0;
+	public static final double dim_x_chair = 50.0/1536.0;
+	public static final double dim_y_chair = 50.0/864.0;
+	public static final double d_x_chair = 1350.0/1536.0;
+	public static final double d_y_chair = 220.0/864.0;
+	public static final double dim_x_pgback = 70/1536.0;
+	public static final double dim_y_pgback = 120/864.0;
+	public static final double d_x_cp = 870/1536.0;
+	public static final double d_y_cp = 270.0/864.0;
+
 
 }

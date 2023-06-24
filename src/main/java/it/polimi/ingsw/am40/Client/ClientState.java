@@ -29,6 +29,7 @@ public class ClientState {
     private ArrayList<String> messages;
     private ArrayList<ArrayList<String>> tileselected;
     private ArrayList<ArrayList<String>> tilespicked;
+    private String firstPlayer;
 
     /**
      * TODO
@@ -175,5 +176,9 @@ public class ClientState {
 
     public void setPickedtiles(Map<String, String> pickedtiles) {
         this.pickedtiles = pickedtiles;
+    }
+
+    public void saveFirstPlayer(String nickname) {
+        firstPlayer = nickname;
     }
 }

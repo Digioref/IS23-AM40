@@ -276,6 +276,12 @@ public abstract class Client {
             case "Game":
                 LaunchClient.getView().showGame();
                 break;
+            case "FirstPlayer":
+                if(!inChat) {
+                    LaunchClient.getView().showFirstPlayer((String) object.get("Nickname"));
+                }
+                state.saveFirstPlayer((String) object.get("Nickname"));
+                break;
             default:
                 if (!inChat) {
                     LaunchClient.getView().printMessage(command);

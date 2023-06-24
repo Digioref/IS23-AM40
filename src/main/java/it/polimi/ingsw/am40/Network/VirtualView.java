@@ -6,6 +6,7 @@ import it.polimi.ingsw.am40.Model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class VirtualView implements  IGameObserver, IGameErrorTurn{
 
@@ -204,6 +205,28 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         if (clientHandler != null) {
             try {
                 clientHandler.sendMessage(JSONConverterStoC.normalMessage("Player " + s + " disconnected!"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @Override
+    public void receiveCurrentScore(Map<String, Integer> map) {
+        if (clientHandler != null) {
+            try {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONCurrentScore(map));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @Override
+    public void receiveFirstPlayer(Player p) {
+        if (clientHandler != null) {
+            try {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONFirstPlayer(p.getNickname()));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

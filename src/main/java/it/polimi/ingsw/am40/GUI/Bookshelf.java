@@ -34,6 +34,10 @@ public class Bookshelf extends AnchorPane {
 
 	private double widthStage;
 	private double heightStage;
+	private Chair chair;
+	private double pos_x;
+	private double pos_y;
+	private PersonalGoalBack pgBack;
 
 	public Bookshelf(double w, double h, Stage primaryStage) {
 		super();
@@ -211,5 +215,39 @@ public class Bookshelf extends AnchorPane {
 		getChildren().clear();
 		getChildren().add(bsImage);
 		getChildren().add(labelName);
+	}
+
+	public void setChair() {
+		chair = new Chair(widthStage, heightStage);
+	}
+
+	public Chair getChair() {
+		return chair;
+	}
+
+	public void setPos_x(double pos_x) {
+		this.pos_x = pos_x;
+	}
+
+	public void setPos_y(double pos_y) {
+		this.pos_y = pos_y;
+	}
+
+	public double getPos_x() {
+		return pos_x;
+	}
+
+	public double getPos_y() {
+		return pos_y;
+	}
+
+	public void setPersonalGoal(Stage primaryStage, AnchorPane p) {
+		pgBack = new PersonalGoalBack(primaryStage);
+		AnchorPane.setTopAnchor(pgBack, pos_y+(20/864.0)*p.getHeight());
+		AnchorPane.setLeftAnchor(pgBack, pos_x+(Metrics.dim_x_book)*p.getWidth());
+	}
+
+	public PersonalGoalBack getPgBack() {
+		return pgBack;
 	}
 }
