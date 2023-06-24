@@ -50,8 +50,8 @@ public class Metrics {
 	public static final double d_y_board = 20.0/864.0;
 	public static final double dim_x_board = 550.0/1536.0;
 	public static final double dim_y_board = 550.0/864.0;
-	public static final double d_x_endToken =752.0/1536.0;
-	public static final double d_y_endToken =407.0/864.0;
+	public static final double d_x_endToken =753.0/1536.0;
+	public static final double d_y_endToken =403.5/864.0;
 
 	public static final double d_y_commToken = 234.0/864.0;
 	public static final double d_x_bookpl = 980.0/1536.0;

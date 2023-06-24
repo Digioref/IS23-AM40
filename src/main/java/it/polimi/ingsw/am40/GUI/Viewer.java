@@ -935,10 +935,10 @@ public class Viewer extends Application {
 	public void setEndToken(){
 		endToken = new ImageView(Resources.endToken());
 		endToken.setPreserveRatio(true);
-		endToken.setFitWidth(0.3*Metrics.dim_x_comm*primaryStage.getWidth());
-		endToken.setFitHeight(0.3*Metrics.dim_y_comm*primaryStage.getHeight());
+		endToken.setFitWidth(0.31*Metrics.dim_x_comm*primaryStage.getWidth());
+		endToken.setFitHeight(0.31*Metrics.dim_y_comm*primaryStage.getHeight());
 		// Rotate the ImageView by 10 degrees
-		double rotationAngle = 10.0;
+		double rotationAngle = 9.5;
 		Rotate rotate = new Rotate(rotationAngle, endToken.getFitWidth() / 2, endToken.getFitHeight() / 2);
 		endToken.getTransforms().add(rotate);
 		AnchorPane.setLeftAnchor(endToken,Metrics.d_x_endToken*gameBoard.getWidth());
