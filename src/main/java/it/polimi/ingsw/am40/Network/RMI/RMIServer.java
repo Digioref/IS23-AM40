@@ -21,6 +21,9 @@ import java.util.concurrent.TimeUnit;
 
 import static it.polimi.ingsw.am40.Network.Handlers.NSUGGEST;
 
+/**
+ * TODO
+ */
 public class RMIServer extends UnicastRemoteObject implements RMIServerInterface {
     private Lobby lobby;
     /**
@@ -34,6 +37,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     private ArrayList<RMIClientHandler> rmiHandlers;
 
 
+    /**
+     * TODO
+     * @throws RemoteException
+     */
     public RMIServer() throws RemoteException {
         super();
         clientHandlers = new HashMap<>();
@@ -42,6 +49,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         rmiHandlers = new ArrayList<>();
     }
 
+    /**
+     * todo
+     * @param s
+     * @param client
+     * @throws RemoteException
+     */
     @Override
     public void login(String s, RMIClientInterface client) throws RemoteException {
         if (s.equals("")) {
@@ -131,6 +144,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 
     }
 
+    /**
+     * todo
+     * @param s
+     * @param n
+     * @throws RemoteException
+     */
     @Override
     public void setPlayers(String s, String n) throws RemoteException {
 //        if(!clientHandlers.get(s).getLogphase().equals(LoggingPhase.SETTING) || LoggingPhase.SETPLAYERS) {
@@ -148,6 +167,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    /**
+     * todo
+     * @param client
+     * @param s
+     * @throws RemoteException
+     */
     @Override
     public void help(RMIClientInterface client, String s) throws RemoteException {
         for (String s1: commands) {
@@ -171,6 +196,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    /**
+     * todo
+     * @param s
+     * @param command
+     * @throws RemoteException
+     */
     @Override
     public void gameInfoRequest(String s, String command) throws RemoteException {
         try {
@@ -180,6 +211,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    /**
+     * todo
+     * @param s
+     * @param command
+     * @throws RemoteException
+     */
     @Override
     public void gameUpdate(String s, String command) throws RemoteException {
         try {
@@ -189,6 +226,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    /**
+     * todo
+     * @param s
+     * @param command
+     * @throws RemoteException
+     */
     @Override
     public void chat(String s, String command) throws RemoteException {
         try {
@@ -199,6 +242,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
 
+    /**
+     * todo
+     * @param s
+     * @param command
+     * @throws RemoteException
+     */
     @Override
     public void getChat(String s, String command) throws RemoteException {
         try {
@@ -208,6 +257,11 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    /**
+     * todo
+     * @param s
+     * @throws RemoteException
+     */
     @Override
     public void close(String s) throws RemoteException {
         if (clientHandlers.containsKey(s)) {
@@ -221,6 +275,11 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    /**
+     * todo
+     * @param client
+     * @throws RemoteException
+     */
     @Override
     public void receivePong(RMIClientInterface client) throws RemoteException {
         for (RMIClientHandler r: rmiHandlers) {
@@ -237,6 +296,11 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    /**
+     * todo
+     * @param client
+     * @throws RemoteException
+     */
     @Override
     public void init(RMIClientInterface client) throws RemoteException {
         RMIClientHandler rmiClientHandler = new RMIClientHandler(this);
@@ -245,6 +309,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         rmiClientHandler.setLobby(lobby);
     }
 
+    /**
+     * todo
+     * @param lobby
+     */
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
@@ -263,9 +331,18 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         return false;
     }
 
+    /**
+     * @return the attribute clientHandlers
+     */
     public Map<String, RMIClientHandler> getClientHandlers() {
         return clientHandlers;
     }
+
+    /**
+     * todo
+     * @param nickname
+     * @param client
+     */
     private void suggestNickname(String nickname, RMIClientInterface client) {
         Random random = new Random();
         for (int i = 0; i < NSUGGEST; i++) {
@@ -280,6 +357,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         }
     }
 
+    /**
+     * @return the attribute rmiHandlers
+     */
     public ArrayList<RMIClientHandler> getRmiHandlers() {
         return rmiHandlers;
     }

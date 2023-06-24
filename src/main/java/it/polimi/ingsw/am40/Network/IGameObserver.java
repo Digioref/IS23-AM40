@@ -5,6 +5,9 @@ import it.polimi.ingsw.am40.Model.*;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * todo
+ */
 public interface IGameObserver {
 
     public void receiveNumPlayers(int numPlayers);
@@ -13,7 +16,6 @@ public interface IGameObserver {
     public void receivePersonalGoal(PersonalGoal personalGoal);
     public void receiveListBookshelves(ArrayList<Player> players);
     public void receiveAllowedPositions(ArrayList<Position> positions, Board board);
-    public void receiveAvailableColumns(ArrayList<Integer> columns);
     public void receiveBoard(Board board);
     public void receiveCurrentPlayer(Player player);
     public void receiveHiddenScore(int hiddenScore);

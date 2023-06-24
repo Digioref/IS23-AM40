@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * todo
+ */
 public class VirtualView implements  IGameObserver, IGameErrorTurn{
 
     private String nickname;
@@ -57,6 +60,10 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param commonGoals
+     */
     @Override
     public void receiveCommonGoals(ArrayList<CommonGoal> commonGoals) {
         int num1 = commonGoals.get(0).getNum();
@@ -72,6 +79,10 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param personalGoal
+     */
     @Override
     public void receivePersonalGoal(PersonalGoal personalGoal) {
         try {
@@ -83,6 +94,10 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param players
+     */
     @Override
     public void receiveListBookshelves(ArrayList<Player> players) {
         try {
@@ -94,6 +109,11 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param positions
+     * @param board
+     */
     @Override
     public void receiveAllowedPositions(ArrayList<Position> positions, Board board) {
         try {
@@ -106,11 +126,12 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
-    @Override
-    public void receiveAvailableColumns(ArrayList<Integer> columns) {
 
-    }
 
+    /**
+     * todo
+     * @param board
+     */
     @Override
     public void receiveBoard(Board board) {
         try {
@@ -122,6 +143,10 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param player
+     */
     @Override
     public void receiveCurrentPlayer(Player player) {
         try {
@@ -133,6 +158,10 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param hiddenScore
+     */
     @Override
     public void receiveHiddenScore(int hiddenScore) {
         try {
@@ -144,6 +173,10 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param array
+     */
     @Override
     public void receiveDoneOrder(ArrayList<Tile> array) {
         try {
@@ -155,6 +188,11 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param players
+     * @param winner
+     */
     @Override
     public void receiveFinalScore(ArrayList<Player> players, Player winner) {
         try {
@@ -167,6 +205,10 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         clientHandler.closeGame();
     }
 
+    /**
+     * todo
+     * @param player
+     */
     @Override
     public void receivePickedTiles(Player player) {
         try {
@@ -178,6 +220,10 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param player
+     */
     @Override
     public void receiveSelectedTiles(Player player) {
         try {
@@ -189,6 +235,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void receiveTimer() {
         try {
@@ -200,6 +249,10 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param s
+     */
     @Override
     public void receiveDisconnection(String s) {
         if (clientHandler != null) {
@@ -233,14 +286,23 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * @return the attribute nickname
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * @return the attribute clientHandler
+     */
     public Handlers getClientHandler() {
         return clientHandler;
     }
 
+    /**
+     * todo
+     */
     @Override
     public void selectionTurnError() {
         try {
@@ -250,6 +312,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void selectionError() {
         try {
@@ -259,6 +324,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void removingTurnError() {
         try {
@@ -268,6 +336,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void pickingTurnError() {
         try {
@@ -277,6 +348,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void orderingTurnError() {
         try {
@@ -286,6 +360,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void orderingError() {
         try {
@@ -295,6 +372,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void insertTurnError() {
         try {
@@ -304,15 +384,22 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void turnError() {
         try {
-            clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not your turn!"));
+            if(clientHandler != null)
+              clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not your turn!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void insertError() {
         try {
@@ -322,6 +409,9 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void chatError() {
         try {
@@ -331,11 +421,21 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * todo
+     * @param groupChat
+     */
     public void receiveChat(GroupChat groupChat) {
         clientHandler.sendChat(JSONConverterStoC.createJSONChat(groupChat.getPublisher(), groupChat.getToplayer(), groupChat.getMessage()));
     }
 
+    /**
+     * Sets the parameter clientHandler to the parameter passed
+     * @param clientHandler
+     */
     public void setClientHandler(Handlers clientHandler) {
         this.clientHandler = clientHandler;
     }
+
+
 }

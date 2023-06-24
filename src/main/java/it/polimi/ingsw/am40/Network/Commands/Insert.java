@@ -9,7 +9,17 @@ import java.io.IOException;
 import java.lang.invoke.TypeDescriptor;
 import java.util.ArrayList;
 
+/**
+ * todo
+ */
 public class Insert implements ICommand {
+
+    /**
+     * todo
+     * @param c
+     * @param comm
+     * @throws IOException
+     */
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (comm.size() != 1) {

@@ -6,19 +6,34 @@ import it.polimi.ingsw.am40.Network.VirtualView;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * todo
+ */
 public class GameController {
     Game game;
     Controller controller;
+
+    /**
+     * Contructor of the class, initializes the attributes game and controller to the parameters passed
+     * @param game
+     * @param controller
+     */
     public GameController(Game game, Controller controller) {
         this.game = game;
         this.controller = controller;
     }
 
-    public void selectTile(VirtualView v, Position p) {
-        if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
-            game.updatePickableTiles(p);
+    /**
+     * Checks if the name of the player in the virtualView passed is the active player;
+     * if so, updates the pickable tiles, if not sends an error to the virtualView
+     * @param virtualView
+     * @param position
+     */
+    public void selectTile(VirtualView virtualView, Position position) {
+        if (game.getCurrentPlayer().getNickname().equals(virtualView.getNickname())) {
+            game.updatePickableTiles(position);
         } else {
-            v.turnError();
+            virtualView.turnError();
         }
     }
 
@@ -70,6 +85,7 @@ public class GameController {
             game.getGroupChat().addMessage(name, message, from);
             for (VirtualView v: game.getObservers()) {
                 v.receiveChat(game.getGroupChat());
+
             }
         } else {
             for (Player p: game.getPlayers()) {
@@ -84,6 +100,7 @@ public class GameController {
                 }
             }
             for (VirtualView v: game.getObservers()) {
+
                 if (from.equals(v.getNickname())) {
                     v.chatError();
                 }
@@ -98,8 +115,7 @@ public class GameController {
             }
         }
     }
-    public void setController(Controller controller) {
-    }
+
 
     public void disconnectPlayer(String s) {
         for (Player p: game.getPlayers()) {
@@ -146,4 +162,9 @@ public class GameController {
         }
         game.notifyReconnection(s);
     }
+
+    public void setGame(Game game){
+        this.game = game;
+    }
+
 }

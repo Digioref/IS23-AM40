@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The class used to represent the GetCurrentScore command
+ */
 public class GetCurScore implements ICommand {
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {

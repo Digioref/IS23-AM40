@@ -687,4 +687,16 @@ public class Game implements IGame {
             }
         }
     }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public void setEnd(){
+        turn = TurnPhase.ENDGAME;
+    }
+
+    public void setEndToken(EndToken endToken){
+        this.endToken = endToken;
+    }
 }
