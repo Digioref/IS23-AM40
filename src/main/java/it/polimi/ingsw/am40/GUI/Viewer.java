@@ -783,7 +783,7 @@ public class Viewer extends Application {
 				LaunchClient.getClient().close();
 			}
 		});
-
+		primaryStage.show();
 
 	}
 
