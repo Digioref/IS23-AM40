@@ -6,6 +6,9 @@ import it.polimi.ingsw.am40.Controller.Lobby;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * todo
+ */
 public abstract class Handlers {
     public static final int NSUGGEST = 8;
     protected String nickname;
@@ -19,16 +22,9 @@ public abstract class Handlers {
     protected int nPingLost;
 //    protected ArrayList<String> commands;
 
-    /**
-     * TODO
-     * @return
-     */
-    public VirtualView getVirtualViewInstance() {
-        return this.virtualView;
-    }
 
     /**
-     * TODO
+     * Sets the attribute nickname to the parameter passed
      * @param nickname
      */
     public void setNickname(String nickname) {
@@ -36,16 +32,14 @@ public abstract class Handlers {
     }
 
     /**
-     * TODO
-     * @return
+     * @return the attribute nickname
      */
     public String getNickname() {
         return nickname;
     }
 
     /**
-     * TODO
-     * @return
+     * @return the attribute controller
      */
     public Controller getController() {
         return controller;
@@ -132,35 +126,83 @@ public abstract class Handlers {
         this.virtualView = v;
     }
 
-
+    /**
+     * Sets the attribute logphase to the parameter passed
+     * @param logphase
+     */
     public void setLogphase(LoggingPhase logphase) {
         this.logphase = logphase;
     }
 
+    /**
+     * @return the attribute logphase
+     */
     public LoggingPhase getLogphase() {
         return logphase;
     }
+
+    /**
+     * todo
+     * @param s
+     * @throws IOException
+     */
     public abstract void sendMessage(String s) throws IOException;
 
+    /**
+     * todo
+     * @param s
+     */
     public abstract void suggestNickname(String s);
 
 //    public ArrayList<String> getCommands() {
 //        return commands;
 //    }
 
+    /**
+     * todo
+     * @param at
+     * @param arr
+     */
     public abstract void executeCommand(ActionType at, ArrayList<Integer> arr);
 
+    /**
+     * todo
+     * @param message
+     * @param name
+     */
     public abstract void chat(String message, String name);
 
+    /**
+     * todo
+     */
     public abstract void getChat();
 
+    /**
+     * todo
+     * @return
+     */
     public MessageAdapter getMessAd() {
         return messAd;
     }
+
+    /**
+     * todo
+     * @param s
+     */
     public abstract void sendChat(String s);
 
+    /**
+     * todo
+     */
     public abstract void close();
+
+    /**
+     * todo
+     */
     public abstract void handlePong();
 
+    /**
+     * todo
+     */
     public abstract void closeGame();
 }

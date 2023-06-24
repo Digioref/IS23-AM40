@@ -8,6 +8,9 @@ import it.polimi.ingsw.am40.Network.ICommand;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The class representing the GetCommonGoals command
+ */
 public class GetCommGoals implements ICommand {
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {

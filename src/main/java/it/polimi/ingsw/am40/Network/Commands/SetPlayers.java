@@ -8,8 +8,17 @@ import it.polimi.ingsw.am40.Network.LoggingPhase;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * todo
+ */
 public class SetPlayers implements ICommand {
 
+    /**
+     * todo
+     * @param c
+     * @param comm
+     * @throws IOException
+     */
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
 //        c.setNumPlayers(Integer.parseInt(comm.get(0)));

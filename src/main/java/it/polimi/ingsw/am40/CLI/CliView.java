@@ -616,6 +616,10 @@ public class CliView implements View{
         LaunchClient.startConnection(choice, ip);
     }
 
+    /**
+     * Method to print that the player with the nickname passed has quitted the game
+     * @param nickname
+     */
     @Override
     public void quit(String nickname) {
         if (nickname != null) {
@@ -625,29 +629,48 @@ public class CliView implements View{
         }
     }
 
+    /**
+     * Method used to ask the first player with how many people he wants to play
+     */
     @Override
     public void setplayers() {
         printMessage("The number of players you want to play with: ");
     }
 
+
+    /**
+     * Prints "Waiting for the lobby..."
+     */
     @Override
     public void waitLobby() {
         printMessage("Waiting in the lobby.....");
     }
 
+    /**
+     * Prints the name already used (to be substituted) and some other alternatives
+     * @param to_be_replaced
+     * @param suggested
+     */
     @Override
-    public void showSuggestedNicknames(String s, ArrayList<String> array4) {
-        printMessage(s);
-        for (String t: array4) {
+    public void showSuggestedNicknames(String to_be_replaced, ArrayList<String> suggested) {
+        printMessage(to_be_replaced);
+        for (String t: suggested) {
             printMessage(t);
         }
     }
 
+    /**
+     * TODO
+     * @param error
+     */
     @Override
     public void showError(String error) {
         System.out.println(color.red() + error + color.rst());
     }
 
+    /**
+     * todo
+     */
     @Override
     public void showGame() {
         System.out.println(color.green() + "Game is being created" + color.rst());

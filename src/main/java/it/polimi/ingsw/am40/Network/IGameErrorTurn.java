@@ -1,5 +1,8 @@
 package it.polimi.ingsw.am40.Network;
 
+/**
+ * todo
+ */
 public interface IGameErrorTurn {
     public void selectionTurnError();
     public void selectionError();

@@ -15,6 +15,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * todo
+ */
 public class RMIClientHandler extends Handlers {
     private RMIServer server;
     private RMIClientInterface rmiClient;

@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * todo
+ */
 public class GameServer implements Runnable {
 
     private String hostName;
@@ -28,6 +31,9 @@ public class GameServer implements Runnable {
     private RMIServer rmiserver;
     private List<ClientHandler> clientHandlers;
 
+    /**
+     * todo
+     */
     public GameServer() {
         pool = Executors.newCachedThreadPool();
         lobby = new Lobby();
@@ -35,6 +41,9 @@ public class GameServer implements Runnable {
         close = false;
     }
 
+    /**
+     * @return the whole istance, if null creates a new one
+     */
     public static synchronized GameServer get() {
         if (instance == null) {
             instance = new GameServer();
@@ -42,6 +51,9 @@ public class GameServer implements Runnable {
         return instance;
     }
 
+    /**
+     * todo
+     */
     @Override
     public void run() {
         System.out.println("GameServer started on: " + portNumber);
@@ -70,6 +82,13 @@ public class GameServer implements Runnable {
         }
     }
 
+    /**
+     * todo
+     * @param port
+     * @param IPAddress
+     * @param hostName
+     * @throws IOException
+     */
     public void connect(int port, String IPAddress, String hostName) throws IOException {
         portNumber = port;
         this.hostName = hostName;
@@ -88,6 +107,10 @@ public class GameServer implements Runnable {
         System.out.println("GameServer listening on port " + portNumber);
     }
 
+    /**
+     * todo
+     * @throws IOException
+     */
     public void close() throws IOException {
         close = true;
         serverSocket.close();
@@ -100,10 +123,19 @@ public class GameServer implements Runnable {
             rmiserver.getClientHandlers().get(s).sendMessage(JSONConverterStoC.normalMessage("Quit"));
         }
     }
+
+    /**
+     * todo
+     * @param clientHandler
+     */
     public void shutdownHandler(ClientHandler clientHandler) {
         clientHandlers.remove(clientHandler);
     }
 
+    /**
+     * todo
+     * @return
+     */
     public List<ClientHandler> getClientHandlers() {
         return clientHandlers;
     }

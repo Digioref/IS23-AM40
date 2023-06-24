@@ -24,6 +24,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * todo
+ */
 public class RMIClient extends Client implements RMIClientInterface {
     private int WAIT_PING_2 = 6000;
     private BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
@@ -38,6 +41,11 @@ public class RMIClient extends Client implements RMIClientInterface {
     private Queue<String> message;
 
 
+    /**
+     * todo
+     * @param serverIp
+     * @throws RemoteException
+     */
     public RMIClient(String serverIp) throws RemoteException {
         super();
         stop = false;
@@ -48,6 +56,9 @@ public class RMIClient extends Client implements RMIClientInterface {
         message = new ArrayDeque<>();
     }
 
+    /**
+     * todo
+     */
     public void connect() {
         Registry registry;
         try {
@@ -96,7 +107,10 @@ public class RMIClient extends Client implements RMIClientInterface {
 
     }
 
-
+    /**
+     * todo
+     * @param s the message to be sent
+     */
     public void sendMessage(String s) {
         String[] command = s.split("\\s");
         JSONConverterCtoS jconv = new JSONConverterCtoS();
@@ -176,6 +190,9 @@ public class RMIClient extends Client implements RMIClientInterface {
         }
     }
 
+    /**
+     * todo
+     */
     public void startChat() {
         quitchat = false;
         inChat = true;
@@ -205,6 +222,10 @@ public class RMIClient extends Client implements RMIClientInterface {
         inChat =false;
         state.refresh();
     }
+
+    /**
+     * todo
+     */
     @Override
     public void close() {
         if (ping != null) {
@@ -229,6 +250,10 @@ public class RMIClient extends Client implements RMIClientInterface {
         }
     }
 
+    /**
+     * todo
+     * Method to
+     */
     @Override
     public void sendPong() {
         try {
@@ -238,6 +263,9 @@ public class RMIClient extends Client implements RMIClientInterface {
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void startPing() {
         Runnable task = () -> {
@@ -250,6 +278,9 @@ public class RMIClient extends Client implements RMIClientInterface {
         ping.scheduleAtFixedRate(task, WAIT_PING_2, WAIT_PING_2, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * todo
+     */
     private void startParsing(){
         parse= new Thread( ()-> {
             do{
@@ -269,6 +300,12 @@ public class RMIClient extends Client implements RMIClientInterface {
         parse.start();
     }
 
+
+    /**
+     * todo
+     * @param s
+     * @throws RemoteException
+     */
     @Override
     public void receive(String s) throws RemoteException {
         message.add(s);
@@ -282,6 +319,11 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
 
+    /**
+     * todo
+     * @param s
+     * @throws RemoteException
+     */
     @Override
     public void receiveNickname(String s) throws RemoteException {
         try {
@@ -291,6 +333,11 @@ public class RMIClient extends Client implements RMIClientInterface {
         }
     }
 
+    /**
+     * todo
+     * @param s
+     * @throws RemoteException
+     */
     @Override
     public void receiveChat(String s) throws RemoteException {
         JSONParser jsonParser = new JSONParser();
@@ -309,6 +356,10 @@ public class RMIClient extends Client implements RMIClientInterface {
         LaunchClient.getView().showChat(array1, array2, array3, nickname);
     }
 
+    /**
+     * todo
+     * @param command
+     */
     public void chat(String command) {
         try {
             stub.chat(nickname, command);
@@ -317,7 +368,9 @@ public class RMIClient extends Client implements RMIClientInterface {
         }
     }
 
-
+    /**
+     * @return the attribute nickname
+     */
     public String getNickname() {
         return nickname;
     }

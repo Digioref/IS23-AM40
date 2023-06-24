@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * todo
+ */
 public class MessageAdapter {
     private Map<String, ICommand> commands;
     private ParsingJSONManager pJsonm;

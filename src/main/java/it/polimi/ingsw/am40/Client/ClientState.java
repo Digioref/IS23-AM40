@@ -72,50 +72,92 @@ public class ClientState {
     }
 
     /**
-     * Saves the commongoals
+     * Saves the commongoals (passed parameter) in the attribute commongoals
      * @param commonGoals
      */
     public void saveCommonGoals(Map<Integer, Integer> commonGoals) {
         commongoals = commonGoals;
     }
 
+    /**
+     * Saves the personalgoals (passed parameter) in the attribute commongoals
+     * @param personalGoal
+     */
     public void savePersonalGoal(Map<String, String> personalGoal) {
         personalgoal = personalGoal;
     }
 
+    /**
+     * Saves the board (passed parameter) in the attribute board
+     * @param board_map
+     */
     public void saveBoard(Map<String, String> board_map) {
         board = board_map;
     }
 
+    /**
+     * Saves the bookshelf (parameter passed) in the attribute bookshelf
+     * @param bookshelf_map
+     */
     public void saveBookshelf(Map<String, String> bookshelf_map) {
         bookshelf = bookshelf_map;
     }
 
+    /**
+     * Saves the other bookshelves (parameter passed, other players bookshelves) in the attribute bookshelves
+     * @param bookshelves_map
+     */
     public void saveBookshelves(Map<String, Map<String, String>> bookshelves_map) {
         bookshelves = bookshelves_map;
     }
 
+    /**
+     * TODO
+     * @param pickabletiles_map
+     * @param arrayList
+     * @param boardsel_map
+     */
     public void savePickable(Map<String, String> pickabletiles_map, ArrayList<Position> arrayList, Map<String, String> boardsel_map) {
         pickabletiles = pickabletiles_map;
         alreadysel = arrayList;
         boardsel = boardsel_map;
     }
 
+    /**
+     * todo
+     * Saves the selected tiles
+     * @param selectedtiles_map
+     * @param selected
+     */
     public void saveSelectedTiles(Map<String, String> selectedtiles_map,ArrayList<ArrayList<String>> selected) {
         selectedtiles = selectedtiles_map;
         tileselected =  selected;
     }
 
+    /**
+     * TODO
+     * @param pickabletiles_map
+     * @param picked
+     */
     public void savePickedTiles(Map<String, String> pickabletiles_map,ArrayList<ArrayList<String>> picked) {
         pickedtiles = pickabletiles_map;
         tilespicked = picked;
     }
 
+    /**
+     * todo
+     * @param finalscores_map
+     * @param s
+     */
     public void saveFinalScores(Map<String, Integer> finalscores_map, String s) {
         finalscores = finalscores_map;
         winner = s;
     }
 
+    /**
+     * Sets the nickname (parameter passed) in the attribute nickname
+     * @param nickname
+     */
     public void saveNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -124,6 +166,10 @@ public class ClientState {
         this.receivers = receivers;
         this.messages = messages;
     }
+
+    /**
+     * TODO
+     */
     public void refresh() {
         if (currscore != null) {
             LaunchClient.getView().showCurrentScore(currscore);
@@ -169,10 +215,18 @@ public class ClientState {
 
     }
 
+    /**
+     * Sets the attribute selectedTiles to the parameter passed
+     * @param selectedtiles
+     */
     public void setSelectedtiles(Map<String, String> selectedtiles) {
         this.selectedtiles = selectedtiles;
     }
 
+    /**
+     * Sets the attribute selectedTiles to the parameter passed
+     * @param pickedtiles
+     */
     public void setPickedtiles(Map<String, String> pickedtiles) {
         this.pickedtiles = pickedtiles;
     }

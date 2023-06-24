@@ -28,7 +28,11 @@ public class ClientHandler extends Handlers implements Runnable {
     private ScheduledExecutorService sendPing;
     private ScheduledExecutorService waitPing;
 
-
+    /**
+     * TODO
+     * @param socket
+     * @param gameServer
+     */
     public ClientHandler(Socket socket, GameServer gameServer) {
         nPingLost = 0;
         stop = false;
@@ -46,17 +50,29 @@ public class ClientHandler extends Handlers implements Runnable {
         setLogphase(LoggingPhase.LOGGING);
     }
 
+    /**
+     * todo
+     * @param s
+     * @throws IOException
+     */
     public synchronized void sendMessage(String s) throws IOException {
         out.println(s);
         out.flush();
     }
 
 
-
+    /**
+     * todo
+     * @return
+     */
     public MessageAdapter getMessAd() {
         return messAd;
     }
 
+    /**
+     * todo
+     * @param s
+     */
     @Override
     public void sendChat(String s) {
         try {
@@ -66,6 +82,9 @@ public class ClientHandler extends Handlers implements Runnable {
         }
     }
 
+    /**
+     * todo
+     */
     @Override
     public void run() {
         try {
@@ -103,6 +122,9 @@ public class ClientHandler extends Handlers implements Runnable {
         }
     }
 
+    /**
+     * todo
+     */
     private void startPing() {
         if(sendPing != null)
             sendPing.shutdownNow();
@@ -115,6 +137,9 @@ public class ClientHandler extends Handlers implements Runnable {
         sendPing.scheduleAtFixedRate(task, 0, SEND_PING, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * todo
+     */
     private void ping() {
         try {
             sendMessage(JSONConverterStoC.createJSONPing());
@@ -134,6 +159,10 @@ public class ClientHandler extends Handlers implements Runnable {
         }
     }
 
+    /**
+     * todo
+     * @param nickname
+     */
     public void suggestNickname(String nickname) {
         Random random = new Random();
         ArrayList<String> arr = new ArrayList<>();
@@ -151,7 +180,11 @@ public class ClientHandler extends Handlers implements Runnable {
     }
 
 
-
+    /**
+     * todo
+     * @param at
+     * @param arr
+     */
     public void executeCommand(ActionType at, ArrayList<Integer> arr) {
         if (logphase.equals(LoggingPhase.INGAME)) {
             switch(at) {
@@ -182,16 +215,28 @@ public class ClientHandler extends Handlers implements Runnable {
         }
     }
 
+    /**
+     * todo
+     * @param message
+     * @param name
+     */
     @Override
     public void chat(String message, String name) {
         controller.getGameController().chat(name, message, nickname);
     }
 
+
+    /**
+     * todo
+     */
     @Override
     public void getChat() {
         controller.getGameController().getChat(nickname);
     }
 
+    /**
+     * todo
+     */
     public void close() {
         nPingLost = 0;
         waitPing.shutdown();
@@ -219,15 +264,24 @@ public class ClientHandler extends Handlers implements Runnable {
 //        }
     }
 
+    /**
+     * todo
+     */
     public ClientHandler(){
     }
 
+    /**
+     * todo
+     */
     @Override
     public synchronized void handlePong() {
         waitPing.shutdownNow();
         nPingLost = 0;
     }
 
+    /**
+     * todo
+     */
     @Override
     public void closeGame() {
         close();
@@ -236,6 +290,10 @@ public class ClientHandler extends Handlers implements Runnable {
         lobby.closeGame(this);
     }
 
+    /**
+     * Sets the attribute out to the parameter passed
+     * @param out
+     */
     public void setOut(PrintWriter out){
         this.out = out;
     }
