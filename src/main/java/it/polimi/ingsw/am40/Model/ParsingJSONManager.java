@@ -14,6 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * It is a JSON manager, it manages all the JSON files used to initialize the board, the personal goals, the bag and the game commands
+ */
 public class ParsingJSONManager {
 
     /**
@@ -45,6 +48,12 @@ public class ParsingJSONManager {
         }
     }
 
+    /**
+     * It takes from the JSON file the structure of the personal goal, according to the parameter k, and initialize the parameter pg
+     * with the information in the file
+     * @param pg the personal goal to be initialized
+     * @param k the number of the personal goal chosen
+     */
     public void createPersonalGoals (PersonalGoal pg, int k) {
         JSONParser jsonParser = new JSONParser();
         try {
@@ -96,6 +105,10 @@ public class ParsingJSONManager {
         }
     }
 
+    /**
+     * It initializes the bag with the correct number of tiles of each color and type
+     * @param b the bag
+     */
     public void createTiles(Bag b) {
         JSONParser jsonParser = new JSONParser();
         try {
@@ -155,6 +168,10 @@ public class ParsingJSONManager {
         }
     }
 
+    /**
+     * It puts in a map the name of the commands and the corresponding interface representing that command
+     * @param map a map which maps a command to the corresponding interface
+     */
     public void configureCommands(Map<String, ICommand> map) {
         JSONParser jsonParser = new JSONParser();
         try {
@@ -237,6 +254,10 @@ public class ParsingJSONManager {
         }
     }
 
+    /**
+     * It puts in an array the name sof the commands
+     * @param arr the array to be filled
+     */
     public static void commands(ArrayList<String> arr) {
         JSONParser jsonParser = new JSONParser();
         try {

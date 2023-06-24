@@ -37,6 +37,10 @@ public class CommonGoal {
         this.commgoaltok = new CommonGoalToken(numPlayer);
     }
 
+    /**
+     * It returns a number identifying the common goal
+     * @return the number identifying the common goal
+     */
     public int getNum() {
         return num;
     }
@@ -582,6 +586,10 @@ public class CommonGoal {
         return 0;
     }
 
+    /**
+     * It returns the token related to the common goal, so the remaining score achievable of the common goal
+     * @return the score token of the common goal
+     */
     public CommonGoalToken getCommgoaltok() {
         return commgoaltok;
     }

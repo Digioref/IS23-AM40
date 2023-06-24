@@ -30,6 +30,13 @@ public class Tile {
         this.type = type;
         this.pos = new Position(DEFAULTINVALIDPOSITION, DEFAULTINVALIDPOSITION);
     }
+
+    /**
+     * Constructor that creates a tile defining its color, type and also position
+     * @param color color of the tile
+     * @param type type of the tile
+     * @param pos position of the tile, in the board or in the bookshelf
+     */
     public Tile(TileColor color, TileType type, Position pos){
         this.color = color;
         this.type = type;
@@ -87,10 +94,18 @@ public class Tile {
         this.type = type;
     }
 
+    /**
+     * It returns the position of the tile
+     * @return the position of the tile
+     */
     public Position getPos() {
         return pos;
     }
 
+    /**
+     * It sets the position of the tile to the provided one
+     * @param pos a position
+     */
     public void setPos(Position pos) {
         this.pos = pos;
     }
@@ -141,6 +156,10 @@ public class Tile {
 //        else return col.blackBg() + "   " + col.rst();
 //    }
 
+    /**
+     * It returns the tile in a string format, specifying the color, the type and the position of the tile
+     * @return a string representing the tile
+     */
     @Override
     public String toString() {
         return "Tile { " +

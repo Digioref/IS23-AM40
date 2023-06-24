@@ -101,6 +101,10 @@ public class Column {
         return column.size();
     }
 
+    /**
+     * Returns the space available in the column
+     * @return the number of free positions in the column
+     */
     public int getFreeSpace(){
         return DIM- column.size();
     }
@@ -116,6 +120,10 @@ public class Column {
         return null;
     }
 
+    /**
+     * Returns the column as a string with the tiles in it
+     * @return a string representing the column
+     */
     @Override
     public String toString() {
         return "Column{" +
@@ -124,6 +132,10 @@ public class Column {
                 '}';
     }
 
+    /**
+     * Returns true if the column is empty, false otherwise
+     * @return true if the column is empty, it has no tiles in it
+     */
     public boolean isEmpty() {
         return column.isEmpty();
     }

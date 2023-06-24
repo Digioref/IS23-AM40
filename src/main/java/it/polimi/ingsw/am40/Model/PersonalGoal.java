@@ -174,6 +174,10 @@ public class PersonalGoal {
         return "PersonalGoal";
     }
 
+    /**
+     * It returns the number identifying the personal goal
+     * @return the number representing the personal goal
+     */
     public int getKey() {
         return key;
     }

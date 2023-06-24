@@ -15,6 +15,9 @@ public class Position {
      */
     private int y;
 
+    /**
+     * Default constructor
+     */
     public Position(){
 
     }
@@ -74,6 +77,10 @@ public class Position {
         this.y = y;
     }
 
+    /**
+     * It returns the key representing this position
+     * @return the key of the position
+     */
     public String getKey() {
         return buildKey(this.x, this.y);
     }
@@ -85,6 +92,10 @@ public class Position {
         return ("(" + x + "," + y + ")");
     }
 
+    /**
+     * It converts a key, in the format of a string, to a position
+     * @param s a string, representing a key of a position
+     */
     public void convertKey(String s) {
         ArrayList<Integer> arr = new ArrayList<>();
         for (int i = 0; i< s.length(); i++) {
@@ -129,6 +140,10 @@ public class Position {
         this.y= pos.getY();
     }
 
+    /**
+     * It returns the position in a string format
+     * @return a string representing the position
+     */
     @Override
     public String toString() {
         return "(x=" + x + ",y=" + y + ")";
