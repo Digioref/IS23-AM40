@@ -59,6 +59,8 @@ public class Resources {
 	private static final String titleFile = "Title 2000x618px.png";
 	private static final String scoringFile []= {"scoring_2.jpg","scoring_4.jpg","scoring_6.jpg","scoring_8.jpg"};
 
+	private static final String endGameToken = "end game.jpg";
+
 
 	private static Image loadImage(String imageFile){
 //		System.out.println(imageFile);
@@ -245,5 +247,9 @@ public class Resources {
 				break;
 		}
 		return loadImage(imagefile);
+	}
+
+	public static Image endToken(){
+		return loadImage(endGameToken);
 	}
 }

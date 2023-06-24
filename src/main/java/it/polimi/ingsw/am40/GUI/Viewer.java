@@ -2,14 +2,12 @@ package it.polimi.ingsw.am40.GUI;
 
 import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
-import it.polimi.ingsw.am40.Model.GroupChat;
 import it.polimi.ingsw.am40.Model.Position;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -25,10 +23,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -42,14 +39,13 @@ import java.util.regex.Pattern;
 
 public class Viewer extends Application {
 	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
-	private final ArrayList<Arrow> arrowDownList = new ArrayList<>();
+	private final ArrayList<Arrow> arrowDownList = new ArrayList<Arrow>();
 	private static final int ARROWS_DOWN = 5;
 	private String connectionType;
 	private static Viewer gui;
 	private Stage primaryStage;
 	private Scene scene;
 	private Pane pane;
-	private final RedCross redCross = new RedCross();
 
 	private AnchorPane gameBoard;
 	private String nickname;
@@ -67,17 +63,14 @@ public class Viewer extends Application {
 	private Alert errorAlert;
 	@FXML
 	private Button ChatButton;
-	private boolean isVisible;
-	private boolean isNew;
-	private VBox chatContainer = new VBox();
+
 	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
-	private Circle dotIndicator;
 
-	private VBox messages;
+	private ArrayList<Integer> currentToken;
 
-	private ArrayList<ScoreToken> scoringTokenOne;
-	private ArrayList<ScoreToken> scoringTokenTwo;
-	private int[] order;
+	private ArrayList<ScoreToken> scoringToken;
+
+	private ImageView endToken;
 
 
 
@@ -119,10 +112,8 @@ public class Viewer extends Application {
 //		alert.getDialogPane().getStylesheets().add("Alert.css");
 //		errorAlert.getDialogPane().getStylesheets().add("Error.css");
 		primaryStage.setResizable(true);
-		scoringTokenOne = new ArrayList<>();
-		scoringTokenTwo = new ArrayList<>();
-		gui = this;
 
+		gui = this;
 //
 //		// -----------  setup page  -----------
 //		Pane rootBox = new Pane();
@@ -579,147 +570,6 @@ public class Viewer extends Application {
 		viewController.fireEvent(new CustomEvent(CustomEvent.BOARD_TILE_PICKABLE, x, y));
 	}
 	*/
-
-	public void newMessage(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String receiver) {
-		if (nickname.equals(receiver)) {
-			if (!isVisible) {
-				dotIndicator.setVisible(true);
-			}
-			NewMessage t = new NewMessage(array1.get(array1.size()-1), array2.get(array2.size()-1), array3.get(array3.size()-1));
-			messages.getChildren().add(t);
-		}
-	}
-
-	private void createChatContainer() {
-
-		isVisible = false;
-		ChatButton = new Button();
-		ChatButton.getStylesheets().add("Button.css");
-		ChatButton.setFont(Font.font(20));
-		ChatButton.setVisible(true);
-		ChatButton.setText("CHAT");
-
-		gameBoard.getChildren().add(ChatButton);
-		ChatButton.setOnAction(e -> showChat(ChatButton));
-
-		// Red dot indicator for unread messages
-		dotIndicator = new Circle(5);
-		dotIndicator.setFill(Color.RED);
-		dotIndicator.setVisible(true);
-
-		StackPane chatButtonPane = new StackPane();
-		chatButtonPane.getChildren().addAll(ChatButton, dotIndicator);
-		StackPane.setAlignment(dotIndicator, Pos.TOP_RIGHT);
-		AnchorPane.setLeftAnchor(chatButtonPane, gameBoard.getWidth()*(1340/1536.0));
-		AnchorPane.setTopAnchor(chatButtonPane, gameBoard.getHeight()*(65/864.0));
-
-		gameBoard.getChildren().add(chatButtonPane);
-
-		chatContainer.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-padding: 10px;");
-		chatContainer.setMaxHeight(200);
-		chatContainer.setVisible(isVisible);
-
-
-		// scrollpane to see the messages
-		ScrollPane chatScrollPane = new ScrollPane();
-		chatScrollPane.setFitToWidth(true);
-		chatScrollPane.setFitToHeight(true);
-		chatContainer.getChildren().add(chatScrollPane);
-
-		messages = new VBox();
-		//messages.setSpacing(10);
-		chatScrollPane.setContent(messages);
-
-		// drop to select the receiver
-		ComboBox<String> selectReceivers = new ComboBox<>();
-		ArrayList<String> sendTo = new ArrayList<>();
-		sendTo.add("everyOne");
-		sendTo.add("pippo");
-		sendTo.add("marco");
-		selectReceivers.getItems().addAll(sendTo);
-		selectReceivers.setValue("everyOne");
-		chatContainer.getChildren().add(selectReceivers);
-
-		// text field to write the message
-		TextField messageInput = new TextField();
-		Button sendButton = new Button("Send");
-		sendButton.getStylesheets().add("Button.css");
-
-		HBox inputBox = new HBox(messageInput, sendButton);
-		inputBox.setSpacing(10);
-		inputBox.setAlignment(Pos.CENTER_RIGHT);
-		chatContainer.getChildren().add(inputBox);
-
-		// update the full message list, I can add one message at a time if I am notified when I recive one
-		GroupChat chatClass = new GroupChat();
-		ArrayList<String> messagesList = chatClass.getMessage();
-		ArrayList<String> sendersList = chatClass.getPublisher();
-		ArrayList<String> receiversList = chatClass.getToplayer();
-		for (int i = 0; i < messagesList.size(); i++) {
-			String sender = sendersList.get(i);
-			String m = messagesList.get(i);
-			String receiver = receiversList.get(i);
-			NewMessage newMessage = new NewMessage(sender, receiver, m);
-			messages.getChildren().add(newMessage);
-
-		}
-
-		sendButton.setOnAction(e -> {
-			String sender = nickname;
-			String message = messageInput.getText();
-			String receiver = selectReceivers.getValue();
-
-			if (!message.isEmpty()) {
-				NewMessage newMessage = new NewMessage(sender, receiver, message);
-				messages.getChildren().add(newMessage);
-				messageInput.clear();
-
-				chatScrollPane.setVvalue(1.0);
-
-			}
-		});
-
-
-		// test, this will be automatic
-		NewMessage newMessage = new NewMessage("fil", "marc","funziona");
-		messages.getChildren().add(newMessage);
-
-		newMessage = new NewMessage("marc", "fil","bravo!");
-		messages.getChildren().add(newMessage);
-
-		// Add the chat container to the main pane
-		gameBoard.getChildren().add(chatContainer);
-
-		chatContainer.setTranslateX(100);
-		chatContainer.setTranslateY(100);
-
-	}
-
-	private class NewMessage extends HBox {
-		public NewMessage(String from, String to, String message) {
-			Label senderLabel = new Label("from " + from + " to " + to + ": ");
-			if (from == null || from.equals(nickname)) {
-				senderLabel.setStyle("-fx-text-fill: red;");
-			}
-			Label messageLabel = new Label(message);
-			messageLabel.setWrapText(true);
-			//messageLabel.setMaxWidth(100);
-
-			getChildren().addAll(senderLabel, messageLabel);
-		}
-	}
-
-	private void showChat(Button button) {
-		dotIndicator.setVisible(false);
-		isVisible = !isVisible;
-		chatContainer.setVisible(isVisible);
-//		if (isVisible) {
-//			button.setText("Hide chat");
-//		} else {
-//			button.setText("Show chat");
-//		}
-	}
-
 	public void chooseConnection() {
 		pane = new Pane();
 		newScene(pane);
@@ -895,6 +745,7 @@ public class Viewer extends Application {
 		AnchorPane.setLeftAnchor(commandBoard, gameBoard.getWidth() * Metrics.d_x_comb);
 		//commandBoard.relocate(primaryStage.getWidth()*Metrics.d_x_comb, primaryStage.getHeight()*Metrics.d_y_comb);
 		gameBoard.getChildren().add(commandBoard);
+		setEndToken();
 
 		System.out.println("PRIMARYSTAGE W: " + primaryStage.getWidth() + " H: "+primaryStage.getHeight());
 		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight(), primaryStage);
@@ -905,7 +756,12 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		gameBoard.getChildren().add(bookshelf);
 
-		createChatContainer();
+		/*
+		ChatButton = new Button();
+		ChatButton.setVisible(true);
+		gameBoard.getChildren().add(ChatButton);
+		ChatButton.relocate(1350, 50);
+		*/
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
@@ -921,12 +777,8 @@ public class Viewer extends Application {
 				for (int j = 0; j < commandBoard.getNextTilePos(); j++) {
 					s += " " + commandBoard.getPickupOrder()[j];
 				}
-				if (commandBoard.checkSequence()) {
-					LaunchClient.getClient().sendMessage(s);
-					handleArrowDown(event, ad.getIndex());
-				} else {
-					showError("Two numbers in the order are the same!");
-				}
+				LaunchClient.getClient().sendMessage(s);
+				handleArrowDown(event, ad.getIndex());
 			});
 			arrowDownList.add(arrowDown);
 			gameBoard.getChildren().add(arrowDown);
@@ -936,17 +788,10 @@ public class Viewer extends Application {
 		arrowRight.setVisible(false);
 		AnchorPane.setTopAnchor(arrowRight, gameBoard.getHeight()  * 0.0451);
 		AnchorPane.setLeftAnchor(arrowRight, gameBoard.getWidth() * 0.601);
-
-
 		//arrowRight.relocate(primaryStage.getWidth()*Metrics.d_x_comb-110, 35);
 		arrowRight.setOnMouseClicked(event -> {
 			LaunchClient.getClient().sendMessage("pick");
 			arrowRight.setVisible(false);
-			redCross.setVisible(false);
-			for (String s: board.getTiles().keySet()) {
-				Tile t = (Tile) board.getTiles().get(s);
-				t.setPickable(false);
-			}
 
 			int col = 0;
 			for (Arrow a : arrowDownList) {
@@ -957,18 +802,6 @@ public class Viewer extends Application {
 		});
 		gameBoard.getChildren().add(arrowRight);
 
-		redCross.setSize(gameBoard.getWidth() *Metrics.ARROW_RIGHT_WIDTH*0.8, gameBoard.getHeight()* Metrics.ARROW_RIGHT_HEIGHT*0.8);
-		redCross.setVisible(false);
-		AnchorPane.setTopAnchor(redCross, gameBoard.getHeight()  * 0.5);
-		AnchorPane.setLeftAnchor(redCross, gameBoard.getWidth() * 0.580);
-		redCross.setOnMouseClicked(event -> {
-			board.clearSelected();
-			LaunchClient.getClient().sendMessage("remove");
-			redCross.setVisible(false);
-			arrowRight.setVisible(false);
-		});
-		gameBoard.getChildren().add(redCross);
-
 	}
 	private void handleEvent() {
 		scene.addEventFilter(CustomEvent.TILE_SELECTED, event -> {
@@ -978,7 +811,6 @@ public class Viewer extends Application {
 			int y = (int) obj.getPosition().getY();
 			board.select(x, y);
 			if (!flag) {
-				redCross.setVisible(!board.isSelectedEmpty());
 				arrowRight.setVisible(!board.isSelectedEmpty());
 				LaunchClient.getClient().sendMessage("select " + x + " " + y);
 			}
@@ -992,8 +824,10 @@ public class Viewer extends Application {
 
 	public void setCommonGoal(Map<Integer, Integer> map) {
 		ArrayList<Integer> arr = new ArrayList<>();
+		currentToken = new ArrayList<>();
 		for (Integer i: map.keySet()) {
 			arr.add(i);
+			currentToken.add(map.get(i));
 		}
 		c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
 		c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
@@ -1006,42 +840,19 @@ public class Viewer extends Application {
 		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
 		gameBoard.getChildren().add(c1);
 		gameBoard.getChildren().add(c2);
-		setOrder();
-//		System.out.println("qui1");
-		setToken(1);
-//		System.out.println("qui2");
-		setToken(2);
-//		System.out.println("qui3");
+		setToken();
 	}
-	private void setOrder(){
-		switch(numPlayers){
-			case(2):
-				order = new int[]{1, 2};
-				break;
-			case(3):
-				order = new int[]{1,3,2};
-				break;
-			case(4):
-				order = new int[]{4,1,3,2};
-				break;
-		}
-	}
-	private void setToken(int obj){
-		if(obj==1){
-			for(int i=0; i<numPlayers; i++){
-				scoringTokenOne.add(new ScoreToken(order[i],obj,primaryStage));
-				gameBoard.getChildren().add(scoringTokenOne.get(i));
-			}
-		}
-		else {
-			for(int i=0; i<numPlayers; i++){
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				scoringTokenTwo.add(new ScoreToken(order[i],obj,primaryStage));
-				gameBoard.getChildren().add(scoringTokenTwo.get(i));
 
-			}
+	private void setToken(){
+		scoringToken = new ArrayList<>();
+		for(int i = 0; i<currentToken.size(); i++){
+			scoringToken.add(new ScoreToken(currentToken.get(i),primaryStage));
+			AnchorPane.setLeftAnchor(scoringToken.get(i),7.17*Metrics.d_x_comm*gameBoard.getWidth());
+			AnchorPane.setTopAnchor(scoringToken.get(i),(i*(210.0/864) + Metrics.d_y_commToken)*gameBoard.getHeight());
+			gameBoard.getChildren().add(scoringToken.get(i));
 		}
 	}
+
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
 		p = new PersonalGoal(number, primaryStage);
@@ -1056,7 +867,6 @@ public class Viewer extends Application {
 			board = new Board(primaryStage);
 			AnchorPane.setTopAnchor(board, gameBoard.getHeight() * Metrics.d_y_board );
 			AnchorPane.setLeftAnchor(board, gameBoard.getWidth() * Metrics.d_x_board);
-
 			//board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
 			gameBoard.getChildren().add(board);
 		}
@@ -1122,6 +932,21 @@ public class Viewer extends Application {
 		}
 	}
 
+	public void setEndToken(){
+		endToken = new ImageView(Resources.endToken());
+		endToken.setPreserveRatio(true);
+		endToken.setFitWidth(0.3*Metrics.dim_x_comm*primaryStage.getWidth());
+		endToken.setFitHeight(0.3*Metrics.dim_y_comm*primaryStage.getHeight());
+		// Rotate the ImageView by 10 degrees
+		double rotationAngle = 10.0;
+		Rotate rotate = new Rotate(rotationAngle, endToken.getFitWidth() / 2, endToken.getFitHeight() / 2);
+		endToken.getTransforms().add(rotate);
+		AnchorPane.setLeftAnchor(endToken,Metrics.d_x_endToken*gameBoard.getWidth());
+		AnchorPane.setTopAnchor(endToken,Metrics.d_y_endToken*gameBoard.getHeight());
+		gameBoard.getChildren().add(endToken);
+
+	}
+
 	public void updateBookshelves(Map<String, Map<String, String>> map) {
 		if (bookshelves.size() == 0) {
 			int j = 0;
@@ -1164,7 +989,7 @@ public class Viewer extends Application {
 						if (m.get("(" + j + "," + k + ")").equals("NOCOLOR")) {
 							bookshelves.get(i).modifyDepth(j);
 						} else {
-//							System.out.println();
+							System.out.println();
 							nodelist.add(new Tile(m.get("(" + j + "," + k + ")"), primaryStage));
 							bookshelves.get(i).update(nodelist, j);
 							System.out.println(j + " --- "+ k);
@@ -1176,6 +1001,7 @@ public class Viewer extends Application {
 			}
 		}
 	}
+
 
 }
 
