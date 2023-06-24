@@ -6,7 +6,7 @@ public class Launcher {
 
     /**
      * Launcher class to open the app
-     * @param args
+     * @param args -> args from the command line
      * @throws IOException
      * @throws InterruptedException
      */

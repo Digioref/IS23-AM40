@@ -2,12 +2,14 @@ package it.polimi.ingsw.am40.GUI;
 
 import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
+import it.polimi.ingsw.am40.Model.GroupChat;
 import it.polimi.ingsw.am40.Model.Position;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -23,6 +25,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
@@ -39,13 +43,14 @@ import java.util.regex.Pattern;
 
 public class Viewer extends Application {
 	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
-	private final ArrayList<Arrow> arrowDownList = new ArrayList<Arrow>();
+	private final ArrayList<Arrow> arrowDownList = new ArrayList<>();
 	private static final int ARROWS_DOWN = 5;
 	private String connectionType;
 	private static Viewer gui;
 	private Stage primaryStage;
 	private Scene scene;
 	private Pane pane;
+	private final RedCross redCross = new RedCross();
 
 	private AnchorPane gameBoard;
 	private String nickname;
@@ -63,8 +68,13 @@ public class Viewer extends Application {
 	private Alert errorAlert;
 	@FXML
 	private Button ChatButton;
-
+	private boolean isVisible;
+	private boolean isNew;
+	private VBox chatContainer = new VBox();
 	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
+	private Circle dotIndicator;
+
+	private VBox messages;
 
 	private ArrayList<Integer> currentToken;
 
@@ -570,6 +580,147 @@ public class Viewer extends Application {
 		viewController.fireEvent(new CustomEvent(CustomEvent.BOARD_TILE_PICKABLE, x, y));
 	}
 	*/
+
+	public void newMessage(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String receiver) {
+		if (nickname.equals(receiver)) {
+			if (!isVisible) {
+				dotIndicator.setVisible(true);
+			}
+			NewMessage t = new NewMessage(array1.get(array1.size()-1), array2.get(array2.size()-1), array3.get(array3.size()-1));
+			messages.getChildren().add(t);
+		}
+	}
+
+	private void createChatContainer() {
+
+		isVisible = false;
+		ChatButton = new Button();
+		ChatButton.getStylesheets().add("Button.css");
+		ChatButton.setFont(Font.font(20));
+		ChatButton.setVisible(true);
+		ChatButton.setText("CHAT");
+
+		gameBoard.getChildren().add(ChatButton);
+		ChatButton.setOnAction(e -> showChat(ChatButton));
+
+		// Red dot indicator for unread messages
+		dotIndicator = new Circle(5);
+		dotIndicator.setFill(Color.RED);
+		dotIndicator.setVisible(true);
+
+		StackPane chatButtonPane = new StackPane();
+		chatButtonPane.getChildren().addAll(ChatButton, dotIndicator);
+		StackPane.setAlignment(dotIndicator, Pos.TOP_RIGHT);
+		AnchorPane.setLeftAnchor(chatButtonPane, gameBoard.getWidth()*(1340/1536.0));
+		AnchorPane.setTopAnchor(chatButtonPane, gameBoard.getHeight()*(65/864.0));
+
+		gameBoard.getChildren().add(chatButtonPane);
+
+		chatContainer.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-padding: 10px;");
+		chatContainer.setMaxHeight(200);
+		chatContainer.setVisible(isVisible);
+
+
+		// scrollpane to see the messages
+		ScrollPane chatScrollPane = new ScrollPane();
+		chatScrollPane.setFitToWidth(true);
+		chatScrollPane.setFitToHeight(true);
+		chatContainer.getChildren().add(chatScrollPane);
+
+		messages = new VBox();
+		//messages.setSpacing(10);
+		chatScrollPane.setContent(messages);
+
+		// drop to select the receiver
+		ComboBox<String> selectReceivers = new ComboBox<>();
+		ArrayList<String> sendTo = new ArrayList<>();
+		sendTo.add("everyOne");
+		sendTo.add("pippo");
+		sendTo.add("marco");
+		selectReceivers.getItems().addAll(sendTo);
+		selectReceivers.setValue("everyOne");
+		chatContainer.getChildren().add(selectReceivers);
+
+		// text field to write the message
+		TextField messageInput = new TextField();
+		Button sendButton = new Button("Send");
+		sendButton.getStylesheets().add("Button.css");
+
+		HBox inputBox = new HBox(messageInput, sendButton);
+		inputBox.setSpacing(10);
+		inputBox.setAlignment(Pos.CENTER_RIGHT);
+		chatContainer.getChildren().add(inputBox);
+
+		// update the full message list, I can add one message at a time if I am notified when I recive one
+		GroupChat chatClass = new GroupChat();
+		ArrayList<String> messagesList = chatClass.getMessage();
+		ArrayList<String> sendersList = chatClass.getPublisher();
+		ArrayList<String> receiversList = chatClass.getToplayer();
+		for (int i = 0; i < messagesList.size(); i++) {
+			String sender = sendersList.get(i);
+			String m = messagesList.get(i);
+			String receiver = receiversList.get(i);
+			NewMessage newMessage = new NewMessage(sender, receiver, m);
+			messages.getChildren().add(newMessage);
+
+		}
+
+		sendButton.setOnAction(e -> {
+			String sender = nickname;
+			String message = messageInput.getText();
+			String receiver = selectReceivers.getValue();
+
+			if (!message.isEmpty()) {
+				NewMessage newMessage = new NewMessage(sender, receiver, message);
+				messages.getChildren().add(newMessage);
+				messageInput.clear();
+
+				chatScrollPane.setVvalue(1.0);
+
+			}
+		});
+
+
+		// test, this will be automatic
+		NewMessage newMessage = new NewMessage("fil", "marc","funziona");
+		messages.getChildren().add(newMessage);
+
+		newMessage = new NewMessage("marc", "fil","bravo!");
+		messages.getChildren().add(newMessage);
+
+		// Add the chat container to the main pane
+		gameBoard.getChildren().add(chatContainer);
+
+		chatContainer.setTranslateX(100);
+		chatContainer.setTranslateY(100);
+
+	}
+
+	private class NewMessage extends HBox {
+		public NewMessage(String from, String to, String message) {
+			Label senderLabel = new Label("from " + from + " to " + to + ": ");
+			if (from == null || from.equals(nickname)) {
+				senderLabel.setStyle("-fx-text-fill: red;");
+			}
+			Label messageLabel = new Label(message);
+			messageLabel.setWrapText(true);
+			//messageLabel.setMaxWidth(100);
+
+			getChildren().addAll(senderLabel, messageLabel);
+		}
+	}
+
+	private void showChat(Button button) {
+		dotIndicator.setVisible(false);
+		isVisible = !isVisible;
+		chatContainer.setVisible(isVisible);
+//		if (isVisible) {
+//			button.setText("Hide chat");
+//		} else {
+//			button.setText("Show chat");
+//		}
+	}
+
 	public void chooseConnection() {
 		pane = new Pane();
 		newScene(pane);
@@ -756,12 +907,7 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		gameBoard.getChildren().add(bookshelf);
 
-		/*
-		ChatButton = new Button();
-		ChatButton.setVisible(true);
-		gameBoard.getChildren().add(ChatButton);
-		ChatButton.relocate(1350, 50);
-		*/
+		createChatContainer();
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
@@ -777,8 +923,12 @@ public class Viewer extends Application {
 				for (int j = 0; j < commandBoard.getNextTilePos(); j++) {
 					s += " " + commandBoard.getPickupOrder()[j];
 				}
-				LaunchClient.getClient().sendMessage(s);
-				handleArrowDown(event, ad.getIndex());
+				if (commandBoard.checkSequence()) {
+					LaunchClient.getClient().sendMessage(s);
+					handleArrowDown(event, ad.getIndex());
+				} else {
+					showError("Two numbers in the order are the same!");
+				}
 			});
 			arrowDownList.add(arrowDown);
 			gameBoard.getChildren().add(arrowDown);
@@ -788,10 +938,17 @@ public class Viewer extends Application {
 		arrowRight.setVisible(false);
 		AnchorPane.setTopAnchor(arrowRight, gameBoard.getHeight()  * 0.0451);
 		AnchorPane.setLeftAnchor(arrowRight, gameBoard.getWidth() * 0.601);
+
+
 		//arrowRight.relocate(primaryStage.getWidth()*Metrics.d_x_comb-110, 35);
 		arrowRight.setOnMouseClicked(event -> {
 			LaunchClient.getClient().sendMessage("pick");
 			arrowRight.setVisible(false);
+			redCross.setVisible(false);
+			for (String s: board.getTiles().keySet()) {
+				Tile t = (Tile) board.getTiles().get(s);
+				t.setPickable(false);
+			}
 
 			int col = 0;
 			for (Arrow a : arrowDownList) {
@@ -802,6 +959,18 @@ public class Viewer extends Application {
 		});
 		gameBoard.getChildren().add(arrowRight);
 
+		redCross.setSize(gameBoard.getWidth() *Metrics.ARROW_RIGHT_WIDTH*0.8, gameBoard.getHeight()* Metrics.ARROW_RIGHT_HEIGHT*0.8);
+		redCross.setVisible(false);
+		AnchorPane.setTopAnchor(redCross, gameBoard.getHeight()  * 0.5);
+		AnchorPane.setLeftAnchor(redCross, gameBoard.getWidth() * 0.580);
+		redCross.setOnMouseClicked(event -> {
+			board.clearSelected();
+			LaunchClient.getClient().sendMessage("remove");
+			redCross.setVisible(false);
+			arrowRight.setVisible(false);
+		});
+		gameBoard.getChildren().add(redCross);
+
 	}
 	private void handleEvent() {
 		scene.addEventFilter(CustomEvent.TILE_SELECTED, event -> {
@@ -811,6 +980,7 @@ public class Viewer extends Application {
 			int y = (int) obj.getPosition().getY();
 			board.select(x, y);
 			if (!flag) {
+				redCross.setVisible(!board.isSelectedEmpty());
 				arrowRight.setVisible(!board.isSelectedEmpty());
 				LaunchClient.getClient().sendMessage("select " + x + " " + y);
 			}
@@ -989,7 +1159,7 @@ public class Viewer extends Application {
 						if (m.get("(" + j + "," + k + ")").equals("NOCOLOR")) {
 							bookshelves.get(i).modifyDepth(j);
 						} else {
-							System.out.println();
+//							System.out.println();
 							nodelist.add(new Tile(m.get("(" + j + "," + k + ")"), primaryStage));
 							bookshelves.get(i).update(nodelist, j);
 							System.out.println(j + " --- "+ k);

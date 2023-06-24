@@ -21,6 +21,11 @@ public class LaunchServer {
     private static String IPAddress;
     private static int portNumber;
 
+    /**
+     * TODO
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
 //        System.out.println("Server started!");
         if (args.length == 2) {
@@ -63,38 +68,45 @@ public class LaunchServer {
     }
 
 
-
+    /**
+     * TODO
+     * @return
+     */
     public static int ReadPortFromJSON() {
-        JSONParser jsonParser = new JSONParser();
-        FileReader reader;
-        try {
-//            ClassLoader classLoader = LaunchServer.class.getClassLoader();
-//            File file = new File(Objects.requireNonNull(classLoader.getResource("Server.json")).getFile());
-            File file = new File("resources/Server.json");
-            reader = new FileReader(file);
-            JSONObject obj = (JSONObject) jsonParser.parse(reader);
-            JSONObject server = (JSONObject) obj.get("Server");
-            return Integer.parseInt(server.get("PortNumber").toString());
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+//        JSONParser jsonParser = new JSONParser();
+//        FileReader reader;
+//        try {
+////            ClassLoader classLoader = LaunchServer.class.getClassLoader();
+////            File file = new File(Objects.requireNonNull(classLoader.getResource("Server.json")).getFile());
+//            File file = new File("resources/Server.json");
+//            reader = new FileReader(file);
+//            JSONObject obj = (JSONObject) jsonParser.parse(reader);
+//            JSONObject server = (JSONObject) obj.get("Server");
+//            return Integer.parseInt(server.get("PortNumber").toString());
+//        } catch (IOException | ParseException e) {
+//            e.printStackTrace();
+//        }
         return 0;
     }
 
+    /**
+     * TODO
+     * @return
+     */
     public static String ReadHostFromJSON() {
-        JSONParser jsonParser = new JSONParser();
-        FileReader reader;
-        try {
-//            ClassLoader classLoader = LaunchServer.class.getClassLoader();
-//            File file = new File(Objects.requireNonNull(classLoader.getResource("C:/Users/digio/OneDrive/Documents/Francesco/Universita'/Terzo Anno/Progetto di Ingegneria del SoftwareIS23-AM40 2/IS23-AM40/src/main/resources/Server.json")).getFile());
-            File file = new File("resources/Server.json");
-            reader = new FileReader(file);
-            JSONObject obj = (JSONObject) jsonParser.parse(reader);
-            JSONObject server = (JSONObject) obj.get("Server");
-            return server.get("HostName").toString();
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+//        JSONParser jsonParser = new JSONParser();
+//        FileReader reader;
+//        try {
+////            ClassLoader classLoader = LaunchServer.class.getClassLoader();
+////            File file = new File(Objects.requireNonNull(classLoader.getResource("C:/Users/digio/OneDrive/Documents/Francesco/Universita'/Terzo Anno/Progetto di Ingegneria del SoftwareIS23-AM40 2/IS23-AM40/src/main/resources/Server.json")).getFile());
+//               File file = new File("resources/Server.json");
+//            reader = new FileReader(file);
+//            JSONObject obj = (JSONObject) jsonParser.parse(reader);
+//            JSONObject server = (JSONObject) obj.get("Server");
+//            return server.get("HostName").toString();
+//        } catch (IOException | ParseException e) {
+//            e.printStackTrace();
+//        }
         return null;
     }
 

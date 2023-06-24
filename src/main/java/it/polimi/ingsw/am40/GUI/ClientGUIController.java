@@ -12,15 +12,25 @@ import static javafx.application.Platform.runLater;
 public class ClientGUIController implements View {
     private Viewer gui;
 
+    /**
+     * todo
+     */
     public ClientGUIController() {
         gui = Viewer.getGUI();
     }
 
+    /**
+     * todo
+     */
     @Override
     public void chooseConnection() {
         runLater(gui::chooseConnection);
     }
 
+    /**
+     * TODO
+     * @param s
+     */
     @Override
     public void showCurrentPlayer(String s) {
 
@@ -100,7 +110,7 @@ public class ClientGUIController implements View {
 
     @Override
     public void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname) {
-
+        runLater(() -> gui.newMessage(array1,array2,array3,nickname));
     }
 
     @Override
@@ -132,4 +142,5 @@ public class ClientGUIController implements View {
     public void showGame() {
         runLater(gui::startGame);
     }
+
 }

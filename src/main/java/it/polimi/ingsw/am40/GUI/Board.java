@@ -32,6 +32,10 @@ public class Board extends AnchorPane {
 	private final ArrayList<String> selected = new ArrayList<>();
 	private Stage primaryStage;
 
+	/**
+	 * Class that represent the graphic element board (to be shown on the primary stage)
+	 * @param primaryStage
+	 */
 	public Board(Stage primaryStage) {
 		super();
 		this.primaryStage = primaryStage;
@@ -53,6 +57,9 @@ public class Board extends AnchorPane {
 		setStepY((STEP_Y/864.0)* primaryStage.getHeight());
 	}
 
+	/**
+	 * @param tile
+	 */
 	void place(Tile tile) {
 		Point2D pos = tile.getPosition();
 		int x = (int) pos.getX();
@@ -71,6 +78,11 @@ public class Board extends AnchorPane {
 		getChildren().add(tile);
 	}
 
+	/**
+	 * TODO
+	 * @param x
+	 * @param y
+	 */
 	void pickable(int x, int y) {
 		Tile node;
 		String key = hashkey(x, y);
@@ -80,17 +92,31 @@ public class Board extends AnchorPane {
 		}
 	}
 
+	/**
+	 * TODO
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	boolean select(int x, int y) {
 		String key = hashkey(x, y);
 			selected.add(key);
 		return (selected.size() == MAX_SELECTABLE);
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	boolean isSelectedEmpty() {
 		return (selected.size() == 0);
 	}
 
-	Node getSelected() {
+	/**
+	 * TODO
+	 * @return
+	 */
+	public Node getSelected() {
 		Node node = null;
 		String key;
 
@@ -103,6 +129,13 @@ public class Board extends AnchorPane {
 		}
 		return node;
 	}
+
+	/**
+	 * TODO
+	 * @param map
+	 * @param selected
+	 * @param board
+	 */
 	public void clearUpdate(Map<String, String> map, ArrayList<Position> selected, Map<String, String> board) {
 		getChildren().clear();
 		tiles.clear();
@@ -133,24 +166,52 @@ public class Board extends AnchorPane {
 
 	}
 
+	/**
+	 * TODO
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	private String hashkey(int x, int y) {
 		return new String("tile_" + x + "_" + y);
 	}
 
+	/**
+	 * Sets parameter originX to the parameter passed
+	 * @param originX
+	 */
 	public static void setOriginX(double originX) {
 		ORIGIN_X = originX;
 	}
 
+	/**
+	 * Sets parameter originY to the parameter passed
+	 * @param originY
+	 */
 	public static void setOriginY(double originY) {
 		ORIGIN_Y = originY;
 	}
 
+	/**
+	 * Sets parameter stepX to the parameter passed
+	 * @param stepX
+	 */
 	public static void setStepX(double stepX) {
 		STEP_X = stepX;
 	}
 
+	/**
+	 * Sets parameter stepY to the parameter passed
+	 * @param stepY
+	 */
 	public static void setStepY(double stepY) {
 		STEP_Y = stepY;
 	}
+	public void clearSelected() {
+		this.selected.clear();
+	}
 
+	public HashMap<String, Node> getTiles() {
+		return tiles;
+	}
 }

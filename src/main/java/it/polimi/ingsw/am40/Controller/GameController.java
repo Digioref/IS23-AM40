@@ -15,7 +15,6 @@ public class GameController {
     }
 
     public void selectTile(VirtualView v, Position p) {
-//        System.out.println("contr");
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
             game.updatePickableTiles(p);
         } else {

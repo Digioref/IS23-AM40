@@ -13,12 +13,22 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     private Handlers clientHandler;
     private Controller controller;
 
+    /**
+     * TODO
+     * @param nickname
+     * @param clientHandler
+     * @param controller
+     */
     public VirtualView(String nickname, Handlers clientHandler, Controller controller) {
         this.nickname = nickname;
         this.clientHandler = clientHandler;
         this.controller = controller;
     }
 
+    /**
+     * TODO
+     * @param numPlayers
+     */
     @Override
     public void receiveNumPlayers(int numPlayers) {
         try {
@@ -30,6 +40,11 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    /**
+     * TODO
+     * Method to receive the list of the players
+     * @param players
+     */
     @Override
     public void receiveListPlayers(ArrayList<Player> players) {
         try {

@@ -21,6 +21,7 @@ public class CommonGoalGui extends Label {
 		view.setFitHeight(Metrics.dim_y_comm*primaryStage.getHeight());
 		setGraphic(view);
 
+
 		Rectangle clip = new Rectangle(view.getFitWidth(), view.getFitHeight());
 		clip.setArcWidth(20);
 		clip.setArcHeight(20);
