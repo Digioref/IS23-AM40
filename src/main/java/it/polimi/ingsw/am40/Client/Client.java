@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am40.Client;
 
+import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.Model.Position;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -228,7 +229,9 @@ public abstract class Client {
                     LaunchClient.getView().showFinalScore(map11, object.get("Nickname").toString());
                 }
                 state.saveFinalScores(map11, object.get("Nickname").toString());
-                close();
+//                if (LaunchClient.getView() instanceof CliView) {
+//                    close();
+//                }
                 break;
             case "Chat":
                 JSONArray arr13 = (JSONArray) object.get("Authors");
@@ -247,8 +250,9 @@ public abstract class Client {
                 state.saveNickname(nickname);
                 break;
             case "Quit":
+                sendMessage("Quit");
                 close();
-                LaunchClient.getView().quit(nickname);
+//                LaunchClient.getView().quit(nickname);
                 break;
             case "Ping":
                 sendPong();

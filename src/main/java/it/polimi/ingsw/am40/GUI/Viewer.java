@@ -29,10 +29,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -70,7 +72,6 @@ public class Viewer extends Application {
 	private ArrayList<String> names;
 	private Alert alert;
 	private Alert errorAlert;
-	@FXML
 	private Button ChatButton;
 	private boolean isVisible;
 	private boolean isNew;
@@ -284,7 +285,7 @@ public class Viewer extends Application {
 
 
 	public void setTitle(Pane pane) {
-		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+		//double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
 		//double sceneWidth = scene.getWindow().getWidth();
 		Image title = Resources.title();
 		ImageView imageView = new ImageView(title);
@@ -427,6 +428,14 @@ public class Viewer extends Application {
 			} else {
 				nickname = tf.getText();
 				LaunchClient.getClient().sendMessage("login " + tf.getText());
+			}
+		});
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent we) {
+				if (LaunchClient.getClient() != null) {
+					LaunchClient.getClient().sendMessage("Quit");
+					LaunchClient.getClient().close();
+				}
 			}
 		});
 //		if (!tf.getText().equals("")) {
@@ -740,6 +749,48 @@ public class Viewer extends Application {
 		}
 	}
 
+	public void showFinalScores(Map<String, Integer> map, String winner) {
+		primaryStage.setTitle("MY SHELFIE END GAME");
+		pane = new Pane();
+		newScene(pane);
+		setBackground(primaryStage, pane);
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent we) {
+				if (LaunchClient.getClient() != null) {
+					LaunchClient.getClient().close();
+				}
+			}
+		});
+
+		VBox vbox = createVbox(pane);
+
+		setTitle(vbox);
+		for (String s: map.keySet()) {
+			HBox hbox = new HBox();
+			Text t1 = addDescription(hbox, s);
+			Text t2 = addDescription(hbox, "Score: " + map.get(s));
+			hbox.getChildren().add(t1);
+			hbox.getChildren().add(t2);
+			hbox.setSpacing(50);
+			hbox.setVisible(true);
+			vbox.getChildren().add(hbox);
+		}
+		Text t1 = addDescription(vbox, "WINNER: " + winner);
+		t1.setTextAlignment(TextAlignment.CENTER);
+		Button b = addButton(vbox, "EXIT", true);
+		b.setOnAction(e -> {
+			if (LaunchClient.getClient() != null) {
+				LaunchClient.getClient().close();
+			}
+		});
+
+
+	}
+
+	public void quit() {
+		Platform.exit();
+	}
+
 	private class NewMessage extends HBox {
 		public NewMessage(String from, String to, String message) {
 			Label senderLabel = new Label("from " + from + " to " + to + ": ");
@@ -809,6 +860,15 @@ public class Viewer extends Application {
 			setConnection(tf, t1);
 		});
 
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent we) {
+				if (LaunchClient.getClient() != null) {
+					LaunchClient.getClient().sendMessage("Quit");
+					LaunchClient.getClient().close();
+				}
+			}
+		});
+
 //		Button b3 = addButton(vbox, "Let's goooo", false);
 //
 //		b2.setOnAction(e -> {
@@ -862,6 +922,14 @@ public class Viewer extends Application {
 				t1.setText("Insert an integer, please!");
 			}
 		});
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent we) {
+				if (LaunchClient.getClient() != null) {
+					LaunchClient.getClient().sendMessage("Quit");
+					LaunchClient.getClient().close();
+				}
+			}
+		});
 	}
 
 
@@ -913,6 +981,14 @@ public class Viewer extends Application {
 		gameBoard = new AnchorPane();
 		newScene(gameBoard);
 		setBackground(primaryStage, gameBoard);
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent we) {
+				if (LaunchClient.getClient() != null) {
+					LaunchClient.getClient().sendMessage("Quit");
+					LaunchClient.getClient().close();
+				}
+			}
+		});
 
 		handleEvent();
 

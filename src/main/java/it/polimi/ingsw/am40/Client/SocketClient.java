@@ -115,6 +115,9 @@ public class SocketClient extends Client {
                 socket.close();
             }
             stdIn.close();
+            if (LaunchClient.getView() != null) {
+                LaunchClient.getView().quit(nickname);
+            }
             System.exit(0);
 //            LaunchClient.getView().quit(nickname);
         } catch (IOException e) {

@@ -507,6 +507,7 @@ public class CliView implements View{
         }
         System.out.println(color.blackBg() + " The winner is: " + color.rst() + color.greenBg() + color.black() + winner + color.rst());
         System.out.println();
+        LaunchClient.getClient().close();
     }
 
     /**

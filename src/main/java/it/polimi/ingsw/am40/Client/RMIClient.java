@@ -215,7 +215,9 @@ public class RMIClient extends Client implements RMIClientInterface {
         if (rmiThread != null) {
             rmiThread.interrupt();
         }
-        LaunchClient.getView().quit(nickname);
+        if (LaunchClient.getView() != null) {
+            LaunchClient.getView().quit(nickname);
+        }
         quitchat = true;
         try {
             stdIn.close();
@@ -227,6 +229,7 @@ public class RMIClient extends Client implements RMIClientInterface {
         } catch (NoSuchObjectException e) {
             throw new RuntimeException(e);
         }
+        System.exit(0);
     }
 
     @Override

@@ -202,11 +202,11 @@ public class ClientHandler extends Handlers implements Runnable {
             controller.getGameController().disconnectPlayer(nickname);
         }
         lobby.removeQuit(this);
-        try {
-            sendMessage(JSONConverterStoC.normalMessage("Quit"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            sendMessage(JSONConverterStoC.normalMessage("Quit"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
         stop = true;
         gameServer.shutdownHandler(this);
 //        in.close();

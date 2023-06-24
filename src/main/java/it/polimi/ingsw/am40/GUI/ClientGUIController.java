@@ -87,7 +87,7 @@ public class ClientGUIController implements View {
 
     @Override
     public void showFinalScore(Map<String, Integer> map, String winner) {
-
+        runLater(()->gui.showFinalScores(map, winner));
     }
 
     @Override
@@ -115,7 +115,7 @@ public class ClientGUIController implements View {
 
     @Override
     public void quit(String nickname) {
-
+        runLater(gui::quit);
     }
 
     @Override
