@@ -1017,8 +1017,8 @@ public class Viewer extends Application {
 		scoringToken = new ArrayList<>();
 		for(int i = 0; i<currentToken.size(); i++){
 			scoringToken.add(new ScoreToken(currentToken.get(i),primaryStage));
-			AnchorPane.setLeftAnchor(scoringToken.get(i),7.17*Metrics.d_x_comm*gameBoard.getWidth());
-			AnchorPane.setTopAnchor(scoringToken.get(i),(i*(210.0/864) + Metrics.d_y_commToken)*gameBoard.getHeight());
+			AnchorPane.setLeftAnchor(scoringToken.get(i),6.95*Metrics.d_x_comm*gameBoard.getWidth());
+			AnchorPane.setTopAnchor(scoringToken.get(i),(i*(210.0/864) - (8.0/864) + Metrics.d_y_commToken)*gameBoard.getHeight());
 			gameBoard.getChildren().add(scoringToken.get(i));
 		}
 	}
