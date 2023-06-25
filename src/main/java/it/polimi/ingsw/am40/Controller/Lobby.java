@@ -12,6 +12,10 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.jar.JarEntry;
 
+/**
+ * <p>This is the lobby of the game, where each player enters before the game can be created</p>
+ * <p>The game is created only when the number of players specified by the first player to enter the lobby is reached</p>
+ */
 public class Lobby implements Runnable {
     private int numPlayers;
     private final ArrayList<Handlers> queue;
@@ -19,6 +23,9 @@ public class Lobby implements Runnable {
     private ArrayList<String> nicknameInGame;
     private Map<String, GameController> games;
 
+    /**
+     * Constructor which initializes all the features of the class
+     */
     public Lobby() {
         numPlayers = 0;
         queue = new ArrayList<>();
@@ -27,6 +34,9 @@ public class Lobby implements Runnable {
         games = new HashMap<>();
     }
 
+    /**
+     * It removes the first player from the queue and puts him in the active players
+     */
     public void  removeFromQueue() {
 //        if (activePlayers.size() == 0) {
             synchronized (queue) {
@@ -54,6 +64,9 @@ public class Lobby implements Runnable {
 //        }
     }
 
+    /**
+     * The run method to run the lobby, which is a Runnable
+     */
     public void run() {
         System.out.println("Lobby is running...");
         while (true) {
@@ -70,12 +83,14 @@ public class Lobby implements Runnable {
         }
     }
 
-
-
     public Game findGame(ClientHandler c) {
         return c.getController().getGame();
     }
 
+    /**
+     * It adds the handler of the player to the queue
+     * @param clientHandler
+     */
     public void addQueue (Handlers clientHandler) {
         synchronized (queue) {
             queue.add(clientHandler);

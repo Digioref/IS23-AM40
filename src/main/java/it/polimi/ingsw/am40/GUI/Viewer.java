@@ -688,11 +688,11 @@ public class Viewer extends Application {
 			String receiver = selectReceivers.getValue();
 
 			if (!message.isEmpty()) {
-
 				JSONConverterCtoS jconv = new JSONConverterCtoS();
 				jconv.toJSONChat(receiver, message);
-				//LaunchClient.getClient().chat(jconv.toString());
-
+				if (LaunchClient.getClient() != null) {
+					LaunchClient.getClient().chat(jconv.toString());
+				}
 				NewMessage newMessage = new NewMessage(sender, receiver, message);
 				messages.getChildren().add(newMessage);
 				messageInput.clear();

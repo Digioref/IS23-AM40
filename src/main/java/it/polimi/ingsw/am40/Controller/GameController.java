@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * todo
+ * <p>It is the Controller which acts directly on the game, calling specific methods of the game to update the game state</p>
  */
 public class GameController {
-    Game game;
-    Controller controller;
+    private Game game;
+    private Controller controller;
 
     /**
      * Contructor of the class, initializes the attributes game and controller to the parameters passed
@@ -37,6 +37,10 @@ public class GameController {
         }
     }
 
+    /**
+     * It allows the player to pick the tiles selected by the player from the board
+     * @param v the virtual view of the player
+     */
     public void pickTiles(VirtualView v) {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
             game.setTurn(TurnPhase.PICK);
@@ -46,6 +50,10 @@ public class GameController {
         }
     }
 
+    /**
+     * It allows the player to remove the tiles selected
+     * @param v the virtual view of the player
+     */
     public void notConfirmSelection(VirtualView v) {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
             game.removeSelectedTiles();
@@ -54,6 +62,11 @@ public class GameController {
         }
     }
 
+    /**
+     * It sets the order of the picked tiles according to the order specified by the parameters
+     * @param v the virtual view of the player
+     * @param arr the desired order of the tiles
+     */
     public void order(VirtualView v, ArrayList<Integer> arr) {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
 //            System.out.println("qui");
@@ -63,6 +76,11 @@ public class GameController {
         }
     }
 
+    /**
+     * It allows the player to insert the tiles picked and ordered in his bookshelf
+     * @param v the virtual view of the player
+     * @param c the column chosen by the player in which he wants to insert the tiles
+     */
     public void insert(VirtualView v, int c) {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
 //            System.out.println("qui");
@@ -80,6 +98,12 @@ public class GameController {
 
     }
 
+    /**
+     * It adds to the chat of the game the message in the parameters
+     * @param name the receiver of the message
+     * @param message the message
+     * @param from the sender of the message
+     */
     public void chat(String name, String message, String from) {
         if (name.equals("all")) {
             game.getGroupChat().addMessage(name, message, from);
@@ -106,8 +130,13 @@ public class GameController {
                 }
             }
         }
+        getChat(name);
     }
 
+    /**
+     * It returns the chat of the game
+     * @param name the name of the player who requested the chat
+     */
     public void getChat(String name) {
         for (VirtualView v : game.getObservers()) {
             if (name.equals(v.getNickname())) {
@@ -116,7 +145,10 @@ public class GameController {
         }
     }
 
-
+    /**
+     * It disconnects the player whose name is the one in the parameters
+     * @param s the name of the playerr to be disconnected
+     */
     public void disconnectPlayer(String s) {
         for (Player p: game.getPlayers()) {
             if (p.getNickname().equals(s)) {
@@ -138,14 +170,26 @@ public class GameController {
         }
     }
 
+    /**
+     * It returns the game controlled by this controller
+     * @return a game
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * It returns the Controller which has created this Game controller
+     * @return
+     */
     public Controller getController() {
         return controller;
     }
 
+    /**
+     * It reconnects the player whose name is the one specified in the parameters
+     * @param s the name of the reconnecting player
+     */
     public void reconnect(String s) {
         System.out.println("qui0");
         game.getDiscPlayers().remove(s);
@@ -163,6 +207,10 @@ public class GameController {
         game.notifyReconnection(s);
     }
 
+    /**
+     * It sets the game the controller has to control
+     * @param game a game
+     */
     public void setGame(Game game){
         this.game = game;
     }
