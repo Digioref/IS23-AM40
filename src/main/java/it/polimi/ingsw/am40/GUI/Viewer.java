@@ -18,6 +18,7 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -617,7 +619,6 @@ public class Viewer extends Application {
 		ChatButton.setText("CHAT");
 
 		gameBoard.getChildren().add(ChatButton);
-		ChatButton.setOnAction(e -> showChat(ChatButton));
 
 		// Red dot indicator for unread messages
 		dotIndicator = new Circle(5);
@@ -632,16 +633,33 @@ public class Viewer extends Application {
 
 		gameBoard.getChildren().add(chatButtonPane);
 
-		chatContainer.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-padding: 10px;");
+		chatContainer.setStyle("-fx-background-color: #007700; -fx-border-color: #CCCCCC; -fx-border-width: 1px; -fx-padding: 10px; -fx-border-radius: 8px;");
 		chatContainer.setMaxHeight(200);
 		chatContainer.setVisible(isVisible);
 
+		// button to close the chat
+		HBox closeButtonPane = new HBox();
+		closeButtonPane.setAlignment(Pos.TOP_LEFT);
+		closeButtonPane.setTranslateX(5);
+		closeButtonPane.setTranslateY(-5);
+
+		Circle closeButtonCircle = new Circle(10, Color.RED);
+		closeButtonCircle.setStroke(Color.WHITE);
+		closeButtonPane.getChildren().add(closeButtonCircle);
+		chatContainer.getChildren().add(closeButtonPane);
+
+		closeButtonCircle.setOnMousePressed( e -> {
+				chatContainer.setVisible(false);
+				isVisible = false;
+		});
 
 		// scrollpane to see the messages
 		ScrollPane chatScrollPane = new ScrollPane();
 		chatScrollPane.setFitToWidth(true);
 		chatScrollPane.setFitToHeight(true);
 		chatContainer.getChildren().add(chatScrollPane);
+
+		ChatButton.setOnAction(e -> showChat(chatScrollPane));
 
 		messages = new VBox();
 		//messages.setSpacing(10);
@@ -688,10 +706,22 @@ public class Viewer extends Application {
 			String receiver = selectReceivers.getValue();
 
 			if (!message.isEmpty()) {
-				JSONConverterCtoS jconv = new JSONConverterCtoS();
-				jconv.toJSONChat(receiver, message);
-				if (LaunchClient.getClient() != null) {
-					LaunchClient.getClient().chat(jconv.toString());
+				ArrayList<String> receivers;
+				if (!receiver.equals("everyOne")) {
+					receivers = new ArrayList<>();
+					receivers.add(receiver);
+				} else {
+					receivers = new ArrayList<>(names);
+					receivers.remove(nickname);
+				}
+
+				for (String to: receivers) {
+					System.out.println("send to: " + to);
+					JSONConverterCtoS jconv = new JSONConverterCtoS();
+					jconv.toJSONChat(to, message);
+					if (LaunchClient.getClient() != null) {
+						LaunchClient.getClient().chat(jconv.toString());
+					}
 				}
 				NewMessage newMessage = new NewMessage(sender, receiver, message);
 				messages.getChildren().add(newMessage);
@@ -714,6 +744,21 @@ public class Viewer extends Application {
 		chatContainer.setTranslateX(100);
 		chatContainer.setTranslateY(100);
 
+		// Make the chat container draggable
+		final Delta dragDelta = new Delta();
+		chatContainer.setOnMousePressed(event -> {
+			dragDelta.x = chatContainer.getTranslateX() - event.getSceneX();
+			dragDelta.y = chatContainer.getTranslateY() - event.getSceneY();
+		});
+		chatContainer.setOnMouseDragged(event -> {
+			chatContainer.setTranslateX(event.getSceneX() + dragDelta.x);
+			chatContainer.setTranslateY(event.getSceneY() + dragDelta.y);
+		});
+
+	}
+
+	class Delta {
+		double x, y;
 	}
 
 	public void setCurrentPlayer(String s) {
@@ -806,13 +851,18 @@ public class Viewer extends Application {
 			//messageLabel.setMaxWidth(100);
 
 			getChildren().addAll(senderLabel, messageLabel);
+
+			setStyle("-fx-padding: 0px 10px;");
+
 		}
 	}
 
-	private void showChat(Button button) {
+	private void showChat(ScrollPane sp) {
 		dotIndicator.setVisible(false);
-		isVisible = !isVisible;
-		chatContainer.setVisible(isVisible);
+		sp.setVvalue(1.0);
+		isVisible = true;
+		chatContainer.setVisible(true);
+
 //		if (isVisible) {
 //			button.setText("Hide chat");
 //		} else {
