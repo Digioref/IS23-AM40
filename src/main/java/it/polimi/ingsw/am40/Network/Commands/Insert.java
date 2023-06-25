@@ -10,14 +10,14 @@ import java.lang.invoke.TypeDescriptor;
 import java.util.ArrayList;
 
 /**
- * todo
+ * The class representing the Insert command, used to insert the tiles picked and ordered into the bookshelf
  */
 public class Insert implements ICommand {
 
     /**
-     * todo
-     * @param c
-     * @param comm
+     * It executes the command calling a method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, it's an integer representing the index of the column of the bookshelf
      * @throws IOException
      */
     @Override

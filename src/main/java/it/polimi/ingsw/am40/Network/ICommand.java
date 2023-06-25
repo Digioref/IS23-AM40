@@ -4,16 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * TODO
- * ASSOLUTAMENTE
+ * The interface implemented by each command
  */
 public interface ICommand {
 
     /**
-     * todo
-     * @param c
-     * @param comm
+     * It executes the command, performing an action on the game
+     * @param c handler of the player
+     * @param comm parameters of the command
      * @throws IOException
      */
-    public void execute(Handlers c, ArrayList<String> comm) throws IOException;
+    void execute(Handlers c, ArrayList<String> comm) throws IOException;
 }

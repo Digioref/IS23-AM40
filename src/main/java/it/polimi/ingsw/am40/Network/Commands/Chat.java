@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import it.polimi.ingsw.am40.Network.*;
 
 /**
- * The class representing the chat command
+ * The class representing the chat command, used to send a message to a specific player or in broadcast
  */
 public class Chat implements ICommand {
     /**
-     * TODO
-     * @param c
-     * @param comm
+     * It's the method that allows to execute the command chat, with the call of a specific method of the handler of the player
+     * @param c handler of the player
+     * @param comm the parameters of the command; in this case, the message and the receiver
      * @throws IOException
      */
     @Override

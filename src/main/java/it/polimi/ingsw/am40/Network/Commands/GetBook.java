@@ -9,9 +9,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * The class representing the GetBookShelf command
+ * The class representing the GetBookShelf command, used to get the bookshelf of the player who used this command
  */
 public class GetBook implements ICommand {
+    /**
+     * It executes the command calling a specific method of the handler
+     * @param c the handler of the player
+     * @param comm the parameters of the command; in this case, no parameters
+     * @throws IOException
+     */
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (comm.size() == 0) {

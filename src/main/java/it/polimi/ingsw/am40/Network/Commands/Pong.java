@@ -7,14 +7,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * todo
+ * The class used to handle the Pong message, sent by the client in response to a Ping message sent by the server
  */
 public class Pong implements ICommand {
 
     /**
-     *
-     * @param c
-     * @param comm
+     * It handles the Pong message calling a specific method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, no parameters
      * @throws IOException
      */
     @Override

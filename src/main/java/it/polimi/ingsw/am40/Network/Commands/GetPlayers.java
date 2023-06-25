@@ -8,14 +8,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * todo
-  */
+ * The class representing the GetPlayers command, used to get the nicknames of the players in game
+ */
 public class GetPlayers implements ICommand {
 
     /**
-     * todo
-     * @param c
-     * @param comm
+     * It executes the command calling a method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, no parameters
      * @throws IOException
      */
     @Override

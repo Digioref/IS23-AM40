@@ -774,8 +774,6 @@ public class Viewer extends Application {
 			HBox hbox = new HBox();
 			Text t1 = addDescription(hbox, s);
 			Text t2 = addDescription(hbox, "Score: " + map.get(s));
-			hbox.getChildren().add(t1);
-			hbox.getChildren().add(t2);
 			hbox.setSpacing(50);
 			hbox.setVisible(true);
 			vbox.getChildren().add(hbox);

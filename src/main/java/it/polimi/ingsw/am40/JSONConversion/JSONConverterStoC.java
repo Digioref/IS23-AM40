@@ -7,9 +7,18 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ *
+ * It's a class that manages the conversion of the server messages into JSON strings
+ */
 public class JSONConverterStoC {
     private final static int NUM = 6;
 
+    /**
+     * It creates a JSON string containing the name of the current player of the game
+     * @param s name of the current player
+     * @return a JSON string
+     */
     public static String createJSONCurrentPlayer(String s) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "CurrentPlayer");
@@ -17,6 +26,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string with nicknames of the players and their scores
+     * @param map a map between the nicknames of the players and their scores
+     * @return a JSON string
+     */
     public static String createJSONCurrentScore(Map<String, Integer> map) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "CurrentScore");
@@ -31,6 +45,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string with the hidden score of the player
+     * @param hiddenScore the score visible only to the respective player
+     * @return a JSON string
+     */
     public static String createJSONHiddenScore(int hiddenScore) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "HiddenScore");
@@ -38,6 +57,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string containing the nicknames of the players in the game
+     * @param players an array list containing the players of the game
+     * @return a JSON string
+     */
     public static String createJSONPlayers(ArrayList<Player> players) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "Players");
@@ -51,6 +75,14 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string containing the numbers identifying the common goals and their available scores
+     * @param num1 the number of the first common goal
+     * @param score1 the available score of the first common goal
+     * @param num2 the number of the second common goal
+     * @param score2 the available score of the second common goal
+     * @return a JSON string
+     */
     public static String createJSONCommonGoals(int num1, int score1, int num2, int score2) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "CommonGoals");
@@ -67,6 +99,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string containing all the information which describes the personal goal of the player
+     * @param personalGoal the personal goal of the player
+     * @return a JSON string
+     */
 
     public static String createJSONPersGoal(PersonalGoal personalGoal) {
         JSONObject obj = new JSONObject();
@@ -84,6 +121,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string representing the game board
+     * @param board the board of the game
+     * @return a JSON string
+     */
     public static String createJSONBoard(Board board) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "Board");
@@ -99,6 +141,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string representing the bookshelf of the player (which tile in which position)
+     * @param bookshelf the bookshelf of the player
+     * @return a JSON string
+     */
     public static String createJSONBook(Bookshelf bookshelf) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "Bookshelf");
@@ -121,6 +168,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string containing all the information about the bookshelves of the players
+     * @param players array containing the players of the game
+     * @return a JSON string
+     */
     public static String createJSONBookAll(ArrayList<Player> players) {
         JSONObject obj = new JSONObject();
         JSONArray arr = new JSONArray();
@@ -151,6 +203,12 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string about the tiles of the board that can be selected
+     * @param board the board of the game
+     * @param arr array of the positions of the tiles already selected
+     * @return a JSON string
+     */
     public static String createJSONBoardPickable(Board board, ArrayList<Position> arr) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "BoardPickable");
@@ -185,6 +243,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string about the tiles already selected by the player
+     * @param player the player who has already selected some tiles
+     * @return a JSON string
+     */
     public static String createJSONSelectedTiles(Player player) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "SelectedTiles");
@@ -201,6 +264,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string containing the tiles picked by the player
+     * @param player the player
+     * @return a JSON string
+     */
     public static String createJSONPickedTiles(Player player) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "PickedTiles");
@@ -217,6 +285,12 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string with the final scores of the players
+     * @param players the players of the game
+     * @param winner the winner of the game
+     * @return a JSON string
+     */
     public static String createJSONFinalScore(ArrayList<Player> players, Player winner) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "FinalScores");
@@ -231,12 +305,25 @@ public class JSONConverterStoC {
         obj.put("Nickname", winner.getNickname());
         return obj.toJSONString();
     }
+
+    /**
+     * It creates a JSON string from a simple string representing a message for the player from the server
+     * @param s a string representing a message from the server
+     * @return a JSON string
+     */
     public static String normalMessage(String s) {
         JSONObject obj = new JSONObject();
         obj.put("Command", s);
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string representing the chat of the game
+     * @param authors the senders of the messages
+     * @param receivers the receivers of the messages
+     * @param messages the messages
+     * @return a JSON string
+     */
     public static String createJSONChat(ArrayList<String> authors, ArrayList<String> receivers, ArrayList<String> messages){
         JSONObject obj = new JSONObject();
         obj.put("Command", "Chat");
@@ -252,6 +339,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It transforms the nickname of the player into a JSON string
+     * @param nickname the nickname of the player
+     * @return a JSON string
+     */
     public static String createJSONNickname(String nickname) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "Name");
@@ -259,17 +351,33 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON string for the ping-pong messages exchange
+     * @return a JSON string
+     */
     public static String createJSONPing() {
         JSONObject obj = new JSONObject();
         obj.put("Command", "Ping");
         return obj.toJSONString();
     }
+
+    /**
+     * It creates a JSON string for an error message
+     * @param error the error message
+     * @return a JSON string
+     */
     public static String createJSONError(String error) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "Error");
         obj.put("Error", error);
         return obj.toJSONString();
     }
+
+    /**
+     * It transforms the nicknames of the players into a JSON string
+     * @param nicknames the nickname sof the players in game
+     * @return a JSON string
+     */
     public static String createJSONNicknames(ArrayList<String> nicknames) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "Suggest");
@@ -280,7 +388,11 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
-
+    /**
+     * It returns the nickname of the first player of the game (the one who holds the chair) as a JSON string
+     * @param nickname the nickname of the first player
+     * @return a JSON string
+     */
     public static String createJSONFirstPlayer(String nickname) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "FirstPlayer");

@@ -16,7 +16,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * todo
+ * It's the handler of the player using the RMI communication
  */
 public class RMIClientHandler extends Handlers {
     private RMIServer server;
@@ -28,8 +28,8 @@ public class RMIClientHandler extends Handlers {
     private final static int NUMLOST = 3;
 
     /**
-     * TODO
-     * @param server
+     * Constructor that creates the handler initializing the features of the class
+     * @param server the RMI server
      */
     public RMIClientHandler(RMIServer server) {
         this.server = server;
@@ -44,9 +44,7 @@ public class RMIClientHandler extends Handlers {
         startPing();
     }
 
-    /**
-     * TODO
-     */
+
     private void startPing() {
         if(sendPing != null)
             sendPing.shutdownNow();
@@ -60,9 +58,7 @@ public class RMIClientHandler extends Handlers {
         sendPing.scheduleAtFixedRate(task, 0, SEND_PING, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * TODO
-     */
+
     private void ping() {
         sendMessage(JSONConverterStoC.createJSONPing());
         Runnable task = () -> {
@@ -79,8 +75,8 @@ public class RMIClientHandler extends Handlers {
     }
 
     /**
-     * TODO
-     * @param s
+     * It sends a message to the client calling a method on the client using the Remote interface of the client
+     * @param s message to be sent
      */
     @Override
     public void sendMessage(String s) {
@@ -94,8 +90,8 @@ public class RMIClientHandler extends Handlers {
     }
 
     /**
-     * TODO
-     * @param s
+     * Suggests some nicknames to the client
+     * @param s desired nickname of the player
      */
     @Override
     public void suggestNickname(String s) {
@@ -115,9 +111,9 @@ public class RMIClientHandler extends Handlers {
     }
 
     /**
-     * TODO
-     * @param at
-     * @param arr
+     * It executes the game command by calling the corresponding method of the game controller
+     * @param at the action to be performed on the game
+     * @param arr parameters necessary to perform the action; they are integers
      */
     @Override
     public void executeCommand(ActionType at, ArrayList<Integer> arr) {
@@ -147,9 +143,9 @@ public class RMIClientHandler extends Handlers {
     }
 
     /**
-     * TODO
-     * @param message
-     * @param name
+     * It adds to the game chat a new message
+     * @param message the message
+     * @param name the receiver of the message
      */
     @Override
     public void chat(String message, String name) {
@@ -157,7 +153,7 @@ public class RMIClientHandler extends Handlers {
     }
 
     /**
-     * TODO
+     * It allows the player to get the chat of the game
      */
     @Override
     public void getChat() {
@@ -165,8 +161,8 @@ public class RMIClientHandler extends Handlers {
     }
 
     /**
-     * TODO
-     * @param s
+     * It sends a chat message
+     * @param s the message to be sent
      */
     @Override
     public void sendChat(String s) {
@@ -178,7 +174,7 @@ public class RMIClientHandler extends Handlers {
     }
 
     /**
-     * TODO
+     * It closes the handler, stopping the ping pong
      */
     @Override
     public void close() {
@@ -203,7 +199,7 @@ public class RMIClientHandler extends Handlers {
     }
 
     /**
-     * TODO
+     * It handles the Pong message received from the client
      */
     @Override
     public void handlePong() {
@@ -214,7 +210,7 @@ public class RMIClientHandler extends Handlers {
     }
 
     /**
-     * TODO
+     * It closes the handler because the game has ended
      */
     @Override
     public void closeGame() {
@@ -226,13 +222,14 @@ public class RMIClientHandler extends Handlers {
 
     /**
      * Sets the attribute rmiClient to the parameter passed
-     * @param rmiClient
+     * @param rmiClient the client using rmi communication
      */
     public void setRmiClient(RMIClientInterface rmiClient) {
         this.rmiClient = rmiClient;
     }
 
     /**
+     * It returns the client using rmi communication
      * @return the attribute rmiClient
      */
     public RMIClientInterface getRmiClient() {

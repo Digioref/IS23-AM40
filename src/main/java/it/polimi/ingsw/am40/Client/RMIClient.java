@@ -25,7 +25,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * todo
+ * Class representing the client. It uses the RMI connection
  */
 public class RMIClient extends Client implements RMIClientInterface {
     private int WAIT_PING_2 = 6000;
@@ -42,8 +42,8 @@ public class RMIClient extends Client implements RMIClientInterface {
 
 
     /**
-     * todo
-     * @param serverIp
+     * Constructor that initializes the features
+     * @param serverIp ip address of the server
      * @throws RemoteException
      */
     public RMIClient(String serverIp) throws RemoteException {
@@ -57,7 +57,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * todo
+     * It connects the client to the server
      */
     public void connect() {
         Registry registry;
@@ -108,9 +108,10 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * todo
+     * It sends the message to the server calling remotely a method on the server
      * @param s the message to be sent
      */
+    @Override
     public void sendMessage(String s) {
         String[] command = s.split("\\s");
         JSONConverterCtoS jconv = new JSONConverterCtoS();
@@ -191,7 +192,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * todo
+     * It starts the chat
      */
     public void startChat() {
         quitchat = false;
@@ -224,7 +225,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * todo
+     * Method used to close the corresponding client handler.
      */
     @Override
     public void close() {
@@ -254,8 +255,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * todo
-     * Method to
+     * Method used to send the Pong message, answering a Ping message received by the Server.
      */
     @Override
     public void sendPong() {
@@ -267,7 +267,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * todo
+     * Method used to start a timer waiting for a Ping message from the Server.
      */
     @Override
     public void startPing() {
@@ -282,7 +282,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * todo
+     * It creates a thread that extracts the messages in the queue one by one and parses them
      */
     private void startParsing(){
         parse= new Thread( ()-> {
@@ -305,8 +305,8 @@ public class RMIClient extends Client implements RMIClientInterface {
 
 
     /**
-     * todo
-     * @param s
+     * It receives a message from the server
+     * @param s message received
      * @throws RemoteException
      */
     @Override
@@ -323,8 +323,8 @@ public class RMIClient extends Client implements RMIClientInterface {
 
 
     /**
-     * todo
-     * @param s
+     * It receives the nickname of the player
+     * @param s nickname of the player
      * @throws RemoteException
      */
     @Override
@@ -337,8 +337,8 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * todo
-     * @param s
+     * It receives the chat
+     * @param s string which contains the chat, it's a JSON string
      * @throws RemoteException
      */
     @Override
@@ -360,8 +360,8 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * todo
-     * @param command
+     * It sends a chat message to the server
+     * @param command chat message to be sent
      */
     public void chat(String command) {
         try {
@@ -372,6 +372,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
+     * It returns the nickname of the player
      * @return the attribute nickname
      */
     public String getNickname() {

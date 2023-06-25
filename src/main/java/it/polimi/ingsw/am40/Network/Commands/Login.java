@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * todo
+ * The class representing the Login command, used to log into the game with a specific nickname
  */
 public class Login implements ICommand {
 
     /**
-     * todo
-     * @param c
-     * @param comm
+     * It executes the command calling a method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, the nickname of the player
      * @throws IOException
      */
     @Override

@@ -8,14 +8,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * todo
+ * The class representing the Help command, used to get a list of the command available to the user, with the type and number of the parameters needed for each command
  */
 public class Help implements ICommand {
 
     /**
-     * todo
-     * @param c
-     * @param comm
+     * It executes the command calling a method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, no parameters
      * @throws IOException
      */
     @Override

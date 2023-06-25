@@ -18,15 +18,15 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * todo
+ * it launches the client
  */
 public class LaunchClient {
     private static View view;
     private static Client client;
 //    private static LaunchGui gui;
     /**
-     * todo
-     * @param args
+     * It is the main method, it starts the client
+     * @param args arguments of the method
      */
     public static void main(String[] args) {
         String choice = interfaceSelection();
@@ -39,8 +39,8 @@ public class LaunchClient {
     }
 
     /**
-     * todo
-     * @return
+     * It manages the selection of the UI
+     * @return it returns the choice of the user
      */
     public static String interfaceSelection() {
         String input = null;
@@ -63,9 +63,9 @@ public class LaunchClient {
     }
 
     /**
-     * todo
-     * @param choice
-     * @param serverIp
+     * It starts the connection to the type chosen by the user
+     * @param choice the choice of the connection type made by the user
+     * @param serverIp ip address of the server
      */
     public static void startConnection(String choice, String serverIp) {
         if (choice.equals("RMI")) {
@@ -105,16 +105,16 @@ public class LaunchClient {
     }
 
     /**
-     * todo
-     * @return
+     * It returns the UI chosen by the user
+     * @return UI (CLI or GUI)
      */
     public static View getView() {
         return view;
     }
 
     /**
-     * todo
-     * @return
+     * The client launched by the class
+     * @return client
      */
     public static Client getClient() {
         return client;

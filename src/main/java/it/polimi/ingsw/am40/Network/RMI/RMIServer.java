@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import static it.polimi.ingsw.am40.Network.Handlers.NSUGGEST;
 
 /**
- * TODO
+ * It is created by the game server to handle the RMI connection. It has all the methods that can be called by the remote client using RMI
  */
 public class RMIServer extends UnicastRemoteObject implements RMIServerInterface {
     private Lobby lobby;
@@ -38,7 +38,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 
 
     /**
-     * TODO
+     * Constructor that initializes the feature of the class
      * @throws RemoteException
      */
     public RMIServer() throws RemoteException {
@@ -50,9 +50,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param s
-     * @param client
+     * The method that the player uses to log in
+     * @param s nickname of the player
+     * @param client remote client
      * @throws RemoteException
      */
     @Override
@@ -145,9 +145,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param s
-     * @param n
+     * It sets the number of player
+     * @param s nickname of the player
+     * @param n number of players in string format
      * @throws RemoteException
      */
     @Override
@@ -168,9 +168,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param client
-     * @param s
+     * It sends to the client a list of command, with the type of parameters requested by each command
+     * @param client remote client
+     * @param s nickname of the player
      * @throws RemoteException
      */
     @Override
@@ -197,9 +197,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param s
-     * @param command
+     * It is used to request specific information about the game, such as the bookshelves, the current players, etc...
+     * @param s nickname of the player
+     * @param command the command representing the specific request
      * @throws RemoteException
      */
     @Override
@@ -212,9 +212,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param s
-     * @param command
+     * It is used to perform an action that changes the game state, such as insert, order, pick, etc...
+     * @param s nickname of the player
+     * @param command command that represents the action
      * @throws RemoteException
      */
     @Override
@@ -227,9 +227,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param s
-     * @param command
+     * It is used to send a message to other players
+     * @param s nickname of the player who sends the message
+     * @param command the command to send the message
      * @throws RemoteException
      */
     @Override
@@ -243,9 +243,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 
 
     /**
-     * todo
-     * @param s
-     * @param command
+     * It is used to get the chat from the game
+     * @param s nickname of the player requesting the chat
+     * @param command the command to get the chat
      * @throws RemoteException
      */
     @Override
@@ -258,8 +258,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param s
+     * It is used to close the handler
+     * @param s nickname of the player
      * @throws RemoteException
      */
     @Override
@@ -276,8 +276,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param client
+     * It is used to receive and handle the Pong message
+     * @param client remote client that has sent the Pong message
      * @throws RemoteException
      */
     @Override
@@ -297,8 +297,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param client
+     * It is used to initialize the RMI connection between the remote client and its handler
+     * @param client remote client
      * @throws RemoteException
      */
     @Override
@@ -310,8 +310,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param lobby
+     * It sets the lobby
+     * @param lobby the lobby
      */
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
@@ -332,6 +332,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
+     * It returns the handlers of each player mapped to the nickname of the player
      * @return the attribute clientHandlers
      */
     public Map<String, RMIClientHandler> getClientHandlers() {
@@ -339,9 +340,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
-     * todo
-     * @param nickname
-     * @param client
+     * It suggests some nicknames to the player because the desired nickname is already in use
+     * @param nickname desired nickname
+     * @param client remote client
      */
     private void suggestNickname(String nickname, RMIClientInterface client) {
         Random random = new Random();
@@ -358,6 +359,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     }
 
     /**
+     * It returns the handlers of the players
      * @return the attribute rmiHandlers
      */
     public ArrayList<RMIClientHandler> getRmiHandlers() {

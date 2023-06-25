@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * todo
+ * The class representing the Order command, used to give an order to the tiles picked
  */
 public class Order implements ICommand {
     /**
-     * todo
-     * @param c
-     * @param comm
+     * It executes the command calling a method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, a sequence of integer representing the order specified by the player
      * @throws IOException
      */
     @Override

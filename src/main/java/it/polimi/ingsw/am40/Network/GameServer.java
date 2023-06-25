@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * todo
+ * The class representing the server of the game
  */
 public class GameServer implements Runnable {
 
@@ -32,7 +32,7 @@ public class GameServer implements Runnable {
     private List<ClientHandler> clientHandlers;
 
     /**
-     * todo
+     * Constructor of the server
      */
     public GameServer() {
         pool = Executors.newCachedThreadPool();
@@ -42,7 +42,8 @@ public class GameServer implements Runnable {
     }
 
     /**
-     * @return the whole istance, if null creates a new one
+     * It returns the instance of the server
+     * @return the instance of the server, if null it creates a new one
      */
     public static synchronized GameServer get() {
         if (instance == null) {
@@ -52,7 +53,7 @@ public class GameServer implements Runnable {
     }
 
     /**
-     * todo
+     * The run method because the game server is runnable
      */
     @Override
     public void run() {
@@ -83,10 +84,10 @@ public class GameServer implements Runnable {
     }
 
     /**
-     * todo
-     * @param port
-     * @param IPAddress
-     * @param hostName
+     * It connects the server to the provided ip address and the number of the port, setting also what is necessary for RMI communication
+     * @param port the number of the port
+     * @param IPAddress the ip address of the server
+     * @param hostName the name of the host
      * @throws IOException
      */
     public void connect(int port, String IPAddress, String hostName) throws IOException {
@@ -108,7 +109,7 @@ public class GameServer implements Runnable {
     }
 
     /**
-     * todo
+     * It closes the game server
      * @throws IOException
      */
     public void close() throws IOException {
@@ -125,17 +126,14 @@ public class GameServer implements Runnable {
     }
 
     /**
-     * todo
+     * It removes the provided handler because it disconnected
      * @param clientHandler
      */
     public void shutdownHandler(ClientHandler clientHandler) {
         clientHandlers.remove(clientHandler);
     }
 
-    /**
-     * todo
-     * @return
-     */
+
     public List<ClientHandler> getClientHandlers() {
         return clientHandlers;
     }
