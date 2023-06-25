@@ -314,4 +314,5 @@ public abstract class Client {
      * @param s the message to be sent
      */
     public abstract void sendMessage(String s);
+    public abstract void chat(String command);
 }

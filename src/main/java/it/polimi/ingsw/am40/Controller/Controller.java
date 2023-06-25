@@ -2,17 +2,18 @@ package it.polimi.ingsw.am40.Controller;
 import it.polimi.ingsw.am40.Model.*;
 
 /**
- * todo
+ * <p>It represents the Controller of the game. Each match of My Shelfie has its own controller.</p>
+ * <p>It has only one task: to create the Game Controller, which will act on the game</p>
  */
 public class Controller {
-    Game game;
-    GameController gameController;
-    Lobby lobby;
+    private Game game;
+    private GameController gameController;
+    private Lobby lobby;
 
     /**
-     * todo
-     * @param game
-     * @param lobby
+     * Constructor which creates the Controller from the associated game and the lobby
+     * @param game the game the Controller must control
+     * @param lobby the lobby of the game
      */
     public Controller(Game game, Lobby lobby) {
         this.game = game;
@@ -21,6 +22,7 @@ public class Controller {
     }
 
     /**
+     * It returns the game controlled by the Controller
      * @return the attribute game
      */
     public Game getGame() {
@@ -36,6 +38,7 @@ public class Controller {
     }
 
     /**
+     * It returns the Game Controller related to this Controller
      * @return the attribute gameController
      */
     public GameController getGameController() {
@@ -43,6 +46,7 @@ public class Controller {
     }
 
     /**
+     * It returns the lobby of the game
      *@return the attribute lobby
      */
     public Lobby getLobby() {

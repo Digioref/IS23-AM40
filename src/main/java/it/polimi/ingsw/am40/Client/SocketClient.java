@@ -264,4 +264,8 @@ public class SocketClient extends Client {
     public boolean isQuitchat() {
         return quitchat;
     }
+    public void chat(String command) {
+        out.println(command);
+        out.flush();
+    }
 }
