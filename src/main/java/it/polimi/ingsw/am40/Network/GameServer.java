@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The class representing the server of the game
+ */
 public class GameServer implements Runnable {
 
     private String hostName;
@@ -28,6 +31,9 @@ public class GameServer implements Runnable {
     private RMIServer rmiserver;
     private List<ClientHandler> clientHandlers;
 
+    /**
+     * Constructor of the server
+     */
     public GameServer() {
         pool = Executors.newCachedThreadPool();
         lobby = new Lobby();
@@ -35,6 +41,10 @@ public class GameServer implements Runnable {
         close = false;
     }
 
+    /**
+     * It returns the instance of the server
+     * @return the instance of the server, if null it creates a new one
+     */
     public static synchronized GameServer get() {
         if (instance == null) {
             instance = new GameServer();
@@ -42,6 +52,9 @@ public class GameServer implements Runnable {
         return instance;
     }
 
+    /**
+     * The run method because the game server is runnable
+     */
     @Override
     public void run() {
         System.out.println("GameServer started on: " + portNumber);
@@ -70,6 +83,13 @@ public class GameServer implements Runnable {
         }
     }
 
+    /**
+     * It connects the server to the provided ip address and the number of the port, setting also what is necessary for RMI communication
+     * @param port the number of the port
+     * @param IPAddress the ip address of the server
+     * @param hostName the name of the host
+     * @throws IOException
+     */
     public void connect(int port, String IPAddress, String hostName) throws IOException {
         portNumber = port;
         this.hostName = hostName;
@@ -88,6 +108,10 @@ public class GameServer implements Runnable {
         System.out.println("GameServer listening on port " + portNumber);
     }
 
+    /**
+     * It closes the game server
+     * @throws IOException
+     */
     public void close() throws IOException {
         close = true;
         serverSocket.close();
@@ -100,9 +124,15 @@ public class GameServer implements Runnable {
             rmiserver.getClientHandlers().get(s).sendMessage(JSONConverterStoC.normalMessage("Quit"));
         }
     }
+
+    /**
+     * It removes the provided handler because it disconnected
+     * @param clientHandler
+     */
     public void shutdownHandler(ClientHandler clientHandler) {
         clientHandlers.remove(clientHandler);
     }
+
 
     public List<ClientHandler> getClientHandlers() {
         return clientHandlers;

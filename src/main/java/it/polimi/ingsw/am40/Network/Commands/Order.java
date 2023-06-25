@@ -8,7 +8,16 @@ import it.polimi.ingsw.am40.Network.ICommand;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The class representing the Order command, used to give an order to the tiles picked
+ */
 public class Order implements ICommand {
+    /**
+     * It executes the command calling a method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, a sequence of integer representing the order specified by the player
+     * @throws IOException
+     */
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
             ArrayList<Integer> arr = new ArrayList<>();

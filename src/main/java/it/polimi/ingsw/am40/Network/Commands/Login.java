@@ -9,8 +9,17 @@ import it.polimi.ingsw.am40.Network.VirtualView;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The class representing the Login command, used to log into the game with a specific nickname
+ */
 public class Login implements ICommand {
 
+    /**
+     * It executes the command calling a method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, the nickname of the player
+     * @throws IOException
+     */
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (!c.isLogged() && c.getLogphase().equals(LoggingPhase.LOGGING) && comm.size() >= 1) {

@@ -7,7 +7,7 @@ import java.util.Random;
  */
 public class Bag {
     /**
-     * Array of Tiles that are not yet used
+     * Array of Tiles that are available
      */
     private ArrayList<Tile> availableTiles;
 

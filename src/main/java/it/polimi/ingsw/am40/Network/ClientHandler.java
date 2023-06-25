@@ -15,7 +15,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * <p>It represents the server side handler of the player; it uses the socket communication.</p>
+ * <p>It handles the communication with the client, both incoming and outcoming</p>
+ */
 public class ClientHandler extends Handlers implements Runnable {
     private final static int WAIT_PING = 10000;
     private final static int SEND_PING = 4000;
@@ -28,6 +31,11 @@ public class ClientHandler extends Handlers implements Runnable {
     private ScheduledExecutorService sendPing;
     private ScheduledExecutorService waitPing;
 
+    /**
+     * The constructor that takes as parameters the socket used for communication and the server of the game
+     * @param socket socket used to communicate with the client
+     * @param gameServer the server of the game
+     */
     public ClientHandler(Socket socket, GameServer gameServer) {
         nPingLost = 0;
         stop = false;
@@ -45,17 +53,29 @@ public class ClientHandler extends Handlers implements Runnable {
         setLogphase(LoggingPhase.LOGGING);
     }
 
+    /**
+     * It sends the message to the client
+     * @param s the string (as a JSON string) that has to be sent
+     * @throws IOException
+     */
     public synchronized void sendMessage(String s) throws IOException {
         out.println(s);
         out.flush();
     }
 
 
-
+    /**
+     * It returns the message adapter, which takes the incoming message and parses it
+     * @return the message adapter
+     */
     public MessageAdapter getMessAd() {
         return messAd;
     }
 
+    /**
+     * It sends a chat message
+     * @param s the message to be sent
+     */
     @Override
     public void sendChat(String s) {
         try {
@@ -65,6 +85,9 @@ public class ClientHandler extends Handlers implements Runnable {
         }
     }
 
+    /**
+     * The run method because the ClientHandler is a runnable, so this method starts the handler
+     */
     @Override
     public void run() {
         try {
@@ -114,6 +137,7 @@ public class ClientHandler extends Handlers implements Runnable {
         sendPing.scheduleAtFixedRate(task, 0, SEND_PING, TimeUnit.MILLISECONDS);
     }
 
+
     private void ping() {
         try {
             sendMessage(JSONConverterStoC.createJSONPing());
@@ -133,6 +157,10 @@ public class ClientHandler extends Handlers implements Runnable {
         }
     }
 
+    /**
+     * It sends to the client some suggested nicknames, created by joining the nickname chosen by the user with some numbers
+     * @param nickname nickname desired by the user
+     */
     public void suggestNickname(String nickname) {
         Random random = new Random();
         ArrayList<String> arr = new ArrayList<>();
@@ -150,7 +178,11 @@ public class ClientHandler extends Handlers implements Runnable {
     }
 
 
-
+    /**
+     * It executes the game command by calling the corresponding method of the game controller
+     * @param at the action to be performed on the game
+     * @param arr parameters necessary to perform the action; they are integers
+     */
     public void executeCommand(ActionType at, ArrayList<Integer> arr) {
         if (logphase.equals(LoggingPhase.INGAME)) {
             switch(at) {
@@ -181,16 +213,28 @@ public class ClientHandler extends Handlers implements Runnable {
         }
     }
 
+    /**
+     * It adds to the game chat a new message
+     * @param message the message
+     * @param name the receiver of the message
+     */
     @Override
     public void chat(String message, String name) {
         controller.getGameController().chat(name, message, nickname);
     }
 
+
+    /**
+     * It allows the player to get the chat of the game
+     */
     @Override
     public void getChat() {
         controller.getGameController().getChat(nickname);
     }
 
+    /**
+     * It closes the handler, closing the socket and stopping the ping pong
+     */
     public void close() {
         nPingLost = 0;
         waitPing.shutdown();
@@ -218,12 +262,24 @@ public class ClientHandler extends Handlers implements Runnable {
 //        }
     }
 
+    /**
+     * Default constructor
+     */
+    public ClientHandler(){
+    }
+
+    /**
+     * It handles the Pong message received from the client
+     */
     @Override
     public synchronized void handlePong() {
         waitPing.shutdownNow();
         nPingLost = 0;
     }
 
+    /**
+     * It closes the handler because the game has ended
+     */
     @Override
     public void closeGame() {
         close();
@@ -231,4 +287,14 @@ public class ClientHandler extends Handlers implements Runnable {
         controller = null;
         lobby.closeGame(this);
     }
+
+    /**
+     * Sets the attribute out to the parameter passed
+     * @param out a printwriter used to send messages to the client
+     */
+    public void setOut(PrintWriter out){
+        this.out = out;
+    }
+
+
 }

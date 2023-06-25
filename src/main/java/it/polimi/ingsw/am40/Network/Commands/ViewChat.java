@@ -7,7 +7,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import it.polimi.ingsw.am40.Network.*;
 
+/**
+ * The class representing the ViewChat command, used to view the chat and the messages inside it
+ */
 public class ViewChat implements ICommand {
+    /**
+     * It executes the command calling a method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, no parameters
+     * @throws IOException
+     */
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (!c.isLogged()) {

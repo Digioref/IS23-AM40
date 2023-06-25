@@ -12,6 +12,10 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.jar.JarEntry;
 
+/**
+ * <p>This is the lobby of the game, where each player enters before the game can be created</p>
+ * <p>The game is created only when the number of players specified by the first player to enter the lobby is reached</p>
+ */
 public class Lobby implements Runnable {
     private int numPlayers;
     private final ArrayList<Handlers> queue;
@@ -19,6 +23,9 @@ public class Lobby implements Runnable {
     private ArrayList<String> nicknameInGame;
     private Map<String, GameController> games;
 
+    /**
+     * Constructor which initializes all the features of the class
+     */
     public Lobby() {
         numPlayers = 0;
         queue = new ArrayList<>();
@@ -27,6 +34,9 @@ public class Lobby implements Runnable {
         games = new HashMap<>();
     }
 
+    /**
+     * It removes the first player from the queue and puts him in the active players
+     */
     public void  removeFromQueue() {
 //        if (activePlayers.size() == 0) {
             synchronized (queue) {
@@ -54,6 +64,9 @@ public class Lobby implements Runnable {
 //        }
     }
 
+    /**
+     * The run method to run the lobby, which is a Runnable
+     */
     public void run() {
         System.out.println("Lobby is running...");
         while (true) {
@@ -74,6 +87,10 @@ public class Lobby implements Runnable {
         return c.getController().getGame();
     }
 
+    /**
+     * It adds the handler of the player to the queue
+     * @param clientHandler the handler of the player, server side
+     */
     public void addQueue (Handlers clientHandler) {
         synchronized (queue) {
             queue.add(clientHandler);
@@ -85,6 +102,9 @@ public class Lobby implements Runnable {
 //        System.out.println("Added " + clientHandler.getNickname());
     }
 
+    /**
+     * It creates the game adding the players, taking them from the array active players
+     */
     public void create() {
         System.out.println("Creating game...");
         Game g = new Game(numPlayers);
@@ -119,6 +139,10 @@ public class Lobby implements Runnable {
         }
     }
 
+    /**
+     * It returns the nicknames already used, taken by other players and so they cannot be used again unless the game of that player ends
+     * @return the nicknames already used
+     */
     public ArrayList<String> getNicknameInGame() {
         return nicknameInGame;
     }
@@ -127,19 +151,36 @@ public class Lobby implements Runnable {
         return activePlayers;
     }
 
+    /**
+     *It sets the number of player for the next game
+     * @param numPlayers number of players
+     */
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }
 
+    /**
+     * It returns the queue of the players
+     * @return the queue of the lobby
+     */
     public ArrayList<Handlers> getQueue() {
         synchronized (queue) {
             return queue;
         }
     }
+
+    /**
+     * It adds the nickname in the parameter to the nicknames in use
+     * @param s a nickname
+     */
     public void addNickname(String s) {
         nicknameInGame.add(s);
     }
 
+    /**
+     * It removes the handler specified by the parameter from the queue and from the active players
+     * @param c the handler of the player to be removed
+     */
     public void removeQuit(Handlers c) {
         synchronized (queue) {
             if (queue.contains(c)) {
@@ -173,12 +214,23 @@ public class Lobby implements Runnable {
         }
     }
 
+    /**
+     * <p>It returns a map between nicknames and the controllers of the games</p>
+     * <p>The nickname is the key of the map, and the controller is the controller of the game which has a player with the aforementioned nickname</p>
+     * @return a map between nicknames and controllers
+     */
     public Map<String, GameController> getGames() {
         return games;
     }
 
+    /**
+     * It is a method called when a game is ended, it removes the nickname of the handler from the map between nicknames and controllers and from the active nicknames
+     * @param c handler to be removed
+     */
     public void closeGame(Handlers c) {
-        games.remove(c);
+        games.remove(c.getNickname());
         nicknameInGame.remove(c.getNickname());
     }
+
+
 }

@@ -7,7 +7,14 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * A class used to load the hostname of the server and the number of the port used to listen
+ */
 public class ServerArgs {
+    /**
+     * It reads the name of the server and its port from a JSON file
+     * @return an array of string containing the host name and the number of the port
+     */
     public static String[] ReadServerConfigFromJSON() {
         JSONParser jsonParser = new JSONParser();
         String[] args = new String[2];

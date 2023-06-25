@@ -10,7 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Represents a game of MyShelfie
+ * It is the main class of the game MyShelfie, it has all the methods to update the state of the corresponding match
  */
 public class Game implements IGame {
     private static final int WAIT_TIME = 10000;
@@ -197,6 +197,10 @@ public class Game implements IGame {
 
     }
 
+    /**
+     * It returns the number of players in game that are not disconnected
+     * @return number of active players
+     */
     public int checkDisconnection() {
         int count = 0;
         for (Player p: players) {
@@ -207,6 +211,11 @@ public class Game implements IGame {
         return (numPlayers - count);
     }
 
+    /**
+     * <p>It starts a timer because there is only one active players, the others are all disconnected</p>
+     *<p>If the timer expires, the game ends and the only player active is the winner</p>
+     * <p>If another player reconnects, the game resumes</p>
+     */
     public void startTimer() {
         timer = Executors.newScheduledThreadPool(1);
         Runnable task = () -> {
@@ -224,10 +233,19 @@ public class Game implements IGame {
             }
         }
     }
+
+    /**
+     * It stops the timer started due to the disconnection of the players except one.
+     */
     public void stopTimer() {
         timerstate = false;
         timer.shutdownNow();
     }
+
+    /**
+     * It checks if the game is ended, so if there is at least one player who has completed his bookshelf
+     * @return true if the condition of game ending is fulfilled
+     */
     public boolean checkEndGame () {
         if (endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer) && turn == TurnPhase.ENDTURN) {
             setHasEnded(true);
@@ -235,6 +253,11 @@ public class Game implements IGame {
         }
         return false;
     }
+
+    /**
+     * It updates the selectable tiles of the board according to the tiles selected in the position specified by the perameter
+     * @param pos the position of the tiles selected
+     */
     public void updatePickableTiles (Position pos) {
         if (turn == TurnPhase.SELECTION) {
             if (board.getPickableTiles().contains(pos)) {
@@ -263,7 +286,7 @@ public class Game implements IGame {
     }
 
     /**
-     * Removes the tiles picked by player p
+     * Removes the tiles selected by a sepcific player
      */
     public void removeSelectedTiles() {
         if (turn == TurnPhase.SELECTION) {
@@ -385,6 +408,10 @@ public class Game implements IGame {
         }
     }
 
+    /**
+     * It controls if the board needs to be refilled
+     * @return true if the board needs refill, false otherwise
+     */
     public boolean controlRefill () {
         return board.needRefill();
     }
@@ -395,6 +422,9 @@ public class Game implements IGame {
         board.setSideFreeTile();
     }
 
+    /**
+     * It organises the board for the beginning of the turn of a specific player
+     */
     public void startTurn () {
 //        System.out.println("print wrong");
         if (turn == TurnPhase.START) {
@@ -414,6 +444,9 @@ public class Game implements IGame {
         }
     }
 
+    /**
+     * It organises the end of the turn, controlling if the board needs refill, if the game ending condition is satisfied and changing the current player
+     */
     public void endTurn () {
         System.out.println("---" + turn);
         if (turn == TurnPhase.ENDTURN) {
@@ -433,6 +466,9 @@ public class Game implements IGame {
         }
    }
 
+    /**
+     * It sets the winner of the game
+     */
    public void setWinner() {
         ArrayList<Player> pl = new ArrayList<>();
         int max = 0;
@@ -525,14 +561,26 @@ public class Game implements IGame {
         return currentPlayer;
     }
 
+    /**
+     * It returns the players in the game
+     * @return an array containing the players in the game
+     */
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * It returns the board of the game
+     * @return the board of the game
+     */
     public Board getBoard() {
         return board;
     }
 
+    /**
+     * It returns the bag of the game
+     * @return the bag of the game
+     */
     public Bag getBag() {
         return bag;
     }
@@ -541,18 +589,34 @@ public class Game implements IGame {
         this.bag = bag;
     }
 
+    /**
+     * It sets the turn phase according to the parameter
+     * @param turn a turn phase
+     */
     public void setTurn(TurnPhase turn) {
         this.turn = turn;
     }
 
+    /**
+     * It registers the parameter as an observer of the game
+     * @param virtualView the observer of the game
+     */
     public void register(VirtualView virtualView) {
         observers.add(virtualView);
     }
 
+    /**
+     * It unregisters the parameter which was an observer of the game
+     * @param virtualView an observer of the game
+     */
     public void unregister(VirtualView virtualView) {
         observers.remove(virtualView);
     }
 
+    /**
+     * It notifies the observers of the game according to the parameter which represents a turn phase
+     * @param turnPhase the turn phase
+     */
     public void notifyObservers(TurnPhase turnPhase) {
 
         switch (turnPhase) {
@@ -637,33 +701,66 @@ public class Game implements IGame {
 
     }
 
+    /**
+     * It returns the common goals actually in game
+     * @return an array containing the common goals in game
+     */
     public ArrayList<CommonGoal> getCurrentComGoals() {
         return currentComGoals;
     }
 
+    /**
+     * It returns the current turn phase
+     * @return the current turn phase
+     */
     public TurnPhase getTurn() {
         return turn;
     }
 
+    /**
+     * It returns the observer of the game
+     * @return an array containing the observers of the game
+     */
     public ArrayList<VirtualView> getObservers() {
         return observers;
     }
 
+    /**
+     * It returns the class representing the chat of the game
+     * @return the class representing the chat of the game
+     */
     public GroupChat getGroupChat() {
         return groupChat;
     }
 
+    /**
+     * It returns the players disconnected from the game
+     * @return an array containing the players disconnected
+     */
     public ArrayList<String> getDiscPlayers() {
         return discPlayers;
     }
 
+    /**
+     * It returns the number of players playing in this game
+     * @return number of players of this game
+     */
     public int getNumPlayers() {
         return numPlayers;
     }
+
+    /**
+     * It returns true if the timer of the game has already started due to disconnections
+     * @return true if the timer has started, false otherwise
+     */
     public boolean isTimerStarted() {
         return timerstate;
     }
 
+    /**
+     * It notifies to other players that another player has just reconnected
+     * @param s the nickname of the players reconnected
+     */
 
     public void notifyReconnection(String s) {
         for (VirtualView v: observers) {
@@ -686,5 +783,28 @@ public class Game implements IGame {
                 v.receiveCurrentPlayer(currentPlayer);
             }
         }
+    }
+
+    /**
+     * It sets the current player to the player in the parameter
+     * @param currentPlayer a player
+     */
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    /**
+     * It sets the turn phase to the ENDGAME phase, so the game has ended
+     */
+    public void setEnd(){
+        turn = TurnPhase.ENDGAME;
+    }
+
+    /**
+     * It sets the end token to the one provided
+     * @param endToken an end token
+     */
+    public void setEndToken(EndToken endToken){
+        this.endToken = endToken;
     }
 }

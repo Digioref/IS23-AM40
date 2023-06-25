@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am40.Model;
 
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 
@@ -146,6 +145,10 @@ public class Bookshelf {
         return result;
     }
 
+    /**
+     * It returns the bookshelf as an array of columns
+     * @return the array made up of columns, representing the bookshelf
+     */
     public ArrayList<Column> getBookshelf() {
         return bookshelf;
     }
@@ -160,6 +163,10 @@ public class Bookshelf {
         return bookshelf.get(i).getTile(j);
     }
 
+    /**
+     * It returns the bookshelf as a string
+     * @return a string representing the bookshelf
+     */
     @Override
     public String toString() {
         return "Bookshelf{" +

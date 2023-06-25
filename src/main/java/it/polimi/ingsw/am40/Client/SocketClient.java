@@ -125,13 +125,26 @@ public class SocketClient extends Client {
         }
     }
 
+    /**
+     * It returns the Buffered Reader used to read form standard input
+     * @return buffered reader
+     */
     public BufferedReader getStdIn() {
         return stdIn;
     }
 
+    /**
+     * It returns the Buffered Reader used to read form the socket
+     * @return buffered reader
+     */
     public BufferedReader getIn() {
         return in;
     }
+
+    /**
+     * It returns the Print Writer used to write to the socket
+     * @return print writer
+     */
 
     public PrintWriter getOut() {
         return out;
@@ -257,11 +270,28 @@ public class SocketClient extends Client {
         ping.scheduleAtFixedRate(task, WAIT_PING, WAIT_PING, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * it sets a boolean which specifies if the player exited from the chat
+     * @param quitchat
+     */
     public void setQuitchat(boolean quitchat) {
         this.quitchat = quitchat;
     }
 
+    /**
+     * It specifies if the player exited from the chat
+     * @return a boolean, true if the player is outside the chat, false otherwise
+     */
     public boolean isQuitchat() {
         return quitchat;
+    }
+
+    /**
+     * It sends a chat message using the socket
+     * @param command chat message to be sent
+     */
+    public void chat(String command) {
+        out.println(command);
+        out.flush();
     }
 }

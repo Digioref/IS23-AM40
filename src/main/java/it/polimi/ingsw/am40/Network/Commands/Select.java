@@ -8,8 +8,17 @@ import it.polimi.ingsw.am40.Network.ICommand;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The class representing the Select command, used to select a specific position on the board, where there is a tile, in order to select that tile
+ */
 public class Select implements ICommand {
 
+    /**
+     * It executes the command calling a method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, two integers representing the desired position on the board
+     * @throws IOException
+     */
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (comm.size() != 2) {

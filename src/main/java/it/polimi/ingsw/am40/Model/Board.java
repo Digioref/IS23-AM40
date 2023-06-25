@@ -287,6 +287,11 @@ public class Board {
         return true;
     }
 
+    /**
+     * Returns the tiles that can be selected from the board
+     * @return the feature pickableTiles, which contains the tiles selectable
+     */
+
     public ArrayList<Position> getPickableTiles() {
         return pickableTiles;
     }

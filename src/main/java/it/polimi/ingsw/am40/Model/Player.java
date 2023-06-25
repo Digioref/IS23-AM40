@@ -165,6 +165,9 @@ public class Player {
         }
     }
 
+    /**
+     * It updates the hidden score (visible to only the corresponding player) of the player
+     */
     public void updateHiddenScore() {
         hiddenScore = currentScore + personalGoal.calcScore(bookshelf);
     }
@@ -201,6 +204,10 @@ public class Player {
         currentScore += s;
     }
 
+    /**
+     * It returns the tiles picked by the player
+     * @return an array containing the tiles picked by the player
+     */
     public ArrayList<Tile> getTilesPicked() {
         return tilesPicked;
     }
@@ -233,22 +240,42 @@ public class Player {
         this.finalScore = finalScore;
     }
 
+    /**
+     * It returns the bookshelf of the player
+     * @return bookshelf of the player
+     */
     public Bookshelf getBookshelf() {
         return bookshelf;
     }
 
+    /**
+     * It sets the bookshelf of the player to the provided one
+     * @param bookshelf the bookshelf provided
+     */
     public void setBookshelf(Bookshelf bookshelf) {
         this.bookshelf = bookshelf;
     }
 
+    /**
+     * It returns the game board
+     * @return the board of the game
+     */
     public Board getBoard() {
         return board;
     }
 
+    /**
+     * It sets the board to the provided one
+     * @param board the board provided
+     */
     public void setBoard(Board board) {
         this.board = board;
     }
 
+    /**
+     * It returns the personal goal of the player
+     * @return the personal goal of the player
+     */
     public PersonalGoal getPersonalGoal() {
         return personalGoal;
     }
@@ -262,6 +289,10 @@ public class Player {
         pJSONm.createPersonalGoals(personalGoal, i);
     }
 
+    /**
+     * It returns the positions of the tiles on the board selected by the player
+     * @return the positions of the tiles selected by the player
+     */
     public ArrayList<Position> getSelectedPositions() {
         return selectedPositions;
     }
@@ -271,20 +302,36 @@ public class Player {
         this.selectedPositions = selectedPositions;
     }
 
+    /**
+     * It clears the selected postions
+     */
     public void clearSelected() {
         selectedPositions.clear();
         board.clearPickable();
         board.setSideFreeTile();
     }
 
+    /**
+     * It returns the hidden score of the player
+     * @return the hidden score
+     */
     public int getHiddenScore() {
         return hiddenScore;
     }
 
+    /**
+     *
+     * It returns true if the player is disconnected
+     * @return true if the player is disconnected, false otherwise
+     */
     public boolean isDisconnected() {
         return disconnected;
     }
 
+    /**
+     * It sets the boolean flag "disconnected" according to the provided one
+     * @param disconnected a boolean value
+     */
     public void setDisconnected(boolean disconnected) {
         this.disconnected = disconnected;
     }

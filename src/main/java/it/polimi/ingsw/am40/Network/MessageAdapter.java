@@ -9,12 +9,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The class that takes in input a message from the client and parses it, decomposing it in the command and the parameters
+ */
 public class MessageAdapter {
     private Map<String, ICommand> commands;
     private ParsingJSONManager pJsonm;
 
     /**
-     * todo
+     * Constructor that initializes the features of the class
      */
     public MessageAdapter() {
         commands = new HashMap<>();
@@ -22,7 +25,7 @@ public class MessageAdapter {
     }
 
     /**
-     * todo
+     * It configures the commands, linking the name of the command to the class representing that command
      */
     public void configure() {
         pJsonm.configureCommands(commands);
@@ -30,9 +33,9 @@ public class MessageAdapter {
     }
 
     /**
-     * todo
-     * @param c
-     * @param message
+     * It parses the message from the client
+     * @param c handler of the player
+     * @param message message from the client
      * @throws IOException
      * @throws ParseException
      */
@@ -63,8 +66,8 @@ public class MessageAdapter {
     }
 
     /**
-     * todo
-     * @param c
+     * It sens a welcome message to the client
+     * @param c handler of the player
      * @throws IOException
      */
     public void startMessage(Handlers c) throws IOException {
@@ -80,6 +83,7 @@ public class MessageAdapter {
     }
 
     /**
+     * It returns the map of the command
      * @return the commands list as a map (the keys are the names of the commands)
      */
     public Map<String, ICommand> getCommands() {

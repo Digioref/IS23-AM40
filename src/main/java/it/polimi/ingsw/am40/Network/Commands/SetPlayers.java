@@ -8,8 +8,17 @@ import it.polimi.ingsw.am40.Network.LoggingPhase;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The class representing the SetPlayers command, used to set the number of players to play with
+ */
 public class SetPlayers implements ICommand {
 
+    /**
+     * It executes the command calling a method of the handler
+     * @param c handler of the player
+     * @param comm parameters of the command; in this case, an integer
+     * @throws IOException
+     */
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
 //        c.setNumPlayers(Integer.parseInt(comm.get(0)));

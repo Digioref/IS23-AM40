@@ -37,7 +37,7 @@ public abstract class Client {
     /**
      * <p> This method takes in input a String and parses it, identifying the command and the parameters.</p>
      * <p> Then, according to which command is identified, it calls the corresponding method of the UI, to show the information coded by the parameters. </p>
-     * @param line
+     * @param line message received from the server
      * @throws ParseException
      */
     public void parseMessage(String line) throws ParseException {
@@ -314,4 +314,10 @@ public abstract class Client {
      * @param s the message to be sent
      */
     public abstract void sendMessage(String s);
+
+    /**
+     * Abstract method used to send a chat message to the server
+     * @param command chat message to be sent
+     */
+    public abstract void chat(String command);
 }
