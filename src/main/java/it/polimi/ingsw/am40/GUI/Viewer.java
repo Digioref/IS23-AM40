@@ -655,7 +655,7 @@ public class Viewer extends Application {
 			sendTo.add("everyOne");
 		}
 		selectReceivers.getItems().addAll(sendTo);
-		selectReceivers.setValue("everyOne");
+		selectReceivers.setValue(sendTo.get(sendTo.size()-1));
 		chatContainer.getChildren().add(selectReceivers);
 
 		// text field to write the message
