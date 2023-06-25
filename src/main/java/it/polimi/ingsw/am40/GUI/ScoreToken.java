@@ -10,11 +10,15 @@ import javafx.stage.Stage;
 
 public class ScoreToken extends Label {
     private Stage primaryStage;
+    private ImageView view;
+    private int point;
 
     public ScoreToken(int point, Stage primaryStage) {
         super();
+        this.point=point;
         Image score = Resources.score(point);
         ImageView scoreView = new ImageView(score);
+        this.view= scoreView;
         scoreView.setPreserveRatio(true);
         scoreView.setFitWidth(0.34*Metrics.dim_x_comm*primaryStage.getWidth());
         scoreView.setFitHeight(0.34*Metrics.dim_y_comm*primaryStage.getHeight());
@@ -23,6 +27,14 @@ public class ScoreToken extends Label {
         Rotate rotate = new Rotate(rotationAngle, scoreView.getFitWidth() / 2, scoreView.getFitHeight() / 2);
         scoreView.getTransforms().add(rotate);
         setGraphic(scoreView);
+    }
+
+    public ImageView getImageview(){
+        return this.view;
+    }
+
+    public int getPoint(){
+        return point;
     }
 
 }

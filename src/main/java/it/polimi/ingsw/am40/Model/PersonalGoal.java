@@ -116,7 +116,7 @@ public class PersonalGoal {
                 s = 4;
                 break;
             case 4:
-                s = 4;
+                s = 6;
                 break;
             case 5:
                 s = 9;

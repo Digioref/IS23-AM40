@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -38,6 +39,8 @@ public class Bookshelf extends AnchorPane {
 	private double pos_x;
 	private double pos_y;
 	private PersonalGoalBack pgBack;
+
+	private ArrayList<ScoreToken> tokensPicked;
 
 	public Bookshelf(double w, double h, Stage primaryStage) {
 		super();
@@ -140,7 +143,7 @@ public class Bookshelf extends AnchorPane {
 		this.colIndex = col;
 		animTimer.start();
 	}
-	public void update(ArrayList<Node> nodeList, int cols){
+	public void update(ArrayList<Node> nodeList, int cols, ArrayList<ScoreToken> pickedTokens,AnchorPane p,Stage primaryStage){
 		double width = this.getWidth();
 		double height = this.getHeight();
 		System.out.println("WWW : "+ width + "  HHH: " + height);
@@ -162,6 +165,7 @@ public class Bookshelf extends AnchorPane {
 			bsImage.toFront();
 			labelName.toFront();
 		}
+//  	updatePickTokens(pickedTokens,p,primaryStage);
 		/*
 		this.node = null;
 		this.nodeList = nodeList;
@@ -180,6 +184,27 @@ public class Bookshelf extends AnchorPane {
 
 		 */
 	}
+/*
+	private void updatePickTokens(ArrayList<ScoreToken> tokens,AnchorPane p,Stage primaryStage){
+		tokensPicked = new ArrayList<>();
+			for(int i=0;i<tokens.size();i++){
+				tokensPicked.add(new ScoreToken(tokens.get(i).getPoint(),primaryStage));
+				tokensPicked.get(i).getImageview().setFitWidth(0.20*Metrics.dim_x_comm*widthStage);
+				tokensPicked.get(i).getImageview().setFitHeight(0.20*Metrics.dim_x_comm*heightStage);
+				//AnchorPane.setLeftAnchor(tokensPicked.get(i), pos_x+(Metrics.dim_x_book)*p.getWidth());
+				AnchorPane.setLeftAnchor(tokensPicked.get(i), 0.0);
+				AnchorPane.setLeftAnchor(tokensPicked.get(i), 0.0);
+				//AnchorPane.setTopAnchor(tokensPicked.get(i), pos_y+(40/864.0)*p.getHeight());
+				getChildren().add(tokens.get(i));
+
+			}
+
+	}
+
+	public ArrayList<ScoreToken> getToken(){
+		return tokensPicked;
+	}
+	*/
 	public void createLabelName(double w, double h, double x, double y) {
 		labelName = new StackPane();
 		Image image = Resources.labelName();

@@ -84,10 +84,15 @@ public class Viewer extends Application {
 	private ArrayList<Integer> currentToken;
 
 	private ArrayList<ScoreToken> scoringToken;
+	private ArrayList<ScoreToken> pickedToken;
+	private ArrayList<Integer> prevCommGoalScore;
 
 	private ImageView endToken;
 	private PlayersPointBoard ppboard;
 	private CirclePoints cp;
+	//private int commScore;
+	//private ScoreToken testToken1;
+	//private ScoreToken testToken2;
 
 
 
@@ -131,6 +136,11 @@ public class Viewer extends Application {
 		primaryStage.setResizable(true);
 
 		gui = this;
+		//commScore = 0;
+		pickedToken=new ArrayList<>();
+		prevCommGoalScore= new ArrayList<>();
+		prevCommGoalScore.add(8);
+		prevCommGoalScore.add(8);
 //
 //		// -----------  setup page  -----------
 //		Pane rootBox = new Pane();
@@ -718,8 +728,32 @@ public class Viewer extends Application {
 	}
 
 	public void showCurrentScore(Map<String, Integer> map) {
+		/*
+		if(map.get(nickname)!=commScore){
+			setPickToken(map.get(nickname)-commScore);
+		}
+		commScore=map.get(nickname);
+
+		 */
 		this.players = new HashMap<>(map);
 		ppboard.addScores(map);
+	}
+
+	public void setPickToken(int value){
+		ScoreToken newToken= new ScoreToken(value,primaryStage);
+		newToken.getImageview().setFitWidth(0.25*Metrics.dim_x_comm*primaryStage.getWidth());
+		newToken.getImageview().setFitHeight(0.25*Metrics.dim_y_comm*primaryStage.getHeight());
+		double rotationAngle = 7.5;
+		Rotate rotate = new Rotate(rotationAngle, newToken.getImageview().getFitWidth() / 2, newToken.getImageview().getFitHeight() / 2);
+		newToken.getImageview().getTransforms().add(rotate);
+		//add the token gained
+		pickedToken.add(newToken);
+		//place the tokens
+		for(int i=0;i<pickedToken.size();i++){
+			AnchorPane.setLeftAnchor(pickedToken.get(i),((14.0/1536.0)*i + Metrics.d_x_pers)*gameBoard.getWidth());
+			AnchorPane.setTopAnchor(pickedToken.get(i),((14.0/864.0)*i + (502.0/864.0))*gameBoard.getHeight());
+			gameBoard.getChildren().add(pickedToken.get(i));
+		}
 	}
 
 	public void showHiddenScore(int score) {
@@ -1018,6 +1052,38 @@ public class Viewer extends Application {
 		gameBoard.getChildren().add(commandBoard);
 		setEndToken();
 
+		//!!!!!!!!!!!! FOR TESTING ONLY !!!!!!!!!!!
+		/*
+		testToken1 = new ScoreToken(8,primaryStage);
+		testToken1.getImageview().setFitWidth(0.25*Metrics.dim_x_comm*primaryStage.getWidth());
+		testToken1.getImageview().setFitHeight(0.25*Metrics.dim_y_comm*primaryStage.getHeight());
+
+		double rotationAngle = 7.5;
+		Rotate rotate = new Rotate(rotationAngle, testToken1.getImageview().getFitWidth() / 2, testToken1.getImageview().getFitHeight() / 2);
+		testToken1.getImageview().getTransforms().add(rotate);
+
+		//System.out.println("POS TOKEN PRESO ------ X:" + Metrics.d_x_pers*gameBoard.getWidth() + " Y: "+  (Metrics.d_y_pers + Metrics.dim_y_pers + 20.0/864.0)*gameBoard.getHeight());
+		//AnchorPane.setLeftAnchor(testToken1,((12.0/1536.0)*0 + Metrics.d_x_pers)*gameBoard.getWidth());
+		//AnchorPane.setTopAnchor(testToken1, 0.0);
+		AnchorPane.setLeftAnchor(testToken1, Metrics.d_x_pers*gameBoard.getWidth());
+		AnchorPane.setTopAnchor(testToken1,(502/864.0)*gameBoard.getHeight());
+		gameBoard.getChildren().add(testToken1);
+
+		testToken2 = new ScoreToken(8,primaryStage);
+		testToken2.getImageview().setFitWidth(0.25*Metrics.dim_x_comm*primaryStage.getWidth());
+		testToken2.getImageview().setFitHeight(0.25*Metrics.dim_y_comm*primaryStage.getHeight());
+
+		double rotationAngle2 = 7.5;
+		Rotate rotate2 = new Rotate(rotationAngle2, testToken2.getImageview().getFitWidth() / 2, testToken2.getImageview().getFitHeight() / 2);
+		testToken2.getImageview().getTransforms().add(rotate2);
+
+		//System.out.println("POS TOKEN PRESO ------ X:" +((12.0/1536.0)*1 +Metrics.d_x_pers)*gameBoard.getWidth() + " Y: "+  ((12.0/864.0)*1 + Metrics.d_y_pers + Metrics.dim_y_pers + 20.0/864.0)*gameBoard.getHeight());
+		AnchorPane.setLeftAnchor(testToken2,((14.0/1536.0) + Metrics.d_x_pers)*gameBoard.getWidth());
+		AnchorPane.setTopAnchor(testToken2,(516.0/864.0)*gameBoard.getHeight());
+		gameBoard.getChildren().add(testToken2);
+
+		 */
+
 		System.out.println("PRIMARYSTAGE W: " + primaryStage.getWidth() + " H: "+primaryStage.getHeight());
 		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight(), primaryStage);
 		//bookshelf.relocate(Metrics.d_x_bookpl*primaryStage.getWidth(), Metrics.d_y_bookpl*primaryStage.getHeight());
@@ -1128,13 +1194,19 @@ public class Viewer extends Application {
 			arr.add(i);
 			currentToken.add(map.get(i));
 		}
+		for(int j=0;j<arr.size();j++){
+			System.out.println("primo membro: " + currentToken.get(j)+ " secondo membro: " + prevCommGoalScore.get(j));
+			if(currentToken.get(j)!=prevCommGoalScore.get(j)){
+				setPickToken(prevCommGoalScore.get(j)-currentToken.get(j));
+			}
+			prevCommGoalScore.add(j,currentToken.get(j));
+		}
 		c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
 		c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
 		AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
 		AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
 		AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2 );
 		AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
-
 		//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
 		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
 		gameBoard.getChildren().add(c1);
@@ -1143,12 +1215,18 @@ public class Viewer extends Application {
 	}
 
 	private void setToken(){
+		int t=0;
 		scoringToken = new ArrayList<>();
 		for(int i = 0; i<currentToken.size(); i++){
-			scoringToken.add(new ScoreToken(currentToken.get(i),primaryStage));
-			AnchorPane.setLeftAnchor(scoringToken.get(i),6.95*Metrics.d_x_comm*gameBoard.getWidth());
-			AnchorPane.setTopAnchor(scoringToken.get(i),(i*(210.0/864) - (8.0/864) + Metrics.d_y_commToken)*gameBoard.getHeight());
-			gameBoard.getChildren().add(scoringToken.get(i));
+			if(currentToken.get(i)!=0){
+				scoringToken.add(new ScoreToken(currentToken.get(i),primaryStage));
+				AnchorPane.setLeftAnchor(scoringToken.get(i-t),6.95*Metrics.d_x_comm*gameBoard.getWidth());
+				AnchorPane.setTopAnchor(scoringToken.get(i-t),(i*(210.0/864) - (8.0/864) + Metrics.d_y_commToken)*gameBoard.getHeight());
+				gameBoard.getChildren().add(scoringToken.get(i-t));
+			}
+			else{
+				t=1;
+			}
 		}
 	}
 
@@ -1302,7 +1380,12 @@ public class Viewer extends Application {
 						} else {
 //							System.out.println();
 							nodelist.add(new Tile(m.get("(" + j + "," + k + ")"), primaryStage));
-							bookshelves.get(i).update(nodelist, j);
+							bookshelves.get(i).update(nodelist, j,pickedToken,gameBoard,primaryStage);
+							//ArrayList<ScoreToken> tmpToken = new ArrayList<>();
+							//tmpToken=bookshelves.get(i).getToken();
+							//for(int t=0; t<tmpToken.size();t++){
+								//gameBoard.getChildren().add(tmpToken.get(i));
+							//}
 							System.out.println(j + " --- "+ k);
 							nodelist.clear();
 						}
