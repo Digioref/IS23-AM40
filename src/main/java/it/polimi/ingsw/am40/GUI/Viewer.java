@@ -649,10 +649,11 @@ public class Viewer extends Application {
 
 		// drop to select the receiver
 		ComboBox<String> selectReceivers = new ComboBox<>();
-		ArrayList<String> sendTo = new ArrayList<>();
-		sendTo.add("everyOne");
-		sendTo.add("pippo");
-		sendTo.add("marco");
+		ArrayList<String> sendTo = new ArrayList<>(names);
+		sendTo.remove(nickname);
+		if (sendTo.size() > 1) {
+			sendTo.add("everyOne");
+		}
 		selectReceivers.getItems().addAll(sendTo);
 		selectReceivers.setValue("everyOne");
 		chatContainer.getChildren().add(selectReceivers);
@@ -687,6 +688,11 @@ public class Viewer extends Application {
 			String receiver = selectReceivers.getValue();
 
 			if (!message.isEmpty()) {
+
+				JSONConverterCtoS jconv = new JSONConverterCtoS();
+				jconv.toJSONChat(receiver, message);
+				//LaunchClient.getClient().chat(jconv.toString());
+
 				NewMessage newMessage = new NewMessage(sender, receiver, message);
 				messages.getChildren().add(newMessage);
 				messageInput.clear();
@@ -697,16 +703,14 @@ public class Viewer extends Application {
 		});
 
 
-		// test, this will be automatic
-		NewMessage newMessage = new NewMessage("fil", "marc","funziona");
-		messages.getChildren().add(newMessage);
-
-		newMessage = new NewMessage("marc", "fil","bravo!");
+		// Welcome message
+		NewMessage newMessage = new NewMessage("MyShelfie", nickname,"Welcome to the chat, here you can send messages");
 		messages.getChildren().add(newMessage);
 
 		// Add the chat container to the main pane
 		gameBoard.getChildren().add(chatContainer);
 
+		// Set the position of the chat
 		chatContainer.setTranslateX(100);
 		chatContainer.setTranslateY(100);
 
