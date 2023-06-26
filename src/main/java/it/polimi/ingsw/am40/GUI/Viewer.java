@@ -738,7 +738,9 @@ public class Viewer extends Application {
 		messages.getChildren().add(newMessage);
 
 		// Add the chat container to the main pane
-		gameBoard.getChildren().add(chatContainer);
+		if (!gameBoard.getChildren().contains(chatContainer)) {
+			gameBoard.getChildren().add(chatContainer);
+		}
 
 		// Set the position of the chat
 		chatContainer.setTranslateX(100);
@@ -1179,18 +1181,20 @@ public class Viewer extends Application {
 			arr.add(i);
 			currentToken.add(map.get(i));
 		}
-		c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
-		c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
-		AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
-		AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
-		AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2 );
-		AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
+		if (c1 == null && c2 == null ) {
+			c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
+			c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
+			AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
+			AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
+			AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2 );
+			AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
 
-		//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
-		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
-		gameBoard.getChildren().add(c1);
-		gameBoard.getChildren().add(c2);
-		setToken();
+			//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
+			//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
+			gameBoard.getChildren().add(c1);
+			gameBoard.getChildren().add(c2);
+			setToken();
+		}
 	}
 
 	private void setToken(){
@@ -1205,11 +1209,13 @@ public class Viewer extends Application {
 
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
-		p = new PersonalGoal(number, primaryStage);
-		AnchorPane.setTopAnchor(p, gameBoard.getHeight() * Metrics.d_y_pers );
-		AnchorPane.setLeftAnchor(p, gameBoard.getWidth() * Metrics.d_x_pers);
-		//p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
-		gameBoard.getChildren().add(p);
+		if (p == null) {
+			p = new PersonalGoal(number, primaryStage);
+			AnchorPane.setTopAnchor(p, gameBoard.getHeight() * Metrics.d_y_pers );
+			AnchorPane.setLeftAnchor(p, gameBoard.getWidth() * Metrics.d_x_pers);
+			//p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
+			gameBoard.getChildren().add(p);
+		}
 	}
 
 	public void setBoard(Map<String, String> map) {
@@ -1221,7 +1227,7 @@ public class Viewer extends Application {
 			gameBoard.getChildren().add(board);
 		}
 		for (String s: map.keySet()) {
-			if (!map.get(s).equals("NOCOLOR")) {
+			if (!map.get(s).equals("NOCOLOR") && !board.getTiles().containsKey(map.get(s))) {
 				Tile t = new Tile(map.get(s), primaryStage);
 				t.setPosition(s);
 				board.place(t);

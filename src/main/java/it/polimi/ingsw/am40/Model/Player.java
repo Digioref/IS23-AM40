@@ -118,8 +118,12 @@ public class Player {
         System.out.println(at);
         System.out.println(tilesPicked);
         ArrayList<Tile> arr = new ArrayList<>();
-        for (Integer i: at) {
-            arr.add(tilesPicked.get(i - 1));
+        for (int i = 1; i <= at.size(); i++) {
+            for (int j = 0; j < at.size(); j++) {
+                if(at.get(j) == i) {
+                    arr.add(tilesPicked.get(j));
+                }
+            }
         }
 
         System.out.println(arr);

@@ -3,6 +3,8 @@ package it.polimi.ingsw.am40.Model;
 import it.polimi.ingsw.am40.CLI.Colors;
 import javafx.scene.paint.Color;
 
+import java.util.Random;
+
 /**
  * Represents the tiles in the game
  */
