@@ -143,7 +143,7 @@ public class Bookshelf extends AnchorPane {
 		this.colIndex = col;
 		animTimer.start();
 	}
-	public void update(ArrayList<Node> nodeList, int cols, ArrayList<ScoreToken> pickedTokens,AnchorPane p,Stage primaryStage){
+	public void update(ArrayList<Node> nodeList, int cols){
 		double width = this.getWidth();
 		double height = this.getHeight();
 		System.out.println("WWW : "+ width + "  HHH: " + height);

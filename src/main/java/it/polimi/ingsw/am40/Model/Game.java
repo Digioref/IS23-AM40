@@ -626,7 +626,7 @@ public class Game implements IGame {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
                     }
-//                    v.receiveCurrentPlayer(currentPlayer);
+//                  v.receiveCurrentPlayer(currentPlayer);
                     v.receiveListPlayers(players);
                     v.receiveCommonGoals(currentComGoals);
                     for (Player p : players) {

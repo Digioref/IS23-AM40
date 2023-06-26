@@ -37,10 +37,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.regex.Pattern;
 
@@ -85,6 +82,8 @@ public class Viewer extends Application {
 
 	private ArrayList<ScoreToken> scoringToken;
 	private ArrayList<ScoreToken> pickedToken;
+
+	private Map<String,ArrayList<ScoreToken>> pickTok;
 	private ArrayList<Integer> prevCommGoalScore;
 
 	private ImageView endToken;
@@ -137,6 +136,67 @@ public class Viewer extends Application {
 
 		gui = this;
 		//commScore = 0;
+		this.pickTok=new Map<String, ArrayList<ScoreToken>>() {
+			@Override
+			public int size() {
+				return 0;
+			}
+
+			@Override
+			public boolean isEmpty() {
+				return false;
+			}
+
+			@Override
+			public boolean containsKey(Object key) {
+				return false;
+			}
+
+			@Override
+			public boolean containsValue(Object value) {
+				return false;
+			}
+
+			@Override
+			public ArrayList<ScoreToken> get(Object key) {
+				return null;
+			}
+
+			@Override
+			public ArrayList<ScoreToken> put(String key, ArrayList<ScoreToken> value) {
+				return null;
+			}
+
+			@Override
+			public ArrayList<ScoreToken> remove(Object key) {
+				return null;
+			}
+
+			@Override
+			public void putAll(Map<? extends String, ? extends ArrayList<ScoreToken>> m) {
+
+			}
+
+			@Override
+			public void clear() {
+
+			}
+
+			@Override
+			public Set<String> keySet() {
+				return null;
+			}
+
+			@Override
+			public Collection<ArrayList<ScoreToken>> values() {
+				return null;
+			}
+
+			@Override
+			public Set<Entry<String, ArrayList<ScoreToken>>> entrySet() {
+				return null;
+			}
+		};
 		pickedToken=new ArrayList<>();
 		prevCommGoalScore= new ArrayList<>();
 		prevCommGoalScore.add(8);
@@ -437,6 +497,8 @@ public class Viewer extends Application {
 				t1.setText("Insert an username, please!");
 			} else {
 				nickname = tf.getText();
+				ArrayList<ScoreToken> tmp = new ArrayList<>();
+				pickTok.put(nickname,tmp);
 				LaunchClient.getClient().sendMessage("login " + tf.getText());
 			}
 		});
@@ -752,12 +814,27 @@ public class Viewer extends Application {
 		Rotate rotate = new Rotate(rotationAngle, newToken.getImageview().getFitWidth() / 2, newToken.getImageview().getFitHeight() / 2);
 		newToken.getImageview().getTransforms().add(rotate);
 		//add the token gained
+		/*
+		pickTok.get(nickname).add(newToken);
+		//place the tokens
+		for(int i=0;i<pickTok.get(nickname).size();i++){
+			AnchorPane.setLeftAnchor(pickTok.get(nickname).get(i),((14.0/1536.0)*i + Metrics.d_x_pers)*gameBoard.getWidth());
+			AnchorPane.setTopAnchor(pickTok.get(nickname).get(i),((14.0/864.0)*i + (502.0/864.0))*gameBoard.getHeight());
+			if(!gameBoard.getChildren().contains(pickTok.get(nickname).get(i))){
+				gameBoard.getChildren().add(pickedToken.get(i));
+			}
+
+		}
+
+		 */
 		pickedToken.add(newToken);
 		//place the tokens
 		for(int i=0;i<pickedToken.size();i++){
 			AnchorPane.setLeftAnchor(pickedToken.get(i),((14.0/1536.0)*i + Metrics.d_x_pers)*gameBoard.getWidth());
 			AnchorPane.setTopAnchor(pickedToken.get(i),((14.0/864.0)*i + (502.0/864.0))*gameBoard.getHeight());
-			gameBoard.getChildren().add(pickedToken.get(i));
+			if(!gameBoard.getChildren().contains(pickedToken.get(i))){
+				gameBoard.getChildren().add(pickedToken.get(i));
+			}
 		}
 	}
 
@@ -1026,7 +1103,6 @@ public class Viewer extends Application {
 				}
 			}
 		});
-
 		handleEvent();
 
 		////////////////////////////
@@ -1197,24 +1273,30 @@ public class Viewer extends Application {
 			arr.add(i);
 			currentToken.add(map.get(i));
 		}
+		System.out.println("!!!!!!!! "+currentToken);
+		System.out.println("XXXXXXXX " +prevCommGoalScore);
 		for(int j=0;j<arr.size();j++){
-			System.out.println("primo membro: " + currentToken.get(j)+ " secondo membro: " + prevCommGoalScore.get(j));
-			if(currentToken.get(j)!=prevCommGoalScore.get(j)){
-				setPickToken(prevCommGoalScore.get(j)-currentToken.get(j));
+			System.out.println("common obj n° "+ j + " current token: " + currentToken.get(j)+ " previous token: " + prevCommGoalScore.get(j));
+			if(!Objects.equals(currentToken.get(j), prevCommGoalScore.get(j))){
+				setPickToken(prevCommGoalScore.get(j));
 			}
-			prevCommGoalScore.add(j,currentToken.get(j));
+			System.out.println("XXXXXXXX PT2: " + prevCommGoalScore);
+			System.out.println("!!!!!!!! PT2: " + currentToken +" ---- J= " + j);
+			prevCommGoalScore.set(j,currentToken.get(j));
 		}
-		c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
-		c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
-		AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
-		AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
-		AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2 );
-		AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
-		//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
-		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
-		gameBoard.getChildren().add(c1);
-		gameBoard.getChildren().add(c2);
-		setToken();
+		if(c1==null && c2==null) {
+			c1 = new CommonGoalGui(arr.get(0) - 1, primaryStage);
+			c2 = new CommonGoalGui(arr.get(1) - 1, primaryStage);
+			AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1);
+			AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
+			AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2);
+			AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
+			//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
+			//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
+			gameBoard.getChildren().add(c1);
+			gameBoard.getChildren().add(c2);
+			setToken();
+		}
 	}
 
 	private void setToken(){
@@ -1235,11 +1317,14 @@ public class Viewer extends Application {
 
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
-		p = new PersonalGoal(number, primaryStage);
-		AnchorPane.setTopAnchor(p, gameBoard.getHeight() * Metrics.d_y_pers );
-		AnchorPane.setLeftAnchor(p, gameBoard.getWidth() * Metrics.d_x_pers);
-		//p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
-		gameBoard.getChildren().add(p);
+		if(p==null){
+			p = new PersonalGoal(number, primaryStage);
+			AnchorPane.setTopAnchor(p, gameBoard.getHeight() * Metrics.d_y_pers );
+			AnchorPane.setLeftAnchor(p, gameBoard.getWidth() * Metrics.d_x_pers);
+			//p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
+			gameBoard.getChildren().add(p);
+		}
+
 	}
 
 	public void setBoard(Map<String, String> map) {
@@ -1383,7 +1468,7 @@ public class Viewer extends Application {
 						} else {
 //							System.out.println();
 							nodelist.add(new Tile(m.get("(" + j + "," + k + ")"), primaryStage));
-							bookshelves.get(i).update(nodelist, j,pickedToken,gameBoard,primaryStage);
+							bookshelves.get(i).update(nodelist, j);
 							//ArrayList<ScoreToken> tmpToken = new ArrayList<>();
 							//tmpToken=bookshelves.get(i).getToken();
 							//for(int t=0; t<tmpToken.size();t++){
@@ -1393,7 +1478,6 @@ public class Viewer extends Application {
 							nodelist.clear();
 						}
 					}
-
 				}
 			}
 		}
