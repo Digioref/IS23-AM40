@@ -4,6 +4,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Class that represents the graphic element chair
+ */
 public class Chair extends Label {
     public Chair(double w, double h) {
         Image image = Resources.chair();

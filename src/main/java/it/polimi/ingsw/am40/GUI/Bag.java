@@ -4,7 +4,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
+/**
+ * Class that represents the graphic element bag
+ */
 public class Bag extends Label {
 	/**
 	 * Class that represents the graphic element bag (to be shown on the primaryStage)

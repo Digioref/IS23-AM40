@@ -11,6 +11,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * Class that represents the graphic element personal goal
+ */
 public class PersonalGoal extends Label {
 
 	/**

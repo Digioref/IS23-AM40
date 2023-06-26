@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * <p>It is the Controller which acts directly on the game, calling specific methods of the game to update the game state</p>
+ * <p>This class is the Controller which acts directly on the game, calling specific methods of the game to update the game state</p>
  */
 public class GameController {
     private Game game;
@@ -38,7 +38,7 @@ public class GameController {
     }
 
     /**
-     * It allows the player to pick the tiles selected by the player from the board
+     * This method allows the player to pick the tiles selected by the player from the board
      * @param v the virtual view of the player
      */
     public void pickTiles(VirtualView v) {
@@ -51,7 +51,7 @@ public class GameController {
     }
 
     /**
-     * It allows the player to remove the tiles selected
+     * This method allows the player to remove the tiles selected
      * @param v the virtual view of the player
      */
     public void notConfirmSelection(VirtualView v) {
@@ -63,7 +63,7 @@ public class GameController {
     }
 
     /**
-     * It sets the order of the picked tiles according to the order specified by the parameters
+     * This method sets the order of the picked tiles according to the order specified by the parameters
      * @param v the virtual view of the player
      * @param arr the desired order of the tiles
      */
@@ -76,8 +76,9 @@ public class GameController {
         }
     }
 
+
     /**
-     * It allows the player to insert the tiles picked and ordered in his bookshelf
+     * This method allows the player to insert the tiles picked and ordered in his bookshelf
      * @param v the virtual view of the player
      * @param c the column chosen by the player in which he wants to insert the tiles
      */
@@ -99,7 +100,7 @@ public class GameController {
     }
 
     /**
-     * It adds to the chat of the game the message in the parameters
+     * This method adds to the chat of the game the message in the parameters
      * @param name the receiver of the message
      * @param message the message
      * @param from the sender of the message
@@ -134,7 +135,7 @@ public class GameController {
     }
 
     /**
-     * It returns the chat of the game
+     * This method returns the chat of the game
      * @param name the name of the player who requested the chat
      */
     public void getChat(String name) {
@@ -146,7 +147,7 @@ public class GameController {
     }
 
     /**
-     * It disconnects the player whose name is the one in the parameters
+     * This method disconnects the player whose name is the one in the parameters
      * @param s the name of the playerr to be disconnected
      */
     public void disconnectPlayer(String s) {
@@ -171,7 +172,7 @@ public class GameController {
     }
 
     /**
-     * It returns the game controlled by this controller
+     * This method returns the game controlled by this controller
      * @return a game
      */
     public Game getGame() {
@@ -179,7 +180,7 @@ public class GameController {
     }
 
     /**
-     * It returns the Controller which has created this Game controller
+     * This method returns the Controller which has created this Game controller
      * @return
      */
     public Controller getController() {
@@ -187,7 +188,7 @@ public class GameController {
     }
 
     /**
-     * It reconnects the player whose name is the one specified in the parameters
+     * This method reconnects the player whose name is the one specified in the parameters
      * @param s the name of the reconnecting player
      */
     public void reconnect(String s) {
@@ -208,7 +209,7 @@ public class GameController {
     }
 
     /**
-     * It sets the game the controller has to control
+     * This method sets the game the controller has to control
      * @param game a game
      */
     public void setGame(Game game){

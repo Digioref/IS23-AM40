@@ -129,8 +129,8 @@ public class ClientGUIController implements View {
     }
 
     @Override
-    public void showSuggestedNicknames(String s, ArrayList<String> array4) {
-        runLater(()->gui.suggestNicknames(s, array4));
+    public void showSuggestedNicknames(String to_be_replaced, ArrayList<String> suggested) {
+        runLater(()->gui.suggestNicknames(to_be_replaced, suggested));
     }
 
     @Override
