@@ -18,6 +18,7 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -37,7 +39,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.regex.Pattern;
 
@@ -73,6 +78,7 @@ public class Viewer extends Application {
 	private boolean isVisible;
 	private boolean isNew;
 	private VBox chatContainer = new VBox();
+	private AnchorPane chat = new AnchorPane();
 	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
 	private Circle dotIndicator;
 
@@ -89,9 +95,9 @@ public class Viewer extends Application {
 	private ImageView endToken;
 	private PlayersPointBoard ppboard;
 	private CirclePoints cp;
-	//private int commScore;
-	//private ScoreToken testToken1;
-	//private ScoreToken testToken2;
+
+	private ScrollPane chatScrollPane = new ScrollPane();
+
 
 
 
@@ -135,72 +141,6 @@ public class Viewer extends Application {
 		primaryStage.setResizable(true);
 
 		gui = this;
-		//commScore = 0;
-		this.pickTok=new Map<String, ArrayList<ScoreToken>>() {
-			@Override
-			public int size() {
-				return 0;
-			}
-
-			@Override
-			public boolean isEmpty() {
-				return false;
-			}
-
-			@Override
-			public boolean containsKey(Object key) {
-				return false;
-			}
-
-			@Override
-			public boolean containsValue(Object value) {
-				return false;
-			}
-
-			@Override
-			public ArrayList<ScoreToken> get(Object key) {
-				return null;
-			}
-
-			@Override
-			public ArrayList<ScoreToken> put(String key, ArrayList<ScoreToken> value) {
-				return null;
-			}
-
-			@Override
-			public ArrayList<ScoreToken> remove(Object key) {
-				return null;
-			}
-
-			@Override
-			public void putAll(Map<? extends String, ? extends ArrayList<ScoreToken>> m) {
-
-			}
-
-			@Override
-			public void clear() {
-
-			}
-
-			@Override
-			public Set<String> keySet() {
-				return null;
-			}
-
-			@Override
-			public Collection<ArrayList<ScoreToken>> values() {
-				return null;
-			}
-
-			@Override
-			public Set<Entry<String, ArrayList<ScoreToken>>> entrySet() {
-				return null;
-			}
-		};
-		pickedToken=new ArrayList<>();
-		prevCommGoalScore= new ArrayList<>();
-		prevCommGoalScore.add(8);
-		prevCommGoalScore.add(8);
 //
 //		// -----------  setup page  -----------
 //		Pane rootBox = new Pane();
@@ -497,8 +437,6 @@ public class Viewer extends Application {
 				t1.setText("Insert an username, please!");
 			} else {
 				nickname = tf.getText();
-				ArrayList<ScoreToken> tmp = new ArrayList<>();
-				pickTok.put(nickname,tmp);
 				LaunchClient.getClient().sendMessage("login " + tf.getText());
 			}
 		});
@@ -676,6 +614,8 @@ public class Viewer extends Application {
 			}
 			NewMessage t = new NewMessage(array1.get(array1.size()-1), array2.get(array2.size()-1), array3.get(array3.size()-1));
 			messages.getChildren().add(t);
+
+			chatScrollPane.setVvalue(1.0);
 		}
 	}
 
@@ -689,7 +629,7 @@ public class Viewer extends Application {
 		ChatButton.setText("CHAT");
 
 		gameBoard.getChildren().add(ChatButton);
-		ChatButton.setOnAction(e -> showChat(ChatButton));
+		//ChatButton.setOnAction(e -> showChat(ChatButton));
 
 		// Red dot indicator for unread messages
 		dotIndicator = new Circle(5);
@@ -704,10 +644,25 @@ public class Viewer extends Application {
 
 		gameBoard.getChildren().add(chatButtonPane);
 
-		chatContainer.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-padding: 10px;");
-		chatContainer.setMaxHeight(200);
-		chatContainer.setVisible(isVisible);
+		chatContainer.setStyle("-fx-background-color: #007700; -fx-border-color: #CCCCCC; -fx-border-width: 1px; -fx-padding: 10px; -fx-border-radius: 8px;");
+		//chatContainer.setMaxHeight(200);
+		chat.setVisible(isVisible);
 
+		// button to close the chat
+		HBox closeButtonPane = new HBox();
+		closeButtonPane.setAlignment(Pos.TOP_LEFT);
+		closeButtonPane.setTranslateX(5);
+		closeButtonPane.setTranslateY(-5);
+
+		Circle closeButtonCircle = new Circle(10, Color.RED);
+		closeButtonCircle.setStroke(Color.WHITE);
+		closeButtonPane.getChildren().add(closeButtonCircle);
+		chatContainer.getChildren().add(closeButtonPane);
+
+		closeButtonCircle.setOnMousePressed( e -> {
+				chat.setVisible(false);
+				isVisible = false;
+		});
 
 		// scrollpane to see the messages
 		ScrollPane chatScrollPane = new ScrollPane();
@@ -715,18 +670,23 @@ public class Viewer extends Application {
 		chatScrollPane.setFitToHeight(true);
 		chatContainer.getChildren().add(chatScrollPane);
 
+		ChatButton.setOnAction(e -> showChat());
+
 		messages = new VBox();
+		VBox.setVgrow(chatContainer, Priority.ALWAYS);
+		VBox.setVgrow(messages, Priority.ALWAYS);
 		//messages.setSpacing(10);
 		chatScrollPane.setContent(messages);
 
 		// drop to select the receiver
 		ComboBox<String> selectReceivers = new ComboBox<>();
-		ArrayList<String> sendTo = new ArrayList<>();
-		sendTo.add("everyOne");
-		sendTo.add("pippo");
-		sendTo.add("marco");
+		ArrayList<String> sendTo = new ArrayList<>(names);
+		sendTo.remove(nickname);
+		if (sendTo.size() > 1) {
+			sendTo.add("everyOne");
+		}
 		selectReceivers.getItems().addAll(sendTo);
-		selectReceivers.setValue("everyOne");
+		selectReceivers.setValue(sendTo.get(sendTo.size()-1));
 		chatContainer.getChildren().add(selectReceivers);
 
 		// text field to write the message
@@ -759,14 +719,28 @@ public class Viewer extends Application {
 			String receiver = selectReceivers.getValue();
 
 			if (!message.isEmpty()) {
-				JSONConverterCtoS jconv = new JSONConverterCtoS();
-				jconv.toJSONChat(receiver, message);
-				if (LaunchClient.getClient() != null) {
-					LaunchClient.getClient().chat(jconv.toString());
+				ArrayList<String> receivers;
+				if (!receiver.equals("everyOne")) {
+					receivers = new ArrayList<>();
+					receivers.add(receiver);
+				} else {
+					receivers = new ArrayList<>(names);
+					receivers.remove(nickname);
+				}
+
+				for (String to: receivers) {
+					System.out.println("send to: " + to);
+					JSONConverterCtoS jconv = new JSONConverterCtoS();
+					jconv.toJSONChat(to, message);
+					if (LaunchClient.getClient() != null) {
+						LaunchClient.getClient().chat(jconv.toString());
+					}
 				}
 				NewMessage newMessage = new NewMessage(sender, receiver, message);
 				messages.getChildren().add(newMessage);
 				messageInput.clear();
+
+
 
 				chatScrollPane.setVvalue(1.0);
 
@@ -774,19 +748,68 @@ public class Viewer extends Application {
 		});
 
 
-		// test, this will be automatic
-		NewMessage newMessage = new NewMessage("fil", "marc","funziona");
-		messages.getChildren().add(newMessage);
-
-		newMessage = new NewMessage("marc", "fil","bravo!");
+		// Welcome message
+		NewMessage newMessage = new NewMessage("MyShelfie", nickname,"Welcome to the chat, here you can send messages");
 		messages.getChildren().add(newMessage);
 
 		// Add the chat container to the main pane
-		gameBoard.getChildren().add(chatContainer);
+		if (!gameBoard.getChildren().contains(chatContainer)) {
+			gameBoard.getChildren().add(chatContainer);
+		}
 
-		chatContainer.setTranslateX(100);
-		chatContainer.setTranslateY(100);
+		// Set the position of the chat
+		chat.setTranslateX(100);
+		chat.setTranslateY(100);
 
+		// Make the chat expandable
+		Rectangle expRect = new Rectangle();
+		AnchorPane.setBottomAnchor(expRect, 0.0);
+		AnchorPane.setRightAnchor(expRect, 0.0);
+		chat.getChildren().add(expRect);
+
+		expRect.setWidth(10);
+		expRect.setHeight(10);
+		expRect.setFill(Color.TRANSPARENT);
+
+		expRect.setOnMouseEntered( e -> {
+			expRect.setCursor(Cursor.NW_RESIZE);
+		});
+
+		expRect.setOnMouseExited( e -> {
+			expRect.setCursor(Cursor.DEFAULT);
+		});
+
+		final Delta expand = new Delta();
+		expRect.setOnMousePressed(event -> {
+			expand.x = chatContainer.getWidth() - event.getSceneX();
+			expand.y = chatContainer.getHeight() - event.getSceneY();
+		});
+		expRect.setOnMouseDragged(event -> {
+			chatContainer.setPrefWidth(event.getSceneX() + expand.x);
+			chatContainer.setPrefHeight(event.getSceneY() + expand.y);
+		});
+
+		// Make the chat container draggable
+		final Delta dragDelta = new Delta();
+		chatContainer.setOnMousePressed(event -> {
+			dragDelta.x = chat.getTranslateX() - event.getSceneX();
+			dragDelta.y = chat.getTranslateY() - event.getSceneY();
+		});
+		chatContainer.setOnMouseDragged(event -> {
+			if (!expRect.isHover()) {
+				chat.setTranslateX(event.getSceneX() + dragDelta.x);
+				chat.setTranslateY(event.getSceneY() + dragDelta.y);
+			}
+		});
+
+	}
+
+	public void setPickToken(String nickname, int num, int score) {
+
+	}
+
+	class Delta {
+		double x, y;
 	}
 
 	public void setCurrentPlayer(String s) {
@@ -795,13 +818,6 @@ public class Viewer extends Application {
 	}
 
 	public void showCurrentScore(Map<String, Integer> map) {
-		/*
-		if(map.get(nickname)!=commScore){
-			setPickToken(map.get(nickname)-commScore);
-		}
-		commScore=map.get(nickname);
-
-		 */
 		this.players = new HashMap<>(map);
 		ppboard.addScores(map);
 	}
@@ -916,13 +932,18 @@ public class Viewer extends Application {
 			//messageLabel.setMaxWidth(100);
 
 			getChildren().addAll(senderLabel, messageLabel);
+
+			setStyle("-fx-padding: 0px 10px;");
+
 		}
 	}
 
-	private void showChat(Button button) {
+	private void showChat() {
 		dotIndicator.setVisible(false);
-		isVisible = !isVisible;
-		chatContainer.setVisible(isVisible);
+		chatScrollPane.setVvalue(1.0);
+		isVisible = true;
+		chat.setVisible(true);
+
 //		if (isVisible) {
 //			button.setText("Hide chat");
 //		} else {
@@ -1172,8 +1193,6 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		gameBoard.getChildren().add(bookshelf);
 
-		createChatContainer();
-
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
 			arrowDown.setUserData(arrowDown);
@@ -1245,6 +1264,8 @@ public class Viewer extends Application {
 		gameBoard.getChildren().add(cp);
 		AnchorPane.setTopAnchor(cp, gameBoard.getHeight()*Metrics.d_y_cp);
 		AnchorPane.setLeftAnchor(cp, gameBoard.getWidth()*Metrics.d_x_cp);
+
+
 	}
 	private void handleEvent() {
 		scene.addEventFilter(CustomEvent.TILE_SELECTED, event -> {
@@ -1336,7 +1357,7 @@ public class Viewer extends Application {
 			gameBoard.getChildren().add(board);
 		}
 		for (String s: map.keySet()) {
-			if (!map.get(s).equals("NOCOLOR")) {
+			if (!map.get(s).equals("NOCOLOR")) {  //&& !board.getTiles().containsKey(map.get(s))
 				Tile t = new Tile(map.get(s), primaryStage);
 				t.setPosition(s);
 				board.place(t);
@@ -1384,6 +1405,8 @@ public class Viewer extends Application {
 		for (String s: names) {
 			ppboard.addPlayer(s);
 		}
+		createChatContainer();
+		chat.toFront();
 	}
 
 	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {

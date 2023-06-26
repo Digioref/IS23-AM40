@@ -148,4 +148,9 @@ public class ClientGUIController implements View {
         runLater(()->gui.setFirstPlayer(nickname));
     }
 
+    @Override
+    public void showCGDone(String nickname, int num, int score) {
+        runLater(()->gui.setPickToken(nickname, num, score));
+    }
+
 }

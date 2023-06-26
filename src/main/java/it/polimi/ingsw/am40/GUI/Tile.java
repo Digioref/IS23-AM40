@@ -109,4 +109,8 @@ public class Tile extends Label {
 	public ImageView getTileView(){
 		return tileView;
 	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 }
