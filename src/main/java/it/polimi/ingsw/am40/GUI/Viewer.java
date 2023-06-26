@@ -1079,8 +1079,6 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		gameBoard.getChildren().add(bookshelf);
 
-		createChatContainer();
-
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
 			arrowDown.setUserData(arrowDown);
@@ -1152,6 +1150,7 @@ public class Viewer extends Application {
 		gameBoard.getChildren().add(cp);
 		AnchorPane.setTopAnchor(cp, gameBoard.getHeight()*Metrics.d_y_cp);
 		AnchorPane.setLeftAnchor(cp, gameBoard.getWidth()*Metrics.d_x_cp);
+
 	}
 	private void handleEvent() {
 		scene.addEventFilter(CustomEvent.TILE_SELECTED, event -> {
@@ -1270,6 +1269,7 @@ public class Viewer extends Application {
 		for (String s: names) {
 			ppboard.addPlayer(s);
 		}
+		createChatContainer();
 	}
 
 	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
