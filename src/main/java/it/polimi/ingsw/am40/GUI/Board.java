@@ -137,46 +137,46 @@ public class Board extends AnchorPane {
 	 * @param board
 	 */
 	public void clearUpdate(Map<String, String> map, ArrayList<Position> selected, Map<String, String> board) {
-//		getChildren().clear();
-//		tiles.clear();
+		getChildren().clear();
+		tiles.clear();
 //		this.selected.clear();
 		for (String s: board.keySet()) {
-//				Tile t = new Tile(board.get(s), primaryStage);
-//				if (!board.get(s).equals("NOCOLOR")) {
-//					t.setPosition(s);
-//					if (!map.containsKey(s)) {
-//						t.setPickable(false);
-//					} else {
-//						t.setPickable(true);
-//					}
-//					Position p = new Position();
-//					p.convertKey(s);
-//					if (selected.contains(p)) {
-//						t.setSelected();
-//						String key = hashkey(p.getX(), p.getY());
-//						if (!this.selected.contains(key)) {
-//							this.selected.add(key);
-//						}
-//					}
-//					place(t);
-//				}
-			Tile t = (Tile) tiles.get(s);
-			if (!board.get(s).equals("NOCOLOR")) {
-				if (!map.containsKey(s)) {
+				Tile t = new Tile(board.get(s), primaryStage);
+				if (!board.get(s).equals("NOCOLOR")) {
+					t.setPosition(s);
+					if (!map.containsKey(s)) {
 						t.setPickable(false);
 					} else {
 						t.setPickable(true);
 					}
-				Position p = new Position();
-				p.convertKey(s);
-				if (selected.contains(p)) {
-					t.setSelected();
-					String key = hashkey(p.getX(), p.getY());
-					if (!this.selected.contains(key)) {
-						this.selected.add(key);
+					Position p = new Position();
+					p.convertKey(s);
+					if (selected.contains(p)) {
+						t.setSelected();
+						String key = hashkey(p.getX(), p.getY());
+						if (!this.selected.contains(key)) {
+							this.selected.add(key);
+						}
 					}
+					place(t);
 				}
-			}
+//			Tile t = (Tile) tiles.get(s);
+//			if (!board.get(s).equals("NOCOLOR")) {
+//				if (!map.containsKey(s)) {
+//						t.setPickable(false);
+//					} else {
+//						t.setPickable(true);
+//					}
+//				Position p = new Position();
+//				p.convertKey(s);
+//				if (selected.contains(p)) {
+//					t.setSelected();
+//					String key = hashkey(p.getX(), p.getY());
+//					if (!this.selected.contains(key)) {
+//						this.selected.add(key);
+//					}
+//				}
+//			}
 
 		}
 		System.out.println(this.selected);
@@ -225,10 +225,10 @@ public class Board extends AnchorPane {
 		STEP_Y = stepY;
 	}
 	public void clearSelected() {
-		for (String s: selected) {
-			Tile t = (Tile) tiles.get(s);
-			t.setSelected(false);
-		}
+//		for (String s: selected) {
+//			Tile t = (Tile) tiles.get(s);
+//			t.setSelected(false);
+//		}
 		this.selected.clear();
 	}
 

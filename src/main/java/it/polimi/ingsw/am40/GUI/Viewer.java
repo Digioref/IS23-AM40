@@ -799,6 +799,10 @@ public class Viewer extends Application {
 
 	}
 
+	public void setPickToken(String nickname, int num, int score) {
+
+	}
+
 	class Delta {
 		double x, y;
 	}
@@ -1268,7 +1272,7 @@ public class Viewer extends Application {
 			gameBoard.getChildren().add(board);
 		}
 		for (String s: map.keySet()) {
-			if (!map.get(s).equals("NOCOLOR") && !board.getTiles().containsKey(map.get(s))) {
+			if (!map.get(s).equals("NOCOLOR")) {  //&& !board.getTiles().containsKey(map.get(s))
 				Tile t = new Tile(map.get(s), primaryStage);
 				t.setPosition(s);
 				board.place(t);

@@ -91,6 +91,7 @@ public class Game implements IGame {
             players.get(players.size() - 1).setNext(p);
         }
         players.add(p);
+        p.setGame(this);
         if (players.size() == numPlayers) {
             players.get(numPlayers - 1).setNext(players.get(0));
         }
@@ -368,6 +369,7 @@ public class Game implements IGame {
             } else {
                 currentPlayer.placeInBookshelf(c);
                 currentPlayer.updateCurrScore(currentComGoals);
+
                 endToken.updateScore(currentPlayer);
 //            System.out.println("qui4");
                 currentPlayer.updateHiddenScore();
@@ -782,6 +784,12 @@ public class Game implements IGame {
                 v.receiveNumPlayers(numPlayers);
                 v.receiveCurrentPlayer(currentPlayer);
             }
+        }
+    }
+
+    public void notifyCommongoal(String name, int index, int score) {
+        for (VirtualView v: observers) {
+            v.receiveCommonGoalDone(name, index, score);
         }
     }
 

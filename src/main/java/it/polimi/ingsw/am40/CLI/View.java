@@ -33,4 +33,6 @@ public interface View {
     void showGame();
 
     void showFirstPlayer(String nickname);
+
+    void showCGDone(String nickname, int num, int score);
 }

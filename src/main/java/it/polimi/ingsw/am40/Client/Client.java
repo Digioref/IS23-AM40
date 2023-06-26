@@ -286,6 +286,12 @@ public abstract class Client {
                 }
                 state.saveFirstPlayer((String) object.get("Nickname"));
                 break;
+            case "CGDone":
+                if(!inChat) {
+                    LaunchClient.getView().showCGDone((String) object.get("Nickname"), (int) object.get("Num"), (int) object.get("Score"));
+                }
+                state.saveFirstPlayer((String) object.get("Nickname"));
+                break;
             default:
                 if (!inChat) {
                     LaunchClient.getView().printMessage(command);

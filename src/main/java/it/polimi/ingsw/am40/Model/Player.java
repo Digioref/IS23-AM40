@@ -53,6 +53,7 @@ public class Player {
     private int hiddenScore;
     private ParsingJSONManager pJSONm;
     private boolean disconnected;
+    private Game game;
 
 
     /**
@@ -125,7 +126,6 @@ public class Player {
                 }
             }
         }
-
         System.out.println(arr);
         tilesPicked.clear();
         tilesPicked.addAll(arr);
@@ -158,6 +158,7 @@ public class Player {
             currentScore += score;
             if (score != 0) {
                 doneCG1 = true;
+                game.notifyCommongoal(nickname,commgoal.get(0).getNum(), score);
             }
         }
         if (!doneCG2) {
@@ -165,6 +166,7 @@ public class Player {
             currentScore += score;
             if (score != 0) {
                 doneCG2 = true;
+                game.notifyCommongoal(nickname,commgoal.get(1).getNum(), score);
             }
         }
     }
@@ -338,5 +340,9 @@ public class Player {
      */
     public void setDisconnected(boolean disconnected) {
         this.disconnected = disconnected;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

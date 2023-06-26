@@ -112,4 +112,5 @@ public interface IGameObserver {
      */
     void receiveFirstPlayer(Player p);
 
+    void receiveCommonGoalDone(String name, int index, int score);
 }

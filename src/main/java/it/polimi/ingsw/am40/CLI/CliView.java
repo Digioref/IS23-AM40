@@ -682,5 +682,10 @@ public class CliView implements View{
         System.out.println(color.blackBg() + "First player:" + color.rst() + " " + nickname + "\n");
     }
 
+    @Override
+    public void showCGDone(String nickname, int num, int score) {
+        System.out.println("The player " + nickname + "has done a common goal obtaining " + score + "points!" + "\n");
+    }
+
 
 }
