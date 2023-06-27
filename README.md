@@ -13,28 +13,22 @@
 
 | Project Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
-| UML | 🟢 | 85 % |
-| Basic Rules | 🟢 | 90 % |
-| Complete Rules | 🟢 | 90 % |
-| CLI | 🟡 | 80 % |
-| GUI | 🟡 | 60 % |
-| RMI | 🟢 | 90 % |
-| Socket | 🟢 | 90 % |
+| UML | 🟢 | 95 % |
+| Basic Rules | 🟢 | 100 % |
+| Complete Rules | 🟢 | 100 % |
+| CLI | 🟢 | 95 % |
+| GUI | 🟢 | 95 % |
+| RMI | 🟢 | 100 % |
+| Socket | 🟢 | 100 % |
 
 | Advanced Features | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
-| Multiple Matches | 🟢 | 80 % |
-| Connections' Resilience | 🟡 | 50 % |
-| Chat | 🟡 | 50 % |
+| Multiple Matches | 🟢 | 95 % |
+| Connections' Resilience | 🟢 | 95 % |
+| Chat | 🟢 | 95 % |
 
 | Test Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
-| Test Basic Rules | 🟢 | 75 % |
-| Test Complete Rules | 🟢 | 75 % |
-| Test CLI | 🟡 | 20 % |
-| Test GUI | 🔴 | 0 % |
-| Test RMI | 🔴 | 0 % |
-| Test Socket | 🔴 | 0 % |
-| Test Multiple Matches | 🔴 | 0 % |
-| Test Connections' Resilience | 🔴 | 0 % |
-| Test Chat | 🔴 | 0 % |
+| Test Model | 🟢 | 90 % |
+| Test Controller | 🟢 | 90 % |
+
