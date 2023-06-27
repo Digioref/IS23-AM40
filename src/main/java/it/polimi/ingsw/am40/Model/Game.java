@@ -783,6 +783,7 @@ public class Game implements IGame {
                 v.receiveListPlayers(players);
                 v.receiveNumPlayers(numPlayers);
                 v.receiveCurrentPlayer(currentPlayer);
+                v.receiveChat(groupChat);
             }
         }
     }

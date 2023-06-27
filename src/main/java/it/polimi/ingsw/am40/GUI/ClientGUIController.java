@@ -122,7 +122,6 @@ public class ClientGUIController implements View {
     }
 
     /**
-     * TODO
      * Shows the selected tiles (if any selected)
      * @param map is the map used to represent the selected tiles
      * @param s is the name of the players
@@ -131,7 +130,8 @@ public class ClientGUIController implements View {
     @Override
     public void showSelectedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String >> selected) {}
 
-    /**TODO
+    /**
+     *
      * Shows thw picked tiles
      * @param map is the map used to represent the picked tiles
      * @param s is the name of the player
@@ -178,12 +178,11 @@ public class ClientGUIController implements View {
      * @param socketClient represents the client handler from client side
      */
     @Override
-    public void chat(SocketClient socketClient) {
-
-    }
+    public void chat(SocketClient socketClient) {}
 
 
-    /**TODO
+    /**
+     *
      * Shows the chat and the previous messages
      * @param array1 are the indexs of the message
      * @param array2 are the destinataries of the message

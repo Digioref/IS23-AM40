@@ -148,7 +148,7 @@ public class GameController {
 
     /**
      * This method disconnects the player whose name is the one in the parameters
-     * @param s the name of the playerr to be disconnected
+     * @param s the name of the player to be disconnected
      */
     public void disconnectPlayer(String s) {
         for (Player p: game.getPlayers()) {
