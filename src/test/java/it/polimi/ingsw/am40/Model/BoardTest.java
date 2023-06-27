@@ -9,13 +9,13 @@ public class BoardTest {
      */
     @Test
     void Test1() {
-        Board b1 = new Board(4);
+        Board b1 = new Board();
         for (String s: b1.getGrid().keySet()) {
             assertEquals(TileColor.NOCOLOR, b1.getGrid().get(s).getColor());
             assertEquals(TileType.EMPTY, b1.getGrid().get(s).getType());
         }
         for (int i = 2; i < 5; i++) {
-            Board b2 = new Board(i);
+            Board b2 = new Board();
             for (String s: b2.getGrid().keySet()) {
                 System.out.println(s);
             }

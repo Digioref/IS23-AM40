@@ -86,7 +86,7 @@ public class Game implements IGame {
      * Adds a player to the game
      * @param p player
      */
-    public void addPlayer (Player p) { // It doesn't check if we reached the max number of players
+    public void addPlayer (Player p) {
         if (players.size() != 0) {
             players.get(players.size() - 1).setNext(p);
         }
@@ -104,7 +104,7 @@ public class Game implements IGame {
         commonGoals = new ArrayList<>(12);
         currentComGoals = new ArrayList<>(2);
         bag = new Bag();
-        board = new Board(numPlayers);
+        board = new Board();
         pJSONm.createBoard(board.getGrid(), numPlayers);
         endToken = new EndToken();
 
@@ -262,12 +262,8 @@ public class Game implements IGame {
     public void updatePickableTiles (Position pos) {
         if (turn == TurnPhase.SELECTION) {
             if (board.getPickableTiles().contains(pos)) {
-//                System.out.println("qui");
                 currentPlayer.getSelectedPositions().add(pos);
                 board.updatePickable(pos,currentPlayer);
-                //currentPlayer.getSelectedPositions().add(pos);
-                //board.updateAfterSelect(pos, currentPlayer);
-//                System.out.println("qui");
                 notifyObservers(turn);
             } else {
                 for (VirtualView v : observers) {
@@ -418,17 +414,10 @@ public class Game implements IGame {
         return board.needRefill();
     }
 
-    public void refill (){
-        board.remove(bag);
-        board.config(bag);
-        board.setSideFreeTile();
-    }
-
     /**
      * It organises the board for the beginning of the turn of a specific player
      */
     public void startTurn () {
-//        System.out.println("print wrong");
         if (turn == TurnPhase.START) {
             board.clearPickable();
             board.setSideFreeTile();
@@ -460,7 +449,6 @@ public class Game implements IGame {
                 setTurn(TurnPhase.ENDGAME);
             }
             else {
-                //System.out.println("---" + turn);
                 currentPlayer.clearTilesPicked();
                 nextPlayer();
                 turn = TurnPhase.START;
@@ -525,26 +513,11 @@ public class Game implements IGame {
    }
 
     /**
-     * Returns true if the game has started
-     * @return true if the game has started, false otherwise
-     */
-    public boolean HasStarted() {
-        return hasStarted;
-    }
-    /**
      * Sets the feature hasStarted to the provided one
      * @param hasStarted a provided boolean
      */
     public void setHasStarted(boolean hasStarted) {
         this.hasStarted = hasStarted;
-    }
-
-    /**
-     * Returns true if the game has ended
-     * @return true if the game has ended, false otherwise
-     */
-    public boolean HasEnded() {
-        return hasEnded;
     }
 
     /**
@@ -587,10 +560,6 @@ public class Game implements IGame {
         return bag;
     }
 
-    public void setBag(Bag bag) {
-        this.bag = bag;
-    }
-
     /**
      * It sets the turn phase according to the parameter
      * @param turn a turn phase
@@ -622,14 +591,13 @@ public class Game implements IGame {
     public void notifyObservers(TurnPhase turnPhase) {
 
         switch (turnPhase) {
-            case START:
+            case START -> {
                 for (VirtualView v : observers) {
                     v.receiveCurrentPlayer(currentPlayer);
                     v.receiveBoard(board);
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
                     }
-//                    v.receiveCurrentPlayer(currentPlayer);
                     v.receiveListPlayers(players);
                     v.receiveCommonGoals(currentComGoals);
                     for (Player p : players) {
@@ -639,7 +607,7 @@ public class Game implements IGame {
                         }
                     }
                     Map<String, Integer> map = new HashMap<>();
-                    for (Player p: players) {
+                    for (Player p : players) {
                         map.put(p.getNickname(), p.getCurrentScore());
                     }
                     v.receiveCurrentScore(map);
@@ -647,36 +615,34 @@ public class Game implements IGame {
                     v.receiveListBookshelves(players);
                     v.receiveFirstPlayer(firstPlayer);
                 }
-                break;
-
-            case SELECTION:
-//                System.out.println("qui");
+            }
+            case SELECTION -> {
                 for (VirtualView v : observers) {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveSelectedTiles(currentPlayer);
                         v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
                     }
-                };
-                break;
-
-            case PICK:
+                }
+                ;
+            }
+            case PICK -> {
                 for (VirtualView v : observers) {
                     v.receiveBoard(board);
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receivePickedTiles(currentPlayer);
                     }
-                };
-                break;
-
-            case ORDER:
+                }
+                ;
+            }
+            case ORDER -> {
                 for (VirtualView v : observers) {
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveDoneOrder(currentPlayer.getTilesPicked());
                     }
-                };
-                break;
-
-            case INSERT:
+                }
+                ;
+            }
+            case INSERT -> {
                 for (VirtualView v : observers) {
                     for (Player p : players) {
                         if (p.getNickname().equals(v.getNickname())) {
@@ -684,11 +650,10 @@ public class Game implements IGame {
                         }
                     }
                     v.receiveListBookshelves(players);
-                };
-//                setTurn(TurnPhase.ENDTURN);
-                break;
-
-            case ENDGAME:
+                }
+                ;
+            }
+            case ENDGAME -> {
                 for (VirtualView v : observers) {
                     for (Player p : players) {
                         if (p.getNickname().equals(v.getNickname()) && !p.isDisconnected()) {
@@ -697,8 +662,7 @@ public class Game implements IGame {
                     }
                 }
                 setHasEnded(true);
-                break;
-
+            }
         }
 
     }
@@ -771,7 +735,6 @@ public class Game implements IGame {
                 if (currentPlayer.getNickname().equals(v.getNickname())) {
                     v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
                 }
-//                    v.receiveCurrentPlayer(currentPlayer);
                 v.receiveCommonGoals(currentComGoals);
                 for (Player p : players) {
                     if (p.getNickname().equals(v.getNickname())) {
@@ -788,6 +751,12 @@ public class Game implements IGame {
         }
     }
 
+    /**
+     * It notifies to the observer that the common goal identified by the number index has been completed by a player, who obtained a specific score
+     * @param name name of the player who ha completed the common goal
+     * @param index number identifying the common goal
+     * @param score score of the common goal obtained by the player
+     */
     public void notifyCommongoal(String name, int index, int score) {
         for (VirtualView v: observers) {
             v.receiveCommonGoalDone(name, index, score);

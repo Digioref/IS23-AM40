@@ -45,12 +45,6 @@ public class Tile {
         this.pos = pos;
     }
 
-    public Tile(TileColor color, TileType type, int x, int y){
-        this.color = color;
-        this.type = type;
-        this.pos = new Position(x,y);
-    }
-
     /**
      * Override of the method equals, it compares two tile according to the colour
      * @param o an object, in this case a tile
@@ -111,52 +105,6 @@ public class Tile {
     public void setPos(Position pos) {
         this.pos = pos;
     }
-/*
-    public String print() {
-        Colors col = new Colors();
-        if (color.equals(TileColor.GREEN)) {
-            return col.green() + "G " + col.rst();
-        }
-        if (color.equals(TileColor.WHITE)) {
-            return col.white() + "W " + col.rst();
-        }
-        if (color.equals(TileColor.YELLOW)) {
-            return col.yellow() + "Y " + col.rst();
-        }
-        if (color.equals(TileColor.BLUE)) {
-            return col.blue() + "B " + col.rst();
-        }
-        if (color.equals(TileColor.CYAN)) {
-            return col.cyan() + "C " + col.rst();
-        }
-        if (color.equals(TileColor.VIOLET)) {
-            return col.purple() + "V " + col.rst();
-        }
-        else return col.black() + "X " + col.rst();
-    }
-*/
-//    public String print() {
-//        Colors col = new Colors();
-//        if (color.equals(TileColor.GREEN)) {
-//            return col.greenBg() + " G " + col.rst();
-//        }
-//        if (color.equals(TileColor.WHITE)) {
-//            return col.whiteBg() + " W " + col.rst();
-//        }
-//        if (color.equals(TileColor.YELLOW)) {
-//            return col.yellowBg() + " Y " + col.rst();
-//        }
-//        if (color.equals(TileColor.BLUE)) {
-//            return col.blueBg() + " B " + col.rst();
-//        }
-//        if (color.equals(TileColor.CYAN)) {
-//            return col.cyanBg() + " C " + col.rst();
-//        }
-//        if (color.equals(TileColor.VIOLET)) {
-//            return col.purpleBg() + " V " + col.rst();
-//        }
-//        else return col.blackBg() + "   " + col.rst();
-//    }
 
     /**
      * It returns the tile in a string format, specifying the color, the type and the position of the tile
@@ -172,7 +120,4 @@ public class Tile {
 
     }
 
-    public boolean isInvalid() {
-        return ((pos.getX() == DEFAULTINVALIDPOSITION) && (pos.getY() == DEFAULTINVALIDPOSITION));
-    }
 }
