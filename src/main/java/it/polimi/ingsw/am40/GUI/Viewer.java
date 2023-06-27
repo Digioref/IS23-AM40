@@ -1238,9 +1238,9 @@ public class Viewer extends Application {
 			currentToken.add(map.get(i));
 		}
 		if (c1 == null && c2 == null ) {
-			c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
-			c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
-			AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
+			c1 = new CommonGoalGui(arr.get(0) - 1, primaryStage);
+			c2 = new CommonGoalGui(arr.get(1) - 1, primaryStage);
+			AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1);
 			AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
 			AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2);
 			AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
@@ -1249,7 +1249,7 @@ public class Viewer extends Application {
 			gameBoard.getChildren().add(c1);
 			gameBoard.getChildren().add(c2);
 			setToken();
-
+		}
 	}
 
 	private void setToken(){
