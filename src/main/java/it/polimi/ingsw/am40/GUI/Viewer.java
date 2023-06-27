@@ -1292,11 +1292,18 @@ public class Viewer extends Application {
 		}
 		for (String s: map.keySet()) {
 			if (!map.get(s).equals("NOCOLOR")) {  //&& !board.getTiles().containsKey(map.get(s))
-				if (board.getTiles().get(s) == null) {
+				if (!board.getTiles().containsKey(s)) {
 					Tile t = new Tile(map.get(s), primaryStage);
 					t.setPosition(s);
 					board.place(t);
 				} else {
+					Tile t = (Tile) board.getTiles().get(s);
+					if (!t.getType().equals(map.get(s))) {
+						board.getChildren().remove(board.getTiles().remove(s));
+						Tile t1 = new Tile(map.get(s), primaryStage);
+						t1.setPosition(s);
+						board.place(t1);
+					}
 					if (!board.getChildren().contains(board.getTiles().get(s))) {
 						board.getChildren().add(board.getTiles().get(s));
 					}
@@ -1350,15 +1357,17 @@ public class Viewer extends Application {
 	}
 
 	private void addNamesChat() {
-		selectReceivers = new ComboBox<>();
-		ArrayList<String> sendTo = new ArrayList<>(names);
-		sendTo.remove(nickname);
-		if (sendTo.size() > 1) {
-			sendTo.add("everyOne");
+		if (!chatContainer.getChildren().contains(selectReceivers)) {
+			selectReceivers = new ComboBox<>();
+			ArrayList<String> sendTo = new ArrayList<>(names);
+			sendTo.remove(nickname);
+			if (sendTo.size() > 1) {
+				sendTo.add("everyOne");
+			}
+			selectReceivers.getItems().addAll(sendTo);
+			selectReceivers.setValue(sendTo.get(sendTo.size()-1));
+			chatContainer.getChildren().add(selectReceivers);
 		}
-		selectReceivers.getItems().addAll(sendTo);
-		selectReceivers.setValue(sendTo.get(sendTo.size()-1));
-		chatContainer.getChildren().add(selectReceivers);
 
 	}
 

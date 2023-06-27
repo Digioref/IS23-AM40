@@ -55,7 +55,7 @@ public class PersonalGoal {
             case 1 -> 1;
             case 2 -> 2;
             case 3 -> 4;
-            case 4 -> 4;
+            case 4 -> 6;
             case 5 -> 9;
             case 6 -> 12;
             default -> 0;
