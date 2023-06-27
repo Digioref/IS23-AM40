@@ -399,4 +399,13 @@ public class JSONConverterStoC {
         obj.put("Nickname", nickname);
         return obj.toJSONString();
     }
+
+    public static String createJSONCGDone(String name, int index, int score) {
+        JSONObject obj = new JSONObject();
+        obj.put("Command", "CGDone");
+        obj.put("Nickname", name);
+        obj.put("Num", index);
+        obj.put("Score", score);
+        return obj.toJSONString();
+    }
 }

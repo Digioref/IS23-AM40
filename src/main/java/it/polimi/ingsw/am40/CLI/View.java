@@ -173,4 +173,6 @@ public interface View {
      * @param nickname (name of the first player)
      */
     void showFirstPlayer(String nickname);
+
+    void showCGDone(String nickname, int num, int score);
 }

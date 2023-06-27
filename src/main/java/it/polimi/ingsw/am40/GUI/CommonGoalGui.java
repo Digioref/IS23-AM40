@@ -12,8 +12,10 @@ import javafx.stage.Stage;
 
 public class CommonGoalGui extends Label {
 	private ImageView view;
+	private int index;
 	public CommonGoalGui(int index, Stage primaryStage) {
 		super();
+		this.index = index;
 		Image image = Resources.commonGoal(index);
 		view = new ImageView(image);
 		view.setPreserveRatio(true);

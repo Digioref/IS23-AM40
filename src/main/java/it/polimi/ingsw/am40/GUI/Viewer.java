@@ -78,6 +78,7 @@ public class Viewer extends Application {
 	private boolean isVisible;
 	private boolean isNew;
 	private VBox chatContainer = new VBox();
+	private AnchorPane chat = new AnchorPane();
 	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
 	private Circle dotIndicator;
 
@@ -90,6 +91,9 @@ public class Viewer extends Application {
 	private ImageView endToken;
 	private PlayersPointBoard ppboard;
 	private CirclePoints cp;
+
+	private ScrollPane chatScrollPane = new ScrollPane();
+
 
 
 
@@ -606,6 +610,8 @@ public class Viewer extends Application {
 			}
 			NewMessage t = new NewMessage(array1.get(array1.size()-1), array2.get(array2.size()-1), array3.get(array3.size()-1));
 			messages.getChildren().add(t);
+
+			chatScrollPane.setVvalue(1.0);
 		}
 	}
 
@@ -634,8 +640,8 @@ public class Viewer extends Application {
 		gameBoard.getChildren().add(chatButtonPane);
 
 		chatContainer.setStyle("-fx-background-color: #007700; -fx-border-color: #CCCCCC; -fx-border-width: 1px; -fx-padding: 10px; -fx-border-radius: 8px;");
-		chatContainer.setMaxHeight(200);
-		chatContainer.setVisible(isVisible);
+		//chatContainer.setMaxHeight(200);
+		chat.setVisible(isVisible);
 
 		// button to close the chat
 		HBox closeButtonPane = new HBox();
@@ -649,7 +655,7 @@ public class Viewer extends Application {
 		chatContainer.getChildren().add(closeButtonPane);
 
 		closeButtonCircle.setOnMousePressed( e -> {
-				chatContainer.setVisible(false);
+				chat.setVisible(false);
 				isVisible = false;
 		});
 
@@ -659,9 +665,11 @@ public class Viewer extends Application {
 		chatScrollPane.setFitToHeight(true);
 		chatContainer.getChildren().add(chatScrollPane);
 
-		ChatButton.setOnAction(e -> showChat(chatScrollPane));
+		ChatButton.setOnAction(e -> showChat());
 
 		messages = new VBox();
+		VBox.setVgrow(chatContainer, Priority.ALWAYS);
+		VBox.setVgrow(messages, Priority.ALWAYS);
 		//messages.setSpacing(10);
 		chatScrollPane.setContent(messages);
 
@@ -727,6 +735,8 @@ public class Viewer extends Application {
 				messages.getChildren().add(newMessage);
 				messageInput.clear();
 
+
+
 				chatScrollPane.setVvalue(1.0);
 
 			}
@@ -738,22 +748,58 @@ public class Viewer extends Application {
 		messages.getChildren().add(newMessage);
 
 		// Add the chat container to the main pane
-		gameBoard.getChildren().add(chatContainer);
+		if (!gameBoard.getChildren().contains(chatContainer)) {
+			gameBoard.getChildren().add(chatContainer);
+		}
 
 		// Set the position of the chat
-		chatContainer.setTranslateX(100);
-		chatContainer.setTranslateY(100);
+		chat.setTranslateX(100);
+		chat.setTranslateY(100);
+
+		// Make the chat expandable
+		Rectangle expRect = new Rectangle();
+		AnchorPane.setBottomAnchor(expRect, 0.0);
+		AnchorPane.setRightAnchor(expRect, 0.0);
+		chat.getChildren().add(expRect);
+
+		expRect.setWidth(10);
+		expRect.setHeight(10);
+		expRect.setFill(Color.TRANSPARENT);
+
+		expRect.setOnMouseEntered( e -> {
+			expRect.setCursor(Cursor.NW_RESIZE);
+		});
+
+		expRect.setOnMouseExited( e -> {
+			expRect.setCursor(Cursor.DEFAULT);
+		});
+
+		final Delta expand = new Delta();
+		expRect.setOnMousePressed(event -> {
+			expand.x = chatContainer.getWidth() - event.getSceneX();
+			expand.y = chatContainer.getHeight() - event.getSceneY();
+		});
+		expRect.setOnMouseDragged(event -> {
+			chatContainer.setPrefWidth(event.getSceneX() + expand.x);
+			chatContainer.setPrefHeight(event.getSceneY() + expand.y);
+		});
 
 		// Make the chat container draggable
 		final Delta dragDelta = new Delta();
 		chatContainer.setOnMousePressed(event -> {
-			dragDelta.x = chatContainer.getTranslateX() - event.getSceneX();
-			dragDelta.y = chatContainer.getTranslateY() - event.getSceneY();
+			dragDelta.x = chat.getTranslateX() - event.getSceneX();
+			dragDelta.y = chat.getTranslateY() - event.getSceneY();
 		});
 		chatContainer.setOnMouseDragged(event -> {
-			chatContainer.setTranslateX(event.getSceneX() + dragDelta.x);
-			chatContainer.setTranslateY(event.getSceneY() + dragDelta.y);
+			if (!expRect.isHover()) {
+				chat.setTranslateX(event.getSceneX() + dragDelta.x);
+				chat.setTranslateY(event.getSceneY() + dragDelta.y);
+			}
 		});
+
+	}
+
+	public void setPickToken(String nickname, int num, int score) {
 
 	}
 
@@ -855,11 +901,11 @@ public class Viewer extends Application {
 		}
 	}
 
-	private void showChat(ScrollPane sp) {
+	private void showChat() {
 		dotIndicator.setVisible(false);
-		sp.setVvalue(1.0);
+		chatScrollPane.setVvalue(1.0);
 		isVisible = true;
-		chatContainer.setVisible(true);
+		chat.setVisible(true);
 
 //		if (isVisible) {
 //			button.setText("Hide chat");
@@ -1079,8 +1125,6 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		gameBoard.getChildren().add(bookshelf);
 
-		createChatContainer();
-
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
 			arrowDown.setUserData(arrowDown);
@@ -1152,6 +1196,8 @@ public class Viewer extends Application {
 		gameBoard.getChildren().add(cp);
 		AnchorPane.setTopAnchor(cp, gameBoard.getHeight()*Metrics.d_y_cp);
 		AnchorPane.setLeftAnchor(cp, gameBoard.getWidth()*Metrics.d_x_cp);
+
+
 	}
 	private void handleEvent() {
 		scene.addEventFilter(CustomEvent.TILE_SELECTED, event -> {
@@ -1180,18 +1226,20 @@ public class Viewer extends Application {
 			arr.add(i);
 			currentToken.add(map.get(i));
 		}
-		c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
-		c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
-		AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
-		AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
-		AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2 );
-		AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
+		if (c1 == null && c2 == null ) {
+			c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
+			c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
+			AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
+			AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
+			AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2 );
+			AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
 
-		//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
-		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
-		gameBoard.getChildren().add(c1);
-		gameBoard.getChildren().add(c2);
-		setToken();
+			//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
+			//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
+			gameBoard.getChildren().add(c1);
+			gameBoard.getChildren().add(c2);
+			setToken();
+		}
 	}
 
 	private void setToken(){
@@ -1206,11 +1254,13 @@ public class Viewer extends Application {
 
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
-		p = new PersonalGoal(number, primaryStage);
-		AnchorPane.setTopAnchor(p, gameBoard.getHeight() * Metrics.d_y_pers );
-		AnchorPane.setLeftAnchor(p, gameBoard.getWidth() * Metrics.d_x_pers);
-		//p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
-		gameBoard.getChildren().add(p);
+		if (p == null) {
+			p = new PersonalGoal(number, primaryStage);
+			AnchorPane.setTopAnchor(p, gameBoard.getHeight() * Metrics.d_y_pers );
+			AnchorPane.setLeftAnchor(p, gameBoard.getWidth() * Metrics.d_x_pers);
+			//p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
+			gameBoard.getChildren().add(p);
+		}
 	}
 
 	public void setBoard(Map<String, String> map) {
@@ -1222,7 +1272,7 @@ public class Viewer extends Application {
 			gameBoard.getChildren().add(board);
 		}
 		for (String s: map.keySet()) {
-			if (!map.get(s).equals("NOCOLOR")) {
+			if (!map.get(s).equals("NOCOLOR")) {  //&& !board.getTiles().containsKey(map.get(s))
 				Tile t = new Tile(map.get(s), primaryStage);
 				t.setPosition(s);
 				board.place(t);
@@ -1270,6 +1320,8 @@ public class Viewer extends Application {
 		for (String s: names) {
 			ppboard.addPlayer(s);
 		}
+		createChatContainer();
+		chat.toFront();
 	}
 
 	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {

@@ -292,6 +292,17 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    @Override
+    public void receiveCommonGoalDone(String name, int index, int score) {
+        if (clientHandler != null) {
+            try {
+                clientHandler.sendMessage(JSONConverterStoC.createJSONCGDone(name, index, score));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     /**
      * It returns the nickname
      * @return the attribute nickname

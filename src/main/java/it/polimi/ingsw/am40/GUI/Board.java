@@ -163,6 +163,23 @@ public class Board extends AnchorPane {
 					}
 					place(t);
 				}
+//			Tile t = (Tile) tiles.get(s);
+//			if (!board.get(s).equals("NOCOLOR")) {
+//				if (!map.containsKey(s)) {
+//						t.setPickable(false);
+//					} else {
+//						t.setPickable(true);
+//					}
+//				Position p = new Position();
+//				p.convertKey(s);
+//				if (selected.contains(p)) {
+//					t.setSelected();
+//					String key = hashkey(p.getX(), p.getY());
+//					if (!this.selected.contains(key)) {
+//						this.selected.add(key);
+//					}
+//				}
+//			}
 
 		}
 		System.out.println(this.selected);
@@ -176,7 +193,7 @@ public class Board extends AnchorPane {
 	 * @return
 	 */
 	private String hashkey(int x, int y) {
-		return new String("tile_" + x + "_" + y);
+		return "(" + x + "," + y + ")";
 	}
 
 	/**
@@ -211,6 +228,10 @@ public class Board extends AnchorPane {
 		STEP_Y = stepY;
 	}
 	public void clearSelected() {
+//		for (String s: selected) {
+//			Tile t = (Tile) tiles.get(s);
+//			t.setSelected(false);
+//		}
 		this.selected.clear();
 	}
 
