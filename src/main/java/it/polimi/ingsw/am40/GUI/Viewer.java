@@ -1269,14 +1269,19 @@ public class Viewer extends Application {
 			gameBoard.getChildren().add(board);
 		}
 		if (!(nickname.equals(currentPlayer))) {
-			board.getTiles().clear();
 			board.getChildren().clear();
 		}
 		for (String s: map.keySet()) {
 			if (!map.get(s).equals("NOCOLOR")) {  //&& !board.getTiles().containsKey(map.get(s))
-				Tile t = new Tile(map.get(s), primaryStage);
-				t.setPosition(s);
-				board.place(t);
+				if (board.getTiles().get(s) == null) {
+					Tile t = new Tile(map.get(s), primaryStage);
+					t.setPosition(s);
+					board.place(t);
+				} else {
+					if (!board.getChildren().contains(board.getTiles().get(s))) {
+						board.getChildren().add(board.getTiles().get(s));
+					}
+				}
 			}
 //			if (map.get(s).equals("NOCOLOR") && !(nickname.equals(currentPlayer))){
 //				board.removeTile(s);
