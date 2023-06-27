@@ -134,7 +134,7 @@ class GameControllerTest {
         Controller controller = new Controller(null, null);
         VirtualView virtualView = new VirtualView("marco", null, controller);
         GameController gameController = new GameController(null, controller);
-        Game game = new Game(2);
+        Game game = new Game(3);
         Player player = new Player("marco");
         gameController.setGame(game);
         game.setCurrentPlayer(player);
@@ -166,7 +166,7 @@ class GameControllerTest {
         Controller controller2 = new Controller(null, null);
         VirtualView virtualView2 = new VirtualView("maria", null, controller);
         GameController gameController2 = new GameController(null, controller2);
-        Game game2 = new Game(2);
+        Game game2 = new Game(3);
         gameController2.setGame(game2);
         game2.setCurrentPlayer(player2);
         game2.getObservers().add(virtualView2);
@@ -190,10 +190,13 @@ class GameControllerTest {
         gameController2.getGame().addPlayer(player5);
         gameController2.getGame().addPlayer(player6);
 
+
         gameController2.chat("maria", "ciao", "maria");
         gameController2.chat("all", "ciao", "maria");
 
 
+        gameController.chat("alberto", "ciao", "alberto");
+        gameController.chat("alberto", "ciao", "maria");
 
 
     }
@@ -226,7 +229,34 @@ class GameControllerTest {
 
     @Test
     void disconnectPlayer() {
+        Game game = new Game(3);
+        Player luca = new Player("Luca");
+        Player francesco = new Player("Francesco");
+        Player giovanni = new Player("Giovanni");
+
+        game.addPlayer(luca);
+        game.addPlayer(francesco);
+        game.addPlayer(giovanni);
+
+        Lobby lobby = new Lobby();
+        Controller controller = new Controller(game, lobby);
+        GameController gameController = new GameController(game, controller);
+
+        game.setCurrentPlayer(luca);
+        EndToken endToken = new EndToken();
+        game.setEndToken(endToken);
+        gameController.disconnectPlayer("Luca");
+        gameController.reconnect("Luca");
+        gameController.reconnect("Giacomo");
+
+        VirtualView v_luca = new VirtualView("luca", null, controller);
+        game.getObservers().add(v_luca);
+
+        gameController.disconnectPlayer("Luca");
+        gameController.disconnectPlayer("Francesco");
+
     }
+
 
     @Test
     void getGame() {
@@ -245,6 +275,30 @@ class GameControllerTest {
 
     @Test
     void reconnect() {
+    Game game = new Game(3);
+    Player luca = new Player("Luca");
+    Player francesco = new Player("Francesco");
+    Player giovanni = new Player("Giovanni");
+
+    game.addPlayer(luca);
+    game.addPlayer(francesco);
+    game.addPlayer(giovanni);
+
+    Lobby lobby = new Lobby();
+    Controller controller = new Controller(game, lobby);
+    GameController gameController = new GameController(game, controller);
+
+    game.setCurrentPlayer(luca);
+    EndToken endToken = new EndToken();
+    game.setEndToken(endToken);
+    gameController.disconnectPlayer("Luca");
+    gameController.reconnect("Luca");
+    gameController.reconnect("Giacomo");
+
+
+        gameController.disconnectPlayer("Luca");
+    gameController.disconnectPlayer("Francesco");
+    gameController.reconnect("Luca");
 
     }
 
