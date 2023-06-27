@@ -288,7 +288,7 @@ public abstract class Client {
                 break;
             case "CGDone":
                 if(!inChat) {
-                    LaunchClient.getView().showCGDone((String) object.get("Nickname"), (int) object.get("Num"), (int) object.get("Score"));
+                    LaunchClient.getView().showCGDone((String) object.get("Nickname"),Integer.parseInt(object.get("Num").toString()), Integer.parseInt(object.get("Score").toString()));
                 }
                 state.saveFirstPlayer((String) object.get("Nickname"));
                 break;

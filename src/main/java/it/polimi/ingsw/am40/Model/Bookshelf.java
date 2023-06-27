@@ -126,10 +126,15 @@ public class Bookshelf {
         int numMark=markTile(-1,-1); //purely for test coverage
         TileColor colorTmp=tileColor(-1,-1);    //purely for test coverage
         for(int i=0; i<5;i++){
+            System.out.println("<numero colonna: "+ (i+1) +" >");
             for(int j=0; j<bookshelf.get(i).getSize();j++){
+                System.out.println("<Numero riga: " + (j+1) + " ---dimensione colonna: " + bookshelf.get(i).getSize());
+                System.out.println("valore markTile("+i+","+j+") " +markTile(i,j));
                 if(markTile(i,j)==0){
                     colorTmp=tileColor(i,j);
+                    System.out.println("valore colorTmp: " +colorTmp);
                     numMark=checkMark(i,j,colorTmp);
+                    System.out.println("Valore numMark " + numMark);
                     if(numMark>2 && numMark<5){
                         result+=(numMark-1);
                     }
