@@ -39,10 +39,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.regex.Pattern;
 
@@ -87,6 +84,10 @@ public class Viewer extends Application {
 	private ArrayList<Integer> currentToken;
 
 	private ArrayList<ScoreToken> scoringToken;
+	private int pickedToken;
+
+	private Map<String,ArrayList<ScoreToken>> pickTok;
+	private ArrayList<Integer> prevCommGoalScore;
 
 	private ImageView endToken;
 	private PlayersPointBoard ppboard;
@@ -138,6 +139,8 @@ public class Viewer extends Application {
 		primaryStage.setResizable(true);
 
 		gui = this;
+		//pickedToken=new ArrayList<>();
+		pickedToken=0;
 //
 //		// -----------  setup page  -----------
 //		Pane rootBox = new Pane();
@@ -795,6 +798,18 @@ public class Viewer extends Application {
 	}
 
 	public void setPickToken(String nickname, int num, int score) {
+		ScoreToken newToken= new ScoreToken(score,primaryStage);
+		double rotationAngle = 7.5;
+		Rotate rotate = new Rotate(rotationAngle, newToken.getImageview().getFitWidth() / 2, newToken.getImageview().getFitHeight() / 2);
+		newToken.getImageview().getTransforms().add(rotate);
+		if(nickname.equals(this.nickname)){
+			newToken.getImageview().setFitWidth(0.25*Metrics.dim_x_comm*primaryStage.getWidth());
+			newToken.getImageview().setFitHeight(0.25*Metrics.dim_y_comm*primaryStage.getHeight());
+			AnchorPane.setLeftAnchor(newToken,((14.0/1536.0)*pickedToken + Metrics.d_x_pers)*gameBoard.getWidth());
+			AnchorPane.setTopAnchor(newToken,((14.0/864.0)*pickedToken + (502.0/864.0))*gameBoard.getHeight());
+			gameBoard.getChildren().add(newToken);
+			pickedToken++;
+		}
 
 	}
 
@@ -1083,7 +1098,6 @@ public class Viewer extends Application {
 				}
 			}
 		});
-
 		handleEvent();
 
 		////////////////////////////
@@ -1228,30 +1242,35 @@ public class Viewer extends Application {
 			c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
 			AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
 			AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
-			AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2 );
+			AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2);
 			AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
-
 			//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
 			//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
 			gameBoard.getChildren().add(c1);
 			gameBoard.getChildren().add(c2);
 			setToken();
-		}
+
 	}
 
 	private void setToken(){
+		int t=0;
 		scoringToken = new ArrayList<>();
 		for(int i = 0; i<currentToken.size(); i++){
-			scoringToken.add(new ScoreToken(currentToken.get(i),primaryStage));
-			AnchorPane.setLeftAnchor(scoringToken.get(i),6.95*Metrics.d_x_comm*gameBoard.getWidth());
-			AnchorPane.setTopAnchor(scoringToken.get(i),(i*(210.0/864) - (8.0/864) + Metrics.d_y_commToken)*gameBoard.getHeight());
-			gameBoard.getChildren().add(scoringToken.get(i));
+			if(currentToken.get(i)!=0){
+				scoringToken.add(new ScoreToken(currentToken.get(i),primaryStage));
+				AnchorPane.setLeftAnchor(scoringToken.get(i-t),6.95*Metrics.d_x_comm*gameBoard.getWidth());
+				AnchorPane.setTopAnchor(scoringToken.get(i-t),(i*(210.0/864) - (8.0/864) + Metrics.d_y_commToken)*gameBoard.getHeight());
+				gameBoard.getChildren().add(scoringToken.get(i-t));
+			}
+			else{
+				t=1;
+			}
 		}
 	}
 
 
 	public void setPersonalGoal(Map<String, String> map, int number) {
-		if (p == null) {
+		if(p==null){
 			p = new PersonalGoal(number, primaryStage);
 			AnchorPane.setTopAnchor(p, gameBoard.getHeight() * Metrics.d_y_pers );
 			AnchorPane.setLeftAnchor(p, gameBoard.getWidth() * Metrics.d_x_pers);
@@ -1283,9 +1302,6 @@ public class Viewer extends Application {
 					}
 				}
 			}
-//			if (map.get(s).equals("NOCOLOR") && !(nickname.equals(currentPlayer))){
-//				board.removeTile(s);
-//			}
 
 		}
 	}
@@ -1433,7 +1449,6 @@ public class Viewer extends Application {
 							nodelist.clear();
 						}
 					}
-
 				}
 			}
 		}

@@ -110,11 +110,11 @@ public class CommonGoal {
 
         for (int i = 0; i < fullSquares.size() - 1; i++) {
             for (int j = i + 1 ; j < fullSquares.size(); j++) {
-                if (fullSquares.get(i).equals(fullSquares.get(j))) {
+                //if (fullSquares.get(i).equals(fullSquares.get(j))) {  check if they are the same colors
                     if (!overlaps(fullSquares.get(i).getPos(), fullSquares.get(j).getPos())) {
                         return commgoaltok.updateScore();
                     }
-                }
+                //}
             }
         }
 
@@ -471,10 +471,10 @@ public class CommonGoal {
     private int check9(Bookshelf bookshelf){
         int[] numcolour = {0,0,0,0,0,0};
         int maxColors = 0;
-        final int TARGET = 5;
+        final int TARGET = 7; //before it was 5
 
-        for (int i = 0; i < NCOL-1; i++) {
-            for (int j = 0; j < NROW-1; j++) {
+        for (int i = 0; i < NCOL; i++) { //before NCOL-1
+            for (int j = 0; j < NROW; j++) { //before   NROWS-1
                 if (bookshelf.getTile(i,j) != null) {
                     switch (bookshelf.getTile(i, j).getColor()) {
                         case YELLOW -> maxColors = numcolour[0]++;
@@ -485,6 +485,7 @@ public class CommonGoal {
                         case GREEN -> maxColors = numcolour[5]++;
                     }
                     if (maxColors == TARGET) {
+                        System.out.println("colori tiles: " + numcolour);
                         return commgoaltok.updateScore();
                     }
                 }

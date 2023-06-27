@@ -119,9 +119,10 @@ public class Player {
         ArrayList<Tile> arr = new ArrayList<>();
         for (int i = 1; i <= at.size(); i++) {
             for (int j = 0; j < at.size(); j++) {
-                if(at.get(j) == i) {
+                if(at.get(j)==i){
                     arr.add(tilesPicked.get(j));
                 }
+
             }
         }
         System.out.println(arr);
@@ -136,7 +137,12 @@ public class Player {
      * Calculates the final score of the player
      */
     public void calculateScore() {
-        finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
+        //System.out.println("PUNTEGGIO PERSONAL GOAL: " + personalGoal.calcScore(bookshelf) + "  PUNTEGGIO COMMON GOAL: " + currentScore + "PUNTEGGIO ADIACENZE: " + bookshelf.calcScore());
+        //System.out.println("print update dopo aver chiamato calculateScore");
+        //bookshelf.print();
+        //finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
+        finalScore = personalGoal.calcScore(bookshelf) + currentScore;
+
     }
 
     /**
@@ -167,6 +173,10 @@ public class Player {
      * It updates the hidden score (visible to only the corresponding player) of the player
      */
     public void updateHiddenScore() {
+        //System.out.println("PUNTEGGIO PERSONAL GOAL: " + personalGoal.calcScore(bookshelf) + "  PUNTEGGIO COMMON GOAL: " + currentScore + " PUNTEGGIO ADIACENZE: " + bookshelf.calcScore());
+        //System.out.println("PUNTEGGIO PERSONAL GOAL: " + personalGoal.calcScore(bookshelf) + "  PUNTEGGIO COMMON GOAL: " + currentScore + " PUNTEGGIO ADIACENZE: " + bookshelf.calcScore());
+        //System.out.println("print bookshelf dopo updateHiddenScore");
+        //bookshelf.print();
         hiddenScore = currentScore + personalGoal.calcScore(bookshelf);
     }
 
@@ -223,6 +233,7 @@ public class Player {
      * @return -the feature final score
      */
     public int getFinalScore() {
+        finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
         return finalScore;
     }
 

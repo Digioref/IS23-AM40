@@ -298,7 +298,9 @@ public class JSONConverterStoC {
         for (Player p: players) {
             JSONObject obj1 = new JSONObject();
             obj1.put("Nickname", p.getNickname());
+            System.out.println("!!!!!!!!! "+p.getNickname());
             obj1.put("Score", p.getFinalScore());
+            System.out.println("XXXXXXXX: "+p.getFinalScore());
             arr1.add(obj1);
         }
         obj.put("FinalScores", arr1);
