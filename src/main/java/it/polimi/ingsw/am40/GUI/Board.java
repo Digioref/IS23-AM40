@@ -238,4 +238,5 @@ public class Board extends AnchorPane {
 	public HashMap<String, Node> getTiles() {
 		return tiles;
 	}
+
 }

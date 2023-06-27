@@ -624,6 +624,7 @@ public class Game implements IGame {
         switch (turnPhase) {
             case START:
                 for (VirtualView v : observers) {
+                    v.receiveCurrentPlayer(currentPlayer);
                     v.receiveBoard(board);
                     if (currentPlayer.getNickname().equals(v.getNickname())) {
                         v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
@@ -644,7 +645,6 @@ public class Game implements IGame {
                     v.receiveCurrentScore(map);
                     v.receiveNumPlayers(numPlayers);
                     v.receiveListBookshelves(players);
-                    v.receiveCurrentPlayer(currentPlayer);
                     v.receiveFirstPlayer(firstPlayer);
                 }
                 break;
