@@ -1,7 +1,6 @@
 package it.polimi.ingsw.am40.GUI;
 
 import it.polimi.ingsw.am40.Client.LaunchClient;
-import it.polimi.ingsw.am40.Client.SocketClient;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
 import it.polimi.ingsw.am40.Model.GroupChat;
 import it.polimi.ingsw.am40.Model.Position;
@@ -95,6 +94,7 @@ public class Viewer extends Application {
 	private CirclePoints cp;
 
 	private ScrollPane chatScrollPane = new ScrollPane();
+	private ComboBox<String> selectReceivers;
 
 
 
@@ -612,14 +612,18 @@ public class Viewer extends Application {
 			if (!isVisible) {
 				dotIndicator.setVisible(true);
 			}
-			NewMessage t = new NewMessage(array1.get(array1.size()-1), array2.get(array2.size()-1), array3.get(array3.size()-1));
-			messages.getChildren().add(t);
+			messages.getChildren().clear();
+			NewMessage newMessage = new NewMessage("MyShelfie", nickname,"Welcome to the chat, here you can send messages");
+			messages.getChildren().add(newMessage);
+			for (int i = 0; i < array3.size(); i++) {
+				NewMessage t = new NewMessage(array1.get(i), array2.get(i), array3.get(i));
+				messages.getChildren().add(t);
+			}
 
-			chatScrollPane.setVvalue(1.0);
+			chatScrollPane.setVvalue(array3.size());
 		}
 	}
 
-	/*
 	private void createChatContainer() {
 
 		isVisible = false;
@@ -630,13 +634,12 @@ public class Viewer extends Application {
 		ChatButton.setText("CHAT");
 
 		gameBoard.getChildren().add(ChatButton);
-		//ChatButton.setOnAction(e -> showChat(ChatButton));
 
 		// Red dot indicator for unread messages
 		dotIndicator = new Circle(5);
 		dotIndicator.setFill(Color.RED);
 		dotIndicator.setVisible(true);
-
+		gameBoard.getChildren().add(chat);
 		StackPane chatButtonPane = new StackPane();
 		chatButtonPane.getChildren().addAll(ChatButton, dotIndicator);
 		StackPane.setAlignment(dotIndicator, Pos.TOP_RIGHT);
@@ -679,17 +682,6 @@ public class Viewer extends Application {
 		//messages.setSpacing(10);
 		chatScrollPane.setContent(messages);
 
-		// drop to select the receiver
-		ComboBox<String> selectReceivers = new ComboBox<>();
-		ArrayList<String> sendTo = new ArrayList<>(names);
-		sendTo.remove(nickname);
-		if (sendTo.size() > 1) {
-			sendTo.add("everyOne");
-		}
-		selectReceivers.getItems().addAll(sendTo);
-		selectReceivers.setValue(sendTo.get(sendTo.size()-1));
-		chatContainer.getChildren().add(selectReceivers);
-
 		// text field to write the message
 		TextField messageInput = new TextField();
 		Button sendButton = new Button("Send");
@@ -700,19 +692,19 @@ public class Viewer extends Application {
 		inputBox.setAlignment(Pos.CENTER_RIGHT);
 		chatContainer.getChildren().add(inputBox);
 
-		// update the full message list, I can add one message at a time if I am notified when I recive one
-		GroupChat chatClass = new GroupChat();
-		ArrayList<String> messagesList = chatClass.getMessage();
-		ArrayList<String> sendersList = chatClass.getPublisher();
-		ArrayList<String> receiversList = chatClass.getToplayer();
-		for (int i = 0; i < messagesList.size(); i++) {
-			String sender = sendersList.get(i);
-			String m = messagesList.get(i);
-			String receiver = receiversList.get(i);
-			NewMessage newMessage = new NewMessage(sender, receiver, m);
-			messages.getChildren().add(newMessage);
-
-		}
+		// update the full message list, I can add one message at a time if I am notified when I receive one
+//		GroupChat chatClass = new GroupChat();
+//		ArrayList<String> messagesList = chatClass.getMessage();
+//		ArrayList<String> sendersList = chatClass.getPublisher();
+//		ArrayList<String> receiversList = chatClass.getToplayer();
+//		for (int i = 0; i < messagesList.size(); i++) {
+//			String sender = sendersList.get(i);
+//			String m = messagesList.get(i);
+//			String receiver = receiversList.get(i);
+//			NewMessage newMessage = new NewMessage(sender, receiver, m);
+//			messages.getChildren().add(newMessage);
+//
+//		}
 
 		sendButton.setOnAction(e -> {
 			String sender = nickname;
@@ -756,6 +748,7 @@ public class Viewer extends Application {
 		// Add the chat container to the main pane
 		if (!gameBoard.getChildren().contains(chatContainer)) {
 			gameBoard.getChildren().add(chatContainer);
+			chat.getChildren().add(chatContainer);
 		}
 
 		// Set the position of the chat
@@ -802,10 +795,7 @@ public class Viewer extends Application {
 				chat.setTranslateY(event.getSceneY() + dragDelta.y);
 			}
 		});
-
 	}
-
-	 */
 
 	public void setPickToken(String nickname, int num, int score) {
 		ScoreToken newToken= new ScoreToken(score,primaryStage);
@@ -837,40 +827,6 @@ public class Viewer extends Application {
 		ppboard.addScores(map);
 	}
 
-	/*
-	public void setPickToken(int value){
-		ScoreToken newToken= new ScoreToken(value,primaryStage);
-		newToken.getImageview().setFitWidth(0.25*Metrics.dim_x_comm*primaryStage.getWidth());
-		newToken.getImageview().setFitHeight(0.25*Metrics.dim_y_comm*primaryStage.getHeight());
-		double rotationAngle = 7.5;
-		Rotate rotate = new Rotate(rotationAngle, newToken.getImageview().getFitWidth() / 2, newToken.getImageview().getFitHeight() / 2);
-		newToken.getImageview().getTransforms().add(rotate);
-		//add the token gained
-		/*
-		pickTok.get(nickname).add(newToken);
-		//place the tokens
-		for(int i=0;i<pickTok.get(nickname).size();i++){
-			AnchorPane.setLeftAnchor(pickTok.get(nickname).get(i),((14.0/1536.0)*i + Metrics.d_x_pers)*gameBoard.getWidth());
-			AnchorPane.setTopAnchor(pickTok.get(nickname).get(i),((14.0/864.0)*i + (502.0/864.0))*gameBoard.getHeight());
-			if(!gameBoard.getChildren().contains(pickTok.get(nickname).get(i))){
-				gameBoard.getChildren().add(pickedToken.get(i));
-			}
-
-		}
-
-
-		pickedToken.add(newToken);
-		//place the tokens
-		for(int i=0;i<pickedToken.size();i++){
-			AnchorPane.setLeftAnchor(pickedToken.get(i),((14.0/1536.0)*i + Metrics.d_x_pers)*gameBoard.getWidth());
-			AnchorPane.setTopAnchor(pickedToken.get(i),((14.0/864.0)*i + (502.0/864.0))*gameBoard.getHeight());
-			if(!gameBoard.getChildren().contains(pickedToken.get(i))){
-				gameBoard.getChildren().add(pickedToken.get(i));
-			}
-		}
-	}
-	*/
-
 	public void showHiddenScore(int score) {
 		hiddenScore = score;
 		cp.setScore(hiddenScore);
@@ -896,6 +852,7 @@ public class Viewer extends Application {
 				}
 			}
 		}
+		chat.toFront();
 	}
 
 	public void showFinalScores(Map<String, Integer> map, String winner) {
@@ -1141,6 +1098,7 @@ public class Viewer extends Application {
 				}
 			}
 		});
+
 		handleEvent();
 
 		////////////////////////////
@@ -1250,6 +1208,7 @@ public class Viewer extends Application {
 		AnchorPane.setTopAnchor(cp, gameBoard.getHeight()*Metrics.d_y_cp);
 		AnchorPane.setLeftAnchor(cp, gameBoard.getWidth()*Metrics.d_x_cp);
 
+		createChatContainer();
 
 	}
 	private void handleEvent() {
@@ -1279,23 +1238,9 @@ public class Viewer extends Application {
 			arr.add(i);
 			currentToken.add(map.get(i));
 		}
-		/*
-		System.out.println("!!!!!!!! "+currentToken);
-		System.out.println("XXXXXXXX " +prevCommGoalScore);
-		for(int j=0;j<arr.size();j++){
-			System.out.println("common obj n° "+ j + " current token: " + currentToken.get(j)+ " previous token: " + prevCommGoalScore.get(j));
-			//if(!Objects.equals(currentToken.get(j), prevCommGoalScore.get(j))){
-			//	setPickToken(prevCommGoalScore.get(j));
-			//}
-			System.out.println("XXXXXXXX PT2: " + prevCommGoalScore);
-			System.out.println("!!!!!!!! PT2: " + currentToken +" ---- J= " + j);
-			prevCommGoalScore.set(j,currentToken.get(j));
-		}
-
-		 */
-			c1 = new CommonGoalGui(arr.get(0) - 1, primaryStage);
-			c2 = new CommonGoalGui(arr.get(1) - 1, primaryStage);
-			AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1);
+			c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
+			c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
+			AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
 			AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
 			AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2);
 			AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
@@ -1343,12 +1288,24 @@ public class Viewer extends Application {
 			//board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
 			gameBoard.getChildren().add(board);
 		}
+		if (!(nickname.equals(currentPlayer))) {
+			board.getChildren().clear();
+		}
 		for (String s: map.keySet()) {
 			if (!map.get(s).equals("NOCOLOR")) {  //&& !board.getTiles().containsKey(map.get(s))
-				Tile t = new Tile(map.get(s), primaryStage);
-				t.setPosition(s);
-				board.place(t);
+				if (board.getTiles().get(s) == null) {
+					Tile t = new Tile(map.get(s), primaryStage);
+					t.setPosition(s);
+					board.place(t);
+				} else {
+					if (!board.getChildren().contains(board.getTiles().get(s))) {
+						board.getChildren().add(board.getTiles().get(s));
+					}
+				}
 			}
+//			if (map.get(s).equals("NOCOLOR") && !(nickname.equals(currentPlayer))){
+//				board.removeTile(s);
+//			}
 
 		}
 	}
@@ -1392,8 +1349,21 @@ public class Viewer extends Application {
 		for (String s: names) {
 			ppboard.addPlayer(s);
 		}
-		//createChatContainer();
-		//chat.toFront();
+		addNamesChat();
+
+	}
+
+	private void addNamesChat() {
+		selectReceivers = new ComboBox<>();
+		ArrayList<String> sendTo = new ArrayList<>(names);
+		sendTo.remove(nickname);
+		if (sendTo.size() > 1) {
+			sendTo.add("everyOne");
+		}
+		selectReceivers.getItems().addAll(sendTo);
+		selectReceivers.setValue(sendTo.get(sendTo.size()-1));
+		chatContainer.getChildren().add(selectReceivers);
+
 	}
 
 	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
@@ -1483,6 +1453,7 @@ public class Viewer extends Application {
 							nodelist.clear();
 						}
 					}
+
 				}
 			}
 		}

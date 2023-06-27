@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Class that represents the graphic element that contains the current player points
+ */
 public class PlayersPointBoard extends AnchorPane {
     private VBox vbox;
     private ArrayList<HBox> hboxes;

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.am40.CLI;
 
+/**
+ * Color class with the colors used for the CLI
+ */
 public class Colors {
 
-    /**
-     * Color class with the colors used for the CLI
-     */
     private final String ANSI_RESET = "\u001B[0m";
     private final String ANSI_BLACK = "\u001B[30m";
     private final String ANSI_RED = "\u001B[31m";

@@ -18,6 +18,9 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * Class that represents the graphic element board
+ */
 public class Board extends AnchorPane {
 
 	private static final int MAX_SELECTABLE = 3;
@@ -138,12 +141,12 @@ public class Board extends AnchorPane {
 	 */
 	public void clearUpdate(Map<String, String> map, ArrayList<Position> selected, Map<String, String> board) {
 		getChildren().clear();
-		tiles.clear();
+//		tiles.clear();
 //		this.selected.clear();
 		for (String s: board.keySet()) {
-				Tile t = new Tile(board.get(s), primaryStage);
+				Tile t = (Tile) tiles.get(s);
 				if (!board.get(s).equals("NOCOLOR")) {
-					t.setPosition(s);
+//					t.setPosition(s);
 					if (!map.containsKey(s)) {
 						t.setPickable(false);
 					} else {
@@ -158,7 +161,8 @@ public class Board extends AnchorPane {
 							this.selected.add(key);
 						}
 					}
-					place(t);
+					getChildren().add(t);
+//					place(t);
 				}
 //			Tile t = (Tile) tiles.get(s);
 //			if (!board.get(s).equals("NOCOLOR")) {
@@ -225,14 +229,15 @@ public class Board extends AnchorPane {
 		STEP_Y = stepY;
 	}
 	public void clearSelected() {
-//		for (String s: selected) {
-//			Tile t = (Tile) tiles.get(s);
-//			t.setSelected(false);
-//		}
+		for (String s: selected) {
+			Tile t = (Tile) tiles.get(s);
+			t.setSelected(false);
+		}
 		this.selected.clear();
 	}
 
 	public HashMap<String, Node> getTiles() {
 		return tiles;
 	}
+
 }

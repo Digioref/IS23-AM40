@@ -10,6 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+/**
+ * Class that represents the graphic element personal goal (empty one)
+ */
 public class PersonalGoalBack extends Label {
 
     public PersonalGoalBack(Stage primaryStage) {

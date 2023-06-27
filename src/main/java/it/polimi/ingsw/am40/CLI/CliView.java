@@ -13,11 +13,12 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * CliView is the class used to print into the terminal
+ */
 public class CliView implements View{
 
-    /**
-     * CliView is the class used to print into the terminal
-     */
+
     private Colors color = new Colors();
 
 
@@ -29,7 +30,7 @@ public class CliView implements View{
     }
 
     /**
-     *
+     * Print the not-equal symbol
      */
     private void printNotEqual() {
         int ch = 8800;
@@ -38,7 +39,7 @@ public class CliView implements View{
     }
 
     /**
-     *
+     * Prints an empty slot
      */
     private void printEmpty() {
         System.out.print(color.whiteBg() + "   " + color.rst());
@@ -46,7 +47,7 @@ public class CliView implements View{
 
     /**
      * Prints the list of the plauers
-     * @param names
+     * @param names (array list containing the names of the players)
      */
     public void showPlayers(ArrayList<String> names) {
         System.out.println(color.blackBg() + " Players " + color.rst());
@@ -57,6 +58,7 @@ public class CliView implements View{
     }
 
     /**
+     * It prints the tile, with its color and the first letter of the color
      * @param s is the color of the tile to be printed
      * @return a string (color value to be printed)
      */
@@ -80,8 +82,8 @@ public class CliView implements View{
     }
 
     /**
-     * @param s, is the name of the current player
      * The method prints the name of the current player (passed by parameter)
+     * @param s, is the name of the current player
      */
     public void showCurrentPlayer(String s) {
         System.out.println(color.blackBg() + "Current player:" + color.rst() + " " + s + "\n");
@@ -89,7 +91,7 @@ public class CliView implements View{
 
     /**
      * Shows the current player
-     * @param map player name and points
+     * @param map the keys are the players name and the valures linked are the points
      */
     public void showCurrentScore(Map<String, Integer> map) {
         System.out.println(color.blackBg() + " Current Score " + color.rst());
@@ -101,7 +103,7 @@ public class CliView implements View{
 
     /**
      * Shows the hidden total score of the player
-     * @param score
+     * @param score the hidden score of the player
      */
     public void showHiddenScore(int score) {
         System.out.println(color.blackBg() + " This is your actual score:" + color.blueBg() + color.black() + " " + score + " " + color.rst() + "\n");
@@ -287,10 +289,9 @@ public class CliView implements View{
     }
 
     /**
-     * TODO
-     * Key (made by the position) and type of the tile
-     * @param map
-     * @param number
+     * Shows the personal goal
+     * @param map represents the personal goal, the key is the position and value associeted is type of the tile
+     * @param number (not used in CLI, only in GUI)
      */
     public void showPersonalGoal(Map<String, String> map, int number) {
         System.out.println(" Here you can see your Personal Goal\n");
@@ -310,8 +311,9 @@ public class CliView implements View{
     }
 
     /**
-     * TODO
-     * @param map
+     * Prints the board with the colours of the tiles (key of the map is the position while the value associated to the key is the color of the tile)
+     * position e color
+     * @param map represents the board
      */
     public void showBoard(Map<String, String> map) {
         for (int row = 4; row > -5; row--) {
@@ -343,8 +345,8 @@ public class CliView implements View{
     }
 
     /**
-     * TODO
-     * @param map
+     * This method calls the method showBookshelf passing a map made of positions and colours (positions are the keys, colors are the contents)
+     * @param map represents the bookshelf
      */
     public void showCurrentBookshelf(Map<String, String> map) {
         System.out.println("Your bookshelf:\n");
@@ -352,8 +354,8 @@ public class CliView implements View{
     }
 
     /**
-     * TODO
-     * @param map
+     * This method prints all the bookshelves (a single bookshelf is a map, whose key is the name of the player)
+     * @param map is the map that contains the bookshelves
      */
     public void showAllBookshelves(Map<String, Map<String, String>> map) {
         System.out.println("Here you can see all the bookshelfs\n");
@@ -366,8 +368,8 @@ public class CliView implements View{
     }
 
     /**
-     * TODO
-     * @param map
+     * Prints the bookshelf (the keys of the map are the positions, while the value associated to the key are the colors of the tile in that position)
+     * @param map represents the bookshelves
      */
     public void showBookshelf(Map<String, String> map) {
         for (int row = 5; row >= 0; row--) {
@@ -386,10 +388,10 @@ public class CliView implements View{
     }
 
     /**
-     * TODO
-     * @param map
-     * @param arr
-     * @param board
+     * Shows which tiles can be picked
+     * @param map of the positions that can be taken (the key is the position, while the value associated to the key is the colour)
+     * @param arr the tiles already taken
+     * @param board represents the board
      */
     public void showBoardPickable(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
         System.out.println("You can choose only the tiles with the black letter");
@@ -428,10 +430,10 @@ public class CliView implements View{
     }
 
     /**
-     * TODO
-     * @param map
-     * @param s
-     * @param selected
+     * Shows the selected tiles (if any selected)
+     * @param map is the map used to represent the selected tiles
+     * @param s is the name of the players
+     * @param selected are the numbers of the tiles
      */
     public void showSelectedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> selected) {
         if (map.isEmpty()) {
@@ -465,10 +467,10 @@ public class CliView implements View{
 
 
     /**
-     * TODO
-     * @param map
-     * @param s
-     * @param picked
+     * Shows thw picked tiles
+     * @param map is the map used to represent the picked tiles
+     * @param s is the name of the player
+     * @param picked are the numbers of the tiles
      */
     public void showPickedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> picked) {
         if (map.isEmpty()) {
@@ -491,9 +493,9 @@ public class CliView implements View{
     }
 
     /**
-     * TODO
-     * @param map
-     * @param winner
+     * Shows the final score and prints the winner
+     * @param map has as key the names of the players
+     * @param winner is the name of the winner
      */
     public void showFinalScore(Map<String, Integer> map, String winner) { // different color for the higher score, but if two have the same score I show both as winners, I should do the control on the winner, do I have this information?
         System.out.println(color.blackBg() + " Final Scores " + color.rst());
@@ -512,17 +514,15 @@ public class CliView implements View{
 
     /**
      * Prints the message passed as argument
-     * @param s
+     * @param s is the message
      */
     public void printMessage(String s) {
         System.out.println(s);
     }
 
     /**
-     * TODO
-     * E' solo socket?
      * Opens the chat for a player
-     * @param socketClient
+     * @param socketClient represents the client handler from client side
      */
     @Override
     public void chat(SocketClient socketClient) {
@@ -557,11 +557,11 @@ public class CliView implements View{
     }
 
     /**
-     * TODO
-     * @param array1
-     * @param array2
-     * @param array3
-     * @param nickname
+     * Shows the chat and the previous messages
+     * @param array1 are the indexes of the message
+     * @param array2 are the receivers of the message
+     * @param array3 messages to be displayed
+     * @param nickname nickname of the player
      */
     @Override
     public void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname) {
@@ -573,6 +573,9 @@ public class CliView implements View{
         }
     }
 
+    /**
+     * Method to choose the connection (Insert S or R for socket or RMI)
+     */
     @Override
     public void chooseConnection() {
         String choice;
@@ -619,7 +622,7 @@ public class CliView implements View{
 
     /**
      * Method to print that the player with the nickname passed has quitted the game
-     * @param nickname
+     * @param nickname (name of the player that quits)
      */
     @Override
     public void quit(String nickname) {
@@ -640,7 +643,7 @@ public class CliView implements View{
 
 
     /**
-     * Prints "Waiting for the lobby..."
+     * Prints "Waiting in the lobby..." underlining that the player is in the lobby waiting for other players
      */
     @Override
     public void waitLobby() {
@@ -649,8 +652,8 @@ public class CliView implements View{
 
     /**
      * Prints the name already used (to be substituted) and some other alternatives
-     * @param to_be_replaced
-     * @param suggested
+     * @param to_be_replaced (name to be replaced)
+     * @param suggested (list of the suggested nicknames)
      */
     @Override
     public void showSuggestedNicknames(String to_be_replaced, ArrayList<String> suggested) {
@@ -661,8 +664,8 @@ public class CliView implements View{
     }
 
     /**
-     * TODO
-     * @param error
+     * Method to print the error message
+     * @param error (error message)
      */
     @Override
     public void showError(String error) {
@@ -670,18 +673,28 @@ public class CliView implements View{
     }
 
     /**
-     * todo
+     * Method to print the message that the game has been created
      */
     @Override
     public void showGame() {
         System.out.println(color.green() + "Game is being created" + color.rst());
     }
 
+    /**
+     * Method to print the name of the first player
+     * @param nickname (name of the first player)
+     */
     @Override
     public void showFirstPlayer(String nickname) {
         System.out.println(color.blackBg() + "First player:" + color.rst() + " " + nickname + "\n");
     }
 
+    /**
+     * It informs the player that another player has done a common goal obtaining the specified score
+     * @param nickname nickname of the player who achieved the common goal
+     * @param num number of the common goal
+     * @param score score obtained
+     */
     @Override
     public void showCGDone(String nickname, int num, int score) {
         System.out.println("The player " + nickname + "has done a common goal obtaining " + score + "points!" + "\n");
