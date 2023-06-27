@@ -816,4 +816,5 @@ public class Game implements IGame {
     public void setEndToken(EndToken endToken){
         this.endToken = endToken;
     }
+
 }
