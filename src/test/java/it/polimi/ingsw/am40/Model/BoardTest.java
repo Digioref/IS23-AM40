@@ -46,6 +46,7 @@ public class BoardTest {
      */
     @Test
     void Test3() {
+        Player pl = new Player("pippo");
         Game g = new Game(4);
         g.configureGame();
         Board b1 = g.getBoard();
@@ -59,6 +60,7 @@ public class BoardTest {
         }
         Position p = new Position(1,3);
         Tile t = b1.pick(p.getKey());
+        b1.updatePickable(t.getPos(), pl);
         /*
         System.out.println(t.toString());
         assertNotEquals(TileColor.NOCOLOR, t.getColor());
@@ -108,6 +110,7 @@ public class BoardTest {
     @Test
     void Test5() {
         Game g = new Game(4);
+        Player pippo = new Player("pippo");
         g.configureGame();
         Board b1 = g.getBoard();
         Bag b = g.getBag();
@@ -119,5 +122,6 @@ public class BoardTest {
         for (Position p: b1.getPickableTiles()) {
             System.out.println(p.getKey());
         }
+        b1.updatePickable(new Position(0,0),pippo);
     }
 }

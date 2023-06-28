@@ -90,6 +90,9 @@ public class CommonGoalTest {
                 CommonGoal tmp = new CommonGoal(13, 2); // test if I go out of the range
                 assertEquals(0,tmp.check(bookshelf));
 
+                tmp.getCommgoaltok();
+                tmp.getNum();
+
                 System.out.println("i: " + i);
 
             }

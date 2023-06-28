@@ -1,22 +1,306 @@
 package it.polimi.ingsw.am40.Model;
 
+import it.polimi.ingsw.am40.Network.VirtualView;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 public class GameTest {
 
+    private Game game;
+
+    @BeforeEach
+    public void setup() {
+        game = new Game(2);
+        Player player1 = new Player("pippo");
+        Player player2 = new Player("dani");
+        game.addPlayer(player1);
+        game.addPlayer(player2);
+        game.configureGame();
+    }
+
     @Test
-    public void Test() {
+    void addPlayer() {
+        ArrayList<Player> players = game.getPlayers();
+        Assertions.assertEquals(2, players.size());
+        Assertions.assertEquals("pippo", players.get(0).getNickname());
+        Assertions.assertEquals("dani", players.get(1).getNickname());
+    }
 
-        Game game1 = new Game(2);
+    @Test
+    void configureGame() {
+        ArrayList<CommonGoal> commonGoals = game.getCommonGoals();
+        Assertions.assertEquals(12, commonGoals.size());
 
-        Player p1 = new Player("pippo");
-        Player p2 = new Player("pluto");
+        ArrayList<CommonGoal> currentComGoals = game.getCurrentComGoals();
+        Assertions.assertEquals(0, currentComGoals.size());
 
-        game1.addPlayer(p1);
-        game1.addPlayer(p2);
+        Bag bag = game.getBag();
+        Assertions.assertNotNull(bag);
 
-        game1.configureGame();
-        game1.createTiles();
-        game1.startGame();
+        Board board = game.getBoard();
+        Assertions.assertNotNull(board);
+
+        EndToken endToken = game.getEndToken();
+        Assertions.assertNotNull(endToken);
+
+        ArrayList<Player> players = game.getPlayers();
+        for (Player player : players) {
+            Assertions.assertNotNull(player.getBookshelf());
+        }
+    }
+
+    @Test
+    void startGame() {
+        game.startGame();
+
+        Player currentPlayer = game.getCurrentPlayer();
+        Assertions.assertNotNull(currentPlayer);
+        Assertions.assertNotNull(currentPlayer.getNext());
+
+        ArrayList<VirtualView> observers = game.getObservers();
+        Assertions.assertEquals(0, observers.size());
+
+        ArrayList<Player> players = game.getPlayers();
+        for (Player player : players) {
+            Assertions.assertNotNull(player.getBoard());
+            Assertions.assertNotNull(player.getPersonalGoal());
+        }
+
+        Assertions.assertNotNull(game.getTurn());
+    }
+
+    @Test
+    void createTiles() {
+        game.createTiles();
+        game.startGame();
+    }
+
+    @Test
+    void assignPersonalGoal() {
+        game.createTiles();
+        game.startGame();
+        game.assignPersonalGoal();
+        Assertions.assertNotEquals(game.getPlayers().get(0).getPersonalGoal(),game.getPlayers().get(1).getPersonalGoal());
+    }
+
+    @Test
+    void nextPlayer() {
+        game.createTiles();
+        game.startGame();
+        game.assignPersonalGoal();
+        String prev = game.getCurrentPlayer().getNickname();
+        game.nextPlayer();
+        Assertions.assertEquals(prev, game.getCurrentPlayer().getNickname());
+        game.setTurn(TurnPhase.ENDTURN);
+        game.nextPlayer();
+    }
+
+    @Test
+    void checkDisconnection() {
+        game.createTiles();
+        game.startGame();
+        game.assignPersonalGoal();
+        game.nextPlayer();
+        Assertions.assertEquals(2, game.checkDisconnection());
+    }
+
+    @Test
+    void startTimer() {
+        game.startTimer();
+    }
+
+    @Test
+    void stopTimer() {
+        game.startTimer();
+        Assertions.assertEquals(true, game.isTimerStarted());
+        game.stopTimer();
+        Assertions.assertEquals(false, game.isTimerStarted());
+    }
+
+    @Test
+    void checkEndGame() {
+        Assertions.assertEquals(false,game.checkEndGame());
+    }
+
+    @Test
+    void updatePickableTiles() {
+        game.updatePickableTiles(new Position(0,0));
+        game.setTurn(TurnPhase.SELECTION);
+        game.updatePickableTiles(new Position(0,0));
+    }
+
+    @Test
+    void removeSelectedTiles() {
+        game.removeSelectedTiles();
+    }
+
+    @Test
+    void pickTiles() {
+        game.pickTiles();
+    }
+
+    @Test
+    void setOrder() {
+        Player p1 = new Player("marco");
+        game.setCurrentPlayer(p1);
+        game.setTurn(TurnPhase.ORDER);
+
+        ArrayList<Integer> pos = new ArrayList<>();
+        pos.add(1);
+        pos.add(2);
+        game.setOrder(pos);
+
+        ArrayList<Integer> pos1 = new ArrayList<>();
+        pos1.add(3);
+        pos1.add(1);
+        pos1.add(2);
+        game.setOrder(pos1);
+    }
+
+    @Test
+    void insertInBookshelf() {
+        Player p1 = new Player("marco");
+        p1.createBookshelf();
+        game.setCurrentPlayer(p1);
+        //game.setTurn(TurnPhase.INSERT);
+        game.insertInBookshelf(1);
+    }
+
+    @Test
+    void endGame() {
+    }
+
+    @Test
+    void controlRefill() {
+    }
+
+    @Test
+    void refill() {
+    }
+
+    @Test
+    void startTurn() {
+    }
+
+    @Test
+    void endTurn() {
+    }
+
+    @Test
+    void setWinner() {
+    }
+
+    @Test
+    void hasStarted() {
+    }
+
+    @Test
+    void setHasStarted() {
+    }
+
+    @Test
+    void hasEnded() {
+    }
+
+    @Test
+    void setHasEnded() {
+    }
+
+    @Test
+    void getCurrentPlayer() {
+    }
+
+    @Test
+    void getPlayers() {
+    }
+
+    @Test
+    void getBoard() {
+    }
+
+    @Test
+    void getBag() {
+    }
+
+    @Test
+    void setBag() {
+    }
+
+    @Test
+    void setTurn() {
+    }
+
+    @Test
+    void register() {
+    }
+
+    @Test
+    void unregister() {
+    }
+
+    @Test
+    void notifyObservers() {
+    }
+
+    @Test
+    void getCurrentComGoals() {
+    }
+
+    @Test
+    void getTurn() {
+    }
+
+    @Test
+    void getObservers() {
+    }
+
+    @Test
+    void getGroupChat() {
+    }
+
+    @Test
+    void getDiscPlayers() {
+    }
+
+    @Test
+    void getNumPlayers() {
+    }
+
+    @Test
+    void isTimerStarted() {
+        game.startTimer();
+        Assertions.assertEquals(true, game.isTimerStarted());
+    }
+
+    @Test
+    void notifyReconnection() {
+    }
+
+    @Test
+    void notifyCommongoal() {
+        game.notifyCommongoal("fuil", 0,0);
+    }
+
+    @Test
+    void setCurrentPlayer() {
+        Player p1 = new Player("fra");
+        game.setCurrentPlayer(p1);
+        Assertions.assertEquals(p1, game.getCurrentPlayer());
+    }
+
+    @Test
+    void setEnd() {
+        game.setEnd();
+        Assertions.assertEquals("ENDGAME", game.getTurn().toString());
+    }
+
+    @Test
+    void setEndToken() {
+        EndToken end = new EndToken();
+        game.setEndToken(end);
+        Assertions.assertEquals(end, game.getEndToken());
     }
 }
