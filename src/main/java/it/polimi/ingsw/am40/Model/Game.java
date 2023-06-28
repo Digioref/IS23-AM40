@@ -304,12 +304,20 @@ public class Game implements IGame {
      */
     public void pickTiles() {
         if (turn == TurnPhase.PICK) {
-            for (Position p : currentPlayer.getSelectedPositions()) {
-                currentPlayer.pickTile(p);
+            if (currentPlayer.getBookshelf().checkSpace(currentPlayer.getSelectedPositions().size())) {
+                for (Position p : currentPlayer.getSelectedPositions()) {
+                    currentPlayer.pickTile(p);
+                }
+                currentPlayer.getSelectedPositions().clear();
+                notifyObservers(turn);
+                setTurn(TurnPhase.ORDER);
+            } else {
+                for (VirtualView v : observers) {
+                    if (currentPlayer.getNickname().equals(v.getNickname())) {
+                        v.pickColumnFullError();
+                    }
+                }
             }
-            currentPlayer.getSelectedPositions().clear();
-            notifyObservers(turn);
-            setTurn(TurnPhase.ORDER);
         }
         else {
             for (VirtualView v : observers) {

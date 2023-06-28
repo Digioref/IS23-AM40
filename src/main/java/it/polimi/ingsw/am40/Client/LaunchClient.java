@@ -94,6 +94,7 @@ public class LaunchClient {
 //                socket = new Socket(LaunchServer.ReadHostFromJSON(), LaunchServer.ReadPortFromJSON());
             } catch (IOException e) {
                 System.out.println("Server not reachable. Closing...");
+                LaunchClient.getView().quit("");
                 return;
 //                throw new RuntimeException(e);
             }

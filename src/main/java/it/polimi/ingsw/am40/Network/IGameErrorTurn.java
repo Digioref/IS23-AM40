@@ -53,4 +53,6 @@ public interface IGameErrorTurn {
      * It receives the chat error because the nickname of the receiver is not in that game
      */
     public void chatError();
+
+    void pickColumnFullError();
 }

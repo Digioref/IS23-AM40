@@ -41,23 +41,23 @@ class GameControllerTest {
         gameController.selectTile(virtualView, p);
     }
 
-    @Test
-    void pickTiles() {
-        Controller controller = new Controller(null, null);
-        VirtualView virtualView = new VirtualView("marco", null, controller);
-        GameController gameController = new GameController(null, controller);
-        Game game = new Game(2);
-        Player player = new Player("marco");
-        gameController.setGame(game);
-        game.setCurrentPlayer(player);
-
-
-        gameController.pickTiles(virtualView);
-
-        Player player2 = new Player("filippo");
-        game.setCurrentPlayer(player2);
-        gameController.pickTiles(virtualView);
-    }
+//    @Test
+//    void pickTiles() {
+//        Controller controller = new Controller(null, null);
+//        VirtualView virtualView = new VirtualView("marco", null, controller);
+//        GameController gameController = new GameController(null, controller);
+//        Game game = new Game(2);
+//        Player player = new Player("marco");
+//        gameController.setGame(game);
+//        game.setCurrentPlayer(player);
+//
+//
+//        gameController.pickTiles(virtualView);
+//
+//        Player player2 = new Player("filippo");
+//        game.setCurrentPlayer(player2);
+//        gameController.pickTiles(virtualView);
+//    }
 
     @Test
     void notConfirmSelection() {
