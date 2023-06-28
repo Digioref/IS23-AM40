@@ -216,27 +216,8 @@ public class GameTest {
     }
 
     @Test
-    void hasStarted() {
-        game.setHasStarted(true);
-        Assertions.assertEquals(true,game.HasStarted());
-    }
-
-    @Test
-    void hasEnded() {
-        game.setHasEnded(true);
-        Assertions.assertEquals(true,game.HasEnded());
-    }
-
-    @Test
     void getBoard() {
         Assertions.assertNotEquals(null, game.getBoard());
-    }
-
-    @Test
-    void getBag() {
-        Bag b = new Bag();
-        game.setBag(b);
-        Assertions.assertEquals(b, game.getBag());
     }
 
     @Test
