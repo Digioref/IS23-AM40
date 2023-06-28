@@ -103,9 +103,11 @@ public class Board {
      * Sets the map according to the parameter
      * @param grid a map representing a board
      */
+    /*
     public void setGrid(Map<String, Tile> grid) {
         this.grid = grid;
     }
+    */
 
     /**
      * add the tiles with at least one free side to the array of the tile eligible to be picked
@@ -165,7 +167,7 @@ public class Board {
      */
     public void updatePickable(Position pos, Player pl){
         System.out.println(pickableTiles);
-        if(pickableTiles.size()==startingPickable.size()){
+        if(pickableTiles.size() == startingPickable.size()){
             startingPickable.remove(pos);
             for (int i = 0; i < pickableTiles.size();) {
 //            if (pickableTiles.get(i) != null) {

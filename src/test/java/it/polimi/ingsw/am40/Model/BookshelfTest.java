@@ -5,6 +5,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.awt.print.Book;
@@ -179,7 +180,7 @@ class BookshelfTest {
         assertFalse(bookshelf.isFull(7));
 
         //full bookshelf
-        bookshelf=new Bookshelf();
+        bookshelf = new Bookshelf();
         for(int i=0;i<5;i++){
             for(int j=0;j<6;j++){
                 bookshelf.addTile(tile,i);
@@ -187,6 +188,10 @@ class BookshelfTest {
             assertTrue(bookshelf.isFull(i));
         }
         assertTrue(bookshelf.isFull());
+
+        Player p = new Player("fra");
+        p.setPersonalGoal(1);
+        Assertions.assertEquals(1, p.getPersonalGoal().calcScore(bookshelf));
     }
 
     @Test

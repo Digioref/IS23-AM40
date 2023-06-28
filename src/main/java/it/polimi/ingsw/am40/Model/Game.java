@@ -815,4 +815,12 @@ public class Game implements IGame {
     public void setEndToken(EndToken endToken){
         this.endToken = endToken;
     }
+
+    public ArrayList<CommonGoal> getCommonGoals() {
+        return commonGoals;
+    }
+
+    public EndToken getEndToken() {
+        return endToken;
+    }
 }

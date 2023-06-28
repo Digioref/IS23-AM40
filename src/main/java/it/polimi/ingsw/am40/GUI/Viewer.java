@@ -2,7 +2,7 @@ package it.polimi.ingsw.am40.GUI;
 
 import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
-import it.polimi.ingsw.am40.Model.GroupChat;
+//import it.polimi.ingsw.am40.Model.GroupChat;
 import it.polimi.ingsw.am40.Model.Position;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -137,6 +137,9 @@ public class Viewer extends Application {
 		primaryStage.setResizable(true);
 
 		gui = this;
+		ppboard = new PlayersPointBoard(primaryStage);
+		cp = new CirclePoints();
+		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight(), primaryStage);
 //
 //		// -----------  setup page  -----------
 //		Pane rootBox = new Pane();
@@ -694,6 +697,7 @@ public class Viewer extends Application {
 		inputBox.setAlignment(Pos.CENTER_RIGHT);
 		chatContainer.getChildren().add(inputBox);
 
+		/*
 		// update the full message list, I can add one message at a time if I am notified when I recive one
 		GroupChat chatClass = new GroupChat();
 		ArrayList<String> messagesList = chatClass.getMessage();
@@ -705,8 +709,9 @@ public class Viewer extends Application {
 			String receiver = receiversList.get(i);
 			NewMessage newMessage = new NewMessage(sender, receiver, m);
 			messages.getChildren().add(newMessage);
-
 		}
+		*/
+
 
 		sendButton.setOnAction(e -> {
 			String sender = nickname;
