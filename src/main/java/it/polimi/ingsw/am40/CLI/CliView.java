@@ -58,6 +58,7 @@ public class CliView implements View{
     }
 
     /**
+     * It prints the tile, with its color and the first letter of the color
      * @param s is the color of the tile to be printed
      * @return a string (color value to be printed)
      */
@@ -81,8 +82,8 @@ public class CliView implements View{
     }
 
     /**
-     * @param s, is the name of the current player
      * The method prints the name of the current player (passed by parameter)
+     * @param s, is the name of the current player
      */
     public void showCurrentPlayer(String s) {
         System.out.println(color.blackBg() + "Current player:" + color.rst() + " " + s + "\n");
@@ -102,7 +103,7 @@ public class CliView implements View{
 
     /**
      * Shows the hidden total score of the player
-     * @param score
+     * @param score the hidden score of the player
      */
     public void showHiddenScore(int score) {
         System.out.println(color.blackBg() + " This is your actual score:" + color.blueBg() + color.black() + " " + score + " " + color.rst() + "\n");
@@ -555,12 +556,12 @@ public class CliView implements View{
 
     }
 
-    /**TODO
+    /**
      * Shows the chat and the previous messages
-     * @param array1 are the indexs of the message
-     * @param array2 are the destinataries of the message
-     * @param array3
-     * @param nickname
+     * @param array1 are the indexes of the message
+     * @param array2 are the receivers of the message
+     * @param array3 messages to be displayed
+     * @param nickname nickname of the player
      */
     @Override
     public void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname) {
@@ -642,7 +643,7 @@ public class CliView implements View{
 
 
     /**
-     * Prints "Waiting for the lobby..."
+     * Prints "Waiting in the lobby..." underlining that the player is in the lobby waiting for other players
      */
     @Override
     public void waitLobby() {
@@ -688,6 +689,12 @@ public class CliView implements View{
         System.out.println(color.blackBg() + "First player:" + color.rst() + " " + nickname + "\n");
     }
 
+    /**
+     * It informs the player that another player has done a common goal obtaining the specified score
+     * @param nickname nickname of the player who achieved the common goal
+     * @param num number of the common goal
+     * @param score score obtained
+     */
     @Override
     public void showCGDone(String nickname, int num, int score) {
         System.out.println("The player " + nickname + "has done a common goal obtaining " + score + "points!" + "\n");

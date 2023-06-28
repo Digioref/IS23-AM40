@@ -85,9 +85,6 @@ public class Position {
         return buildKey(this.x, this.y);
     }
 
-    public static String getKey(int x, int y) {
-        return buildKey(x, y);
-    }
     private static String buildKey (int x, int y) {
         return ("(" + x + "," + y + ")");
     }
@@ -147,10 +144,5 @@ public class Position {
     @Override
     public String toString() {
         return "(x=" + x + ",y=" + y + ")";
-    }
-
-    public void setXY(int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 }

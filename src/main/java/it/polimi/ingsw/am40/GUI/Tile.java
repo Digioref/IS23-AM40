@@ -22,6 +22,7 @@ public class Tile extends Label {
 	private final String border_none = "-fx-border-style: dotted; -fx-border-color: transparent; -fx-border-width: 4;";
 
 	private Point2D pos;
+	private String type;
 
 	private boolean selected = false;
 	private boolean pickable = false;
@@ -33,6 +34,7 @@ public class Tile extends Label {
 		super();
 		if(!type.equals("NOCOLOR")){
 			int index = (int) (Math.random() * 3);
+			this.type = type;
 			Image image = Resources.tile(type, index);
 			ImageView view = new ImageView(image);
 			tileView = view;
@@ -112,5 +114,9 @@ public class Tile extends Label {
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+
+	public String getType() {
+		return type;
 	}
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * TODO
+ * Interface implemented by the CLI and the GUI. It contains the methods that are called to refresh the corresponding UI
  */
 public interface View {
 
@@ -83,7 +83,6 @@ public interface View {
     public void showBoardPickable(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board);
 
     /**
-     * TODO
      * Shows the selected tiles (if any selected)
      * @param map is the map used to represent the selected tiles
      * @param s is the name of the players
@@ -92,7 +91,7 @@ public interface View {
     public void showSelectedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> selected);
 
 
-    /**TODO
+    /**
      * Shows thw picked tiles
      * @param map is the map used to represent the picked tiles
      * @param s is the name of the player
@@ -125,7 +124,7 @@ public interface View {
      */
     void chat(SocketClient socketClient);
 
-    /**TODO
+    /**
      * Shows the chat and the previous messages
      * @param array1 are the indexs of the message
      * @param array2 are the destinataries of the message
@@ -174,5 +173,11 @@ public interface View {
      */
     void showFirstPlayer(String nickname);
 
+    /**
+     * It informs the player that another player has done a common goal obtaining the specified score
+     * @param nickname nickname of the player who achieved the common goal
+     * @param num number of the common goal
+     * @param score score obtained
+     */
     void showCGDone(String nickname, int num, int score);
 }

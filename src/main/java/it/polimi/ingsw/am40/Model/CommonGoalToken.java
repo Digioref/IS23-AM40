@@ -61,11 +61,4 @@ public class CommonGoalToken {
         return numPlayer;
     }
 
-    /**
-     * Sets the number of players
-     * @param numPlayer number of players
-     */
-    public void setNumPlayer(int numPlayer) {
-        this.numPlayer = numPlayer;
-    }
 }

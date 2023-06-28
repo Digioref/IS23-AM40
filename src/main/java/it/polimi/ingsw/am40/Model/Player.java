@@ -103,9 +103,7 @@ public class Player {
      */
 
     public void placeInBookshelf(int col) {
-        //System.out.println("qui3");
             for (Tile tile : tilesPicked) {
-                //System.out.println(tile.toString());
                 bookshelf.addTile(tile, col);
             }
     }
@@ -121,9 +119,10 @@ public class Player {
         ArrayList<Tile> arr = new ArrayList<>();
         for (int i = 1; i <= at.size(); i++) {
             for (int j = 0; j < at.size(); j++) {
-                if(at.get(j) == i) {
+                if(at.get(j)==i){
                     arr.add(tilesPicked.get(j));
                 }
+
             }
         }
         System.out.println(arr);
@@ -138,7 +137,12 @@ public class Player {
      * Calculates the final score of the player
      */
     public void calculateScore() {
-        finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
+        //System.out.println("PUNTEGGIO PERSONAL GOAL: " + personalGoal.calcScore(bookshelf) + "  PUNTEGGIO COMMON GOAL: " + currentScore + "PUNTEGGIO ADIACENZE: " + bookshelf.calcScore());
+        //System.out.println("print update dopo aver chiamato calculateScore");
+        //bookshelf.print();
+        //finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
+        finalScore = personalGoal.calcScore(bookshelf) + currentScore;
+
     }
 
     /**
@@ -146,13 +150,7 @@ public class Player {
      * @param commgoal the array of common goals that are actually in game
      */
     public void updateCurrScore (ArrayList<CommonGoal> commgoal) {
-
         int score;
-        /*
-        for (CommonGoal commonGoal : commgoal) {
-            currentScore += commonGoal.check(bookshelf);
-        }
-        */
         if (!doneCG1) {
             score = commgoal.get(0).check(bookshelf);
             currentScore += score;
@@ -218,10 +216,6 @@ public class Player {
         return tilesPicked;
     }
 
-    public void setTilesPicked(ArrayList<Tile> tilesPicked) {
-        this.tilesPicked = tilesPicked;
-    }
-
     /**
      * Return the current score of the player
      * @return the feature current score
@@ -230,23 +224,14 @@ public class Player {
         return currentScore;
     }
 
-    public void setCurrentScore(int currentScore) {
-        this.currentScore = currentScore;
-    }
-
     /**
      * Returns the final score of the player
      * @return -the feature final score
      */
     public int getFinalScore() {
+        finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
         return finalScore;
     }
-
-    public void setFinalScore(int finalScore) {
-        this.finalScore = finalScore;
-    }
-
-    public void setHiddenScore(int hiddenScore) {this.hiddenScore = hiddenScore;}
 
     /**
      * It returns the bookshelf of the player
@@ -256,13 +241,6 @@ public class Player {
         return bookshelf;
     }
 
-    /**
-     * It sets the bookshelf of the player to the provided one
-     * @param bookshelf the bookshelf provided
-     */
-    public void setBookshelf(Bookshelf bookshelf) {
-        this.bookshelf = bookshelf;
-    }
 
     /**
      * It returns the game board
@@ -305,11 +283,6 @@ public class Player {
         return selectedPositions;
     }
 
-
-    public void setSelectedPositions(ArrayList<Position> selectedPositions) {
-        this.selectedPositions = selectedPositions;
-    }
-
     /**
      * It clears the selected postions
      */
@@ -347,6 +320,4 @@ public class Player {
     public void setGame(Game game) {
         this.game = game;
     }
-
-    public Game getGame() {return game;}
 }

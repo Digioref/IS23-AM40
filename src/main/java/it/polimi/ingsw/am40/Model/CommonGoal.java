@@ -26,9 +26,13 @@ public class CommonGoal {
      * number of columns of the bookshelf
      */
     private final int NCOL = 5;
+    private int count = 0;
+
+    private ArrayList<Tile> figure = new ArrayList<>();
+    private ArrayList<ArrayList<Tile>> possibleGroups = new ArrayList<>();
 
     /**
-     * constructor
+     * Constructor
      * @param num the number of the commonGoal choosen, goes 1 to 12
      * @param numPlayer number of player of the match
      */
@@ -46,7 +50,7 @@ public class CommonGoal {
     }
 
     /**
-     * checks if the commonGoal is completed in a bookshelf
+     * Checks if the commonGoal is completed in a bookshelf
      * @param bookshelf the bookshelf of the player
      * @return the points for the player
      */
@@ -106,11 +110,11 @@ public class CommonGoal {
 
         for (int i = 0; i < fullSquares.size() - 1; i++) {
             for (int j = i + 1 ; j < fullSquares.size(); j++) {
-                if (fullSquares.get(i).equals(fullSquares.get(j))) {
+                //if (fullSquares.get(i).equals(fullSquares.get(j))) {  check if they are the same colors
                     if (!overlaps(fullSquares.get(i).getPos(), fullSquares.get(j).getPos())) {
                         return commgoaltok.updateScore();
                     }
-                }
+                //}
             }
         }
 
@@ -119,7 +123,7 @@ public class CommonGoal {
     }
 
     /**
-     * checks if the tile with coordinates x,y is at the bottom left of a sqare made of tiles of the same color
+     * Checks if the tile with coordinates x,y is at the bottom left of a sqare made of tiles of the same color
      * @param x coordinate of the tile
      * @param y coordinate of the tile
      * @param b bookshelf reference
@@ -175,10 +179,7 @@ public class CommonGoal {
         }
     }
 
-    private int count = 0;
 
-    private ArrayList<Tile> figure = new ArrayList<>();
-    private ArrayList<ArrayList<Tile>> possibleGroups = new ArrayList<>();
     /**
      * Checks if there are 4 groups of 4 tiles of the same color with one side in common (not only vertical or orizontal)
      * @param bookshelf bookshelf of the player
@@ -470,10 +471,10 @@ public class CommonGoal {
     private int check9(Bookshelf bookshelf){
         int[] numcolour = {0,0,0,0,0,0};
         int maxColors = 0;
-        final int TARGET = 5;
+        final int TARGET = 7; //before it was 5
 
-        for (int i = 0; i < NCOL-1; i++) {
-            for (int j = 0; j < NROW-1; j++) {
+        for (int i = 0; i < NCOL; i++) { //before NCOL-1
+            for (int j = 0; j < NROW; j++) { //before   NROWS-1
                 if (bookshelf.getTile(i,j) != null) {
                     switch (bookshelf.getTile(i, j).getColor()) {
                         case YELLOW -> maxColors = numcolour[0]++;
@@ -484,6 +485,7 @@ public class CommonGoal {
                         case GREEN -> maxColors = numcolour[5]++;
                     }
                     if (maxColors == TARGET) {
+                        System.out.println("colori tiles: " + numcolour);
                         return commgoaltok.updateScore();
                     }
                 }
