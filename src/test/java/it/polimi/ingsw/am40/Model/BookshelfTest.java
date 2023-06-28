@@ -229,5 +229,6 @@ class BookshelfTest {
                 assertNotNull(bookshelf.getTile(i,j));
             }
         }
+        System.out.println(bookshelf.toString());
     }
 }

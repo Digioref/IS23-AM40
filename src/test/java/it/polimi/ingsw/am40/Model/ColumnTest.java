@@ -25,6 +25,7 @@ class ColumnTest {
         }
         //add tile exced col size limit
         assertFalse(col.addTile(tile));
+        System.out.println(col.getFreeSpace());
     }
 
     @Test
