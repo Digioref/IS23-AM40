@@ -1,10 +1,16 @@
 package it.polimi.ingsw.am40.Model;
 
+import it.polimi.ingsw.am40.Controller.Controller;
+import it.polimi.ingsw.am40.Controller.Lobby;
+import it.polimi.ingsw.am40.Network.ClientHandler;
+import it.polimi.ingsw.am40.Network.GameServer;
+import it.polimi.ingsw.am40.Network.Handlers;
 import it.polimi.ingsw.am40.Network.VirtualView;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class GameTest {
@@ -19,6 +25,14 @@ public class GameTest {
         game.addPlayer(player1);
         game.addPlayer(player2);
         game.configureGame();
+        /*
+        Lobby l = new Lobby();
+        ClientHandler h = new ClientHandler(new Socket(),new GameServer());
+        Controller c = new Controller(game, l);
+        VirtualView v = new VirtualView("pippo", h, c);
+        game.register(v);
+
+         */
     }
 
     @Test
@@ -134,6 +148,9 @@ public class GameTest {
 
     @Test
     void removeSelectedTiles() {
+        game.startGame();
+        game.removeSelectedTiles();
+        game.setTurn(TurnPhase.SELECTION);
         game.removeSelectedTiles();
     }
 
@@ -171,66 +188,54 @@ public class GameTest {
 
     @Test
     void endGame() {
+        ArrayList<Player> players = game.getPlayers();
+        players.get(0).setDisconnected(true);
+        game.setTurn(TurnPhase.ENDGAME);
+        game.endGame();
     }
 
     @Test
     void controlRefill() {
-    }
-
-    @Test
-    void refill() {
-    }
-
-    @Test
-    void startTurn() {
+        Assertions.assertEquals(true,game.controlRefill());
     }
 
     @Test
     void endTurn() {
+        game.setTurn(TurnPhase.ENDTURN);
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        System.out.println(game.getCurrentPlayer());
+        game.endTurn();
     }
 
     @Test
     void setWinner() {
+        game.startGame();
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setWinner();
     }
 
     @Test
     void hasStarted() {
-    }
-
-    @Test
-    void setHasStarted() {
+        game.setHasStarted(true);
+        Assertions.assertEquals(true,game.HasStarted());
     }
 
     @Test
     void hasEnded() {
-    }
-
-    @Test
-    void setHasEnded() {
-    }
-
-    @Test
-    void getCurrentPlayer() {
-    }
-
-    @Test
-    void getPlayers() {
+        game.setHasEnded(true);
+        Assertions.assertEquals(true,game.HasEnded());
     }
 
     @Test
     void getBoard() {
+        Assertions.assertNotEquals(null, game.getBoard());
     }
 
     @Test
     void getBag() {
-    }
-
-    @Test
-    void setBag() {
-    }
-
-    @Test
-    void setTurn() {
+        Bag b = new Bag();
+        game.setBag(b);
+        Assertions.assertEquals(b, game.getBag());
     }
 
     @Test
@@ -242,31 +247,18 @@ public class GameTest {
     }
 
     @Test
-    void notifyObservers() {
-    }
-
-    @Test
-    void getCurrentComGoals() {
-    }
-
-    @Test
-    void getTurn() {
-    }
-
-    @Test
-    void getObservers() {
-    }
-
-    @Test
     void getGroupChat() {
+        System.out.println(game.getGroupChat());
     }
 
     @Test
     void getDiscPlayers() {
+        Assertions.assertEquals(0, game.getDiscPlayers().size());
     }
 
     @Test
     void getNumPlayers() {
+        Assertions.assertEquals(2,game.getNumPlayers());
     }
 
     @Test

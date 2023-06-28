@@ -417,12 +417,13 @@ public class Game implements IGame {
     public boolean controlRefill () {
         return board.needRefill();
     }
-
+/*
     public void refill (){
         board.remove(bag);
         board.config(bag);
         board.setSideFreeTile();
     }
+    */
 
     /**
      * It organises the board for the beginning of the turn of a specific player
