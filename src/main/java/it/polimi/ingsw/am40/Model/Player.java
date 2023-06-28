@@ -173,10 +173,6 @@ public class Player {
      * It updates the hidden score (visible to only the corresponding player) of the player
      */
     public void updateHiddenScore() {
-        //System.out.println("PUNTEGGIO PERSONAL GOAL: " + personalGoal.calcScore(bookshelf) + "  PUNTEGGIO COMMON GOAL: " + currentScore + " PUNTEGGIO ADIACENZE: " + bookshelf.calcScore());
-        //System.out.println("PUNTEGGIO PERSONAL GOAL: " + personalGoal.calcScore(bookshelf) + "  PUNTEGGIO COMMON GOAL: " + currentScore + " PUNTEGGIO ADIACENZE: " + bookshelf.calcScore());
-        //System.out.println("print bookshelf dopo updateHiddenScore");
-        //bookshelf.print();
         hiddenScore = currentScore + personalGoal.calcScore(bookshelf);
     }
 

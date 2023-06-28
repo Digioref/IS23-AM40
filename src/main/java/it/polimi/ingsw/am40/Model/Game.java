@@ -786,4 +786,8 @@ public class Game implements IGame {
         this.endToken = endToken;
     }
 
+    public EndToken getEndToken(){
+        return endToken;
+    }
+
 }
