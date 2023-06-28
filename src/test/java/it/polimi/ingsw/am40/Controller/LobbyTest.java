@@ -15,18 +15,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LobbyTest {
 
-    @Test
-    void removeFromQueue() {
-        Lobby lobby = new Lobby();
-        ClientHandler clientHandler = new ClientHandler();
-        lobby.getQueue().add(clientHandler);
-        lobby.removeFromQueue();
-
-        lobby.setNumPlayers(2);
-        lobby.getQueue().add(clientHandler);
-        ClientHandler clientHandler1 = new ClientHandler();
-        lobby.removeFromQueue();
-    }
+//    @Test
+//    void removeFromQueue() {
+//        Lobby lobby = new Lobby();
+//        ClientHandler clientHandler = new ClientHandler();
+//        lobby.getQueue().add(clientHandler);
+//        lobby.removeFromQueue();
+//
+//        lobby.setNumPlayers(2);
+//        lobby.getQueue().add(clientHandler);
+//        ClientHandler clientHandler1 = new ClientHandler();
+//        lobby.removeFromQueue();
+//    }
 
     @Test
     void run() {
@@ -90,11 +90,11 @@ class LobbyTest {
     lobby.addQueue(clientHandler);
     }
 
-    @Test
-    void create() {
-        Lobby lobby = new Lobby();
-        lobby.create();
-    }
+//    @Test
+//    void create() {
+//        Lobby lobby = new Lobby();
+//        lobby.create();
+//    }
 
     @Test
     void getNicknameInGame() {

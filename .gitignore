@@ -26,4 +26,4 @@ target/
 
 /JavaDoc/*
 
-*jar
+#*jar
