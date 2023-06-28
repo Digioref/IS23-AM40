@@ -246,6 +246,8 @@ public class Player {
         this.finalScore = finalScore;
     }
 
+    public void setHiddenScore(int hiddenScore) {this.hiddenScore = hiddenScore;}
+
     /**
      * It returns the bookshelf of the player
      * @return bookshelf of the player
@@ -345,4 +347,6 @@ public class Player {
     public void setGame(Game game) {
         this.game = game;
     }
+
+    public Game getGame() {return game;}
 }
