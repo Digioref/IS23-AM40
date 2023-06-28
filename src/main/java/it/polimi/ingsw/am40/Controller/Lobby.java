@@ -83,10 +83,6 @@ public class Lobby implements Runnable {
         }
     }
 
-    public Game findGame(ClientHandler c) {
-        return c.getController().getGame();
-    }
-
     /**
      * It adds the handler of the player to the queue
      * @param clientHandler the handler of the player, server side
@@ -157,6 +153,10 @@ public class Lobby implements Runnable {
      */
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
+    }
+
+    public int getNumPlayers(){
+        return numPlayers;
     }
 
     /**

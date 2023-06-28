@@ -10,6 +10,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+/**
+ * Class that represents the graphic elements circle-points
+ */
 public class CirclePoints extends AnchorPane {
     private ImageView view;
     private Pane image;

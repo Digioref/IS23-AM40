@@ -18,6 +18,9 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * Class that represents the graphic element board
+ */
 public class Board extends AnchorPane {
 
 	private static final int MAX_SELECTABLE = 3;

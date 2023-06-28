@@ -4,6 +4,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Class that represents the graphic element arrow
+ */
 public class Arrow extends Label {
 
 	public static final int UP = 1;
@@ -52,7 +55,7 @@ public class Arrow extends Label {
 	}
 
 	/**
-	 *
+	 * Sets the size (w = width, h = height) of the arrow
 	 * @param w
 	 * @param h
 	 */
@@ -88,7 +91,7 @@ public class Arrow extends Label {
 	}
 
 	/**
-	 * sets the index of the arrow
+	 * Sets the index of the arrow
 	 * @param index
 	 */
 	public void setIndex(int index) {

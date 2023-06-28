@@ -1,5 +1,8 @@
 package it.polimi.ingsw.am40.GUI;
 
+/**
+ * Class that holds all the informations about the metrics of the graphic elements
+ */
 public class Metrics {
 	public static final int ROOT_WIDTH = 1920; 	//1280
 	public static final int ROOT_HEIGHT = 1080;	//600

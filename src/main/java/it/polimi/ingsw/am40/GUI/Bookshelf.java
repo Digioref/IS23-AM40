@@ -16,6 +16,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * Class that represents the graphic element bookshelf
+ */
 public class Bookshelf extends AnchorPane {
 	private static final int COLUMN_SPACES = 6;
 	private double[] colStart = { 39.5/1536.0, 95.5/1536.0, 151.5/1536.0, 207.5/1536.0, 263.5/1536.0 };

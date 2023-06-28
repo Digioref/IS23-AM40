@@ -187,7 +187,8 @@ public class ClientState {
         }
         LaunchClient.getView().showHiddenScore(hiddenscore);
         if (players != null) {
-            LaunchClient.getView().showPlayers(players);
+            LaunchClient.getView().
+                    showPlayers(players);
         }
         if (currplayer != null) {
             LaunchClient.getView().showCurrentPlayer(currplayer);
