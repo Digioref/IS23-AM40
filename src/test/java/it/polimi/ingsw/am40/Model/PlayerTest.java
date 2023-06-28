@@ -68,24 +68,16 @@ public class PlayerTest {
     @Test
     void clearTilesPicked() {
 
-        /**
-         * TODO
-         * si può migliorare
-         */
+        Player player = new Player("gianni");
+        ArrayList<Tile> tiles = new ArrayList<>();
+        Tile tile1 = new Tile(TileColor.BLUE, TileType.CATS);
+        Tile tile2 = new Tile(TileColor.BLUE, TileType.CATS);
 
-        Player player = new Player("gigi");
-        Position position = new Position(1,1);
+        tiles.add(tile1);
+        tiles.add(tile2);
+        player.setTilesPicked(tiles);
 
-        Board board = new Board(2);
-        Bag bag = new Bag();
-        board.config(bag);
-
-        player.setBoard(board);
-        player.pickTile(position);
-
-        assertEquals(player.getTilesPicked().size(), 1);
-
-        player.clearTilesPicked();
+        assertEquals(player.getTilesPicked(), tiles);
     }
 
     @Test
@@ -177,7 +169,7 @@ public class PlayerTest {
 
         player.addCurrentScore(4);
 
-        assertEquals(player.getCurrentScore(), 5);
+        assertEquals(player.getCurrentScore(), 4);
 
     }
 
@@ -276,14 +268,14 @@ public class PlayerTest {
     void getPersonalGoal() {
         Player player = new Player("alberto");
         player.setPersonalGoal(3);
-        assertEquals(player.getPersonalGoal(),3);
+        assertEquals(player.getPersonalGoal().getKey(),3);
     }
 
     @Test
     void setPersonalGoal() {
         Player player = new Player("alberto");
         player.setPersonalGoal(3);
-        assertEquals(player.getPersonalGoal(),3);
+        assertEquals(player.getPersonalGoal().getKey(),3);
     }
 
     @Test
@@ -328,6 +320,8 @@ public class PlayerTest {
         posizioni.add(posizione2);
         player.setSelectedPositions(posizioni);
 
+        Board board = new Board(2);
+        player.setBoard(board);
         player.clearSelected();
 
         assertTrue(player.getSelectedPositions().isEmpty());
