@@ -26,9 +26,13 @@ public class CommonGoal {
      * number of columns of the bookshelf
      */
     private final int NCOL = 5;
+    private int count = 0;
+
+    private ArrayList<Tile> figure = new ArrayList<>();
+    private ArrayList<ArrayList<Tile>> possibleGroups = new ArrayList<>();
 
     /**
-     * constructor
+     * Constructor
      * @param num the number of the commonGoal choosen, goes 1 to 12
      * @param numPlayer number of player of the match
      */
@@ -46,7 +50,7 @@ public class CommonGoal {
     }
 
     /**
-     * checks if the commonGoal is completed in a bookshelf
+     * Checks if the commonGoal is completed in a bookshelf
      * @param bookshelf the bookshelf of the player
      * @return the points for the player
      */
@@ -119,7 +123,7 @@ public class CommonGoal {
     }
 
     /**
-     * checks if the tile with coordinates x,y is at the bottom left of a sqare made of tiles of the same color
+     * Checks if the tile with coordinates x,y is at the bottom left of a sqare made of tiles of the same color
      * @param x coordinate of the tile
      * @param y coordinate of the tile
      * @param b bookshelf reference
@@ -175,10 +179,7 @@ public class CommonGoal {
         }
     }
 
-    private int count = 0;
 
-    private ArrayList<Tile> figure = new ArrayList<>();
-    private ArrayList<ArrayList<Tile>> possibleGroups = new ArrayList<>();
     /**
      * Checks if there are 4 groups of 4 tiles of the same color with one side in common (not only vertical or orizontal)
      * @param bookshelf bookshelf of the player

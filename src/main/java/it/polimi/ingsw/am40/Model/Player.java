@@ -103,9 +103,7 @@ public class Player {
      */
 
     public void placeInBookshelf(int col) {
-        //System.out.println("qui3");
             for (Tile tile : tilesPicked) {
-                //System.out.println(tile.toString());
                 bookshelf.addTile(tile, col);
             }
     }
@@ -152,13 +150,7 @@ public class Player {
      * @param commgoal the array of common goals that are actually in game
      */
     public void updateCurrScore (ArrayList<CommonGoal> commgoal) {
-
         int score;
-        /*
-        for (CommonGoal commonGoal : commgoal) {
-            currentScore += commonGoal.check(bookshelf);
-        }
-        */
         if (!doneCG1) {
             score = commgoal.get(0).check(bookshelf);
             currentScore += score;
@@ -228,20 +220,12 @@ public class Player {
         return tilesPicked;
     }
 
-    public void setTilesPicked(ArrayList<Tile> tilesPicked) {
-        this.tilesPicked = tilesPicked;
-    }
-
     /**
      * Return the current score of the player
      * @return the feature current score
      */
     public int getCurrentScore() {
         return currentScore;
-    }
-
-    public void setCurrentScore(int currentScore) {
-        this.currentScore = currentScore;
     }
 
     /**
@@ -253,10 +237,6 @@ public class Player {
         return finalScore;
     }
 
-    public void setFinalScore(int finalScore) {
-        this.finalScore = finalScore;
-    }
-
     /**
      * It returns the bookshelf of the player
      * @return bookshelf of the player
@@ -265,13 +245,6 @@ public class Player {
         return bookshelf;
     }
 
-    /**
-     * It sets the bookshelf of the player to the provided one
-     * @param bookshelf the bookshelf provided
-     */
-    public void setBookshelf(Bookshelf bookshelf) {
-        this.bookshelf = bookshelf;
-    }
 
     /**
      * It returns the game board
@@ -312,11 +285,6 @@ public class Player {
      */
     public ArrayList<Position> getSelectedPositions() {
         return selectedPositions;
-    }
-
-
-    public void setSelectedPositions(ArrayList<Position> selectedPositions) {
-        this.selectedPositions = selectedPositions;
     }
 
     /**

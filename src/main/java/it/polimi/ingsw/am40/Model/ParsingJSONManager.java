@@ -32,15 +32,14 @@ public class ParsingJSONManager {
             JSONArray posArray = (JSONArray) configs.get("Positions");
             JSONObject o = (JSONObject) posArray.get(num - 2);
             JSONArray obj1 = (JSONArray) o.get("Players" + Integer.valueOf(num).toString()); // I think it is redundant, you don't need to specify the position in the array and also the name of the elementt, you need just one of the two info
-            for (int i = 0; i < obj1.size(); i++) {
-                JSONObject t = (JSONObject) obj1.get(i);
+            for (Object value : obj1) {
+                JSONObject t = (JSONObject) value;
                 String t1 = t.get("x").toString();
                 String t2 = t.get("y").toString();
                 Position p = new Position(Integer.parseInt(t1), Integer.parseInt(t2));
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
                 tile.setPos(p);
                 map.put(p.getKey(), tile);
-                // System.out.println(p.getKey());
             }
 
         } catch (IOException | ParseException e) {
@@ -80,24 +79,12 @@ public class ParsingJSONManager {
                 JSONObject t = (JSONObject) obj;
                 String x = t.get("Color").toString();
                 switch (x) {
-                    case "Yellow":
-                        pg.getColor().add(TileColor.YELLOW);
-                        break;
-                    case "White":
-                        pg.getColor().add(TileColor.WHITE);
-                        break;
-                    case "Blue":
-                        pg.getColor().add(TileColor.BLUE);
-                        break;
-                    case "Green":
-                        pg.getColor().add(TileColor.GREEN);
-                        break;
-                    case "Cyan":
-                        pg.getColor().add(TileColor.CYAN);
-                        break;
-                    case "Violet":
-                        pg.getColor().add(TileColor.VIOLET);
-                        break;
+                    case "Yellow" -> pg.getColor().add(TileColor.YELLOW);
+                    case "White" -> pg.getColor().add(TileColor.WHITE);
+                    case "Blue" -> pg.getColor().add(TileColor.BLUE);
+                    case "Green" -> pg.getColor().add(TileColor.GREEN);
+                    case "Cyan" -> pg.getColor().add(TileColor.CYAN);
+                    case "Violet" -> pg.getColor().add(TileColor.VIOLET);
                 }
             }
         } catch (IOException | ParseException e) {
@@ -121,44 +108,20 @@ public class ParsingJSONManager {
                 String t2 = t.get("type").toString();
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
                 switch (t1) {
-                    case "yellow":
-                        tile.setColor(TileColor.YELLOW);
-                        break;
-                    case "white":
-                        tile.setColor(TileColor.WHITE);
-                        break;
-                    case "blue":
-                        tile.setColor(TileColor.BLUE);
-                        break;
-                    case "green":
-                        tile.setColor(TileColor.GREEN);
-                        break;
-                    case "cyan":
-                        tile.setColor(TileColor.CYAN);
-                        break;
-                    case "violet":
-                        tile.setColor(TileColor.VIOLET);
-                        break;
+                    case "yellow" -> tile.setColor(TileColor.YELLOW);
+                    case "white" -> tile.setColor(TileColor.WHITE);
+                    case "blue" -> tile.setColor(TileColor.BLUE);
+                    case "green" -> tile.setColor(TileColor.GREEN);
+                    case "cyan" -> tile.setColor(TileColor.CYAN);
+                    case "violet" -> tile.setColor(TileColor.VIOLET);
                 }
                 switch (t2) {
-                    case "cats":
-                        tile.setType(TileType.CATS);
-                        break;
-                    case "books":
-                        tile.setType(TileType.BOOKS);
-                        break;
-                    case "games":
-                        tile.setType(TileType.GAMES);
-                        break;
-                    case "frames":
-                        tile.setType(TileType.FRAMES);
-                        break;
-                    case "trophies":
-                        tile.setType(TileType.TROPHIES);
-                        break;
-                    case "plants":
-                        tile.setType(TileType.PLANTS);
-                        break;
+                    case "cats" -> tile.setType(TileType.CATS);
+                    case "books" -> tile.setType(TileType.BOOKS);
+                    case "games" -> tile.setType(TileType.GAMES);
+                    case "frames" -> tile.setType(TileType.FRAMES);
+                    case "trophies" -> tile.setType(TileType.TROPHIES);
+                    case "plants" -> tile.setType(TileType.PLANTS);
                 }
                 b.insert(tile);
             }
@@ -181,71 +144,28 @@ public class ParsingJSONManager {
             for (int i = 0; i < posArray.size(); i++) {
                 JSONObject t = (JSONObject) posArray.get(i);
                 String t1 = t.get("Command" + i).toString();
-                switch(t1) {
-                    case "login":
-                        map.put("login", new Login());
-                        break;
-                    case "help":
-                        map.put("help", new Help());
-                        break;
-                    case "quit":
-                        map.put("quit", new Quit());
-                        break;
-                    case "select":
-                        map.put("select", new Select());
-                        break;
-                    case "pick":
-                        map.put("pick", new Pick());
-                        break;
-                    case "order":
-                        map.put("order", new Order());
-                        break;
-                    case "insert":
-                        map.put("insert", new Insert());
-                        break;
-                    case "remove":
-                        map.put("remove", new Remove());
-                        break;
-                    case "setplayers":
-                        map.put("setplayers", new SetPlayers());
-                        break;
-                    case "getcurrent":
-                        map.put("getcurrent", new GetCurrent());
-                        break;
-                    case "getcurscore":
-                        map.put("getcurscore", new GetCurScore());
-                        break;
-                    case "gethiddenscore":
-                        map.put("gethiddenscore", new GetHiddenScore());
-                        break;
-                    case "getplayers":
-                        map.put("getplayers", new GetPlayers());
-                        break;
-                    case "getcommgoals":
-                        map.put("getcommgoals", new GetCommGoals());
-                        break;
-                    case "getpersgoal":
-                        map.put("getpersgoal", new GetPersGoal());
-                        break;
-                    case "getboard":
-                        map.put("getboard", new GetBoard());
-                        break;
-                    case "getbook":
-                        map.put("getbook", new GetBook());
-                        break;
-                    case "getbookall":
-                        map.put("getbookall", new GetBookAll());
-                        break;
-                    case "chat":
-                        map.put("chat", new Chat());
-                        break;
-                    case "viewchat":
-                        map.put("viewchat", new ViewChat());
-                        break;
-                    case "pong":
-                        map.put("pong", new Pong());
-                        break;
-
+                switch (t1) {
+                    case "login" -> map.put("login", new Login());
+                    case "help" -> map.put("help", new Help());
+                    case "quit" -> map.put("quit", new Quit());
+                    case "select" -> map.put("select", new Select());
+                    case "pick" -> map.put("pick", new Pick());
+                    case "order" -> map.put("order", new Order());
+                    case "insert" -> map.put("insert", new Insert());
+                    case "remove" -> map.put("remove", new Remove());
+                    case "setplayers" -> map.put("setplayers", new SetPlayers());
+                    case "getcurrent" -> map.put("getcurrent", new GetCurrent());
+                    case "getcurscore" -> map.put("getcurscore", new GetCurScore());
+                    case "gethiddenscore" -> map.put("gethiddenscore", new GetHiddenScore());
+                    case "getplayers" -> map.put("getplayers", new GetPlayers());
+                    case "getcommgoals" -> map.put("getcommgoals", new GetCommGoals());
+                    case "getpersgoal" -> map.put("getpersgoal", new GetPersGoal());
+                    case "getboard" -> map.put("getboard", new GetBoard());
+                    case "getbook" -> map.put("getbook", new GetBook());
+                    case "getbookall" -> map.put("getbookall", new GetBookAll());
+                    case "chat" -> map.put("chat", new Chat());
+                    case "viewchat" -> map.put("viewchat", new ViewChat());
+                    case "pong" -> map.put("pong", new Pong());
                 }
             }
 

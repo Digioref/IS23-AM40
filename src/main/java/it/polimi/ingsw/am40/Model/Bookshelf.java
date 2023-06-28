@@ -58,7 +58,7 @@ public class Bookshelf {
     public boolean addTile(Tile newTile, int col){
         if (!((this.isFull(col)) || newTile == null || col >= 5 || col < 0)){
             bookshelf.get(col).addTile( new Tile(newTile.getColor(), newTile.getType(), new Position(col,bookshelf.get(col).getSize())) );
-            //System.out.println(newTile.toString());
+//            System.out.println(newTile.toString());
             return true;
         }
         return false;
@@ -79,7 +79,6 @@ public class Bookshelf {
 
     /**
      * Returns the mark of a tile at a given position
-     *
      * @param x x coordinate
      * @param y y coordinate
      * @return int value of the mark
@@ -93,7 +92,6 @@ public class Bookshelf {
 
     /**
      * Check if given coordinates are a valid position in the bookshelf
-     *
      * @param x x coordinate
      * @param y coordinate
      * @return true if the coordinates are valid, false otherwise
@@ -179,6 +177,9 @@ public class Bookshelf {
                 '}';
     }
 
+    /**
+     * It is used only for testing
+     */
     public void print(){
         ArrayList<String> tmp = new ArrayList<>();
         for(int i=DIMROW; i>=0 ; i--){

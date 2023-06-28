@@ -32,53 +32,6 @@ public class PersonalGoal {
         pos = new ArrayList<>(6);
         color = new ArrayList<>(6);
         key = k;
-/*
-        JSONParser jsonParser = new JSONParser();
-        FileReader reader;
-        try {
-        ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource("PersonalGoals.json")).getFile());
-            reader = new FileReader(file);
-            JSONObject persGoals = (JSONObject) jsonParser.parse(reader);
-
-            JSONArray array = (JSONArray) persGoals.get("PersonalGoals");
-            JSONObject o = (JSONObject) array.get(k);
-
-            JSONArray obj1 = (JSONArray) o.get("position");
-            JSONArray obj2 = (JSONArray) o.get("color");
-
-
-            for (Object obj : obj1) {
-                JSONObject t = (JSONObject) obj;
-                String t1 = t.get("x").toString();
-                int x = Integer.parseInt(t1);
-                String t2 = t.get("y").toString();
-                int y = Integer.parseInt(t2);
-                Position p = new Position(x, y);
-                pos.add(p);
-            }
-            for (Object obj : obj2) {
-                JSONObject t = (JSONObject) obj;
-                String x = t.get("Color").toString();
-                switch (x) {
-                    case "Yellow":
-                        color.add(TileColor.YELLOW);
-                    case "White":
-                        color.add(TileColor.WHITE);
-                    case "Blue":
-                        color.add(TileColor.BLUE);
-                    case "Green":
-                        color.add(TileColor.GREEN);
-                    case "Cyan":
-                        color.add(TileColor.CYAN);
-                    case "Violet":
-                        color.add(TileColor.VIOLET);
-                }
-            }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
- */
     }
 
     /**
@@ -87,48 +40,26 @@ public class PersonalGoal {
      * @return an int representing the score obtained
      */
     public int calcScore(Bookshelf b) {
-//        for (int i = 0; i < pos.size(); i++) {
-//            System.out.println(color.get(i).toString() + " " + pos.get(i).getKey());
-//        }
         int t = 0;
         for (int i = 0; i < pos.size(); i++) {
             Column c = b.getBookshelf().get(pos.get(i).getX());
-//            System.out.println(c.toString());
-//            System.out.println("qui5");
             if (!(c.isEmpty())) {
                 if (pos.get(i).getY() < c.getSize()) {
-//                    System.out.println("qui6");
                     if (c.getColor(pos.get(i).getY()).equals(color.get(i))) {
                         t++;
                     }
                 }
             }
         }
-        int s;
-        switch (t) {
-            case 1:
-                s = 1;
-                break;
-            case 2:
-                s = 2;
-                break;
-            case 3:
-                s = 4;
-                break;
-            case 4:
-                s = 6;
-                break;
-            case 5:
-                s = 9;
-                break;
-            case 6:
-                s = 12;
-                break;
-            default:
-                s = 0;
-                break;
-        }
-//        System.out.println("qui6");
+        int s = switch (t) {
+            case 1 -> 1;
+            case 2 -> 2;
+            case 3 -> 4;
+            case 4 -> 6;
+            case 5 -> 9;
+            case 6 -> 12;
+            default -> 0;
+        };
         return s;
     }
 
@@ -141,27 +72,11 @@ public class PersonalGoal {
     }
 
     /**
-     * Sets the array pos to the provided one
-     * @param pos a provided array of positions
-     */
-    public void setPos(ArrayList<Position> pos) {
-        this.pos = pos;
-    }
-
-    /**
      * Returns the specific colours of the personal goal
      * @return the feature color
      */
     public ArrayList<TileColor> getColor() {
         return color;
-    }
-
-    /**
-     * Sets the aaray of colours to the provided one
-     * @param color the provided array of colours
-     */
-    public void setColor(ArrayList<TileColor> color) {
-        this.color = color;
     }
 
     @Override
