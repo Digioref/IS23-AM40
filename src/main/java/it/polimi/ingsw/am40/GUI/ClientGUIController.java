@@ -10,13 +10,14 @@ import java.util.Map;
 import static javafx.application.Platform.runLater;
 
 /**
- * todo
+ * <p>It is the Controller of the GUI</p>
+ * <p>It acts on the GUI using the Platform method runLater, which refreshes the GUI</p>
  */
 public class ClientGUIController implements View {
-    private Viewer gui;
+    private final Viewer gui;
 
     /**
-     * todo
+     * Constructor that sets the instance of the controlled GUI
      */
     public ClientGUIController() {
         gui = Viewer.getGUI();
@@ -181,10 +182,10 @@ public class ClientGUIController implements View {
     /**
      *
      * Shows the chat and the previous messages
-     * @param array1 are the indexs of the message
-     * @param array2 are the destinataries of the message
-     * @param array3
-     * @param nickname
+     * @param array1 are the indexes of the message
+     * @param array2 are the receivers of the message
+     * @param array3 messages of the chat
+     * @param nickname name of the sender
      */
     @Override
     public void showChat(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String nickname) {
@@ -208,40 +209,68 @@ public class ClientGUIController implements View {
         runLater(gui::setplayers);
     }
 
-
+    /**
+     * It shows to the player that he is waiting in the lobby
+     */
     @Override
     public void waitLobby() {
         runLater(gui::waitingAnimation);
     }
 
+    /**
+     * It shows to the player some suggested nicknames
+     * @param to_be_replaced (name to be replaced)
+     * @param suggested (list of the suggested nicknames)
+     */
     @Override
     public void showSuggestedNicknames(String to_be_replaced, ArrayList<String> suggested) {
         runLater(()->gui.suggestNicknames(to_be_replaced, suggested));
     }
 
+    /**
+     * It shows the errors
+     * @param error (error message)
+     */
     @Override
     public void showError(String error) {
         runLater(()->gui.showError(error));
     }
 
+    /**
+     * It shows all the elements required by the game
+     */
     @Override
     public void showGame() {
         runLater(gui::startGame);
     }
 
+    /**
+     * It shwos who is the first player by assigning
+     * @param nickname (name of the first player)
+     */
     @Override
     public void showFirstPlayer(String nickname) {
         runLater(()->gui.setFirstPlayer(nickname));
     }
 
+    /**
+     * It shows that someone has done the first common goal by assigning to the player the corresponding token
+     * @param nickname nickname of the player who achieved the common goal
+     * @param num number of the common goal
+     * @param score score obtained
+     */
     @Override
     public void showCGDone(String nickname, int num, int score) {
         runLater(()->gui.setPickToken(nickname, num, score));
     }
 
+    /**
+     * It shows to the player all the graphical elements right after his reconnection
+     * @param nickname nickname of the reconnecting player
+     */
     @Override
     public void reconnect(String nickname) {
-        runLater(gui::startGame);
+        runLater(gui::reconnect);
     }
 
 }

@@ -8,7 +8,7 @@ import it.polimi.ingsw.am40.Model.*;
 public class Controller {
     private Game game;
     private GameController gameController;
-    private Lobby lobby;
+    private final Lobby lobby;
 
     /**
      * Constructor which creates the Controller from the associated game and the lobby
@@ -31,7 +31,7 @@ public class Controller {
 
     /**
      * Sets the attribute game to the parameter passed
-     * @param game
+     * @param game a game
      */
     public void setGame(Game game) {
         this.game = game;
@@ -55,7 +55,7 @@ public class Controller {
 
     /**
      * Sets the attribute gameController to the parameter passed
-     * @param gameController
+     * @param gameController Controller of the game
      */
     public void setGameController(GameController gameController){
         this.gameController = gameController;

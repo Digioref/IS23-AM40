@@ -2,7 +2,6 @@ package it.polimi.ingsw.am40.GUI;
 
 import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
-import it.polimi.ingsw.am40.Model.GroupChat;
 import it.polimi.ingsw.am40.Model.Position;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -12,13 +11,9 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -26,7 +21,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -43,19 +37,18 @@ import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.regex.Pattern;
 
 public class Viewer extends Application {
-	private final Arrow arrowRight = new Arrow(Arrow.RIGHT);
-	private final ArrayList<Arrow> arrowDownList = new ArrayList<>();
+	private Arrow arrowRight;
+	private ArrayList<Arrow> arrowDownList;
 	private static final int ARROWS_DOWN = 5;
 	private String connectionType;
 	private static Viewer gui;
 	private Stage primaryStage;
 	private Scene scene;
 	private Pane pane;
-	private final RedCross redCross = new RedCross();
+	private RedCross redCross;
 	private Map<String, Integer> players;
 	private String currentPlayer;
 	private AnchorPane gameBoard;
@@ -137,6 +130,9 @@ public class Viewer extends Application {
 	public void start(Stage stage) {
 		this.primaryStage = stage;
 		this.bookshelves = new ArrayList<>();
+		arrowRight = new Arrow(Arrow.RIGHT);
+		arrowDownList = new ArrayList<>();
+		redCross = new RedCross();
 //		alert = new Alert(Alert.AlertType.INFORMATION);
 //		errorAlert = new Alert(Alert.AlertType.ERROR);
 //		alert.getDialogPane().getStylesheets().add("Alert.css");
@@ -411,7 +407,7 @@ public class Viewer extends Application {
 	public void setUsername() {
 //		primaryStage.close();
 		try {
-			Thread.sleep(1500);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			System.out.println("Thread not sleeping");
 		}
@@ -851,6 +847,10 @@ public class Viewer extends Application {
 		bookshelf.reconnectPlaceTiles(map, primaryStage);
 	}
 
+	public void reconnect() {
+		startGame();
+	}
+
 	class Delta {
 		double x, y;
 	}
@@ -913,8 +913,9 @@ public class Viewer extends Application {
 			HBox hbox = new HBox();
 			Text t1 = addDescription(hbox, s);
 			Text t2 = addDescription(hbox, "Score: " + map.get(s));
-			hbox.setSpacing(50);
+			hbox.setSpacing(100);
 			hbox.setVisible(true);
+			hbox.setAlignment(Pos.CENTER);
 			vbox.getChildren().add(hbox);
 		}
 		Text t1 = addDescription(vbox, "WINNER: " + winner);
@@ -1034,7 +1035,7 @@ public class Viewer extends Application {
 
 	public void setplayers() {
 		try {
-			Thread.sleep(1500);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -1156,7 +1157,7 @@ public class Viewer extends Application {
 
 	public void startGame() {
 		try {
-			Thread.sleep(1500);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -1208,7 +1209,6 @@ public class Viewer extends Application {
 		bookshelf.createLabelName(Metrics.dim_x_targetname*primaryStage.getWidth(),Metrics.dim_y_targetname*primaryStage.getHeight(), primaryStage.getWidth()*Metrics.dim_x_bookpl*Metrics.d_x_targetname, primaryStage.getHeight()*Metrics.dim_y_bookpl*Metrics.d_y_targetname);
 		bookshelf.setName(nickname);
 		gameBoard.getChildren().add(bookshelf);
-
 		for (int i = 0; i < ARROWS_DOWN; i++) {
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
 			arrowDown.setUserData(arrowDown);
@@ -1292,8 +1292,8 @@ public class Viewer extends Application {
 			int y = (int) obj.getPosition().getY();
 			board.select(x, y);
 			if (!flag) {
-				redCross.setVisible(!board.isSelectedEmpty());
-				arrowRight.setVisible(!board.isSelectedEmpty());
+				redCross.setVisible(board.isSelectedNotEmpty());
+				arrowRight.setVisible(board.isSelectedNotEmpty());
 				LaunchClient.getClient().sendMessage("select " + x + " " + y);
 			}
 //			board.select(x, y);
@@ -1411,7 +1411,7 @@ public class Viewer extends Application {
 					bookshelf.insert(nodeList, column);
 				}
 				try {
-					Thread.sleep(1500);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
@@ -1434,17 +1434,17 @@ public class Viewer extends Application {
 	}
 
 	private void addNamesChat() {
-		if (!chatContainer.getChildren().contains(selectReceivers)) {
+		HBox inputBox = new HBox();
+		inputBox.setPadding(new Insets(10, 0, 10, 0));
+		inputBox.setSpacing(10);
+		inputBox.setAlignment(Pos.CENTER_RIGHT);
+		if (!inputBox.getChildren().contains(selectReceivers)) {
 			selectReceivers = new ComboBox<>();
 			ArrayList<String> sendTo = new ArrayList<>(names);
 			sendTo.remove(nickname);
 			if (sendTo.size() > 1) {
 				sendTo.add("everyOne");
 			}
-			HBox inputBox = new HBox();
-			inputBox.setPadding(new Insets(10, 0, 10, 0));
-			inputBox.setSpacing(10);
-			inputBox.setAlignment(Pos.CENTER_RIGHT);
 			chatContainer.getChildren().add(inputBox);
 
 			inputBox.getChildren().add(messageInput);
@@ -1462,7 +1462,7 @@ public class Viewer extends Application {
 
 	public void setPicked(Map<String, String> map) {
 		Tile t;
-		while (!board.isSelectedEmpty()) {
+		while (board.isSelectedNotEmpty()) {
 			t = (Tile) board.getSelected();
 			if (t != null) {
 				t.setPickable(false);

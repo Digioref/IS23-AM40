@@ -9,8 +9,8 @@ import javafx.stage.Stage;
  */
 public class Bag extends Label {
 	/**
-	 * Class that represents the graphic element bag (to be shown on the primaryStage)
-	 * @param primaryStage
+	 * Constructor of the class
+	 * @param primaryStage stage where the element is displayed
 	 */
 	public Bag(Stage primaryStage) {
 		super();

@@ -11,30 +11,36 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
- * Class that represents the graphic elements circle-points
+ * Class that represents the graphic elements circle-points, where inside there is the hidden score
  */
 public class CirclePoints extends AnchorPane {
-    private ImageView view;
-    private Pane image;
-    private Label score;
+    private final Label score;
+
+    /**
+     * Constructor setting the image
+     */
     public CirclePoints() {
         super();
         Image image = Resources.pointsCircle();
-        this.image = new StackPane();
-        view = new ImageView(image);
+        Pane image1 = new StackPane();
+        ImageView view = new ImageView(image);
         view.setPreserveRatio(true);
         view.setFitWidth(120);
         view.setFitHeight(120);
-        this.image.getChildren().add(view);
+        image1.getChildren().add(view);
         score = new Label("0");
-        this.image.getChildren().add(score);
+        image1.getChildren().add(score);
         score.setAlignment(Pos.CENTER);
         score.setFont(Font.font(30));
         score.setVisible(true);
         score.setTextFill(Color.BLACK);
-        getChildren().add(this.image);
+        getChildren().add(image1);
     }
 
+    /**
+     * It sets the score inside the image
+     * @param x score to be set
+     */
     public void setScore(int x) {
         score.setText(Integer.toString(x));
     }

@@ -10,7 +10,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -19,26 +21,24 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Class representing the client. It uses the RMI connection
  */
 public class RMIClient extends Client implements RMIClientInterface {
-    private int WAIT_PING_2 = 6000;
-    private BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+    private final BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
     private RMIServerInterface stub;
     private Thread rmiThread;
     private boolean stop;
-    private String Ipaddress;
-    private Colors color;
+    private final String Ipaddress;
+    private final Colors color;
     private boolean quitchat;
-    private ScheduledExecutorService sendPing;
 
-    private Queue<String> message;
+    private final Queue<String> message;
 
 
     /**
@@ -117,47 +117,47 @@ public class RMIClient extends Client implements RMIClientInterface {
         JSONConverterCtoS jconv = new JSONConverterCtoS();
         jconv.toJSON(s);
         switch (command[0]) {
-            case "login":
-                String s1 = "";
+            case "login" -> {
+                StringBuilder s1 = new StringBuilder();
                 try {
                     for (int i = 1; i < command.length; i++) {
-                        if (s1.equals("")) {
-                            s1 = command[i];
+                        if (s1.toString().equals("")) {
+                            s1 = new StringBuilder(command[i]);
                         } else {
-                            s1 = s1 + " " + command[i];
+                            s1.append(" ").append(command[i]);
                         }
                     }
-                    stub.login(s1, this);
+                    stub.login(s1.toString(), this);
                 } catch (RemoteException e) {
                     System.out.println("Server RMI not available");
                     close();
                 }
-                break;
-            case "setplayers":
+            }
+            case "setplayers" -> {
                 try {
                     stub.setPlayers(nickname, jconv.toString());
                 } catch (RemoteException e) {
                     System.out.println("Server RMI not available");
                     close();
                 }
-                break;
-            case "help":
+            }
+            case "help" -> {
                 try {
                     stub.help(this, jconv.toString());
                 } catch (RemoteException e) {
                     System.out.println("Server RMI not available");
                     close();
                 }
-                break;
-            case "getboard", "getbook", "getbookall", "getcommgoals", "getcurrent", "getcurscore", "gethiddenscore", "getpersgoal", "getplayers":
+            }
+            case "getboard", "getbook", "getbookall", "getcommgoals", "getcurrent", "getcurscore", "gethiddenscore", "getpersgoal", "getplayers" -> {
                 try {
                     stub.gameInfoRequest(nickname, jconv.toString());
                 } catch (RemoteException e) {
                     System.out.println("Server RMI not available");
                     close();
                 }
-                break;
-            case "insert", "order", "pick", "remove", "select":
+            }
+            case "insert", "order", "pick", "remove", "select" -> {
                 if (command[0].equals("insert")) {
                     state.setPickedtiles(null);
                     state.setSelectedtiles(null);
@@ -168,16 +168,16 @@ public class RMIClient extends Client implements RMIClientInterface {
                     System.out.println("Server RMI not available");
                     close();
                 }
-                break;
-            case "viewchat":
+            }
+            case "viewchat" -> {
                 try {
                     stub.getChat(nickname, jconv.toString());
                 } catch (RemoteException e) {
                     System.out.println("Server RMI not available");
                     close();
                 }
-                break;
-            case "quit":
+            }
+            case "quit" -> {
                 try {
                     if (nickname != null) {
                         stub.close(nickname);
@@ -187,15 +187,15 @@ public class RMIClient extends Client implements RMIClientInterface {
                     System.out.println("Server RMI not available");
                     close();
                 }
-                break;
-            default:
+            }
+            default -> {
                 try {
                     receive(JSONConverterStoC.normalMessage("Your command is wrong, please retype:"));
                 } catch (RemoteException e) {
                     System.out.println("Server RMI not available");
                     close();
                 }
-                break;
+            }
         }
     }
 
@@ -208,10 +208,10 @@ public class RMIClient extends Client implements RMIClientInterface {
         LaunchClient.getView().printMessage(color.cyanBg() + " You are in the Chat!" + color.rst() + "\nWrite the message(-q to quit): ");
         while (!quitchat) {
             try {
-                String line = null;
+                String line;
                 if (stdIn.ready()) {
                     line = stdIn.readLine();
-                    if (line.toLowerCase().equals("-q")) {
+                    if (line.equalsIgnoreCase("-q")) {
                         quitchat = true;
                     } else {
                         LaunchClient.getView().printMessage("to [playerName] (leave it blank if it is a broadcast message): ");
@@ -289,6 +289,7 @@ public class RMIClient extends Client implements RMIClientInterface {
             }
         };
         ping = Executors.newSingleThreadScheduledExecutor();
+        int WAIT_PING_2 = 6000;
         ping.scheduleAtFixedRate(task, WAIT_PING_2, WAIT_PING_2, TimeUnit.MILLISECONDS);
     }
 
@@ -323,13 +324,6 @@ public class RMIClient extends Client implements RMIClientInterface {
     @Override
     public void receive(String s) throws RemoteException {
         message.add(s);
-        /*
-        try {
-            parseMessage(s);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        */
     }
 
 
@@ -361,7 +355,7 @@ public class RMIClient extends Client implements RMIClientInterface {
         } catch (ParseException e) {
             System.out.println("Parse failed");
         }
-        JSONArray arr13 = (JSONArray) object.get("Authors");
+        JSONArray arr13 = (JSONArray) Objects.requireNonNull(object).get("Authors");
         JSONArray arr14 = (JSONArray) object.get("Receivers");
         JSONArray arr15 = (JSONArray) object.get("Messages");
         ArrayList<String> array1 = new ArrayList<>(arr13);

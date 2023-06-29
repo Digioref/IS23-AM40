@@ -15,11 +15,11 @@ public class Arrow extends Label {
 	public static final int RIGHT = 4;
 
 	private int index;
-	private int direction;
+	private final int direction;
 
 	/**
 	 * Class representing arrow (graphic element)
-	 * @param dir
+	 * @param dir direction of the arrow
 	 */
 	public Arrow(int dir) {
 		super();
@@ -31,21 +31,10 @@ public class Arrow extends Label {
 		view.setFitHeight(30);
 
 		switch (dir) {
-		case UP:
-			view.setRotate(180);
-			break;
-		case DOWN:
-			view.setRotate(0);
-			break;
-		case LEFT:
-			view.setRotate(90);
-			break;
-		case RIGHT:
-			view.setRotate(270);
-			break;
-		default:
-			view.setRotate(0);
-			break;
+			case UP -> view.setRotate(180);
+			case LEFT -> view.setRotate(90);
+			case RIGHT -> view.setRotate(270);
+			default -> view.setRotate(0);
 		}
 
 		index = 0;
@@ -56,34 +45,33 @@ public class Arrow extends Label {
 
 	/**
 	 * Sets the size (w = width, h = height) of the arrow
-	 * @param w
-	 * @param h
+	 * @param w width
+	 * @param h height
 	 */
 	public void setSize(double w, double h) {
 		ImageView v;
 		switch (direction) {
-		case UP:
-		case DOWN:
-			v = (ImageView) this.getGraphic();
-			v.setFitWidth(w);
-			v.setFitHeight(h);
-			setPrefSize(w, h);
-			setMinSize(w, h);
-			break;
-		case LEFT:
-		case RIGHT:
-			v = (ImageView) this.getGraphic();
-			v.setFitWidth(h);
-			v.setFitHeight(w);
-			setPrefSize(h, w);
-			setMinSize(h, w);
-			break;
-		default:
-			break;
+			case UP, DOWN -> {
+				v = (ImageView) this.getGraphic();
+				v.setFitWidth(w);
+				v.setFitHeight(h);
+				setPrefSize(w, h);
+				setMinSize(w, h);
+			}
+			case LEFT, RIGHT -> {
+				v = (ImageView) this.getGraphic();
+				v.setFitWidth(h);
+				v.setFitHeight(w);
+				setPrefSize(h, w);
+				setMinSize(h, w);
+			}
+			default -> {
+			}
 		}
 	}
 
 	/**
+	 * It returns the index of the arrow
 	 * @return the index of the Arrow
 	 */
 	public int getIndex() {
@@ -92,7 +80,7 @@ public class Arrow extends Label {
 
 	/**
 	 * Sets the index of the arrow
-	 * @param index
+	 * @param index index provided
 	 */
 	public void setIndex(int index) {
 		this.index = index;

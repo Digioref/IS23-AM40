@@ -1,9 +1,11 @@
 package it.polimi.ingsw.am40.Controller;
 
-import it.polimi.ingsw.am40.Model.*;
+import it.polimi.ingsw.am40.Model.Game;
+import it.polimi.ingsw.am40.Model.Player;
+import it.polimi.ingsw.am40.Model.Position;
+import it.polimi.ingsw.am40.Model.TurnPhase;
 import it.polimi.ingsw.am40.Network.VirtualView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -11,12 +13,12 @@ import java.util.ArrayList;
  */
 public class GameController {
     private Game game;
-    private Controller controller;
+    private final Controller controller;
 
     /**
-     * Contructor of the class, initializes the attributes game and controller to the parameters passed
-     * @param game
-     * @param controller
+     * Constructor of the class, initializes the attributes game and controller to the parameters passed
+     * @param game game controlled
+     * @param controller controller
      */
     public GameController(Game game, Controller controller) {
         this.game = game;
@@ -26,8 +28,8 @@ public class GameController {
     /**
      * Checks if the name of the player in the virtualView passed is the active player;
      * if so, updates the pickable tiles, if not sends an error to the virtualView
-     * @param virtualView
-     * @param position
+     * @param virtualView the virtual view of the player that has done the corresponding action
+     * @param position position of the tile selected
      */
     public void selectTile(VirtualView virtualView, Position position) {
         if (game.getCurrentPlayer().getNickname().equals(virtualView.getNickname())) {
@@ -185,7 +187,7 @@ public class GameController {
 
     /**
      * This method returns the Controller which has created this Game controller
-     * @return
+     * @return the controller
      */
     public Controller getController() {
         return controller;

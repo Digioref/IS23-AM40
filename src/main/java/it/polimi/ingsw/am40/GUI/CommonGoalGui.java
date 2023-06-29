@@ -10,14 +10,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+/**
+ * It represents the graphical element Common goal
+ */
 public class CommonGoalGui extends Label {
-	private ImageView view;
-	private int index;
+
+	/**
+	 * Constructor that chooses the image of the common goal according to its index
+	 * @param index index of the common goal
+	 * @param primaryStage stage where it is shown
+	 */
 	public CommonGoalGui(int index, Stage primaryStage) {
 		super();
-		this.index = index;
 		Image image = Resources.commonGoal(index);
-		view = new ImageView(image);
+		ImageView view = new ImageView(image);
 		view.setPreserveRatio(true);
 		view.setFitWidth(Metrics.dim_x_comm*primaryStage.getWidth());
 		view.setFitHeight(Metrics.dim_y_comm*primaryStage.getHeight());

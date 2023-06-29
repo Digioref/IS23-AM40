@@ -11,16 +11,18 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
- * Class that represents the graphic element personal goal (empty one)
+ * Class that represents the graphic element personal goal back
  */
 public class PersonalGoalBack extends Label {
+    /**
+     * Constructor of the back of the personal goal
+     * @param primaryStage stage where it is shown
+     */
 
     public PersonalGoalBack(Stage primaryStage) {
         super();
         Image image = Resources.personalGoalBack();
         ImageView view = new ImageView(image);
-//		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.20;
-        //view.setFitWidth(100);
         view.setFitWidth(Metrics.dim_x_pgback*primaryStage.getWidth());
         view.setFitHeight(Metrics.dim_y_pgback*primaryStage.getHeight());
         view.setPreserveRatio(true);

@@ -3,14 +3,14 @@ package it.polimi.ingsw.am40.Controller;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.Game;
 import it.polimi.ingsw.am40.Model.Player;
-import it.polimi.ingsw.am40.Network.*;
+import it.polimi.ingsw.am40.Network.Handlers;
+import it.polimi.ingsw.am40.Network.LoggingPhase;
+import it.polimi.ingsw.am40.Network.VirtualView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.jar.JarEntry;
 
 /**
  * <p>This is the lobby of the game, where each player enters before the game can be created</p>
@@ -19,9 +19,9 @@ import java.util.jar.JarEntry;
 public class Lobby implements Runnable {
     private int numPlayers;
     private final ArrayList<Handlers> queue;
-    private ArrayList<Handlers> activePlayers;
-    private ArrayList<String> nicknameInGame;
-    private Map<String, GameController> games;
+    private final ArrayList<Handlers> activePlayers;
+    private final ArrayList<String> nicknameInGame;
+    private final Map<String, GameController> games;
 
     /**
      * Constructor which initializes all the features of the class
@@ -140,7 +140,7 @@ public class Lobby implements Runnable {
     }
 
     /**
-     * It returns the nicknames already used, taken by other players and so they cannot be used again unless the game of that player ends
+     * It returns the nicknames already used, taken by other players, so they cannot be used again unless the game of that player ends
      * @return the nicknames already used
      */
     public ArrayList<String> getNicknameInGame() {
@@ -187,9 +187,7 @@ public class Lobby implements Runnable {
      */
     public void removeQuit(Handlers c) {
         synchronized (queue) {
-            if (queue.contains(c)) {
-                queue.remove(c);
-            }
+            queue.remove(c);
             if (activePlayers.contains(c)) {
                 if (activePlayers.indexOf(c) == 0) {
                     numPlayers = 0;

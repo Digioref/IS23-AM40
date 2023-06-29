@@ -3,19 +3,23 @@ package it.polimi.ingsw.am40.GUI;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
+/**
+ * It represents the graphical element Score Token
+ */
 
 public class ScoreToken extends Label {
-    private Stage primaryStage;
-    private ImageView view;
-    private int point;
+    private final ImageView view;
 
+    /**
+     * Constructor which chooses the token according to the score
+     * @param point score of the token
+     * @param primaryStage stage where it is shown
+     */
     public ScoreToken(int point, Stage primaryStage) {
         super();
-        this.point=point;
         Image score = Resources.score(point);
         ImageView scoreView = new ImageView(score);
         this.view= scoreView;
@@ -29,13 +33,14 @@ public class ScoreToken extends Label {
         setGraphic(scoreView);
     }
 
+    /**
+     * It returns the image view of the token
+     * @return image view of the token
+     */
     public ImageView getImageview(){
         return this.view;
     }
 
-    public int getPoint(){
-        return point;
-    }
 
 }
 

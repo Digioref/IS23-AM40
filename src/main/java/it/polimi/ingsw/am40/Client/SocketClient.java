@@ -19,8 +19,6 @@ import java.util.ArrayDeque;
  */
 public class SocketClient extends Client {
 
-    final static String hostName = "localhost";
-    final static int portNumber = 1234;
     private BufferedReader stdIn;
     private BufferedReader in;
     private PrintWriter out;
@@ -30,7 +28,7 @@ public class SocketClient extends Client {
     private boolean stop;
     private Socket socket;
     private boolean quitchat;
-    private Queue<String> message;
+    private final Queue<String> message;
 
     /**
      * <p> The public constructor which takes in input the socket which will be used for the communication with the Server.</p>
@@ -84,7 +82,7 @@ public class SocketClient extends Client {
             state.setSelectedtiles(null);
             state.setPickedtiles(null);
         }
-        out.println(jconv.toString());
+        out.println(jconv);
         out.flush();
         if (s.equals("quit")) {
             close();
@@ -159,7 +157,7 @@ public class SocketClient extends Client {
                 do {
                     try {
                         if (stdIn.ready()) {
-                            String userInput = null;
+                            String userInput;
                             try {
                                 userInput = stdIn.readLine();
                             } catch (IOException e ) {
@@ -195,7 +193,7 @@ public class SocketClient extends Client {
     private void createThreadFS() {
         fromServer = new Thread(() -> {
             do {
-                String line = null;
+                String line;
                 try {
                     line = in.readLine();
                     if (line == null) {
@@ -209,16 +207,6 @@ public class SocketClient extends Client {
                 }
 
                 message.add(line);
-//                print(line);
-                /*
-                try {
-                    parseMessage(line);
-                } catch (ParseException e) {
-                    System.out.println("Error in parsing!");
-                    break;
-//                    throw new RuntimeException(e);
-                }
-                */
             } while (!stop);
         });
 
@@ -264,7 +252,7 @@ public class SocketClient extends Client {
 
     /**
      * it sets a boolean which specifies if the player exited from the chat
-     * @param quitchat
+     * @param quitchat boolean
      */
     public void setQuitchat(boolean quitchat) {
         this.quitchat = quitchat;

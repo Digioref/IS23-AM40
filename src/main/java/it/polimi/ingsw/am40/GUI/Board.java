@@ -33,17 +33,13 @@ public class Board extends AnchorPane {
 	private final HashMap<String, Node> tiles = new HashMap<>();
 
 	private final ArrayList<String> selected = new ArrayList<>();
-	private Stage primaryStage;
 
 	/**
 	 * Class that represent the graphic element board (to be shown on the primary stage)
-	 * @param primaryStage
+	 * @param primaryStage stage where the board is displayed
 	 */
 	public Board(Stage primaryStage) {
 		super();
-		this.primaryStage = primaryStage;
-//		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() * 0.63;
-//		setPrefSize(screenHeight, screenHeight);
 		setPrefSize(Metrics.dim_x_board*primaryStage.getWidth(), Metrics.dim_y_board*primaryStage.getHeight());
 
 		Image image = Resources.board();
@@ -61,9 +57,10 @@ public class Board extends AnchorPane {
 	}
 
 	/**
-	 * @param tile
+	 * It places the tile in the parameter in the board
+	 * @param tile a tile
 	 */
-	void place(Tile tile) {
+	public void place(Tile tile) {
 		Point2D pos = tile.getPosition();
 		int x = (int) pos.getX();
 		int y = (int) pos.getY();
@@ -81,43 +78,30 @@ public class Board extends AnchorPane {
 		getChildren().add(tile);
 	}
 
-	/**
-	 * TODO
-	 * @param x
-	 * @param y
-	 */
-	void pickable(int x, int y) {
-		Tile node;
-		String key = hashkey(x, y);
-		node = (Tile) tiles.get(key);
-		if (node != null) {
-			node.setPickable(true);
-		}
-	}
 
 	/**
-	 * TODO
-	 * @param x
-	 * @param y
-	 * @return
+	 * It returns true if the position is selectable
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @return true if the tile in the position is selectable, false otherwise
 	 */
-	boolean select(int x, int y) {
+	public boolean select(int x, int y) {
 		String key = hashkey(x, y);
 			selected.add(key);
 		return (selected.size() == MAX_SELECTABLE);
 	}
 
 	/**
-	 * TODO
-	 * @return
+	 * It returns true if there are tiles already selected
+	 * @return true if some tiles have been already selected, false otherwise
 	 */
-	boolean isSelectedEmpty() {
-		return (selected.size() == 0);
+	public boolean isSelectedNotEmpty() {
+		return (selected.size() != 0);
 	}
 
 	/**
-	 * TODO
-	 * @return
+	 * It removes from the board one of the tiles selected
+	 * @return a tile, as a Node
 	 */
 	public Node getSelected() {
 		Node node = null;
@@ -134,24 +118,18 @@ public class Board extends AnchorPane {
 	}
 
 	/**
-	 * TODO
-	 * @param map
-	 * @param selected
-	 * @param board
+	 * It is called when a player has just selected a tile, so it refreshes the board and the selectable tiles from the board
+	 * @param map a map containing the selectable tiles
+	 * @param selected positions of the tiles already selected
+	 * @param board map representing the board
 	 */
 	public void clearUpdate(Map<String, String> map, ArrayList<Position> selected, Map<String, String> board) {
 		getChildren().clear();
-//		tiles.clear();
-//		this.selected.clear();
 		for (String s: board.keySet()) {
 				Tile t = (Tile) tiles.get(s);
 				if (!board.get(s).equals("NOCOLOR")) {
 //					t.setPosition(s);
-					if (!map.containsKey(s)) {
-						t.setPickable(false);
-					} else {
-						t.setPickable(true);
-					}
+					t.setPickable(map.containsKey(s));
 					Position p = new Position();
 					p.convertKey(s);
 					if (selected.contains(p)) {
@@ -162,44 +140,20 @@ public class Board extends AnchorPane {
 						}
 					}
 					getChildren().add(t);
-//					place(t);
 				}
-//			Tile t = (Tile) tiles.get(s);
-//			if (!board.get(s).equals("NOCOLOR")) {
-//				if (!map.containsKey(s)) {
-//						t.setPickable(false);
-//					} else {
-//						t.setPickable(true);
-//					}
-//				Position p = new Position();
-//				p.convertKey(s);
-//				if (selected.contains(p)) {
-//					t.setSelected();
-//					String key = hashkey(p.getX(), p.getY());
-//					if (!this.selected.contains(key)) {
-//						this.selected.add(key);
-//					}
-//				}
-//			}
-
 		}
 		System.out.println(this.selected);
 
 	}
 
-	/**
-	 * TODO
-	 * @param x
-	 * @param y
-	 * @return
-	 */
+
 	private String hashkey(int x, int y) {
 		return "(" + x + "," + y + ")";
 	}
 
 	/**
 	 * Sets parameter originX to the parameter passed
-	 * @param originX
+	 * @param originX x coordinate of the origin of the board
 	 */
 	public static void setOriginX(double originX) {
 		ORIGIN_X = originX;
@@ -207,7 +161,7 @@ public class Board extends AnchorPane {
 
 	/**
 	 * Sets parameter originY to the parameter passed
-	 * @param originY
+	 * @param originY y coordinate of the origin of the board
 	 */
 	public static void setOriginY(double originY) {
 		ORIGIN_Y = originY;
@@ -215,7 +169,7 @@ public class Board extends AnchorPane {
 
 	/**
 	 * Sets parameter stepX to the parameter passed
-	 * @param stepX
+	 * @param stepX x distance between the origin of each tile
 	 */
 	public static void setStepX(double stepX) {
 		STEP_X = stepX;
@@ -223,7 +177,7 @@ public class Board extends AnchorPane {
 
 	/**
 	 * Sets parameter stepY to the parameter passed
-	 * @param stepY
+	 * @param stepY y distance between the origin of each tile
 	 */
 	public static void setStepY(double stepY) {
 		STEP_Y = stepY;

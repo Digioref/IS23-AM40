@@ -33,6 +33,9 @@ public class CommonGoalToken {
         }
         else {
             score -= 2;
+            if (numPlayer == 3 && score == 2) {
+                return 0;
+            }
         }
         return t;
     }
