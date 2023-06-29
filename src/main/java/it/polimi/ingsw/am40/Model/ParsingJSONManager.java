@@ -43,7 +43,7 @@ public class ParsingJSONManager {
             }
 
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
+            System.out.println("JSON Parsing Error");
         }
     }
 
@@ -88,8 +88,7 @@ public class ParsingJSONManager {
                 }
             }
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+            System.out.println("JSON Parsing Error");        }
     }
 
     /**
@@ -127,8 +126,7 @@ public class ParsingJSONManager {
             }
 
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+            System.out.println("JSON Parsing Error");        }
     }
 
     /**
@@ -170,8 +168,7 @@ public class ParsingJSONManager {
             }
 
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+            System.out.println("JSON Parsing Error");        }
     }
 
     /**
@@ -190,8 +187,7 @@ public class ParsingJSONManager {
                 arr.add(t1);
                 }
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+            System.out.println("JSON Parsing Error");        }
     }
 
 }

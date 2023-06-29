@@ -2,6 +2,9 @@ package it.polimi.ingsw.am40.App;
 
 import java.io.IOException;
 
+/**
+ * Class used to launch the application
+ */
 public class Launcher {
 
     /**

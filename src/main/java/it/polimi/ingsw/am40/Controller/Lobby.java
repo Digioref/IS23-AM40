@@ -48,7 +48,9 @@ public class Lobby implements Runnable {
                         c.sendMessage(JSONConverterStoC.normalMessage("You are playing with " + numPlayers + " players!"));
                     }
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Client not reachable");
+                    removeQuit(c);
+
                 }
             }
 //            numPlayers = c.getNumPlayers();
@@ -116,7 +118,9 @@ public class Lobby implements Runnable {
             try {
                 cl.sendMessage(JSONConverterStoC.normalMessage("Game"));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Client not reachable");
+                removeQuit(cl);
+                break;
             }
         }
         numPlayers = 0;
@@ -131,7 +135,7 @@ public class Lobby implements Runnable {
                 LoggingPhase.setSETPLAYERS(true);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Client not reachable");
         }
     }
 
@@ -198,7 +202,7 @@ public class Lobby implements Runnable {
                             LoggingPhase.setSETPLAYERS(false);
                         }
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("Client not reachable");
                     }
                 }
                 activePlayers.remove(c);
@@ -207,7 +211,7 @@ public class Lobby implements Runnable {
                     try {
                         cl.sendMessage(JSONConverterStoC.normalMessage("Player " + c.getNickname() + " disconnected!"));
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("Client not reachable");
                     }
                 }
             }

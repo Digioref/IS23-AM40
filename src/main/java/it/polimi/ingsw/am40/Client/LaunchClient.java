@@ -84,7 +84,8 @@ public class LaunchClient {
                 client = rmiClient;
                 UnicastRemoteObject.exportObject(rmiClient, 0);
             } catch (RemoteException | UnknownHostException e) {
-                throw new RuntimeException(e);
+                System.out.println("Error in connecting to RMI");
+                System.exit(0);
             }
             rmiClient.connect();
         } else {
@@ -98,7 +99,6 @@ public class LaunchClient {
                 System.out.println("Server not reachable. Closing...");
                 LaunchClient.getView().quit("");
                 return;
-//                throw new RuntimeException(e);
             }
             SocketClient socketClient = new SocketClient(socket);
             client = socketClient;

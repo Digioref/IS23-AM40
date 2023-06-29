@@ -41,7 +41,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.normalMessage("Number of players in this game: " + numPlayers));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -56,7 +57,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.createJSONPlayers(players));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -75,7 +77,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.createJSONCommonGoals(num1, score1, num2, score2));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -90,7 +93,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.createJSONPersGoal(personalGoal));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -105,7 +109,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.createJSONBookAll(players));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -122,7 +127,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
             }
 //            System.out.println("qui");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -139,7 +145,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.createJSONBoard(board));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -154,7 +161,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.createJSONCurrentPlayer(player.getNickname()));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -169,7 +177,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.createJSONHiddenScore(hiddenScore));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -184,7 +193,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.normalMessage("Order set!"));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -200,7 +210,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.createJSONFinalScore(players, winner));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
         clientHandler.closeGame();
     }
@@ -216,7 +227,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.createJSONPickedTiles(player));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -231,7 +243,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.createJSONSelectedTiles(player));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -245,7 +258,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
                 clientHandler.sendMessage(JSONConverterStoC.normalMessage("The timer in game for disconnection is started!"));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -259,7 +273,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
             try {
                 clientHandler.sendMessage(JSONConverterStoC.normalMessage("Player " + s + " disconnected!"));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Socket not available");
+                clientHandler.close();
             }
         }
     }
@@ -273,7 +288,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
             try {
                 clientHandler.sendMessage(JSONConverterStoC.createJSONCurrentScore(map));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Socket not available");
+                clientHandler.close();
             }
         }
     }
@@ -287,7 +303,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
             try {
                 clientHandler.sendMessage(JSONConverterStoC.createJSONFirstPlayer(p.getNickname()));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Socket not available");
+                clientHandler.close();
             }
         }
     }
@@ -298,7 +315,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
             try {
                 clientHandler.sendMessage(JSONConverterStoC.createJSONCGDone(name, index, score));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Socket not available");
+                clientHandler.close();
             }
         }
     }
@@ -308,7 +326,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         try {
             clientHandler.sendMessage(JSONConverterStoC.normalMessage("Player "+ s + " reconnected!"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -317,7 +336,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         try {
             clientHandler.sendMessage(JSONConverterStoC.createJSONBook(bookshelf));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -357,7 +377,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         try {
             clientHandler.sendMessage(JSONConverterStoC.createJSONError("This tile can't be selected!"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 
@@ -369,7 +390,8 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         try {
             clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not the REMOVE phase, you have already picked up the tiles you selected!"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            clientHandler.close();
         }
     }
 

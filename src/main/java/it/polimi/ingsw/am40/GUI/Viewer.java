@@ -119,7 +119,7 @@ public class Viewer extends Application {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					System.out.println("Thread not sleeping");
 				}
 			}
 		}
@@ -413,7 +413,7 @@ public class Viewer extends Application {
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
+			System.out.println("Thread not sleeping");
 		}
 		pane = new Pane();
 		newScene(pane);

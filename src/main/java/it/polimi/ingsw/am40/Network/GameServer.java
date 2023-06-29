@@ -77,7 +77,7 @@ public class GameServer implements Runnable {
                 pool.submit(c);
 //                lobby.addQueue(c);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Error in accepting client");
                 break;
             }
         }
@@ -101,7 +101,8 @@ public class GameServer implements Runnable {
         try {
             registry.bind("RMIRegistry", rmiserver);
         } catch (AlreadyBoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("Bind of the registry failed");
+            close();
         }
         System.out.println("GameServer bound on RMI registry");
         serverSocket = new ServerSocket(port);

@@ -51,7 +51,7 @@ public class RMIClient extends Client implements RMIClientInterface {
         stop = false;
         Ipaddress = serverIp;
         inChat = false;
-        state = new ClientState(this);
+        state = new ClientState();
         color = new Colors();
         message = new ArrayDeque<>();
     }
@@ -60,11 +60,12 @@ public class RMIClient extends Client implements RMIClientInterface {
      * It connects the client to the server
      */
     public void connect() {
-        Registry registry;
+        Registry registry = null;
         try {
             registry = LocateRegistry.getRegistry(Ipaddress,5000);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            System.out.println("Cannot find registry");
+            System.exit(0);
         }
         try {
             stub = (RMIServerInterface) registry.lookup("RMIRegistry");
@@ -74,7 +75,6 @@ public class RMIClient extends Client implements RMIClientInterface {
             System.out.println("Server not reachable. Closing...");
             close();
             return;
-//            throw new RuntimeException(e);
         }
         startPing();
         startParsing();
@@ -94,11 +94,11 @@ public class RMIClient extends Client implements RMIClientInterface {
                             } catch (IOException e) {
                                 close();
                                 break;
-//                                throw new RuntimeException();
                             }
                         }
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("Standard input not available");
+                        close();
                     }
                 } while(!stop);
             });
@@ -129,28 +129,32 @@ public class RMIClient extends Client implements RMIClientInterface {
                     }
                     stub.login(s1, this);
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Server RMI not available");
+                    close();
                 }
                 break;
             case "setplayers":
                 try {
                     stub.setPlayers(nickname, jconv.toString());
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Server RMI not available");
+                    close();
                 }
                 break;
             case "help":
                 try {
                     stub.help(this, jconv.toString());
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Server RMI not available");
+                    close();
                 }
                 break;
             case "getboard", "getbook", "getbookall", "getcommgoals", "getcurrent", "getcurscore", "gethiddenscore", "getpersgoal", "getplayers":
                 try {
                     stub.gameInfoRequest(nickname, jconv.toString());
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Server RMI not available");
+                    close();
                 }
                 break;
             case "insert", "order", "pick", "remove", "select":
@@ -161,14 +165,16 @@ public class RMIClient extends Client implements RMIClientInterface {
                 try {
                     stub.gameUpdate(nickname, jconv.toString());
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Server RMI not available");
+                    close();
                 }
                 break;
             case "viewchat":
                 try {
                     stub.getChat(nickname, jconv.toString());
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Server RMI not available");
+                    close();
                 }
                 break;
             case "quit":
@@ -178,14 +184,16 @@ public class RMIClient extends Client implements RMIClientInterface {
                     }
                     close();
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Server RMI not available");
+                    close();
                 }
                 break;
             default:
                 try {
                     receive(JSONConverterStoC.normalMessage("Your command is wrong, please retype:"));
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Server RMI not available");
+                    close();
                 }
                 break;
         }
@@ -217,7 +225,9 @@ public class RMIClient extends Client implements RMIClientInterface {
                     }
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Standard input not available");
+                close();
+                break;
             }
         }
         inChat =false;
@@ -244,12 +254,12 @@ public class RMIClient extends Client implements RMIClientInterface {
         try {
             stdIn.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Standard input not available");
         }
         try {
             UnicastRemoteObject.unexportObject(this, true);
         } catch (NoSuchObjectException e) {
-            throw new RuntimeException(e);
+            System.out.println("Cannot unexport the object");
         }
         System.exit(0);
     }
@@ -262,7 +272,8 @@ public class RMIClient extends Client implements RMIClientInterface {
         try {
             stub.receivePong(this);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            System.out.println("Server not responding");
+            close();
         }
     }
 
@@ -332,7 +343,7 @@ public class RMIClient extends Client implements RMIClientInterface {
         try {
             parseMessage(s);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            System.out.println("The message can't be parsed");
         }
     }
 
@@ -348,7 +359,7 @@ public class RMIClient extends Client implements RMIClientInterface {
         try {
             object = (JSONObject) jsonParser.parse(s);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            System.out.println("Parse failed");
         }
         JSONArray arr13 = (JSONArray) object.get("Authors");
         JSONArray arr14 = (JSONArray) object.get("Receivers");
@@ -367,7 +378,8 @@ public class RMIClient extends Client implements RMIClientInterface {
         try {
             stub.chat(nickname, command);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            System.out.println("Server not responding");
+            close();
         }
     }
 

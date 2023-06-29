@@ -11,7 +11,6 @@ import java.util.Map;
  * <p>When the player exits from the chat, each information stored in this class is shown to the player</p>
  */
 public class ClientState {
-    private Client client;
     private String currplayer;
     private Map<String, Integer> currscore;
     private int hiddenscore;
@@ -19,7 +18,6 @@ public class ClientState {
     private Map<Integer, Integer> commongoals;
     private Map<String, String> personalgoal;
     private Map<String, String> board;
-    private Map<String, String> bookshelf;
     private Map<String, Map<String, String>> bookshelves;
     private Map<String, String> pickabletiles;
     private ArrayList<Position> alreadysel;
@@ -38,10 +36,8 @@ public class ClientState {
 
     /**
      * Constructor that sets the client to which this state is associated
-     * @param client client
      */
-    public ClientState(Client client) {
-        this.client = client;
+    public ClientState() {
     }
 
     /**
@@ -100,13 +96,6 @@ public class ClientState {
         board = board_map;
     }
 
-    /**
-     * Saves the bookshelf (parameter passed) in the attribute bookshelf
-     * @param bookshelf_map map representing the bookshelf (position -> tile)
-     */
-    public void saveBookshelf(Map<String, String> bookshelf_map) {
-        bookshelf = bookshelf_map;
-    }
 
     /**
      * Saves the other bookshelves (parameter passed, other players bookshelves) in the attribute bookshelves
@@ -187,8 +176,7 @@ public class ClientState {
         }
         LaunchClient.getView().showHiddenScore(hiddenscore);
         if (players != null) {
-            LaunchClient.getView().
-                    showPlayers(players);
+            LaunchClient.getView().showPlayers(players);
         }
         if (currplayer != null) {
             LaunchClient.getView().showCurrentPlayer(currplayer);
@@ -224,12 +212,15 @@ public class ClientState {
         if (currplayer != null) {
             LaunchClient.getView().showCurrentPlayer(currplayer);
         }
+        if (firstPlayer != null) {
+            LaunchClient.getView().showFirstPlayer(firstPlayer);
+        }
 
     }
 
     /**
      * Sets the attribute selectedTiles to the parameter passed
-     * @param selectedtiles
+     * @param selectedtiles a map representing the tiles already selected (position -> color)
      */
     public void setSelectedtiles(Map<String, String> selectedtiles) {
         this.selectedtiles = selectedtiles;
@@ -237,7 +228,7 @@ public class ClientState {
 
     /**
      * Sets the attribute selectedTiles to the parameter passed
-     * @param pickedtiles
+     * @param pickedtiles map representing the tiles already picked (position on the board -> color)
      */
     public void setPickedtiles(Map<String, String> pickedtiles) {
         this.pickedtiles = pickedtiles;

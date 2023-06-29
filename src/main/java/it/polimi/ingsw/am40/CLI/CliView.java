@@ -8,7 +8,6 @@ import it.polimi.ingsw.am40.Model.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -19,34 +18,27 @@ import java.util.regex.Pattern;
 public class CliView implements View{
 
 
-    private Colors color = new Colors();
+    private final Colors color = new Colors();
 
 
-    /**
-     * Print the '=' symbol
-     */
     private void printEqual() {
         System.out.print(color.whiteBg() + color.black() + " = " + color.rst());
     }
 
-    /**
-     * Print the not-equal symbol
-     */
+
     private void printNotEqual() {
         int ch = 8800;
         char notEqual = (char) ch;
         System.out.print(color.whiteBg() + color.black() + " " + notEqual + " " + color.rst());
     }
 
-    /**
-     * Prints an empty slot
-     */
+
     private void printEmpty() {
         System.out.print(color.whiteBg() + "   " + color.rst());
     }
 
     /**
-     * Prints the list of the plauers
+     * Prints the list of the players
      * @param names (array list containing the names of the players)
      */
     public void showPlayers(ArrayList<String> names) {
@@ -63,22 +55,15 @@ public class CliView implements View{
      * @return a string (color value to be printed)
      */
     public String printTile(String s) {
-        switch(s) {
-            case "GREEN":
-                return color.greenBg() + " G " + color.rst();
-            case "WHITE":
-                return color.whiteBg() + " W " + color.rst();
-            case "YELLOW":
-                return color.yellowBg() + " Y " + color.rst();
-            case "BLUE":
-                return color.blueBg() + " B " + color.rst();
-            case "CYAN":
-                return color.cyanBg() + " C " + color.rst();
-            case "VIOLET":
-                return color.purpleBg() + " V " + color.rst();
-            default:
-                return color.blackBg() + "   " + color.rst();
-        }
+        return switch (s) {
+            case "GREEN" -> color.greenBg() + " G " + color.rst();
+            case "WHITE" -> color.whiteBg() + " W " + color.rst();
+            case "YELLOW" -> color.yellowBg() + " Y " + color.rst();
+            case "BLUE" -> color.blueBg() + " B " + color.rst();
+            case "CYAN" -> color.cyanBg() + " C " + color.rst();
+            case "VIOLET" -> color.purpleBg() + " V " + color.rst();
+            default -> color.blackBg() + "   " + color.rst();
+        };
     }
 
     /**
@@ -91,7 +76,7 @@ public class CliView implements View{
 
     /**
      * Shows the current player
-     * @param map the keys are the players name and the valures linked are the points
+     * @param map the keys are the players name and the values linked are the points
      */
     public void showCurrentScore(Map<String, Integer> map) {
         System.out.println(color.blackBg() + " Current Score " + color.rst());
@@ -134,8 +119,10 @@ public class CliView implements View{
                         }
                     }
                     System.out.println();
-                    System.out.println("Two groups each containing 4 tiles of the same type in a 2x2 square.\n" +
-                            "The tiles of one square can be different from those of the other square.\n");
+                    System.out.println("""
+                            Two groups each containing 4 tiles of the same type in a 2x2 square.
+                            The tiles of one square can be different from those of the other square.
+                            """);
                     System.out.println("The score obtainable is: " + map.get(x) + "\n");
                 }
                 case 2 -> {
@@ -159,9 +146,11 @@ public class CliView implements View{
                         }
                         System.out.println();
                     }
-                    System.out.println("Four groups each containing at least\n" +
-                            "4 tiles of the same type (not necessarily in the depicted shape).\n" +
-                            "The tiles of one group can be different from those of another group.\n");
+                    System.out.println("""
+                            Four groups each containing at least
+                            4 tiles of the same type (not necessarily in the depicted shape).
+                            The tiles of one group can be different from those of another group.
+                            """);
                     System.out.println("The score obtainable is: " + map.get(x) + "\n");
                 }
                 case 4 -> {
@@ -170,9 +159,11 @@ public class CliView implements View{
                     System.out.println(color.red() + " x6" + color.rst());
                     printEqual();
                     System.out.println();
-                    System.out.println("Six groups each containing at least\n" +
-                            "2 tiles of the same type (not necessarily in the depicted shape).\n" +
-                            "The tiles of one group can be different from those of another group.\n");
+                    System.out.println("""
+                            Six groups each containing at least
+                            2 tiles of the same type (not necessarily in the depicted shape).
+                            The tiles of one group can be different from those of another group.
+                            """);
                     System.out.println("The score obtainable is: " + map.get(x) + "\n");
                 }
                 case 5 -> {
@@ -207,8 +198,10 @@ public class CliView implements View{
                     System.out.print(color.red() + " x4  MAX 3 ");
                     printNotEqual();
                     System.out.println();
-                    System.out.println("Four lines each formed by 5 tiles of maximum three different types. \n" +
-                            "One line can show the same or a different combination of another line.\n");
+                    System.out.println("""
+                            Four lines each formed by 5 tiles of maximum three different types.\s
+                            One line can show the same or a different combination of another line.
+                            """);
                     System.out.println("The score obtainable is: " + map.get(x) + "\n");
                 }
                 case 8 -> {
@@ -273,16 +266,15 @@ public class CliView implements View{
                         }
                         System.out.println();
                     }
-                    System.out.println("Five columns of increasing or decreasing height. \n" +
-                            "Starting from the first column on the left or on the right, \n" +
-                            "each next column must be made of exactly one more tile. \n" +
-                            "Tiles can be of any type.");
+                    System.out.println("""
+                            Five columns of increasing or decreasing height.\s
+                            Starting from the first column on the left or on the right,\s
+                            each next column must be made of exactly one more tile.\s
+                            Tiles can be of any type.""");
                     System.out.println();
                     System.out.println("The score obtainable is: " + map.get(x) + "\n");
                 }
-                default -> {
-                    System.out.println(color.red() + "You choose the common goal number " + x + " but you should have a number from 1 to 12...\n" + color.rst());
-                }
+                default -> System.out.println(color.red() + "You choose the common goal number " + x + " but you should have a number from 1 to 12...\n" + color.rst());
             }
             c++;
         }
@@ -290,7 +282,7 @@ public class CliView implements View{
 
     /**
      * Shows the personal goal
-     * @param map represents the personal goal, the key is the position and value associeted is type of the tile
+     * @param map represents the personal goal, the key is the position and value associated is type of the tile
      * @param number (not used in CLI, only in GUI)
      */
     public void showPersonalGoal(Map<String, String> map, int number) {
@@ -312,7 +304,6 @@ public class CliView implements View{
 
     /**
      * Prints the board with the colours of the tiles (key of the map is the position while the value associated to the key is the color of the tile)
-     * position e color
      * @param map represents the board
      */
     public void showBoard(Map<String, String> map) {
@@ -331,9 +322,9 @@ public class CliView implements View{
                     System.out.printf(color.blackBg() + "   " + color.rst());
                 }
             }
-            System.out.printf("\n");
+            System.out.print("\n");
         }
-        System.out.printf("   ");
+        System.out.print("   ");
         for (int i = -4; i < 5; i++) {
             if (i < 0) {
                 System.out.printf("%d ", i);
@@ -358,11 +349,11 @@ public class CliView implements View{
      * @param map is the map that contains the bookshelves
      */
     public void showAllBookshelves(Map<String, Map<String, String>> map) {
-        System.out.println("Here you can see all the bookshelfs\n");
+        System.out.println("Here you can see all the bookshelves\n");
         for (String s: map.keySet()) {
             System.out.println(s + "'s bookshelf:");
             showBookshelf(map.get(s));
-            System.out.printf("\n");
+            System.out.print("\n");
         }
         System.out.println();
     }
@@ -382,7 +373,7 @@ public class CliView implements View{
                     System.out.printf(color.blackBg() + "   " + color.rst());
                 }
             }
-            System.out.printf("\n");
+            System.out.print("\n");
         }
         System.out.println();
     }
@@ -416,9 +407,9 @@ public class CliView implements View{
                     System.out.printf(color.blackBg() + "   " + color.rst());
                 }
             }
-            System.out.printf("\n");
+            System.out.print("\n");
         }
-        System.out.printf("   ");
+        System.out.print("   ");
         for (int i = -4; i < 5; i++) {
             if (i < 0) {
                 System.out.printf("%d ", i);
@@ -440,27 +431,9 @@ public class CliView implements View{
             System.out.println("You haven't selected any Tile\n");
         } else {
             System.out.println( "Player " + s + " has selected the following Tiles");
-
-
-           // System.out.println("size of selected: " + selected.size() +"\n");
-            //System.out.println("tile: "+ selected.get(0).get(0) + "pos: " + selected.get(0).get(1));
             for(ArrayList<String> tmp : selected){
-                //System.out.println("tile: "+ tmp.get(0) + " pos: " + tmp.get(1));
                 System.out.printf(printTile(tmp.get(0))+ tmp.get(1) + " ");
             }
-
-
-            /*
-            for (String s1 : map.keySet()) {
-                System.out.println("tile: " + map.get(s1) + " pos "+ s1);
-                System.out.printf(printTile(map.get(s1)) + s1 + " ");
-            }
-
-             */
-
-
-
-
             System.out.println("\n");
         }
     }
@@ -481,13 +454,6 @@ public class CliView implements View{
             for(ArrayList<String> tmp : picked){
                 System.out.printf(printTile(tmp.get(0))+ tmp.get(1) + " ");
             }
-/*
-            for (String s1: map.keySet()) {
-                System.out.printf(printTile(map.get(s1)) + s1 + " ");
-            }
-
- */
-
             System.out.println("\n");
         }
     }
@@ -531,10 +497,10 @@ public class CliView implements View{
         System.out.println("Write the message (-q to quit): ");
         while (!socketClient.isQuitchat()) {
             try {
-                String message = null;
+                String message;
                 if (socketClient.getStdIn().ready()) {
                     message = socketClient.getStdIn().readLine();
-                    if (message.toLowerCase().equals("-q")) {
+                    if (message.equalsIgnoreCase("-q")) {
                         socketClient.setQuitchat(true);
                     } else {
                         System.out.println("to [playerName] (leave it blank if it is a broadcast message): ");
@@ -543,14 +509,15 @@ public class CliView implements View{
                             receiver = null;
                         JSONConverterCtoS jconv = new JSONConverterCtoS();
                         jconv.toJSONChat(receiver, message);
-                        socketClient.getOut().println(jconv.toString());
+                        socketClient.getOut().println(jconv);
                         socketClient.getOut().flush();
                         System.out.println(color.cyanBg() + " You are in the Chat!" + color.rst());
                         System.out.println("Write the message (-q to quit): ");
                     }
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Socket unavailable");
+                System.exit(0);
             }
         }
 
@@ -578,7 +545,7 @@ public class CliView implements View{
      */
     @Override
     public void chooseConnection() {
-        String choice;
+        String choice = null;
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         printMessage("Choose the connection type:");
         do{
@@ -586,7 +553,8 @@ public class CliView implements View{
             try {
                 choice = stdIn.readLine();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Standard input unavailable");
+                System.exit(0);
             }
             if (choice == null) {
                 return;
@@ -599,12 +567,13 @@ public class CliView implements View{
         }while(!choice.equals("RMI") && !choice.equals("SOCKET"));
         printMessage("Insert the server IP (or localhost [L]):");
         Pattern p = Pattern.compile("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
-        String ip;
+        String ip = null;
         do {
             try {
                 ip = stdIn.readLine();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Standard input unavailable");
+                System.exit(0);
             }
             if (ip == null) {
                 return;
@@ -621,7 +590,7 @@ public class CliView implements View{
     }
 
     /**
-     * Method to print that the player with the nickname passed has quitted the game
+     * Method to print that the player with the nickname passed has quit the game
      * @param nickname (name of the player that quits)
      */
     @Override
@@ -700,6 +669,10 @@ public class CliView implements View{
         System.out.println("The player " + nickname + "has done a common goal obtaining " + score + "points!" + "\n");
     }
 
+    /**
+     * It informs the player with the specific nickname that he is reconnecting to a game
+     * @param nickname nickname of the reconnecting player
+     */
     @Override
     public void reconnect(String nickname) {
         System.out.println(nickname + ", you are reconnecting....");

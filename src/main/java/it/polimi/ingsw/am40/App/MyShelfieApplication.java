@@ -4,17 +4,18 @@ import it.polimi.ingsw.am40.Client.LaunchClient;
 import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
 import it.polimi.ingsw.am40.Network.LaunchServer;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The Class used to run the server or the client according to the parameters passed by command line
+ */
 public class MyShelfieApplication extends Application {
 
     /**
-     * Start method, passing the stage where to show the user interface
-     * @param stage
+     * Start method
+     * @param stage a stage
      * @throws IOException
      */
     @Override
@@ -23,7 +24,7 @@ public class MyShelfieApplication extends Application {
 
     /**
      * Starts the server or the client based on the args passed
-     * @param args
+     * @param args arguments
      * @throws IOException
      * @throws InterruptedException
      */
@@ -41,7 +42,7 @@ public class MyShelfieApplication extends Application {
 
     /**
      * Launch the main of LaunchClient passing the args
-     * @param args
+     * @param args arguments
      */
     static void runAsClient(String[] args){
         LaunchClient.main(args);
@@ -49,11 +50,10 @@ public class MyShelfieApplication extends Application {
 
     /**
      * Launch the main of LaunchServer passing the args
-     * @param args
+     * @param args arguments
      * @throws IOException
-     * @throws InterruptedException
      */
-    static void runAsServer(String[] args) throws IOException, InterruptedException {
+    static void runAsServer(String[] args) throws IOException {
         LaunchServer.main(args);
     }
 }

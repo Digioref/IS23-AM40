@@ -2,10 +2,6 @@ package it.polimi.ingsw.am40.Client;
 
 import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterCtoS;
-import it.polimi.ingsw.am40.Model.Position;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
@@ -13,12 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.Queue;
 import java.util.ArrayDeque;
@@ -55,11 +46,12 @@ public class SocketClient extends Client {
             out = new PrintWriter(socket.getOutputStream());
             stdIn = new BufferedReader(new InputStreamReader(System.in));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket is unavailable!");
+            System.exit(0);
         }
         stop = false;
         inChat = false;
-        state = new ClientState(this);
+        state = new ClientState();
         message = new ArrayDeque<>();
     }
 
@@ -124,7 +116,7 @@ public class SocketClient extends Client {
             System.exit(0);
 //            LaunchClient.getView().quit(nickname);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.exit(0);
         }
     }
 
@@ -172,7 +164,6 @@ public class SocketClient extends Client {
                                 userInput = stdIn.readLine();
                             } catch (IOException e ) {
                                 break;
-                                //                        throw new RuntimeException(e);
                             }
                             if (userInput.equals("quit")) {
                                 sendMessage(userInput);
@@ -188,7 +179,8 @@ public class SocketClient extends Client {
                             }
                         }
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("Standard input not available");
+                        close();
                     }
                 } while (!stop);
             });
@@ -214,7 +206,6 @@ public class SocketClient extends Client {
                     System.out.println("Server crashed! Closing client...");
                     close();
                     break;
-//                    throw new RuntimeException(e);
                 }
 
                 message.add(line);

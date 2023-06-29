@@ -164,7 +164,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         try {
             clientHandlers.get(s).getMessAd().parserMessage(clientHandlers.get(s), n);
         } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
+            System.out.println("Parse error");
         }
     }
 
@@ -208,7 +208,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         try {
             clientHandlers.get(s).getMessAd().parserMessage(clientHandlers.get(s), command);
         } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error in parsing");
         }
     }
 
@@ -223,7 +223,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         try {
             clientHandlers.get(s).getMessAd().parserMessage(clientHandlers.get(s), command);
         } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
+            System.out.println("Parse error");
         }
     }
 
@@ -238,7 +238,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         try {
             clientHandlers.get(s).getMessAd().parserMessage(clientHandlers.get(s), command);
         } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
+            System.out.println("Parse error");
         }
     }
 
@@ -254,7 +254,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
         try {
             clientHandlers.get(s).getMessAd().parserMessage(clientHandlers.get(s), command);
         } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
+            System.out.println("Parse error");
         }
     }
 
@@ -354,7 +354,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             try {
                 client.receive(JSONConverterStoC.normalMessage(nickname + x + y + z));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Client not reachable");
             }
         }
     }
