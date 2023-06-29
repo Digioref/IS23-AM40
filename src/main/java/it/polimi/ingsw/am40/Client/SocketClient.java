@@ -94,6 +94,9 @@ public class SocketClient extends Client {
         }
         out.println(jconv.toString());
         out.flush();
+        if (s.equals("quit")) {
+            close();
+        }
     }
 
     /**

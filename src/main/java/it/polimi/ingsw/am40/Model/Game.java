@@ -756,7 +756,18 @@ public class Game implements IGame {
                 v.receiveNumPlayers(numPlayers);
                 v.receiveCurrentPlayer(currentPlayer);
                 v.receiveChat(groupChat);
+                for (Player p: players) {
+                    if (p.isDoneCG1()) {
+                        v.receiveCommonGoalDone(p.getNickname(), commonGoals.get(0).getNum(), p.getScoreCG1());
+                    }
+                    if (p.isDoneCG2()) {
+                        v.receiveCommonGoalDone(p.getNickname(), commonGoals.get(1).getNum(), p.getScoreCG2());
+                    }
+                }
             }
+        }
+        for (VirtualView v: observers) {
+            v.receiveReconnection(s);
         }
     }
 
@@ -805,9 +816,12 @@ public class Game implements IGame {
     }
 
     public void resetPickedDisc() {
-        for (Tile t: currentPlayer.getTilesPicked()) {
-            board.getGrid().remove(t.getPos().getKey());
-            board.getGrid().put(t.getPos().getKey(), t);
+        if (!currentPlayer.getTilesPicked().isEmpty()) {
+            for (Tile t: currentPlayer.getTilesPicked()) {
+                board.getGrid().remove(t.getPos().getKey());
+                board.getGrid().put(t.getPos().getKey(), t);
+            }
         }
+        currentPlayer.getTilesPicked().clear();
     }
 }

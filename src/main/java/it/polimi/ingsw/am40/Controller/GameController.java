@@ -158,10 +158,13 @@ public class GameController {
             }
         }
         if (game.getCurrentPlayer().getNickname().equals(s)) {
-            game.getCurrentPlayer().getSelectedPositions().clear();
+            if (!game.getCurrentPlayer().getSelectedPositions().isEmpty()) {
+                game.getCurrentPlayer().getSelectedPositions().clear();
+            }
             game.resetPickedDisc();
             game.setTurn(TurnPhase.ENDTURN);
             game.nextPlayer();
+            game.setTurn(TurnPhase.START);
             game.startTurn();
         }
         if (game.checkDisconnection() == 1) {
@@ -193,13 +196,10 @@ public class GameController {
      * @param s the name of the reconnecting player
      */
     public void reconnect(String s) {
-        System.out.println("qui0");
         game.getDiscPlayers().remove(s);
-        System.out.println("qui1");
         for (Player p: game.getPlayers()) {
             if(p.getNickname().equals(s)) {
                 p.setDisconnected(false);
-                System.out.println("qui2");
                 break;
             }
         }
@@ -207,6 +207,7 @@ public class GameController {
             game.stopTimer();
         }
         game.notifyReconnection(s);
+
     }
 
     /**

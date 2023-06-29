@@ -292,6 +292,8 @@ public abstract class Client {
                 }
                 state.saveFirstPlayer((String) object.get("Nickname"));
                 break;
+            case "RECONNECT":
+                LaunchClient.getView().reconnect(nickname);
             default:
                 if (!inChat) {
                     LaunchClient.getView().printMessage(command);
