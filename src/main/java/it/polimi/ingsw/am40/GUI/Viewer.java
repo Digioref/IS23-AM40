@@ -1039,7 +1039,11 @@ public class Viewer extends Application {
 
 		setTitle(vbox);
 
-		Text t1 = addDescription(vbox, "Select the number of Players: ");
+		HBox hb = new HBox();
+		vbox.getChildren().add(hb);
+		hb.setAlignment(Pos.CENTER);
+
+		Text t1 = addDescription(hb, "Select the number of Players: ");
 
 		//TextField tf = addTextField(vbox);
 
@@ -1047,7 +1051,7 @@ public class Viewer extends Application {
 		dropdown.getItems().addAll("2", "3", "4");
 		dropdown.getSelectionModel().selectFirst();
 
-		vbox.getChildren().add(dropdown);
+		hb.getChildren().add(dropdown);
 
 		Button b1 = addButton(vbox, "SetPlayers", true);
 		Text t2 = addDescription(vbox, "");
