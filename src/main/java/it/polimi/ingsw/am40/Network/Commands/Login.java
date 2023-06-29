@@ -51,6 +51,7 @@ public class Login implements ICommand {
                             break;
                         }
                     }
+                    c.sendMessage(JSONConverterStoC.normalMessage("RECONNECT"));
                     c.getController().getGameController().reconnect(s);
                     return;
                 }

@@ -242,4 +242,9 @@ public class ClientGUIController implements View {
         runLater(()->gui.setPickToken(nickname, num, score));
     }
 
+    @Override
+    public void reconnect(String nickname) {
+        runLater(gui::startGame);
+    }
+
 }

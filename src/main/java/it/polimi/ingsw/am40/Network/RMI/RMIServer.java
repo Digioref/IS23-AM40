@@ -133,6 +133,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
                                 v.setClientHandler(r);
                             }
                         }
+                        r.sendMessage(JSONConverterStoC.normalMessage("RECONNECT"));
                         r.getController().getGameController().reconnect(s);
                         rmiHandlers.remove(r);
                         break;

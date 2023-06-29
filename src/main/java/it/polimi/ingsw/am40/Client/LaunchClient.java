@@ -35,7 +35,9 @@ public class LaunchClient {
         } else if (choice.equals("CLI")){
             view = new CliView();
         }
-        view.chooseConnection();
+        if (view != null) {
+            view.chooseConnection();
+        }
     }
 
     /**

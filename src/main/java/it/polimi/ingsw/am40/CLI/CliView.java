@@ -700,5 +700,10 @@ public class CliView implements View{
         System.out.println("The player " + nickname + "has done a common goal obtaining " + score + "points!" + "\n");
     }
 
+    @Override
+    public void reconnect(String nickname) {
+        System.out.println(nickname + ", you are reconnecting....");
+    }
+
 
 }

@@ -94,6 +94,9 @@ public class SocketClient extends Client {
         }
         out.println(jconv.toString());
         out.flush();
+        if (s.equals("quit")) {
+            close();
+        }
     }
 
     /**
@@ -172,9 +175,7 @@ public class SocketClient extends Client {
                                 //                        throw new RuntimeException(e);
                             }
                             if (userInput.equals("quit")) {
-                                JSONConverterCtoS jconv = new JSONConverterCtoS();
-                                jconv.toJSON(userInput);
-                                sendMessage(jconv.toString());
+                                sendMessage(userInput);
                                 break;
                             }
                             if (userInput.equals("chat")) {

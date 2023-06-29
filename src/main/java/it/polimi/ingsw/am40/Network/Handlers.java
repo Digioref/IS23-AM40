@@ -23,6 +23,7 @@ public abstract class Handlers {
     protected LoggingPhase logphase;
     protected MessageAdapter messAd;
     protected int nPingLost;
+    protected boolean disconnected;
 //    protected ArrayList<String> commands;
 
 
