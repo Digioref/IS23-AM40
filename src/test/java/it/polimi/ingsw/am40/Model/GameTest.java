@@ -41,6 +41,23 @@ public class GameTest{
         game.register(v);
 
          */
+
+        ClientHandler clientHandler = new ClientHandler();
+        Controller controller = new Controller(game, null);
+        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        game.getObservers().add(virtualView);
+
+        Writer out = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {}
+            @Override
+            public void flush() throws IOException {}
+            @Override
+            public void close() throws IOException {}
+        };
+        PrintWriter out1 = new PrintWriter(out);
+        virtualView.setClientHandler(clientHandler);
+        clientHandler.setOut(out1);
     }
 
     @Test
@@ -83,6 +100,7 @@ public class GameTest{
         Assertions.assertNotNull(currentPlayer);
         Assertions.assertNotNull(currentPlayer.getNext());
 
+        game.getObservers().clear();
         ArrayList<VirtualView> observers = game.getObservers();
         Assertions.assertEquals(0, observers.size());
 
@@ -123,11 +141,11 @@ public class GameTest{
 
     @Test
     void checkDisconnection() {
-        game.createTiles();
-        game.startGame();
-        game.assignPersonalGoal();
-        game.nextPlayer();
-        Assertions.assertEquals(2, game.checkDisconnection());
+        Player player = new Player("marco");
+        game.addPlayer(player);
+        player.setDisconnected(true);
+        Assertions.assertEquals(1, game.checkDisconnection());
+
     }
 
     @Test
@@ -173,6 +191,24 @@ public class GameTest{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+    @Test
+    void startTurn(){
+        Player player = new Player("marco");
+        game.setTurn(TurnPhase.START);
+        Board board = new Board();
+        game.setBoard(board);
+        game.setCurrentPlayer(player);
+
+        game.setFirstPlayer(player);
+
+        CommonGoal c1 = new CommonGoal(1, 1);
+        CommonGoal c2 = new CommonGoal(2,1);
+        game.getCurrentComGoals().add(c1);
+        game.getCurrentComGoals().add(c2);
+        game.startTurn();
 
     }
 
@@ -362,7 +398,34 @@ public class GameTest{
         ArrayList<Integer> pos = new ArrayList<>();
         pos.add(1);
         pos.add(2);
+
+        Tile tile = new Tile(TileColor.BLUE, TileType.CATS);
+        p1.getTilesPicked().add(tile);
+        p1.getTilesPicked().add(tile);
         game.setOrder(pos);
+
+
+
+        ClientHandler clientHandler = new ClientHandler();
+        Controller controller = new Controller(game, null);
+        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        game.getObservers().add(virtualView);
+
+        Writer out = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {}
+            @Override
+            public void flush() throws IOException {}
+            @Override
+            public void close() throws IOException {}
+        };
+        PrintWriter out1 = new PrintWriter(out);
+        virtualView.setClientHandler(clientHandler);
+        clientHandler.setOut(out1);
+
+        game.setOrder(pos);
+
+        game.setTurn(TurnPhase.ORDER);
 
         ArrayList<Integer> pos1 = new ArrayList<>();
         pos1.add(3);
@@ -373,8 +436,10 @@ public class GameTest{
 
     @Test
     void insertInBookshelf() {
-        /* Player p1 = new Player("marco");
+        Player p1 = new Player("marco");
         p1.createBookshelf();
+        p1.setPersonalGoal(1);
+
         CommonGoal c1 = new CommonGoal(1,1);
         CommonGoal c2 = new CommonGoal(2,1);
         game.getCurrentComGoals().add(c1);
@@ -382,16 +447,46 @@ public class GameTest{
 
         game.setCurrentPlayer(p1);
         game.setTurn(TurnPhase.INSERT);
-        game.insertInBookshelf(1);
 
-         */
+        ClientHandler clientHandler = new ClientHandler();
+        Controller controller = new Controller(game, null);
+        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        game.getObservers().add(virtualView);
+
+        Writer out = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {}
+            @Override
+            public void flush() throws IOException {}
+            @Override
+            public void close() throws IOException {}
+        };
+        PrintWriter out1 = new PrintWriter(out);
+        virtualView.setClientHandler(clientHandler);
+        clientHandler.setOut(out1);
+
+        // filling the first column
+        Tile tile = new Tile (TileColor.BLUE, TileType.CATS);
+        p1.getBookshelf().addTile(tile,1);
+        p1.getBookshelf().addTile(tile, 1);
+        p1.getBookshelf().addTile(tile, 1);
+        p1.getBookshelf().addTile(tile, 1);
+        p1.getBookshelf().addTile(tile,1);
+        p1.getBookshelf().addTile(tile,1);
+
+
+        game.insertInBookshelf(1);
+        game.insertInBookshelf(2);
+
+        game.setTurn(TurnPhase.PICK);
+        game.insertInBookshelf(3);
+
     }
 
     @Test
     void endGame() {
         Player player = new Player("marco");
         Player player2 = new Player("filippo");
-
 
         Game game = new Game(2);
 
@@ -420,17 +515,81 @@ public class GameTest{
 
     @Test
     void endTurn() {
+
+
         game.setTurn(TurnPhase.ENDTURN);
         game.setCurrentPlayer(game.getPlayers().get(0));
         System.out.println(game.getCurrentPlayer());
+        game.endTurn();
+
+        Player player = new Player("maria");
+        Player player2 = new Player("mario");
+        game.setFirstPlayer(player2);
+        game.setEnd();
+        EndToken endToken = new EndToken();
+        game.setEndToken(endToken);
+        game.getEndToken().setEnd(true);
+
+        game.setCurrentPlayer(player);
+        player.setNext(player2);
+
+        game.setTurn(TurnPhase.ENDGAME);
+
         game.endTurn();
     }
 
     @Test
     void setWinner() {
-        game.startGame();
+        Game game = new Game(4);
+
+        Player player1 = new Player("marco");
+        Player player2 = new Player("francesco");
+        Player player3 = new Player("daniele");
+        Player player4 = new Player("filippo");
+
+        player1.setPersonalGoal(1);
+        player1.setBookshelf(new Bookshelf());
+
+        game.addPlayer(player1);
         game.setCurrentPlayer(game.getPlayers().get(0));
         game.setWinner();
+
+
+        game.setFirstPlayer(player1);
+
+        player2.setPersonalGoal(1);
+        player2.setBookshelf(new Bookshelf());
+
+        game.addPlayer(player2);
+
+        game.setWinner();
+
+
+
+        player3.setPersonalGoal(1);
+        player3.setBookshelf(new Bookshelf());
+        game.setFirstPlayer(player2);
+
+        game.addPlayer(player3);
+
+        game.setWinner();
+
+        player4.setPersonalGoal(1);
+        player4.setBookshelf(new Bookshelf());
+        game.setFirstPlayer(player3);
+
+        game.addPlayer(player4);
+
+        game.setWinner();
+
+
+        game.setFirstPlayer(player4);
+        game.setWinner();
+
+
+
+
+
     }
 
     @Test
@@ -482,14 +641,17 @@ public class GameTest{
         Assertions.assertEquals(true, game.isTimerStarted());
     }
 
-    @Ignore
+    @Test
     void notifyReconnection() {
 
         Controller controller = new Controller(null, null);
         VirtualView virtualView = new VirtualView("marco", null, controller);
         Game game = new Game(2);
+        game.configureGame();
         Player player = new Player("marco");
         game.addPlayer(player);
+        game.setFirstPlayer(player);
+
         ClientHandler clientHandler = new ClientHandler();
 
         player.setPersonalGoal(1);
@@ -519,6 +681,11 @@ public class GameTest{
         game.getCurrentComGoals().add(c2);
 
         game.register(virtualView);
+
+
+
+        player.setDoneCG1(true);
+        player.setDoneCG2(true);
 
         game.notifyReconnection("marco");
 
@@ -609,5 +776,21 @@ public class GameTest{
         EndToken end = new EndToken();
         game.setEndToken(end);
         Assertions.assertEquals(end, game.getEndToken());
+    }
+
+    @Test
+    void resetPickedDisc(){
+        Game game = new Game(2);
+        Player player = new Player("marco");
+        game.addPlayer(player);
+        game.setCurrentPlayer(player);
+
+        Tile tile = new Tile(TileColor.BLUE, TileType.CATS);
+        player.getTilesPicked().add(tile);
+
+        Board board = new Board();
+        game.setBoard(board);
+
+        game.resetPickedDisc();
     }
 }
