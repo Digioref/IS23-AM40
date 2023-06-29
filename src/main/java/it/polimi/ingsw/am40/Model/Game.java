@@ -81,6 +81,7 @@ public class Game implements IGame {
         discPlayers = new ArrayList<>();
         timerstate = false;
         currentComGoals = new ArrayList<>();
+        winner = new Player("");
     }
 
     /**
@@ -828,6 +829,10 @@ public class Game implements IGame {
 
     public void setBoard(Board board){
         this.board = board;
+    }
+
+    public void setFirstPlayer(Player firstPlayer){
+        this.firstPlayer = firstPlayer;
     }
 
 
