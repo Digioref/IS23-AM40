@@ -180,4 +180,6 @@ public interface View {
      * @param score score obtained
      */
     void showCGDone(String nickname, int num, int score);
+
+    void reconnect(String nickname);
 }
