@@ -4,13 +4,8 @@ import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.GameServer;
 import it.polimi.ingsw.am40.Network.LoggingPhase;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.mockito.junit.jupiter.MockitoExtension;
+
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +18,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 
 class LobbyTest {

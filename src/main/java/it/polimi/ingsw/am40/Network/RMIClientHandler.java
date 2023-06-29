@@ -41,6 +41,7 @@ public class RMIClientHandler extends Handlers {
         messAd= new MessageAdapter();
         messAd.configure();
         nPingLost = 0;
+        disconnected = false;
         startPing();
     }
 
@@ -64,8 +65,11 @@ public class RMIClientHandler extends Handlers {
         Runnable task = () -> {
             nPingLost++;
             if(nPingLost >= NUMLOST){
-                System.out.println("Client disconnected for having lost " + NUMLOST +  " PING!");
-                close();
+                if (!disconnected) {
+                    disconnected = true;
+                    System.out.println("Client disconnected for having lost " + NUMLOST +  " PING!");
+                    close();
+                }
             }
         };
         synchronized (this){

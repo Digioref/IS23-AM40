@@ -4,9 +4,7 @@ import it.polimi.ingsw.am40.Model.*;
 import it.polimi.ingsw.am40.Network.*;
 import it.polimi.ingsw.am40.Network.ClientHandler;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,8 +12,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doNothing;
+
 
 class GameControllerTest {
 
@@ -37,12 +34,6 @@ class GameControllerTest {
         game.setCurrentPlayer(player2);
         gameController.selectTile(virtualView, p);
     }
-    @Mock
-    Controller controller;
-    @Mock
-    VirtualView virtualView;
-    @Mock
-    Game game;
 
     @Test
     void pickTiles() {
