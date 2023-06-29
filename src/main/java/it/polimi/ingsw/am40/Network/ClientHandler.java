@@ -49,7 +49,8 @@ public class ClientHandler extends Handlers implements Runnable {
             out = new PrintWriter(socket.getOutputStream());
             in = new Scanner(socket.getInputStream());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            close();
         }
         setLogphase(LoggingPhase.LOGGING);
         disconnected = false;
@@ -83,7 +84,8 @@ public class ClientHandler extends Handlers implements Runnable {
         try {
             sendMessage(s);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            close();
         }
     }
 
@@ -121,9 +123,10 @@ public class ClientHandler extends Handlers implements Runnable {
 //            System.out.println("ClientHandler " + nickname + " closed!");
 //            socket.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.out.println("Socket not available");
+            close();
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            System.out.println("Parse error");
         }
     }
 
@@ -150,7 +153,8 @@ public class ClientHandler extends Handlers implements Runnable {
         try {
             sendMessage(JSONConverterStoC.createJSONPing());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            close();
         }
         Runnable task = () -> {
             nPingLost++;
@@ -184,7 +188,8 @@ public class ClientHandler extends Handlers implements Runnable {
         try {
             sendMessage(JSONConverterStoC.createJSONNicknames(arr));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Socket not available");
+            close();
         }
     }
 
@@ -219,7 +224,8 @@ public class ClientHandler extends Handlers implements Runnable {
             try {
                 sendMessage(JSONConverterStoC.normalMessage("You are not playing in any game yet!"));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Socket not available");
+                close();
             }
         }
     }

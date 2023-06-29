@@ -74,7 +74,8 @@ public class Resources {
 
 		// Check if the resource exists
 		if (inputStream == null) {
-			throw new IllegalArgumentException("Resource not found: " + imageFile);
+			System.out.println("Resource not found: "+ imageFile);
+			return null;
 		}
 
 		// Create the image from the input stream

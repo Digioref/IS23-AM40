@@ -110,7 +110,8 @@ public class RMIClientHandler extends Handlers {
         try {
             rmiClient.receive(JSONConverterStoC.createJSONNicknames(arr));
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            System.out.println("Client not reachable");
+            close();
         }
     }
 
@@ -173,7 +174,8 @@ public class RMIClientHandler extends Handlers {
         try {
             rmiClient.receiveChat(s);
         } catch (RemoteException e) {
-//            throw new RuntimeException(e);
+            System.out.println("Client not reachable");
+            close();
         }
     }
 

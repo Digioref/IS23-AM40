@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am40.Client;
 
-import it.polimi.ingsw.am40.CLI.CliView;
 import it.polimi.ingsw.am40.Model.Position;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -10,9 +9,7 @@ import org.json.simple.parser.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Abstract class representing the client handler from client side. Two classes extend this class:
@@ -54,8 +51,8 @@ public abstract class Client {
             case "CurrentScore":
                 JSONArray arr = (JSONArray) object.get("Scores");
                 Map<String, Integer> map = new HashMap<>();
-                for (int i = 0; i < arr.size(); i++) {
-                    JSONObject obj = (JSONObject) arr.get(i);
+                for (Object o : arr) {
+                    JSONObject obj = (JSONObject) o;
                     map.put(obj.get("Nickname").toString(), Integer.parseInt(obj.get("Score").toString()));
                 }
                 if (!inChat) {
@@ -72,8 +69,8 @@ public abstract class Client {
             case "Players":
                 JSONArray arr1 = (JSONArray) object.get("Players");
                 ArrayList<String> names = new ArrayList<>();
-                for (int i = 0; i < arr1.size(); i++) {
-                    JSONObject obj = (JSONObject) arr1.get(i);
+                for (Object o : arr1) {
+                    JSONObject obj = (JSONObject) o;
                     names.add(obj.get("Nickname").toString());
                 }
                 if (!inChat) {
@@ -84,8 +81,8 @@ public abstract class Client {
             case "CommonGoals":
                 JSONArray arr2 = (JSONArray) object.get("CommonGoals");
                 Map<Integer, Integer> map1 = new HashMap<>();
-                for (int i = 0; i < arr2.size(); i++) {
-                    JSONObject obj = (JSONObject) arr2.get(i);
+                for (Object o : arr2) {
+                    JSONObject obj = (JSONObject) o;
                     map1.put(Integer.parseInt(obj.get("Number").toString()), Integer.parseInt(obj.get("Score").toString()));
                 }
                 if (!inChat) {
@@ -96,8 +93,8 @@ public abstract class Client {
             case "PersonalGoal":
                 JSONArray arr3 = (JSONArray) object.get("PersonalGoal");
                 Map<String, String> map2 = new HashMap<>();
-                for (int i = 0; i < arr3.size(); i++) {
-                    JSONObject obj = (JSONObject) arr3.get(i);
+                for (Object o : arr3) {
+                    JSONObject obj = (JSONObject) o;
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map2.put(p.getKey(), obj.get("color").toString());
                 }
@@ -109,8 +106,8 @@ public abstract class Client {
             case "Board":
                 JSONArray arr4 = (JSONArray) object.get("Board");
                 Map<String, String> map3 = new HashMap<>();
-                for (int i = 0; i < arr4.size(); i++) {
-                    JSONObject obj = (JSONObject) arr4.get(i);
+                for (Object o : arr4) {
+                    JSONObject obj = (JSONObject) o;
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map3.put(p.getKey(), obj.get("color").toString());
                 }
@@ -122,25 +119,24 @@ public abstract class Client {
             case "Bookshelf":
                 JSONArray arr5 = (JSONArray) object.get("Bookshelf");
                 Map<String, String> map4 = new HashMap<>();
-                for (int i = 0; i < arr5.size(); i++) {
-                    JSONObject obj = (JSONObject) arr5.get(i);
+                for (Object o : arr5) {
+                    JSONObject obj = (JSONObject) o;
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map4.put(p.getKey(), obj.get("color").toString());
                 }
                 if (!inChat) {
                     LaunchClient.getView().showCurrentBookshelf(map4);
                 }
-                state.saveBookshelf(map4);
                 break;
             case "BookshelfAll":
                 JSONArray arr6 = (JSONArray) object.get("Bookshelves");
                 Map<String, Map<String, String>> map5 = new HashMap<>();
-                for (int i = 0; i < arr6.size(); i++) {
-                    JSONObject obj = (JSONObject) arr6.get(i);
+                for (Object o : arr6) {
+                    JSONObject obj = (JSONObject) o;
                     JSONArray array = (JSONArray) obj.get("Bookshelf");
                     Map<String, String> map6 = new HashMap<>();
-                    for (int j = 0; j < array.size(); j++) {
-                        JSONObject obj1 = (JSONObject) array.get(j);
+                    for (Object value : array) {
+                        JSONObject obj1 = (JSONObject) value;
                         Position p = new Position(Integer.parseInt(obj1.get("x").toString()), Integer.parseInt(obj1.get("y").toString()));
                         map6.put(p.getKey(), obj1.get("color").toString());
                     }
@@ -155,21 +151,21 @@ public abstract class Client {
                 JSONArray arr7 = (JSONArray) object.get("PickableTiles");
                 Map<String, String> map7 = new HashMap<>();
                 ArrayList<Position> arrayList = new ArrayList<>();
-                for (int i = 0; i < arr7.size(); i++) {
-                    JSONObject obj = (JSONObject) arr7.get(i);
+                for (Object o : arr7) {
+                    JSONObject obj = (JSONObject) o;
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map7.put(p.getKey(), obj.get("color").toString());
                 }
                 JSONArray arr8 = (JSONArray) object.get("AlreadySel");
-                for (int i = 0; i < arr8.size(); i++) {
-                    JSONObject obj = (JSONObject) arr8.get(i);
+                for (Object o : arr8) {
+                    JSONObject obj = (JSONObject) o;
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     arrayList.add(p);
                 }
                 JSONArray arr9 = (JSONArray) object.get("Board");
                 Map<String, String> map8 = new HashMap<>();
-                for (int i = 0; i < arr9.size(); i++) {
-                    JSONObject obj = (JSONObject) arr9.get(i);
+                for (Object o : arr9) {
+                    JSONObject obj = (JSONObject) o;
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     map8.put(p.getKey(), obj.get("color").toString());
                 }
@@ -183,9 +179,9 @@ public abstract class Client {
                 Map<String, String> map9 = new HashMap<>();
                 ArrayList <ArrayList<String>> selected = new ArrayList<>();
 
-                for (int i = 0; i < arr10.size(); i++) {
-                    ArrayList <String> tmp = new ArrayList<>();
-                    JSONObject obj = (JSONObject) arr10.get(i);
+                for (Object o : arr10) {
+                    ArrayList<String> tmp = new ArrayList<>();
+                    JSONObject obj = (JSONObject) o;
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     String tile = obj.get("color").toString();
                     map9.put(p.getKey(), tile);
@@ -203,9 +199,9 @@ public abstract class Client {
                 JSONArray arr11 = (JSONArray) object.get("PickedTiles");
                 Map<String, String> map10 = new HashMap<>();
                 ArrayList <ArrayList<String>> picked = new ArrayList<>();
-                for (int i = 0; i < arr11.size(); i++) {
-                    ArrayList <String> tmp = new ArrayList<>();
-                    JSONObject obj = (JSONObject) arr11.get(i);
+                for (Object o : arr11) {
+                    ArrayList<String> tmp = new ArrayList<>();
+                    JSONObject obj = (JSONObject) o;
                     Position p = new Position(Integer.parseInt(obj.get("x").toString()), Integer.parseInt(obj.get("y").toString()));
                     String tile = obj.get("color").toString();
                     map10.put(p.getKey(), tile);
@@ -221,17 +217,14 @@ public abstract class Client {
             case "FinalScores":
                 JSONArray arr12 = (JSONArray) object.get("FinalScores");
                 Map<String, Integer> map11 = new HashMap<>();
-                for (int i = 0; i < arr12.size(); i++) {
-                    JSONObject obj = (JSONObject) arr12.get(i);
+                for (Object o : arr12) {
+                    JSONObject obj = (JSONObject) o;
                     map11.put(obj.get("Nickname").toString(), Integer.parseInt(obj.get("Score").toString()));
                 }
                 if (!inChat) {
                     LaunchClient.getView().showFinalScore(map11, object.get("Nickname").toString());
                 }
                 state.saveFinalScores(map11, object.get("Nickname").toString());
-//                if (LaunchClient.getView() instanceof CliView) {
-//                    close();
-//                }
                 break;
             case "Chat":
                 JSONArray arr13 = (JSONArray) object.get("Authors");

@@ -436,7 +436,8 @@ public class Game implements IGame {
                     try {
                         v.getClientHandler().sendMessage(JSONConverterStoC.normalMessage("It's your turn!"));
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("Client not responding");
+                        v.getClientHandler().close();
                     }
                 }
             }
