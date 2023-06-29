@@ -125,7 +125,6 @@ public class GameController {
                 }
             }
             for (VirtualView v: game.getObservers()) {
-
                 if (from.equals(v.getNickname())) {
                     v.chatError();
                 }

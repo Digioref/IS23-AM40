@@ -321,28 +321,16 @@ public class Player {
         this.game = game;
     }
 
-    public void setTilesPicked(ArrayList<Tile> picked) {
-        this.tilesPicked.addAll(picked);
-    }
-
-    public void setCurrentScore(int currentScore) {
-        this.currentScore = currentScore;
-    }
-
-    public void setFinalScore(int finalScore) {
-        this.finalScore = finalScore;
-    }
-
     public void setBookshelf(Bookshelf bookshelf) {
         this.bookshelf = bookshelf;
     }
 
-    public void setSelectedPositions(ArrayList<Position> posizioni) {
-        this.selectedPositions = posizioni;
+    public void setCurrentScore(int i) {
+        currentScore = i;
     }
 
-    public void setHiddenScore(int hiddenScore) {
-        this.hiddenScore = hiddenScore;
+    public void setHiddenScore(int i) {
+        hiddenScore = i;
     }
 
     public Game getGame() {

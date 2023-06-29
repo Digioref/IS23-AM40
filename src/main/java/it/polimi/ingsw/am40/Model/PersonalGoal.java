@@ -97,4 +97,11 @@ public class PersonalGoal {
         return key;
     }
 
+    public void setPos(ArrayList<Position> pos) {
+        this.pos = pos;
+    }
+
+    public void setColor(ArrayList<TileColor> color) {
+        this.color = color;
+    }
 }

@@ -1,24 +1,21 @@
 package it.polimi.ingsw.am40.Controller;
 
-import it.polimi.ingsw.am40.Model.EndToken;
-import it.polimi.ingsw.am40.Model.Game;
-import it.polimi.ingsw.am40.Model.Player;
+import it.polimi.ingsw.am40.Model.*;
 import it.polimi.ingsw.am40.Network.*;
-import it.polimi.ingsw.am40.Model.Position;
 import it.polimi.ingsw.am40.Network.ClientHandler;
-import it.polimi.ingsw.am40.Network.GameServer;
-import it.polimi.ingsw.am40.Network.RMI.RMIServer;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 
 class GameControllerTest {
 
@@ -40,24 +37,34 @@ class GameControllerTest {
         game.setCurrentPlayer(player2);
         gameController.selectTile(virtualView, p);
     }
+    @Mock
+    Controller controller;
+    @Mock
+    VirtualView virtualView;
+    @Mock
+    Game game;
 
-//    @Test
-//    void pickTiles() {
-//        Controller controller = new Controller(null, null);
-//        VirtualView virtualView = new VirtualView("marco", null, controller);
-//        GameController gameController = new GameController(null, controller);
-//        Game game = new Game(2);
-//        Player player = new Player("marco");
-//        gameController.setGame(game);
-//        game.setCurrentPlayer(player);
-//
-//
-//        gameController.pickTiles(virtualView);
-//
-//        Player player2 = new Player("filippo");
-//        game.setCurrentPlayer(player2);
-//        gameController.pickTiles(virtualView);
-//    }
+    @Test
+    void pickTiles() {
+        Controller controller = new Controller(null, null);
+        VirtualView virtualView = new VirtualView("marco", null, controller);
+        GameController gameController = new GameController(null, controller);
+        Game game = new Game(2);
+        Player player = new Player("marco");
+        gameController.setGame(game);
+        game.setCurrentPlayer(player);
+        player.setBookshelf(new Bookshelf());
+
+
+        gameController.pickTiles(virtualView);
+
+        Player player2 = new Player("filippo");
+        game.setCurrentPlayer(player2);
+        player2.setBookshelf(new Bookshelf());
+        gameController.pickTiles(virtualView);
+
+
+    }
 
     @Test
     void notConfirmSelection() {
@@ -195,8 +202,8 @@ class GameControllerTest {
         gameController2.chat("all", "ciao", "maria");
 
 
-        gameController.chat("alberto", "ciao", "alberto");
-        gameController.chat("alberto", "ciao", "maria");
+        gameController2.chat("alberto", "ciao", "alberto");
+        gameController2.chat("alberto", "ciao", "maria");
 
 
     }
