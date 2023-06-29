@@ -80,6 +80,8 @@ public class Game implements IGame {
         groupChat = new GroupChat();
         discPlayers = new ArrayList<>();
         timerstate = false;
+        currentComGoals = new ArrayList<>();
+        winner = new Player("");
     }
 
     /**
@@ -749,12 +751,17 @@ public class Game implements IGame {
                     if (p.getNickname().equals(v.getNickname())) {
                         v.receiveHiddenScore(p.getHiddenScore());
                         v.receivePersonalGoal(p.getPersonalGoal());
+                        v.receiveBookshelf(p.getBookshelf());
                     }
                 }
-                v.receiveListBookshelves(players);
                 v.receiveListPlayers(players);
                 v.receiveNumPlayers(numPlayers);
-                v.receiveCurrentPlayer(currentPlayer);
+                v.receiveListBookshelves(players);
+                Map<String, Integer> map = new HashMap<>();
+                for (Player p : players) {
+                    map.put(p.getNickname(), p.getCurrentScore());
+                }
+                v.receiveCurrentScore(map);
                 v.receiveChat(groupChat);
                 for (Player p: players) {
                     if (p.isDoneCG1()) {
@@ -764,6 +771,8 @@ public class Game implements IGame {
                         v.receiveCommonGoalDone(p.getNickname(), commonGoals.get(1).getNum(), p.getScoreCG2());
                     }
                 }
+                v.receiveFirstPlayer(firstPlayer);
+                v.receiveCurrentPlayer(currentPlayer);
             }
         }
         for (VirtualView v: observers) {
@@ -824,4 +833,14 @@ public class Game implements IGame {
         }
         currentPlayer.getTilesPicked().clear();
     }
+
+    public void setBoard(Board board){
+        this.board = board;
+    }
+
+    public void setFirstPlayer(Player firstPlayer){
+        this.firstPlayer = firstPlayer;
+    }
+
+
 }

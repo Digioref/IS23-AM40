@@ -123,18 +123,47 @@ public class PlayerTest {
 
     @Test
     void calculateScore() {
-        Player player = new Player("pippo");
-        player.createBookshelf();
+        Player player = new Player("arianna");
+        player.setPersonalGoal(2);
+        player.setBookshelf(new Bookshelf());
 
-
+        player.calculateScore();
+        assertEquals(0, player.getFinalScore());
     }
 
     @Test
     void updateCurrScore() {
+        Player player = new Player("filippo");
+        Bookshelf bookshelf = new Bookshelf();
+        player.setGame(new Game(2));
+        player.setBookshelf(bookshelf);
+        player.setPersonalGoal(7);
+
+        Tile tile = new Tile(TileColor.BLUE, TileType.CATS);
+
+        for(int i = 0; i<6; i++) {
+            bookshelf.addTile(tile, 0);
+            bookshelf.addTile(tile, 4);
+        }
+
+        CommonGoal c1 = new CommonGoal(8,1);
+        CommonGoal c2 = new CommonGoal(8, 1);
+        ArrayList<CommonGoal> commonGoals = new ArrayList<>();
+        commonGoals.add(c1);
+        commonGoals.add(c2);
+
+        player.updateCurrScore(commonGoals);
+        assertEquals(16, player.getCurrentScore());
     }
 
     @Test
     void updateHiddenScore() {
+        Player player = new Player("giacomo");
+        player.setPersonalGoal(1);
+        player.setBookshelf(new Bookshelf());
+
+        player.updateHiddenScore();
+        assertEquals(0, player.getHiddenScore());
     }
 
     @Test
@@ -338,4 +367,25 @@ public class PlayerTest {
         player.setGame(game);
         assertEquals(game, player.getGame());
     }
+
+    @Test
+    void getGame(){
+        Player player = new Player("francesca");
+        Game game = new Game(2);
+
+        player.setGame(game);
+        assertEquals(game, player.getGame());
+    }
+
+    @Test
+    void setHiddenScore(){
+        Player player = new Player("filippo");
+        player.setHiddenScore(5);
+
+        assertEquals(5, player.getHiddenScore());
+    }
+
+
+
+
 }

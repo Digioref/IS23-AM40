@@ -1,7 +1,9 @@
 package it.polimi.ingsw.am40.GUI;
 
 import java.util.ArrayList;
+import java.util.Map;
 
+import it.polimi.ingsw.am40.Model.Position;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -22,8 +24,8 @@ import javafx.stage.Stage;
  */
 public class Bookshelf extends AnchorPane {
 	private static final int COLUMN_SPACES = 6;
-	private double[] colStart = { 39.5/1536.0, 95.5/1536.0, 151.5/1536.0, 207.5/1536.0, 263.5/1536.0 };
-	private double[] rowEnd = { 261.0/864.0, 213.0/864.0, 165.0/864.0, 117.0/864.0, 69.0/864.0, 21.0/864.0 };
+	private final double[] colStart = new double[]{Metrics.c1 , Metrics.c2, Metrics.c3, Metrics.c4, Metrics.c5};
+	private final double[] rowEnd =new double[] {Metrics.r1 , Metrics.r2, Metrics.r3, Metrics.r4, Metrics.r5, Metrics.r6 };
 	private int[] bookshelf;
 	private final Label bsImage;
 	private StackPane labelName;
@@ -43,7 +45,7 @@ public class Bookshelf extends AnchorPane {
 	private double pos_y;
 	private PersonalGoalBack pgBack;
 
-	private ArrayList<ScoreToken> tokensPicked;
+
 
 	public Bookshelf(double w, double h, Stage primaryStage) {
 		super();
@@ -138,7 +140,29 @@ public class Bookshelf extends AnchorPane {
 		labelName.toFront();
 	}
 
-	void insert(ArrayList<Node> nodeList, int col) {
+	public void reconnectPlaceTiles(Map<String, String> map, Stage primaryStage) {
+		System.out.println(primaryStage.getWidth());
+		System.out.println(primaryStage.getHeight());
+		for (String s: map.keySet()) {
+			System.out.println("qui3");
+			Position p = new Position();
+			System.out.println("Position: " + s);
+			p.convertKey(s);
+			Tile t = new Tile(map.get(s), primaryStage);
+			AnchorPane.clearConstraints(t);
+			System.out.println(colStart[p.getX()]);
+			System.out.println(rowEnd[p.getY()]);
+			AnchorPane.setLeftAnchor(t, colStart[p.getX()]);
+			AnchorPane.setTopAnchor(t, rowEnd[p.getY()]);
+			getChildren().add(t);
+			bsImage.toFront();
+			labelName.toFront();
+			bookshelf[p.getX()]++;
+
+		}
+	}
+
+	public void insert(ArrayList<Node> nodeList, int col) {
 		this.node = null;
 		this.nodeList = nodeList;
 		System.out.println("COLSTART[" + col + "] = " + colStart[col]);
@@ -161,6 +185,8 @@ public class Bookshelf extends AnchorPane {
 			Tile t = (Tile) node;
 			t.getTileView().setFitWidth(274.0/360 * Metrics.dim_x_tile * widthStage);
 			t.getTileView().setFitHeight(274.0/360.0 * Metrics.dim_y_tile * heightStage);
+			System.out.println(colStart[cols]);
+			System.out.println(rowEnd[bookshelf[cols]]);
 			AnchorPane.setLeftAnchor(t, 274.0/360.0 * colStart[cols]);
 			AnchorPane.setTopAnchor(t,  274.0/360 * rowEnd[bookshelf[cols]]);
 			bookshelf[cols]++;

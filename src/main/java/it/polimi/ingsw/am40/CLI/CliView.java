@@ -371,7 +371,7 @@ public class CliView implements View{
      * Prints the bookshelf (the keys of the map are the positions, while the value associated to the key are the colors of the tile in that position)
      * @param map represents the bookshelves
      */
-    public void showBookshelf(Map<String, String> map) {
+    private void showBookshelf(Map<String, String> map) {
         for (int row = 5; row >= 0; row--) {
             for (int col = 0; col < 5; col++) {
                 Position p = new Position(col, row);

@@ -115,4 +115,6 @@ public interface IGameObserver {
     void receiveCommonGoalDone(String name, int index, int score);
 
     void receiveReconnection(String s);
+
+    void receiveBookshelf(Bookshelf bookshelf);
 }

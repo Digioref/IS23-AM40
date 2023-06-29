@@ -67,12 +67,6 @@ public interface View {
      */
     public void showAllBookshelves(Map<String, Map<String, String>> map);
 
-    /**
-     * Prints the bookshelf (the keys of the map are the positions, while the value associated to the key are the colors of the tile in that position)
-     * @param map represents the bookshelves
-     */
-    public void showBookshelf(Map<String, String> map);
-
 
     /**
      * Shows which tiles can be picked

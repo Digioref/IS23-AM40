@@ -332,12 +332,12 @@ public class Player {
         this.bookshelf = bookshelf;
     }
 
-    public void setCurrentScore(int i) {
-        currentScore = i;
+    public void setCurrentScore(int currentScore) {
+        this.currentScore = currentScore;
     }
 
-    public void setHiddenScore(int i) {
-        hiddenScore = i;
+    public void setHiddenScore(int hiddenScore) {
+        this.hiddenScore = hiddenScore;
     }
 
     public Game getGame() {

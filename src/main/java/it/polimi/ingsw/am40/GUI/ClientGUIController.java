@@ -92,7 +92,10 @@ public class ClientGUIController implements View {
      * @param map represents the bookshelf
      */
     @Override
-    public void showCurrentBookshelf(Map<String, String> map) {}
+    public void showCurrentBookshelf(Map<String, String> map) {
+        System.out.println("qui");
+        runLater(()->gui.reconnectBookshelf(map));
+    }
 
     /**
      * This method prints all the bookshelves (a single bookshelf is a map, whose key is the name of the player)
@@ -103,12 +106,6 @@ public class ClientGUIController implements View {
         runLater(()->gui.updateBookshelves(map));
     }
 
-    /**
-     * Prints the bookshelf (the keys of the map are the positions, while the value associated to the key are the colors of the tile in that position)
-     * @param map represents the bookshelves
-     */
-    @Override
-    public void showBookshelf(Map<String, String> map) {}
 
     /**
      * Shows which tiles can be picked

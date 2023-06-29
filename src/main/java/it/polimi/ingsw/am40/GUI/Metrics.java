@@ -99,6 +99,16 @@ public class Metrics {
 	public static final double dim_y_pgback = 120/864.0;
 	public static final double d_x_cp = 870/1536.0;
 	public static final double d_y_cp = 270.0/864.0;
-
+	public static final double c1 = 39.5;
+	public static final double c2 = 95.5;
+	public static final double c3 = 151.5;
+	public static final double c4 = 207.5;
+	public static final double c5 = 263.5;
+	public static final double r1 = 261.0;
+	public static final double r2 = 213.0;
+	public static final double r3 = 165.0;
+	public static final double r4 = 117.0;
+	public static final double r5 = 69.0;
+	public static final double r6 = 21.0;
 
 }
