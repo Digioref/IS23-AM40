@@ -16,6 +16,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
@@ -24,6 +25,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -440,6 +443,17 @@ public class Viewer extends Application {
 				LaunchClient.getClient().sendMessage("login " + tf.getText());
 			}
 		});
+
+		pane.setOnKeyPressed(e -> {
+			if (e.getCode() == KeyCode.ENTER) {
+				if (tf.getText().equals("")) {
+					t1.setText("Insert an username, please!");
+				} else {
+					nickname = tf.getText();
+					LaunchClient.getClient().sendMessage("login " + tf.getText());
+				}
+			}
+		});
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
 				if (LaunchClient.getClient() != null) {
@@ -648,8 +662,9 @@ public class Viewer extends Application {
 
 		gameBoard.getChildren().add(chatButtonPane);
 
-		chatContainer.setStyle("-fx-background-color: #007700; -fx-border-color: #CCCCCC; -fx-border-width: 1px; -fx-padding: 10px; -fx-border-radius: 8px;");
-		//chatContainer.setMaxHeight(200);
+		chatContainer.setStyle("-fx-background-color: #007700; -fx-border-color: #CCCCCC; -fx-border-width: 1px; -fx-padding: 10px; -fx-background-radius: 8px; -fx-border-radius: 8px;");
+		chatContainer.setMinWidth(300);
+		chatContainer.setMinHeight(150);
 		chat.setVisible(isVisible);
 
 		// button to close the chat
@@ -687,10 +702,16 @@ public class Viewer extends Application {
 		Button sendButton = new Button("Send");
 		sendButton.getStylesheets().add("Button.css");
 
-		HBox inputBox = new HBox(messageInput, sendButton);
+		HBox inputBox = new HBox();
+		inputBox.setPadding(new Insets(10, 0, 10, 0));
 		inputBox.setSpacing(10);
 		inputBox.setAlignment(Pos.CENTER_RIGHT);
 		chatContainer.getChildren().add(inputBox);
+
+		// drop list to select the receiver
+		addNamesChat(inputBox);
+		inputBox.getChildren().add(messageInput);
+		inputBox.getChildren().add(sendButton);
 
 		// update the full message list, I can add one message at a time if I am notified when I receive one
 //		GroupChat chatClass = new GroupChat();
@@ -712,6 +733,7 @@ public class Viewer extends Application {
 			String receiver = selectReceivers.getValue();
 
 			if (!message.isEmpty()) {
+				/*
 				ArrayList<String> receivers;
 				if (!receiver.equals("everyOne")) {
 					receivers = new ArrayList<>();
@@ -729,11 +751,21 @@ public class Viewer extends Application {
 						LaunchClient.getClient().chat(jconv.toString());
 					}
 				}
+				*/
+				if (receiver.equals("everyOne")) {
+					receiver = "all";
+				}
+
+				System.out.println("send to: " + receiver);
+				JSONConverterCtoS jconv = new JSONConverterCtoS();
+				jconv.toJSONChat(receiver, message);
+				if (LaunchClient.getClient() != null) {
+					LaunchClient.getClient().chat(jconv.toString());
+				}
+
 				NewMessage newMessage = new NewMessage(sender, receiver, message);
 				messages.getChildren().add(newMessage);
 				messageInput.clear();
-
-
 
 				chatScrollPane.setVvalue(1.0);
 
@@ -906,6 +938,8 @@ public class Viewer extends Application {
 			Label senderLabel = new Label("from " + from + " to " + to + ": ");
 			if (from == null || from.equals(nickname)) {
 				senderLabel.setStyle("-fx-text-fill: red;");
+			} else if (to.equals("all")) {
+				senderLabel.setStyle("-fx-text-fill: green;");
 			}
 			Label messageLabel = new Label(message);
 			messageLabel.setWrapText(true);
@@ -975,6 +1009,12 @@ public class Viewer extends Application {
 			setConnection(tf, t1);
 		});
 
+		pane.setOnKeyPressed(e -> {
+			if (e.getCode() == KeyCode.ENTER) {
+				setConnection(tf, t1);
+			}
+		});
+
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
 				if (LaunchClient.getClient() != null) {
@@ -1004,9 +1044,19 @@ public class Viewer extends Application {
 
 		setTitle(vbox);
 
-		Text t1 = addDescription(vbox, "Insert the number of Players: ");
+		HBox hb = new HBox();
+		vbox.getChildren().add(hb);
+		hb.setAlignment(Pos.CENTER);
 
-		TextField tf = addTextField(vbox);
+		Text t1 = addDescription(hb, "Select the number of Players: ");
+
+		//TextField tf = addTextField(vbox);
+
+		ComboBox<String> dropdown = new ComboBox<>();
+		dropdown.getItems().addAll("2", "3", "4");
+		dropdown.getSelectionModel().selectFirst();
+
+		hb.getChildren().add(dropdown);
 
 		Button b1 = addButton(vbox, "SetPlayers", true);
 		Text t2 = addDescription(vbox, "");
@@ -1019,6 +1069,12 @@ public class Viewer extends Application {
 		primaryStage.show();
 
 		b1.setOnAction(e -> {
+
+			LaunchClient.getClient().sendMessage("setplayers " + dropdown.getValue());
+			b1.setDisable(true);
+			numPlayers = Integer.parseInt(dropdown.getValue());
+
+			/*
 			if (tf.getText() != null) {
 				try {
 					Integer.parseInt(tf.getText());
@@ -1035,6 +1091,15 @@ public class Viewer extends Application {
 				numPlayers = Integer.parseInt(tf.getText());
 			}  else {
 				t1.setText("Insert an integer, please!");
+			}
+			*/
+		});
+
+		pane.setOnKeyPressed(e -> {
+			if (e.getCode() == KeyCode.ENTER) {
+				LaunchClient.getClient().sendMessage("setplayers " + dropdown.getValue());
+				b1.setDisable(true);
+				numPlayers = Integer.parseInt(dropdown.getValue());
 			}
 		});
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -1361,11 +1426,11 @@ public class Viewer extends Application {
 		for (String s: names) {
 			ppboard.addPlayer(s);
 		}
-		addNamesChat();
+		//addNamesChat();
 
 	}
 
-	private void addNamesChat() {
+	private void addNamesChat(HBox hb) {
 		if (!chatContainer.getChildren().contains(selectReceivers)) {
 			selectReceivers = new ComboBox<>();
 			ArrayList<String> sendTo = new ArrayList<>(names);
@@ -1375,7 +1440,7 @@ public class Viewer extends Application {
 			}
 			selectReceivers.getItems().addAll(sendTo);
 			selectReceivers.setValue(sendTo.get(sendTo.size()-1));
-			chatContainer.getChildren().add(selectReceivers);
+			hb.getChildren().add(selectReceivers);
 		}
 
 	}
