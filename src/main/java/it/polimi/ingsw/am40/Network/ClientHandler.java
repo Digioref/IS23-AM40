@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -138,7 +139,13 @@ public class ClientHandler extends Handlers implements Runnable {
         sendPing.scheduleAtFixedRate(task, 0, SEND_PING, TimeUnit.MILLISECONDS);
     }
 
+    public void setWaitPing(ScheduledExecutorService waitPing){
+        this.waitPing = waitPing;
+    }
 
+    public void setSendPing(ScheduledExecutorService sendPing){
+        this.sendPing = sendPing;
+    }
     private void ping() {
         try {
             sendMessage(JSONConverterStoC.createJSONPing());
@@ -298,6 +305,10 @@ public class ClientHandler extends Handlers implements Runnable {
      */
     public void setOut(PrintWriter out){
         this.out = out;
+    }
+
+    public void setGameServer(GameServer gameServer) {
+        this.gameServer = gameServer;
     }
 
 

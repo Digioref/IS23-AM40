@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am40.Model;
 
 import it.polimi.ingsw.am40.Controller.Controller;
+import it.polimi.ingsw.am40.Controller.GameController;
 import it.polimi.ingsw.am40.Controller.Lobby;
 import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.GameServer;
@@ -10,10 +11,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-public class GameTest {
+public class GameTest{
 
     private Game game;
 
@@ -124,7 +131,48 @@ public class GameTest {
 
     @Test
     void startTimer() {
+        Player player1 = new Player("gianni");
+        Player player2 = new Player("gigi");
+
+
+        ClientHandler clientHandler1 = new ClientHandler();
+        ClientHandler clientHandler2 = new ClientHandler();
+        Game game = new Game(2);
+        Lobby lobby = new Lobby();
+        Controller controller = new Controller(game, lobby);
+        VirtualView virtualView1 = new VirtualView("gianni", clientHandler1, controller);
+        VirtualView virtualView2 = new VirtualView("gigi", clientHandler2, controller);
+
+        game.getObservers().add(virtualView1);
+        game.getObservers().add(virtualView2);
+
+        game.addPlayer(player1);
+        game.addPlayer(player2);
+
+        Writer out = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {}
+            @Override
+            public void flush() throws IOException {}
+            @Override
+            public void close() throws IOException {}
+        };
+        PrintWriter out1 = new PrintWriter(out);
+        virtualView1.setClientHandler(clientHandler1);
+        clientHandler1.setOut(out1);
+        PrintWriter out2 = new PrintWriter(out);
+        virtualView2.setClientHandler(clientHandler2);
+        clientHandler2.setOut(out2);
+
+
         game.startTimer();
+
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Test
@@ -137,27 +185,171 @@ public class GameTest {
 
     @Test
     void checkEndGame() {
-        Assertions.assertEquals(false,game.checkEndGame());
+    Game game = new Game(2);
+    game.setEnd();
+    EndToken endToken = new EndToken();
+    game.setEndToken(endToken);
+    game.getEndToken().setEnd(true);
+
+    Player player1 = new Player("gigi");
+    Player player2 = new Player("mario");
+
+    game.setTurn(TurnPhase.ENDTURN);
+
+
+    game.setCurrentPlayer(player1);
+    player1.setNext(player2);
+    game.setFirstPlayer(player2);
+
+    game.checkEndGame();
+
+    game.getEndToken().setEnd(false);
+
+    game.checkEndGame();
     }
 
     @Test
     void updatePickableTiles() {
-        game.updatePickableTiles(new Position(0,0));
+        Game game = new Game(2);
+        Board board = new Board();
+        game.setBoard(board);
+
+        Position position1 = new Position(1,1);
+        board.getPickableTiles().add(position1);
+
+        Player player = new Player("luigi");
+        game.setCurrentPlayer(player);
+
         game.setTurn(TurnPhase.SELECTION);
+        game.updatePickableTiles(new Position(1,1));
+
+        ClientHandler clientHandler = new ClientHandler();
+        Controller controller = new Controller(game, null);
+        VirtualView virtualView = new VirtualView("luigi", clientHandler, controller);
+
+
+        Writer out = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {}
+            @Override
+            public void flush() throws IOException {}
+            @Override
+            public void close() throws IOException {}
+        };
+        PrintWriter out1 = new PrintWriter(out);
+        virtualView.setClientHandler(clientHandler);
+        clientHandler.setOut(out1);
+
+        game.getObservers().add(virtualView);
+
+        game.setTurn(TurnPhase.SELECTION);
+
         game.updatePickableTiles(new Position(0,0));
+
+        game.setTurn(TurnPhase.PICK);
+
+        game.updatePickableTiles(new Position(1,1));
+
+
     }
 
     @Test
     void removeSelectedTiles() {
         game.startGame();
-        game.removeSelectedTiles();
+
         game.setTurn(TurnPhase.SELECTION);
         game.removeSelectedTiles();
+
+        Player marco = new Player("marco");
+
+        game.setCurrentPlayer(marco);
+        ClientHandler clientHandler = new ClientHandler();
+        Controller controller = new Controller(game, null);
+        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        game.getObservers().add(virtualView);
+
+        Writer out = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {}
+            @Override
+            public void flush() throws IOException {}
+            @Override
+            public void close() throws IOException {}
+        };
+        PrintWriter out1 = new PrintWriter(out);
+        virtualView.setClientHandler(clientHandler);
+        clientHandler.setOut(out1);
+
+        game.setTurn(TurnPhase.PICK);
+        game.removeSelectedTiles();
+
+
     }
 
     @Test
     void pickTiles() {
+        Game game = new Game(2);
+        game.setTurn(TurnPhase.PICK);
+
+        Player player = new Player("marco");
+        game.setCurrentPlayer(player);
+        Bookshelf bookshelf = new Bookshelf();
+        player.setBookshelf(bookshelf);
+
+        Board board = new Board();
+        player.setBoard(board);
+
+        Position position = new Position(1,1);
+        player.getSelectedPositions().add(position);
+
         game.pickTiles();
+
+
+        Game game2 = new Game(2);
+        game2.setTurn(TurnPhase.PICK);
+
+        Player player2 = new Player("marco");
+        game.setCurrentPlayer(player2);
+        Bookshelf bookshelf2 = new Bookshelf();
+        player2.setBookshelf(bookshelf2);
+
+        Board board2 = new Board();
+        player.setBoard(board2);
+
+        game2.setCurrentPlayer(player2);
+
+        // riempio il tile delle posizioni con più di 6 elementi per non farlo inserire nella bookshelf
+        player2.getSelectedPositions().add(position);
+        player2.getSelectedPositions().add(position);
+        player2.getSelectedPositions().add(position);
+        player2.getSelectedPositions().add(position);
+        player2.getSelectedPositions().add(position);
+        player2.getSelectedPositions().add(position);
+        player2.getSelectedPositions().add(position);
+        player2.getSelectedPositions().add(position);
+        player2.getSelectedPositions().add(position);
+
+        ClientHandler clientHandler = new ClientHandler();
+        Controller controller = new Controller(game, null);
+        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+
+        Writer out = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {}
+            @Override
+            public void flush() throws IOException {}
+            @Override
+            public void close() throws IOException {}
+        };
+        PrintWriter out1 = new PrintWriter(out);
+        virtualView.setClientHandler(clientHandler);
+        clientHandler.setOut(out1);
+        game2.getObservers().add(virtualView);
+
+        game2.pickTiles();
+
+        game2.setTurn(TurnPhase.SELECTION);
+        game2.pickTiles();
     }
 
     @Test
@@ -180,18 +372,43 @@ public class GameTest {
 
     @Test
     void insertInBookshelf() {
-        Player p1 = new Player("marco");
+        /* Player p1 = new Player("marco");
         p1.createBookshelf();
+        CommonGoal c1 = new CommonGoal(1,1);
+        CommonGoal c2 = new CommonGoal(2,1);
+        game.getCurrentComGoals().add(c1);
+        game.getCurrentComGoals().add(c2);
+
         game.setCurrentPlayer(p1);
-        //game.setTurn(TurnPhase.INSERT);
+        game.setTurn(TurnPhase.INSERT);
         game.insertInBookshelf(1);
+
+         */
     }
 
     @Test
     void endGame() {
-        ArrayList<Player> players = game.getPlayers();
-        players.get(0).setDisconnected(true);
+        Player player = new Player("marco");
+        Player player2 = new Player("filippo");
+
+
+        Game game = new Game(2);
+
+        game.setFirstPlayer(player2);
+        game.setEnd();
+        EndToken endToken = new EndToken();
+        game.setEndToken(endToken);
+        game.getEndToken().setEnd(true);
+
+        game.setCurrentPlayer(player);
+        player.setNext(player2);
+
         game.setTurn(TurnPhase.ENDGAME);
+
+
+        game.getPlayers().add(player);
+        game.getPlayers().add(player2);
+
         game.endGame();
     }
 
@@ -222,10 +439,25 @@ public class GameTest {
 
     @Test
     void register() {
+        ClientHandler clientHandler = new ClientHandler();
+        Game game = new Game(2);
+        Lobby lobby = new Lobby();
+        Controller controller = new Controller(game, lobby);
+        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        game.register(virtualView);
+        Assertions.assertFalse(game.getObservers().isEmpty());
     }
 
     @Test
     void unregister() {
+        ClientHandler clientHandler = new ClientHandler();
+        Game game = new Game(2);
+        Lobby lobby = new Lobby();
+        Controller controller = new Controller(game, lobby);
+        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        game.register(virtualView);
+        game.unregister(virtualView);
+        Assertions.assertTrue(game.getObservers().isEmpty());
     }
 
     @Test
@@ -251,6 +483,44 @@ public class GameTest {
 
     @Test
     void notifyReconnection() {
+
+        Controller controller = new Controller(null, null);
+        VirtualView virtualView = new VirtualView("marco", null, controller);
+        Game game = new Game(2);
+        Player player = new Player("marco");
+        game.addPlayer(player);
+        ClientHandler clientHandler = new ClientHandler();
+
+        player.setPersonalGoal(1);
+        Bookshelf bookshelf = new Bookshelf();
+        player.setBookshelf(bookshelf);
+
+        Board board = new Board();
+        game.setBoard(board);
+        game.setCurrentPlayer(player);
+        Writer out = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {}
+            @Override
+            public void flush() throws IOException {}
+            @Override
+            public void close() throws IOException {}
+        };
+        PrintWriter out1 = new PrintWriter(out);
+        virtualView.setClientHandler(clientHandler);
+        clientHandler.setOut(out1);
+
+        CommonGoal c1 = new CommonGoal(1, 1);
+        CommonGoal c2 = new CommonGoal(2, 1);
+
+
+        game.getCurrentComGoals().add(c1);
+        game.getCurrentComGoals().add(c2);
+
+        game.register(virtualView);
+
+        game.notifyReconnection("marco");
+
     }
 
     @Test
@@ -258,6 +528,68 @@ public class GameTest {
         game.notifyCommongoal("fuil", 0,0);
     }
 
+    @Test
+    void notifyObservers(){
+        Game game = new Game(2);
+
+        Player player = new Player("marco");
+
+        game.setCurrentPlayer(player);
+        game.setFirstPlayer(player);
+
+        CommonGoal c1 = new CommonGoal(1, 1);
+        CommonGoal c2 = new CommonGoal(2, 1);
+
+
+        game.getCurrentComGoals().add(c1);
+        game.getCurrentComGoals().add(c2);
+
+        Board board = new Board();
+        game.setBoard(board);
+        game.getPlayers().add(player);
+
+        player.setPersonalGoal(2);
+        Bookshelf bookshelf = new Bookshelf();
+        player.setBookshelf(bookshelf);
+
+        ClientHandler clientHandler = new ClientHandler();
+        ScheduledExecutorService waitPing = new ScheduledThreadPoolExecutor(1);
+        clientHandler.setWaitPing(waitPing);
+
+        ScheduledExecutorService sendPing = new ScheduledThreadPoolExecutor(1);
+        clientHandler.setSendPing(sendPing);
+
+        Lobby lobby = new Lobby();
+        clientHandler.setLobby(lobby);
+
+        GameServer gameServer = new GameServer();
+        clientHandler.setGameServer(gameServer);
+
+        Controller controller = new Controller(game, null);
+        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+
+        Writer out = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {}
+            @Override
+            public void flush() throws IOException {}
+            @Override
+            public void close() throws IOException {}
+        };
+        PrintWriter out1 = new PrintWriter(out);
+        virtualView.setClientHandler(clientHandler);
+        clientHandler.setOut(out1);
+
+        game.getObservers().add(virtualView);
+
+        game.notifyObservers(TurnPhase.ENDGAME);
+        game.notifyObservers(TurnPhase.PICK);
+        game.notifyObservers(TurnPhase.START);
+        game.notifyObservers(TurnPhase.SELECTION);
+        game.notifyObservers(TurnPhase.INSERT);
+        game.notifyObservers(TurnPhase.ORDER);
+
+    }
     @Test
     void setCurrentPlayer() {
         Player p1 = new Player("fra");

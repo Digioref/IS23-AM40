@@ -80,6 +80,8 @@ public class Game implements IGame {
         groupChat = new GroupChat();
         discPlayers = new ArrayList<>();
         timerstate = false;
+        currentComGoals = new ArrayList<>();
+        winner = new Player("");
     }
 
     /**
@@ -831,4 +833,14 @@ public class Game implements IGame {
         }
         currentPlayer.getTilesPicked().clear();
     }
+
+    public void setBoard(Board board){
+        this.board = board;
+    }
+
+    public void setFirstPlayer(Player firstPlayer){
+        this.firstPlayer = firstPlayer;
+    }
+
+
 }
