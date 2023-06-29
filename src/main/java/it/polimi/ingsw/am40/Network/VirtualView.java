@@ -365,7 +365,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         try {
             clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not the SELECTION phase!"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error in sending the number of players");
         }
     }
 
@@ -403,7 +403,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         try {
             clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not the PICK phase!"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error in sending list of players");
         }
     }
 
@@ -415,7 +415,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         try {
             clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not the ORDER phase!"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error in sending commonGoal");
         }
     }
 
@@ -427,7 +427,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         try {
             clientHandler.sendMessage(JSONConverterStoC.createJSONError("The order specified is not compatible with the number of tiles picked!"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error in sending PersonalGoal");
         }
     }
 
@@ -439,7 +439,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         try {
             clientHandler.sendMessage(JSONConverterStoC.createJSONError("It's not the INSERT phase!"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error in sending bookshelves information");
         }
     }
 
@@ -476,7 +476,7 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         try {
             clientHandler.sendMessage(JSONConverterStoC.createJSONError("The player you want to send the message is not in this game!"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error in sending the message");
         }
     }
 

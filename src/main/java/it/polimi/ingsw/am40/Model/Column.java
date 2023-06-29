@@ -139,4 +139,10 @@ public class Column {
     public boolean isEmpty() {
         return column.isEmpty();
     }
+
+    public void resetMark(){
+        for(int i=0; i<column.size();i++){
+            mark.set(i,0);
+        }
+    }
 }

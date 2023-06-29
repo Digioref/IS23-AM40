@@ -404,7 +404,7 @@ public class CommonGoal {
         final int TARGET = 2;
         for (int j = 0; j < NROW && count < TARGET; j++) {
             equal = 0;
-            for (int i = 1; i < NCOL && equal == 0; i++) {
+            for (int i = 0; i < NCOL && equal == 0; i++) {  //modified i starting point from 1 to 0
                 if (bookshelf.getTile(i, j) != null) {
                     for (int k = 0; k < i && equal == 0; k++) {
                         if (bookshelf.getTile(i, j).equals(bookshelf.getTile(k, j))) { // se trovo due celle uguali esco
@@ -432,7 +432,7 @@ public class CommonGoal {
 
         // precheck che ci siano almeno 4 tile in ciascuna colonna, .get restituisce la colonna
         for (int i = 0; i < NCOL; i++) {
-            if (bookshelf.getBookshelf().get(i).getColumn().size() < 4)
+            if (bookshelf.getBookshelf().get(i).getSize() < 4)
                 return 0;
         }
         int count = 0;
