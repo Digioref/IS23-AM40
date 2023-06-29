@@ -813,6 +813,11 @@ public class Viewer extends Application {
 
 	}
 
+	public void reconnectBookshelf(Map<String, String> map) {
+		System.out.println("qui2");
+		bookshelf.reconnectPlaceTiles(map, primaryStage);
+	}
+
 	class Delta {
 		double x, y;
 	}

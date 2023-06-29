@@ -312,6 +312,15 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    @Override
+    public void receiveBookshelf(Bookshelf bookshelf) {
+        try {
+            clientHandler.sendMessage(JSONConverterStoC.createJSONBook(bookshelf));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * It returns the nickname
      * @return the attribute nickname
