@@ -320,4 +320,20 @@ public class Player {
     public void setGame(Game game) {
         this.game = game;
     }
+
+    public void setBookshelf(Bookshelf bookshelf) {
+        this.bookshelf = bookshelf;
+    }
+
+    public void setCurrentScore(int i) {
+        currentScore = i;
+    }
+
+    public void setHiddenScore(int i) {
+        hiddenScore = i;
+    }
+
+    public Game getGame() {
+        return game;
+    }
 }

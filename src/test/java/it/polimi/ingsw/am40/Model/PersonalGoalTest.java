@@ -38,23 +38,23 @@ class PersonalGoalTest {
 
     }
 
-//    @Test
-//    void setPos() {
-//        ArrayList<Position> p = new ArrayList<>();
-//        p.add(new Position(0,0));
-////        pers.setPos(p);
-//        Assertions.assertEquals(p,pers.getPos());
-//
-//    }
+    @Test
+    void setPos() {
+        ArrayList<Position> p = new ArrayList<>();
+        p.add(new Position(0,0));
+        pers.setPos(p);
+        Assertions.assertEquals(p,pers.getPos());
 
-//    @Test
-//    void setColor() {
-//        ArrayList<TileColor> c = new ArrayList<>();
-//        c.add(TileColor.WHITE);
-////        pers.setColor(c);
-//        Assertions.assertEquals(c,pers.getColor());
-//
-//    }
+    }
+
+    @Test
+    void setColor() {
+        ArrayList<TileColor> c = new ArrayList<>();
+        c.add(TileColor.WHITE);
+        pers.setColor(c);
+        Assertions.assertEquals(c,pers.getColor());
+
+    }
 
     @Test
     void testToString() {
