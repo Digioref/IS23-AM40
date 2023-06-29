@@ -348,6 +348,14 @@ public class Player {
         return doneCG1;
     }
 
+    public void setDoneCG1(boolean doneCG1){
+        this.doneCG1 = doneCG1;
+    }
+
+    public void setDoneCG2(boolean doneCG2){
+        this.doneCG2 = doneCG2;
+    }
+
     public boolean isDoneCG2() {
         return doneCG2;
     }

@@ -843,5 +843,8 @@ public class Game implements IGame {
         this.firstPlayer = firstPlayer;
     }
 
+    public void setCommonGoals(ArrayList<CommonGoal> commonGoals){
+        this.commonGoals.addAll(commonGoals);
+    }
 
 }
