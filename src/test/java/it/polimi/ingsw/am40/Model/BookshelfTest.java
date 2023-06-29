@@ -231,4 +231,18 @@ class BookshelfTest {
         }
         System.out.println(bookshelf.toString());
     }
+
+    @Test
+    void checkSpace() {
+        Bookshelf b = new Bookshelf();
+        for (int i = 0; i < 5; i++) {
+            b.addTile(new Tile(TileColor.GREEN, TileType.CATS), i);
+            b.addTile(new Tile(TileColor.GREEN, TileType.CATS), i);
+            b.addTile(new Tile(TileColor.GREEN, TileType.CATS), i);
+            b.addTile(new Tile(TileColor.GREEN, TileType.CATS), i);
+        }
+        Assertions.assertFalse(b.checkSpace(3));
+        Assertions.assertTrue(b.checkSpace(2));
+
+    }
 }

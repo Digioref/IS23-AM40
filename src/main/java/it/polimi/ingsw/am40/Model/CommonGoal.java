@@ -449,9 +449,9 @@ public class CommonGoal {
             if (differentColours.size() <= 3) {
                 ++count;
             }
-            if (count == 4) {
-                return commgoaltok.updateScore();
-            }
+//            if (count == 4) {
+//                return commgoaltok.updateScore();
+//            }
         }
         if (count < 4) {
             return 0;

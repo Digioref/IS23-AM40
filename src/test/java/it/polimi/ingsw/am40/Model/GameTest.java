@@ -43,7 +43,7 @@ public class GameTest {
         Assertions.assertEquals("dani", players.get(1).getNickname());
     }
 
-    /*
+
     @Test
     void configureGame() {
         ArrayList<CommonGoal> commonGoals = game.getCommonGoals();
@@ -65,7 +65,7 @@ public class GameTest {
         for (Player player : players) {
             Assertions.assertNotNull(player.getBookshelf());
         }
-    } */
+    }
 
     @Test
     void startGame() {

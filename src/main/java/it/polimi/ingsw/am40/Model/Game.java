@@ -798,4 +798,8 @@ public class Game implements IGame {
         return endToken;
     }
 
+    public ArrayList<CommonGoal> getCommonGoals() {
+        return commonGoals;
+
+    }
 }
