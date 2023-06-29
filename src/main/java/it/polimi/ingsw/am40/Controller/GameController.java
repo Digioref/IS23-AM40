@@ -158,6 +158,8 @@ public class GameController {
             }
         }
         if (game.getCurrentPlayer().getNickname().equals(s)) {
+            game.getCurrentPlayer().getSelectedPositions().clear();
+            game.resetPickedDisc();
             game.setTurn(TurnPhase.ENDTURN);
             game.nextPlayer();
             game.startTurn();

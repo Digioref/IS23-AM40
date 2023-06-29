@@ -622,6 +622,7 @@ public class Game implements IGame {
                     v.receiveNumPlayers(numPlayers);
                     v.receiveListBookshelves(players);
                     v.receiveFirstPlayer(firstPlayer);
+                    v.receiveCurrentPlayer(currentPlayer);
                 }
             }
             case SELECTION -> {
@@ -801,5 +802,12 @@ public class Game implements IGame {
     public ArrayList<CommonGoal> getCommonGoals() {
         return commonGoals;
 
+    }
+
+    public void resetPickedDisc() {
+        for (Tile t: currentPlayer.getTilesPicked()) {
+            board.getGrid().remove(t.getPos().getKey());
+            board.getGrid().put(t.getPos().getKey(), t);
+        }
     }
 }
