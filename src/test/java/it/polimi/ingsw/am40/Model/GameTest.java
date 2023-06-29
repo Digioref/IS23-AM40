@@ -222,10 +222,25 @@ public class GameTest {
 
     @Test
     void register() {
+        ClientHandler clientHandler = new ClientHandler();
+        Game game = new Game(2);
+        Lobby lobby = new Lobby();
+        Controller controller = new Controller(game, lobby);
+        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        game.register(virtualView);
+        Assertions.assertFalse(game.getObservers().isEmpty());
     }
 
     @Test
     void unregister() {
+        ClientHandler clientHandler = new ClientHandler();
+        Game game = new Game(2);
+        Lobby lobby = new Lobby();
+        Controller controller = new Controller(game, lobby);
+        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        game.register(virtualView);
+        game.unregister(virtualView);
+        Assertions.assertTrue(game.getObservers().isEmpty());
     }
 
     @Test
@@ -251,6 +266,9 @@ public class GameTest {
 
     @Test
     void notifyReconnection() {
+        Game game = new Game (2);
+        game.notifyReconnection("marco");
+
     }
 
     @Test
