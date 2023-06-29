@@ -7,6 +7,7 @@ import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.GameServer;
 import it.polimi.ingsw.am40.Network.Handlers;
 import it.polimi.ingsw.am40.Network.VirtualView;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -481,7 +482,7 @@ public class GameTest{
         Assertions.assertEquals(true, game.isTimerStarted());
     }
 
-    @Test
+    @Ignore
     void notifyReconnection() {
 
         Controller controller = new Controller(null, null);

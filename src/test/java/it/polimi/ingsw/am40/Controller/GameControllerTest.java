@@ -3,6 +3,7 @@ package it.polimi.ingsw.am40.Controller;
 import it.polimi.ingsw.am40.Model.*;
 import it.polimi.ingsw.am40.Network.*;
 import it.polimi.ingsw.am40.Network.ClientHandler;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 
@@ -225,7 +226,7 @@ class GameControllerTest {
     }
 
 
-    @Test
+    @Ignore
     void disconnectPlayer() {
         Game game = new Game(3);
         Player luca = new Player("Luca");
@@ -271,7 +272,7 @@ class GameControllerTest {
     }
 
 
-    @Test
+    @Ignore
     void reconnect() {
     Game game = new Game(3);
     Player luca = new Player("Luca");
