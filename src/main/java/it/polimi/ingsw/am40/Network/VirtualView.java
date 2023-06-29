@@ -303,6 +303,15 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    @Override
+    public void receiveReconnection(String s) {
+        try {
+            clientHandler.sendMessage(JSONConverterStoC.normalMessage("Player "+ s + " reconnected!"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * It returns the nickname
      * @return the attribute nickname
@@ -435,6 +444,15 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
     public void chatError() {
         try {
             clientHandler.sendMessage(JSONConverterStoC.createJSONError("The player you want to send the message is not in this game!"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void pickColumnFullError() {
+        try {
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("There is no column with available space equal to the number of tiles picked!"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

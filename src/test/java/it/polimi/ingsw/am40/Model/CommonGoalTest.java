@@ -63,6 +63,7 @@ public class CommonGoalTest {
                                 row.add(new Tile(TileColor.NOCOLOR, TileType.EMPTY));
                             }
 
+
                         }
                     }
                     book.add(5-j, row);

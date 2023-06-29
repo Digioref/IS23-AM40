@@ -70,7 +70,7 @@ public class BoardTest {
         assertEquals(TileType.EMPTY, b1.getGrid().get(p.getKey()).getType());
         */
         Tile t1 = b1.pick(p.getKey());
-        assertEquals(null, t1);
+        assertNull(t1);
     }
 
     /**
@@ -115,6 +115,7 @@ public class BoardTest {
         Board b1 = g.getBoard();
         Bag b = g.getBag();
         b1.config(b);
+        pippo.setBoard(b1);
         for (String s: b1.getGrid().keySet()) {
             System.out.println(b1.getGrid().get(s).toString());
         }
@@ -123,5 +124,35 @@ public class BoardTest {
             System.out.println(p.getKey());
         }
         b1.updatePickable(new Position(0,0),pippo);
+        b1.getPickableTiles().remove(new Position(2,2));
+        b1.updatePickable(new Position(1, 1), pippo);
+        pippo.getSelectedPositions().add(new Position(0,0));
+        pippo.getSelectedPositions().add(new Position(0,1));
+        pippo.getSelectedPositions().add(new Position(0,2));
+        b1.updatePickable(new Position(-1, 1), pippo);
+        pippo.clearSelected();
+        pippo.getSelectedPositions().add(new Position(0,0));
+        pippo.getSelectedPositions().add(new Position(0,1));
+        b1.getPickableTiles().remove(new Position(-2,2));
+        b1.updatePickable(new Position(-1, 1), pippo);
+        pippo.clearSelected();
+        pippo.getSelectedPositions().add(new Position(3,0));
+        pippo.getSelectedPositions().add(new Position(3,1));
+        b1.getPickableTiles().remove(new Position(-2,1));
+        b1.updatePickable(new Position(3, 1), pippo);
+        pippo.clearSelected();
+        pippo.getSelectedPositions().add(new Position(0,3));
+        pippo.getSelectedPositions().add(new Position(-1,3));
+        b1.getPickableTiles().remove(new Position(-1,-3));
+        b1.updatePickable(new Position(3, 1), pippo);
+
+        b1.getStartingPickable().clear();
+        assertTrue(b1.getStartingPickable().isEmpty());
+
+        b1.config(b);
+        assertFalse(b1.needRefill());
+        b1.getGrid().clear();
+        assertTrue(b1.needRefill());
+
     }
 }

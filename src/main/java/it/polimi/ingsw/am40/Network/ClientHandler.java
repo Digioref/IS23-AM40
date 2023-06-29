@@ -51,6 +51,7 @@ public class ClientHandler extends Handlers implements Runnable {
             throw new RuntimeException(e);
         }
         setLogphase(LoggingPhase.LOGGING);
+        disconnected = false;
     }
 
     /**
@@ -147,8 +148,11 @@ public class ClientHandler extends Handlers implements Runnable {
         Runnable task = () -> {
             nPingLost++;
             if (nPingLost >= NUMLOST) {
-                System.out.println("Client disconnected for having lost " + NUMLOST +  " PING!");
-                close();
+                if (!disconnected) {
+                    disconnected = true;
+                    System.out.println("Client disconnected for having lost " + NUMLOST +  " PING!");
+                    close();
+                }
             }
         };
         synchronized (this){

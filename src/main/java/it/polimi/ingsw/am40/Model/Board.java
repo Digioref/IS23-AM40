@@ -153,7 +153,7 @@ public class Board {
             if(pl.getSelectedPositions().size()<MAX_TILE){
                 for (Position position : startingPickable) {
                     if (!pickableTiles.contains(position)) {
-                        if (isPickable(pos, position) && isInLine(pos, position, pl.getSelectedPositions())) {
+                        if (isInLine(pos, position, pl.getSelectedPositions()) && isPickable(pos, position)) {
                             pickableTiles.add(position);
                         }
                     } else {
@@ -233,5 +233,9 @@ public class Board {
 
     public ArrayList<Position> getPickableTiles() {
         return pickableTiles;
+    }
+
+    public ArrayList<Position> getStartingPickable() {
+        return startingPickable;
     }
 }

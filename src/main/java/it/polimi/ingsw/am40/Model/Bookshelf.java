@@ -195,4 +195,12 @@ public class Bookshelf {
             System.out.println(tmp);
         }
     }
+    public boolean checkSpace(int num) {
+        for (Column c: bookshelf) {
+            if (c.getFreeSpace() >= num) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

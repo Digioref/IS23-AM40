@@ -200,5 +200,10 @@ class ColumnTest {
         Tile tile= new Tile(TileColor.GREEN,TileType.CATS);
         col.addTile(tile);
         assertFalse(col.isEmpty());
+        col.getColumn().clear();
+        assertEquals("Column{" +
+                "column=" + "[]"+
+                ", mark=" + "[0]" +
+                '}', col.toString());
     }
 }

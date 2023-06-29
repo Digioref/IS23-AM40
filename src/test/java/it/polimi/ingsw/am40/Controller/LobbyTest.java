@@ -1,32 +1,42 @@
 package it.polimi.ingsw.am40.Controller;
 
+import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.ClientHandler;
+import it.polimi.ingsw.am40.Network.GameServer;
 import it.polimi.ingsw.am40.Network.LoggingPhase;
 import org.junit.jupiter.api.Test;
+
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LobbyTest {
 
-//    @Test
-//    void removeFromQueue() {
-//        Lobby lobby = new Lobby();
-//        ClientHandler clientHandler = new ClientHandler();
-//        lobby.getQueue().add(clientHandler);
-//        lobby.removeFromQueue();
-//
-//        lobby.setNumPlayers(2);
-//        lobby.getQueue().add(clientHandler);
-//        ClientHandler clientHandler1 = new ClientHandler();
-//        lobby.removeFromQueue();
-//    }
+class LobbyTest {
+    @Test
+    void removeFromQueue() throws IOException {
+        ServerSocket ss = new ServerSocket(1234);
+        Socket s = new Socket();
+        s.connect(ss.getLocalSocketAddress());
+        ClientHandler c1 = new ClientHandler(s, new GameServer());
+        c1.setNickname("fra");
+        Lobby lobby = new Lobby();
+        lobby.setNumPlayers(2);
+        lobby.addQueue(c1);
+        lobby.removeFromQueue();
+        ClientHandler c2 = new ClientHandler(s, new GameServer());
+        lobby.addQueue(c2);
+        lobby.removeFromQueue();
+        ss.close();
+    }
 
     @Test
     void run() {
@@ -90,11 +100,25 @@ class LobbyTest {
     lobby.addQueue(clientHandler);
     }
 
-//    @Test
-//    void create() {
-//        Lobby lobby = new Lobby();
-//        lobby.create();
-//    }
+    @Test
+    void create() throws IOException {
+        ServerSocket ss = new ServerSocket(1234);
+        Socket s1 = new Socket();
+        s1.connect(ss.getLocalSocketAddress());
+        Lobby lobby = new Lobby();
+        lobby.setNumPlayers(2);
+        ClientHandler c1 = new ClientHandler(s1, new GameServer());
+        c1.setNickname("fra");
+        lobby.getActivePlayers().add(c1);
+        ClientHandler c2 = new ClientHandler(s1, new GameServer());
+        c2.setNickname("ale");
+        lobby.getActivePlayers().add(c2);
+        ClientHandler c3 = new ClientHandler(s1, new GameServer());
+        c3.setNickname("fra");
+        lobby.addQueue(c3);
+        lobby.create();
+        ss.close();
+    }
 
     @Test
     void getNicknameInGame() {

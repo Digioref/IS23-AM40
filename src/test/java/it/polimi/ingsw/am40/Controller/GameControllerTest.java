@@ -1,24 +1,18 @@
 package it.polimi.ingsw.am40.Controller;
 
-import it.polimi.ingsw.am40.Model.EndToken;
-import it.polimi.ingsw.am40.Model.Game;
-import it.polimi.ingsw.am40.Model.Player;
+import it.polimi.ingsw.am40.Model.*;
 import it.polimi.ingsw.am40.Network.*;
-import it.polimi.ingsw.am40.Model.Position;
 import it.polimi.ingsw.am40.Network.ClientHandler;
-import it.polimi.ingsw.am40.Network.GameServer;
-import it.polimi.ingsw.am40.Network.RMI.RMIServer;
 import org.junit.jupiter.api.Test;
 
+
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 
 class GameControllerTest {
 
@@ -50,13 +44,17 @@ class GameControllerTest {
         Player player = new Player("marco");
         gameController.setGame(game);
         game.setCurrentPlayer(player);
+        player.setBookshelf(new Bookshelf());
 
 
         gameController.pickTiles(virtualView);
 
         Player player2 = new Player("filippo");
         game.setCurrentPlayer(player2);
+        player2.setBookshelf(new Bookshelf());
         gameController.pickTiles(virtualView);
+
+
     }
 
     @Test
@@ -195,8 +193,8 @@ class GameControllerTest {
         gameController2.chat("all", "ciao", "maria");
 
 
-        gameController.chat("alberto", "ciao", "alberto");
-        gameController.chat("alberto", "ciao", "maria");
+        gameController2.chat("alberto", "ciao", "alberto");
+        gameController2.chat("alberto", "ciao", "maria");
 
 
     }

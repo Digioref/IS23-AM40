@@ -54,6 +54,9 @@ public class Player {
     private ParsingJSONManager pJSONm;
     private boolean disconnected;
     private Game game;
+    private int scoreCG1;
+    private int scoreCG2;
+
 
 
     /**
@@ -65,6 +68,8 @@ public class Player {
         currentScore = 0;
         finalScore = 0;
         hiddenScore = 0;
+        scoreCG1 = 0;
+        scoreCG2 = 0;
         this.tilesPicked = new ArrayList<>();
         doneCG1 = false;
         doneCG2 = false;
@@ -156,6 +161,7 @@ public class Player {
             currentScore += score;
             if (score != 0) {
                 doneCG1 = true;
+                scoreCG1 = score;
                 game.notifyCommongoal(nickname,commgoal.get(0).getNum(), score);
             }
         }
@@ -164,6 +170,7 @@ public class Player {
             currentScore += score;
             if (score != 0) {
                 doneCG2 = true;
+                scoreCG2 = score;
                 game.notifyCommongoal(nickname,commgoal.get(1).getNum(), score);
             }
         }
@@ -319,5 +326,37 @@ public class Player {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public void setBookshelf(Bookshelf bookshelf) {
+        this.bookshelf = bookshelf;
+    }
+
+    public void setCurrentScore(int i) {
+        currentScore = i;
+    }
+
+    public void setHiddenScore(int i) {
+        hiddenScore = i;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public boolean isDoneCG1() {
+        return doneCG1;
+    }
+
+    public boolean isDoneCG2() {
+        return doneCG2;
+    }
+
+    public int getScoreCG1() {
+        return scoreCG1;
+    }
+
+    public int getScoreCG2() {
+        return scoreCG2;
     }
 }
