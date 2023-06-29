@@ -435,16 +435,26 @@ public class CommonGoal {
             if (bookshelf.getBookshelf().get(i).getColumn().size() < 4)
                 return 0;
         }
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (!(differentColours.contains(bookshelf.getTile(i, j).getColor()))) {
-                    differentColours.add(bookshelf.getTile(i, j).getColor());
+        int count = 0;
+        for (int i = 0; i < NROW; i++) {
+            for (int j = 0; j < NCOL; j++) {
+                if (bookshelf.getBookshelf().get(j).getSize() <= j) {
+                    break;
                 }
-                if (differentColours.size() > 3)
-                    return 0;
-            }
+                if (!(differentColours.contains(bookshelf.getTile(j, i).getColor()))) {
+                    differentColours.add(bookshelf.getTile(j, i).getColor());
+                }
 
+            }
+            if (differentColours.size() <= 3) {
+                ++count;
+            }
+            if (count == 4) {
+                return commgoaltok.updateScore();
+            }
+        }
+        if (count < 4) {
+            return 0;
         }
         return commgoaltok.updateScore();
     }

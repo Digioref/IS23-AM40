@@ -892,6 +892,7 @@ public class Viewer extends Application {
 	}
 
 	public void quit() {
+		primaryStage.close();
 		Platform.exit();
 	}
 
@@ -1237,17 +1238,21 @@ public class Viewer extends Application {
 			arr.add(i);
 			currentToken.add(map.get(i));
 		}
-			c1 = new CommonGoalGui(arr.get(0)-1, primaryStage);
-			c2 = new CommonGoalGui(arr.get(1)-1, primaryStage);
-			AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1 );
-			AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
-			AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2);
-			AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
-			//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
-			//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
-			gameBoard.getChildren().add(c1);
-			gameBoard.getChildren().add(c2);
-			setToken();
+		if (c1 != null && c2 != null) {
+			gameBoard.getChildren().remove(c1);
+			gameBoard.getChildren().remove(c2);
+		}
+		c1 = new CommonGoalGui(arr.get(0) - 1, primaryStage);
+		c2 = new CommonGoalGui(arr.get(1) - 1, primaryStage);
+		AnchorPane.setTopAnchor(c1, gameBoard.getHeight() * Metrics.d_y_comm1);
+		AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
+		AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2);
+		AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
+		//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
+		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
+		gameBoard.getChildren().add(c1);
+		gameBoard.getChildren().add(c2);
+		setToken();
 
 	}
 

@@ -132,7 +132,7 @@ public class Board {
      */
     public void updatePickable(Position pos, Player pl){
         System.out.println(pickableTiles);
-        if(pickableTiles.size()==startingPickable.size()){
+        if(pickableTiles.size() == startingPickable.size()){
             startingPickable.remove(pos);
             for (int i = 0; i < pickableTiles.size();) {
                 if ((!(isPickable(pos, pickableTiles.get(i)))) || pos.equals(pickableTiles.get(i))) {

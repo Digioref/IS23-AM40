@@ -440,6 +440,15 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
         }
     }
 
+    @Override
+    public void pickColumnFullError() {
+        try {
+            clientHandler.sendMessage(JSONConverterStoC.createJSONError("There is no column with available space equal to the number of tiles picked!"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * It receives the chat from the game and sends it to the client
      * @param groupChat the game chat
