@@ -98,6 +98,8 @@ public class Viewer extends Application {
 
 	private ScrollPane chatScrollPane = new ScrollPane();
 	private ComboBox<String> selectReceivers;
+	private TextField messageInput;
+	private Button sendButton;
 
 
 
@@ -698,20 +700,20 @@ public class Viewer extends Application {
 		chatScrollPane.setContent(messages);
 
 		// text field to write the message
-		TextField messageInput = new TextField();
-		Button sendButton = new Button("Send");
+		messageInput = new TextField();
+		sendButton = new Button("Send");
 		sendButton.getStylesheets().add("Button.css");
 
-		HBox inputBox = new HBox();
-		inputBox.setPadding(new Insets(10, 0, 10, 0));
-		inputBox.setSpacing(10);
-		inputBox.setAlignment(Pos.CENTER_RIGHT);
-		chatContainer.getChildren().add(inputBox);
-
-		// drop list to select the receiver
-		addNamesChat(inputBox);
-		inputBox.getChildren().add(messageInput);
-		inputBox.getChildren().add(sendButton);
+//		HBox inputBox = new HBox();
+//		inputBox.setPadding(new Insets(10, 0, 10, 0));
+//		inputBox.setSpacing(10);
+//		inputBox.setAlignment(Pos.CENTER_RIGHT);
+//		chatContainer.getChildren().add(inputBox);
+//
+//		// drop list to select the receiver
+//		addNamesChat(inputBox);
+//		inputBox.getChildren().add(messageInput);
+//		inputBox.getChildren().add(sendButton);
 
 		// update the full message list, I can add one message at a time if I am notified when I receive one
 //		GroupChat chatClass = new GroupChat();
@@ -846,7 +848,6 @@ public class Viewer extends Application {
 	}
 
 	public void reconnectBookshelf(Map<String, String> map) {
-		System.out.println("qui2");
 		bookshelf.reconnectPlaceTiles(map, primaryStage);
 	}
 
@@ -1044,19 +1045,21 @@ public class Viewer extends Application {
 
 		setTitle(vbox);
 
-		HBox hb = new HBox();
-		vbox.getChildren().add(hb);
-		hb.setAlignment(Pos.CENTER);
+//		HBox hb = new HBox();
+//		vbox.getChildren().add(hb);
+//		hb.setAlignment(Pos.CENTER);
 
-		Text t1 = addDescription(hb, "Select the number of Players: ");
+		Text t1 = addDescription(vbox, "Select the number of Players: ");
 
 		//TextField tf = addTextField(vbox);
 
 		ComboBox<String> dropdown = new ComboBox<>();
 		dropdown.getItems().addAll("2", "3", "4");
 		dropdown.getSelectionModel().selectFirst();
+		dropdown.setPrefHeight(30);
+		dropdown.setPrefWidth(60);
 
-		hb.getChildren().add(dropdown);
+		vbox.getChildren().add(dropdown);
 
 		Button b1 = addButton(vbox, "SetPlayers", true);
 		Text t2 = addDescription(vbox, "");
@@ -1426,11 +1429,11 @@ public class Viewer extends Application {
 		for (String s: names) {
 			ppboard.addPlayer(s);
 		}
-		//addNamesChat();
+		addNamesChat();
 
 	}
 
-	private void addNamesChat(HBox hb) {
+	private void addNamesChat() {
 		if (!chatContainer.getChildren().contains(selectReceivers)) {
 			selectReceivers = new ComboBox<>();
 			ArrayList<String> sendTo = new ArrayList<>(names);
@@ -1438,9 +1441,17 @@ public class Viewer extends Application {
 			if (sendTo.size() > 1) {
 				sendTo.add("everyOne");
 			}
+			HBox inputBox = new HBox();
+			inputBox.setPadding(new Insets(10, 0, 10, 0));
+			inputBox.setSpacing(10);
+			inputBox.setAlignment(Pos.CENTER_RIGHT);
+			chatContainer.getChildren().add(inputBox);
+
+			inputBox.getChildren().add(messageInput);
+			inputBox.getChildren().add(sendButton);
 			selectReceivers.getItems().addAll(sendTo);
 			selectReceivers.setValue(sendTo.get(sendTo.size()-1));
-			hb.getChildren().add(selectReceivers);
+			inputBox.getChildren().add(selectReceivers);
 		}
 
 	}
