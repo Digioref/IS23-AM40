@@ -1210,11 +1210,13 @@ public class Viewer extends Application {
 		gameBoard.getChildren().add(bookshelf);
 
 		for (int i = 0; i < ARROWS_DOWN; i++) {
+			System.out.println();
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
 			arrowDown.setUserData(arrowDown);
 			arrowDown.setVisible(false);
 			arrowDown.setIndex(i);
 			arrowDown.setSize(gameBoard.getWidth() * Metrics.ARROW_DOWN_WIDTH,gameBoard.getHeight() * Metrics.ARROW_DOWN_HEIGHT);
+			System.out.println("POSIZIONE ARROWDOWN " + i + " -- W: " + (gameBoard.getWidth() * (1026.0/1536.0) + gameBoard.getWidth()* (i*60)/1536.0) + "H: " + gameBoard.getHeight()* 168.0/864.0);
 			AnchorPane.setLeftAnchor(arrowDown, gameBoard.getWidth() * (1026.0/1536.0) + gameBoard.getWidth()* (i*60)/1536.0);
 			AnchorPane.setTopAnchor(arrowDown, gameBoard.getHeight()* 168.0/864.0);
 			arrowDown.setOnMouseClicked(event -> {
@@ -1249,7 +1251,6 @@ public class Viewer extends Application {
 				Tile t = (Tile) board.getTiles().get(s);
 				t.setPickable(false);
 			}
-
 			int col = 0;
 			for (Arrow a : arrowDownList) {
 				if (!bookshelf.isFull(col++)) {

@@ -144,28 +144,25 @@ public class Bookshelf extends AnchorPane {
 		System.out.println(primaryStage.getWidth());
 		System.out.println(primaryStage.getHeight());
 		for (String s: map.keySet()) {
-			System.out.println("qui3");
-			Position p = new Position();
-			System.out.println("Position: " + s);
-			p.convertKey(s);
-			Tile t = new Tile(map.get(s), primaryStage);
-			AnchorPane.clearConstraints(t);
-			System.out.println(colStart[p.getX()]);
-			System.out.println(rowEnd[p.getY()]);
-			AnchorPane.setLeftAnchor(t, colStart[p.getX()]);
-			AnchorPane.setTopAnchor(t, rowEnd[p.getY()]);
-			getChildren().add(t);
-			bsImage.toFront();
-			labelName.toFront();
-			bookshelf[p.getX()]++;
-
+			if(!map.get(s).equals("NOCOLOR")){
+				Position p = new Position();
+				p.convertKey(s);
+				Tile t = new Tile(map.get(s), primaryStage);
+				AnchorPane.clearConstraints(t);
+				AnchorPane.setLeftAnchor(t, colStart[p.getX()]);
+				AnchorPane.setTopAnchor(t, rowEnd[p.getY()]);
+				getChildren().add(t);
+				bsImage.toFront();
+				labelName.toFront();
+				bookshelf[p.getX()]++;
+			}
 		}
 	}
 
 	public void insert(ArrayList<Node> nodeList, int col) {
 		this.node = null;
 		this.nodeList = nodeList;
-		System.out.println("COLSTART[" + col + "] = " + colStart[col]);
+		//System.out.println("COLSTART[" + col + "] = " + colStart[col]);
 		this.col = colStart[col];
 		this.colIndex = col;
 		animTimer.start();
@@ -173,8 +170,8 @@ public class Bookshelf extends AnchorPane {
 	public void update(ArrayList<Node> nodeList, int cols){
 		double width = this.getWidth();
 		double height = this.getHeight();
-		System.out.println("WWW : "+ width + "  HHH: " + height);
-		System.out.println("COLONNA: "+ col);
+		//System.out.println("WWW : "+ width + "  HHH: " + height);
+		//System.out.println("COLONNA: "+ col);
 		for (int i = 0; i < nodeList.size();) {
 			node = nodeList.remove(0);
 			AnchorPane.clearConstraints(node);
@@ -185,8 +182,6 @@ public class Bookshelf extends AnchorPane {
 			Tile t = (Tile) node;
 			t.getTileView().setFitWidth(274.0/360 * Metrics.dim_x_tile * widthStage);
 			t.getTileView().setFitHeight(274.0/360.0 * Metrics.dim_y_tile * heightStage);
-			System.out.println(colStart[cols]);
-			System.out.println(rowEnd[bookshelf[cols]]);
 			AnchorPane.setLeftAnchor(t, 274.0/360.0 * colStart[cols]);
 			AnchorPane.setTopAnchor(t,  274.0/360 * rowEnd[bookshelf[cols]]);
 			bookshelf[cols]++;

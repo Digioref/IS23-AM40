@@ -236,6 +236,7 @@ public class Player {
      * @return -the feature final score
      */
     public int getFinalScore() {
+        bookshelf.setMarkZero();
         finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
         return finalScore;
     }

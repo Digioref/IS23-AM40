@@ -11,7 +11,7 @@ public class Bookshelf {
      * An array made up of columns
      */
     private ArrayList<Column> bookshelf;
-    private static int DIMROW = 5;
+    private static int DIMCOL = 5;
 
     /**
      * Constructor which creates the bookshelf and its columns
@@ -19,7 +19,7 @@ public class Bookshelf {
     public Bookshelf(){
         Column newAdd;
         this.bookshelf = new ArrayList<>(5);
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < DIMCOL; i++){
             newAdd = new Column();
             bookshelf.add(newAdd);
         }
@@ -71,7 +71,7 @@ public class Bookshelf {
      * @return color of the tile
      */
     private TileColor tileColor(int x,int y){
-        if (x>=0 && x<DIMROW && y<bookshelf.get(x).getSize()){
+        if (x>=0 && x<DIMCOL && y<bookshelf.get(x).getSize()){
             return bookshelf.get(x).getColor(y);
         }
         return null;
@@ -84,7 +84,7 @@ public class Bookshelf {
      * @return int value of the mark
      */
     private int markTile(int x,int y){
-        if (x<0 || x>DIMROW || bookshelf.get(x).getSize() <= y){
+        if (x<0 || x>DIMCOL || bookshelf.get(x).getSize() <= y){
             return -1;
         }
         return bookshelf.get(x).getMark(y);
@@ -124,15 +124,10 @@ public class Bookshelf {
         int numMark=markTile(-1,-1); //purely for test coverage
         TileColor colorTmp=tileColor(-1,-1);    //purely for test coverage
         for(int i=0; i<5;i++){
-            System.out.println("<numero colonna: "+ (i+1) +" >");
             for(int j=0; j<bookshelf.get(i).getSize();j++){
-                System.out.println("<Numero riga: " + (j+1) + " ---dimensione colonna: " + bookshelf.get(i).getSize());
-                System.out.println("valore markTile("+i+","+j+") " +markTile(i,j));
                 if(markTile(i,j)==0){
                     colorTmp=tileColor(i,j);
-                    System.out.println("valore colorTmp: " +colorTmp);
                     numMark=checkMark(i,j,colorTmp);
-                    System.out.println("Valore numMark " + numMark);
                     if(numMark>2 && numMark<5){
                         result+=(numMark-1);
                     }
@@ -182,7 +177,7 @@ public class Bookshelf {
      */
     public void print(){
         ArrayList<String> tmp = new ArrayList<>();
-        for(int i=DIMROW; i>=0 ; i--){
+        for(int i=DIMCOL; i>=0 ; i--){
             tmp.clear();
             for(int j=0; j<5; j++){
                 if(this.getTile(j,i)!=null){
@@ -202,5 +197,11 @@ public class Bookshelf {
             }
         }
         return false;
+    }
+
+    public void setMarkZero(){
+        for(int i=0; i<DIMCOL;i++){
+            bookshelf.get(i).resetMark();
+        }
     }
 }
