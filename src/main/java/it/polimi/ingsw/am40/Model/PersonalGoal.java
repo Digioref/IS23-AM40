@@ -96,4 +96,5 @@ public class PersonalGoal {
     public int getKey() {
         return key;
     }
+
 }
