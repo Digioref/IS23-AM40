@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am40.Model;
 
 import it.polimi.ingsw.am40.Controller.Controller;
+import it.polimi.ingsw.am40.Controller.GameController;
 import it.polimi.ingsw.am40.Controller.Lobby;
 import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.GameServer;
@@ -10,6 +11,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -266,7 +270,42 @@ public class GameTest {
 
     @Test
     void notifyReconnection() {
-        Game game = new Game (2);
+
+        Controller controller = new Controller(null, null);
+        VirtualView virtualView = new VirtualView("marco", null, controller);
+        Game game = new Game(2);
+        Player player = new Player("marco");
+        game.addPlayer(player);
+        ClientHandler clientHandler = new ClientHandler();
+
+        player.setPersonalGoal(1);
+        Bookshelf bookshelf = new Bookshelf();
+        player.setBookshelf(bookshelf);
+
+        Board board = new Board();
+        game.setBoard(board);
+        game.setCurrentPlayer(player);
+        Writer out = new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {}
+            @Override
+            public void flush() throws IOException {}
+            @Override
+            public void close() throws IOException {}
+        };
+        PrintWriter out1 = new PrintWriter(out);
+        virtualView.setClientHandler(clientHandler);
+        clientHandler.setOut(out1);
+
+        CommonGoal c1 = new CommonGoal(1, 1);
+        CommonGoal c2 = new CommonGoal(2, 1);
+
+
+        game.getCurrentComGoals().add(c1);
+        game.getCurrentComGoals().add(c2);
+
+        game.register(virtualView);
+
         game.notifyReconnection("marco");
 
     }

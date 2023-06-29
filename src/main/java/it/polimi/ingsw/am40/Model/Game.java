@@ -80,6 +80,7 @@ public class Game implements IGame {
         groupChat = new GroupChat();
         discPlayers = new ArrayList<>();
         timerstate = false;
+        currentComGoals = new ArrayList<>();
     }
 
     /**
@@ -802,4 +803,10 @@ public class Game implements IGame {
         return commonGoals;
 
     }
+
+    public void setBoard(Board board){
+        this.board = board;
+    }
+
+
 }
