@@ -20,7 +20,7 @@ class GameControllerTest {
     @Test
     void selectTile() {
         Controller controller = new Controller(null, null);
-        VirtualView virtualView = new VirtualView("marco", null, controller);
+        VirtualView virtualView = new VirtualView("marco", null);
         Position p = new Position(1,1);
         GameController gameController = new GameController(null, controller);
         Game game = new Game(2);
@@ -39,7 +39,7 @@ class GameControllerTest {
     @Test
     void pickTiles() {
         Controller controller = new Controller(null, null);
-        VirtualView virtualView = new VirtualView("marco", null, controller);
+        VirtualView virtualView = new VirtualView("marco", null);
         GameController gameController = new GameController(null, controller);
         Game game = new Game(2);
         Player player = new Player("marco");
@@ -61,7 +61,7 @@ class GameControllerTest {
     @Test
     void notConfirmSelection() {
         Controller controller = new Controller(null, null);
-        VirtualView virtualView = new VirtualView("marco", null, controller);
+        VirtualView virtualView = new VirtualView("marco", null);
         GameController gameController = new GameController(null, controller);
         Game game = new Game(2);
         Player player = new Player("marco");
@@ -79,7 +79,7 @@ class GameControllerTest {
     @Test
     void order() {
         Controller controller = new Controller(null, null);
-        VirtualView virtualView = new VirtualView("marco", null, controller);
+        VirtualView virtualView = new VirtualView("marco", null);
         GameController gameController = new GameController(null, controller);
         Game game = new Game(2);
         Player player = new Player("marco");
@@ -100,7 +100,7 @@ class GameControllerTest {
     @Test
     void insert() {
         Controller controller = new Controller(null, null);
-        VirtualView virtualView = new VirtualView("marco", null, controller);
+        VirtualView virtualView = new VirtualView("marco", null);
         GameController gameController = new GameController(null, controller);
         Game game = new Game(2);
         Player player = new Player("marco");
@@ -116,7 +116,7 @@ class GameControllerTest {
         gameController.insert(virtualView,3);
 
         Controller controller2 = new Controller(null, null);
-        VirtualView virtualView2 = new VirtualView("pietro", null, controller);
+        VirtualView virtualView2 = new VirtualView("pietro", null);
         GameController gameController2 = new GameController(null, controller);
         Game game2 = new Game(2);
         Player player2 = new Player("marco");
@@ -131,7 +131,7 @@ class GameControllerTest {
     @Test
     void chat() {
         Controller controller = new Controller(null, null);
-        VirtualView virtualView = new VirtualView("marco", null, controller);
+        VirtualView virtualView = new VirtualView("marco", null);
         GameController gameController = new GameController(null, controller);
         Game game = new Game(3);
         Player player = new Player("marco");
@@ -163,7 +163,7 @@ class GameControllerTest {
 
 
         Controller controller2 = new Controller(null, null);
-        VirtualView virtualView2 = new VirtualView("maria", null, controller);
+        VirtualView virtualView2 = new VirtualView("maria", null);
         GameController gameController2 = new GameController(null, controller2);
         Game game2 = new Game(3);
         gameController2.setGame(game2);
@@ -203,7 +203,7 @@ class GameControllerTest {
     @Test
     void getChat() {
         Controller controller = new Controller(null, null);
-        VirtualView virtualView = new VirtualView("marco", null, controller);
+        VirtualView virtualView = new VirtualView("marco", null);
         Game game = new Game(2);
         Player player = new Player("marco");
         game.addPlayer(player);
@@ -262,7 +262,7 @@ class GameControllerTest {
         gameController.reconnect("Luca");
         gameController.reconnect("Giacomo");
 
-        VirtualView v_luca = new VirtualView("luca", null, controller);
+        VirtualView v_luca = new VirtualView("luca", null);
         game.getObservers().add(v_luca);
 
         gameController.disconnectPlayer("Luca");

@@ -1,13 +1,10 @@
 package it.polimi.ingsw.am40.Model;
 
 import it.polimi.ingsw.am40.Controller.Controller;
-import it.polimi.ingsw.am40.Controller.GameController;
 import it.polimi.ingsw.am40.Controller.Lobby;
 import it.polimi.ingsw.am40.Network.ClientHandler;
 import it.polimi.ingsw.am40.Network.GameServer;
-import it.polimi.ingsw.am40.Network.Handlers;
 import it.polimi.ingsw.am40.Network.VirtualView;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -44,7 +40,7 @@ public class GameTest{
 
         ClientHandler clientHandler = new ClientHandler();
         Controller controller = new Controller(game, null);
-        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        VirtualView virtualView = new VirtualView("marco", clientHandler);
         game.getObservers().add(virtualView);
 
         Writer out = new Writer() {
@@ -159,8 +155,8 @@ public class GameTest{
         Game game = new Game(2);
         Lobby lobby = new Lobby();
         Controller controller = new Controller(game, lobby);
-        VirtualView virtualView1 = new VirtualView("gianni", clientHandler1, controller);
-        VirtualView virtualView2 = new VirtualView("gigi", clientHandler2, controller);
+        VirtualView virtualView1 = new VirtualView("gianni", clientHandler1);
+        VirtualView virtualView2 = new VirtualView("gigi", clientHandler2);
 
         game.getObservers().add(virtualView1);
         game.getObservers().add(virtualView2);
@@ -263,7 +259,7 @@ public class GameTest{
 
         ClientHandler clientHandler = new ClientHandler();
         Controller controller = new Controller(game, null);
-        VirtualView virtualView = new VirtualView("luigi", clientHandler, controller);
+        VirtualView virtualView = new VirtualView("luigi", clientHandler);
 
 
         Writer out = new Writer() {
@@ -303,7 +299,7 @@ public class GameTest{
         game.setCurrentPlayer(marco);
         ClientHandler clientHandler = new ClientHandler();
         Controller controller = new Controller(game, null);
-        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        VirtualView virtualView = new VirtualView("marco", clientHandler);
         game.getObservers().add(virtualView);
 
         Writer out = new Writer() {
@@ -369,7 +365,7 @@ public class GameTest{
 
         ClientHandler clientHandler = new ClientHandler();
         Controller controller = new Controller(game, null);
-        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        VirtualView virtualView = new VirtualView("marco", clientHandler);
 
         Writer out = new Writer() {
             @Override
@@ -409,7 +405,7 @@ public class GameTest{
 
         ClientHandler clientHandler = new ClientHandler();
         Controller controller = new Controller(game, null);
-        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        VirtualView virtualView = new VirtualView("marco", clientHandler);
         game.getObservers().add(virtualView);
 
         Writer out = new Writer() {
@@ -451,7 +447,7 @@ public class GameTest{
 
         ClientHandler clientHandler = new ClientHandler();
         Controller controller = new Controller(game, null);
-        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        VirtualView virtualView = new VirtualView("marco", clientHandler);
         game.getObservers().add(virtualView);
 
         Writer out = new Writer() {
@@ -615,7 +611,7 @@ public class GameTest{
         Game game = new Game(2);
         Lobby lobby = new Lobby();
         Controller controller = new Controller(game, lobby);
-        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        VirtualView virtualView = new VirtualView("marco", clientHandler);
         game.register(virtualView);
         Assertions.assertFalse(game.getObservers().isEmpty());
     }
@@ -626,7 +622,7 @@ public class GameTest{
         Game game = new Game(2);
         Lobby lobby = new Lobby();
         Controller controller = new Controller(game, lobby);
-        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        VirtualView virtualView = new VirtualView("marco", clientHandler);
         game.register(virtualView);
         game.unregister(virtualView);
         Assertions.assertTrue(game.getObservers().isEmpty());
@@ -657,7 +653,7 @@ public class GameTest{
     void notifyReconnection() {
 
         Controller controller = new Controller(null, null);
-        VirtualView virtualView = new VirtualView("marco", null, controller);
+        VirtualView virtualView = new VirtualView("marco", null);
         Game game = new Game(2);
         game.configureGame();
         Player player = new Player("marco");
@@ -746,7 +742,7 @@ public class GameTest{
         clientHandler.setGameServer(gameServer);
 
         Controller controller = new Controller(game, null);
-        VirtualView virtualView = new VirtualView("marco", clientHandler, controller);
+        VirtualView virtualView = new VirtualView("marco", clientHandler);
 
         Writer out = new Writer() {
             @Override

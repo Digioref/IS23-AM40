@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am40.Network;
 
-import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.*;
 
@@ -14,20 +13,17 @@ import java.util.Map;
  */
 public class VirtualView implements  IGameObserver, IGameErrorTurn{
 
-    private String nickname;
+    private final String nickname;
     private Handlers clientHandler;
-    private Controller controller;
 
     /**
      * Constructor that initializes the features according to the parameters
      * @param nickname nickname of the player to whom the virtual view is associated
      * @param clientHandler handler of the player
-     * @param controller controller of the game to which the virtual view is registered
      */
-    public VirtualView(String nickname, Handlers clientHandler, Controller controller) {
+    public VirtualView(String nickname, Handlers clientHandler) {
         this.nickname = nickname;
         this.clientHandler = clientHandler;
-        this.controller = controller;
     }
 
     /**

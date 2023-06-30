@@ -24,7 +24,7 @@ public class Order implements ICommand {
             if (comm.size() > 0 && comm.size() < 4) {
                 for (int i = 0; i < comm.size() ; i++) {
                     try {
-                        Integer j = Integer.parseInt(comm.get(i));
+                        Integer.parseInt(comm.get(i));
                     } catch (NumberFormatException e) {
                         c.sendMessage(JSONConverterStoC.createJSONError("You must type an int, not a string!"));
                         return;

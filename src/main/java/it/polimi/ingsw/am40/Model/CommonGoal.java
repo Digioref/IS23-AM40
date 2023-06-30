@@ -299,7 +299,7 @@ public class CommonGoal {
         int count = 0;
         final int TARGET = 6;
         boolean[][] matrice = new boolean[NCOL][NROW]; // boolean matrix to keep track of the place already visited
-        for (int i = 0; i < NCOL; i++) {               // initialized to true and sets to false where
+        for (int i = 0; i < NCOL; i++) {               // initialized to true and sets to false where the plac eis visited
             for (int j = 0; j < NROW; j++) {
                 matrice[i][j] = true;
             }
@@ -307,7 +307,7 @@ public class CommonGoal {
 
         for (int i = 0; i < NCOL && count < TARGET; i++) {
             for (int j = 0; j < NROW && count < TARGET; j++) {
-                if (matrice[i][j] && bookshelf.getTile(i, j) != null) {         // inizio solo se è una colonna su cui non sono ancora stato e non è vuota
+                if (matrice[i][j] && bookshelf.getTile(i, j) != null) {         // starts only if the column has been not visited and it is not empty
                     if (i < NCOL-1 &&bookshelf.getTile(i, j).equals(bookshelf.getTile(i + 1, j))) {
                         count++;
                         matrice[i][j] = false;
@@ -333,10 +333,10 @@ public class CommonGoal {
         ArrayList<Tile> differentTiles = new ArrayList<>(); // array where I save all the different Tiles
 
         for (int i = 0; i < NCOL && count < TARGET; i++) {
-            if (bookshelf.getBookshelf().get(i).getColumn().size() == NROW) { // controllo solo quelli con la colonna piena
+            if (bookshelf.getBookshelf().get(i).getColumn().size() == NROW) { // checks only tthose full
                 differentTiles.clear();
                 for (int j = 0; j < NROW; j++) {
-                    if (!differentTiles.contains(bookshelf.getTile(i,j))) { // aggiungo solo se non è già contrnuto ?? l'uguaglianza la controlla con .equals?? secondo me si
+                    if (!differentTiles.contains(bookshelf.getTile(i,j))) { // adds only if not contained
                         differentTiles.add(bookshelf.getTile(i,j));
                     }
                 }
@@ -362,7 +362,7 @@ public class CommonGoal {
             for (int i = 0; i < NCOL && equal == 0; i++) {  //modified i starting point from 1 to 0
                 if (bookshelf.getTile(i, j) != null) {
                     for (int k = 0; k < i && equal == 0; k++) {
-                        if (bookshelf.getTile(i, j).equals(bookshelf.getTile(k, j))) { // se trovo due celle uguali esco
+                        if (bookshelf.getTile(i, j).equals(bookshelf.getTile(k, j))) { // exit when it finds two equals tiles
                             equal = 1;
                         }
                     }
@@ -385,7 +385,7 @@ public class CommonGoal {
     private int check7(Bookshelf bookshelf) {
         ArrayList<TileColor> differentColours = new ArrayList<>();
 
-        // precheck che ci siano almeno 4 tile in ciascuna colonna, .get restituisce la colonna
+        // checks if there are at least 4 tiles in each column
         for (int i = 0; i < NCOL; i++) {
             if (bookshelf.getBookshelf().get(i).getSize() < 4)
                 return 0;
@@ -412,10 +412,10 @@ public class CommonGoal {
     }
 
 
-    private int check8(Bookshelf bookshelf) { // commongoal 8
+    private int check8(Bookshelf bookshelf) {
 
         if (bookshelf.getTile(0,0) != null) {
-            if (bookshelf.getTile(0, 0).equals(bookshelf.getTile(0, NROW-1))) { // controllare se il tile è vuoto tile.getcolor cosa rotorna, fare bene il .equals
+            if (bookshelf.getTile(0, 0).equals(bookshelf.getTile(0, NROW-1))) { // checks if the tile is nocolor
                 if (bookshelf.getTile(0, 0).equals(bookshelf.getTile(NCOL-1, 0))) {
                     if (bookshelf.getTile(0, 0).equals(bookshelf.getTile(NCOL-1, NROW-1))) {
                         return commgoaltok.updateScore();

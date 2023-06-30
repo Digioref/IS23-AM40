@@ -11,7 +11,7 @@ public class CommonGoalToken {
     /**
      * Number of players playing
      */
-    private int numPlayer;
+    private final int numPlayer;
 
     /**
      * Constructor which sets the initial score to 8 and the numPlayer to the provided one

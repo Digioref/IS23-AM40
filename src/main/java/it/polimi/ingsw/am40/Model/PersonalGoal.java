@@ -14,13 +14,9 @@ import org.json.simple.JSONObject;
  * Represents the Personal Goal of the game
  */
 public class PersonalGoal {
-    /**
-     * An array of positions representing the positions where, in the personal goal card, there are specific tiles (colors)
-     */
+
     private ArrayList<Position> pos;
-    /**
-     * An array of colours representing the colours of the tiles in the specific positions contained in the array pos
-     */
+
     private ArrayList<TileColor> color;
     private int key;
 
@@ -79,6 +75,10 @@ public class PersonalGoal {
         return color;
     }
 
+    /**
+     * It overrides the toString method, printing the personal goal server side
+     * @return
+     */
     @Override
     public String toString() {
 
@@ -97,10 +97,18 @@ public class PersonalGoal {
         return key;
     }
 
+    /**
+     * It sets the positions of the personal goal
+     * @param pos list of positions
+     */
     public void setPos(ArrayList<Position> pos) {
         this.pos = pos;
     }
 
+    /**
+     * It sets the colors of the personal goal
+     * @param color list of colors
+     */
     public void setColor(ArrayList<TileColor> color) {
         this.color = color;
     }

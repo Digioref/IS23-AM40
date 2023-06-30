@@ -10,13 +10,9 @@ import java.util.Random;
  */
 public class Tile {
     private final static int DEFAULTINVALIDPOSITION = -20;
-    /**
-     * The colour of the tile
-     */
+
     private TileColor color;
-    /**
-     * The type of the tile
-     */
+
     private TileType type;
 
     private Position pos;

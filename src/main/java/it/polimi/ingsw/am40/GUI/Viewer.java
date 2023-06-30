@@ -82,6 +82,7 @@ public class Viewer extends Application {
 	private ComboBox<String> selectReceivers;
 	private TextField messageInput;
 	private Button sendButton;
+	private HBox inputBox = new HBox();
 
 	public Viewer() {
 	}
@@ -469,32 +470,14 @@ public class Viewer extends Application {
 		sendButton = new Button("Send");
 		sendButton.getStylesheets().add("Button.css");
 
+	messageInput.setOnKeyPressed(event -> {
+		if (event.getCode() == KeyCode.ENTER) {
+			sendMessage();
+		}
+	});
+
 		// update the full message list, I can add one message at a time if I am notified when I receive one
-		sendButton.setOnAction(e -> {
-			String sender = nickname;
-			String message = messageInput.getText();
-			String receiver = selectReceivers.getValue();
-
-			if (!message.isEmpty()) {
-				if (receiver.equals("everyOne")) {
-					receiver = "all";
-				}
-
-				System.out.println("send to: " + receiver);
-				JSONConverterCtoS jconv = new JSONConverterCtoS();
-				jconv.toJSONChat(receiver, message);
-				if (LaunchClient.getClient() != null) {
-					LaunchClient.getClient().chat(jconv.toString());
-				}
-
-				NewMessage newMessage = new NewMessage(sender, receiver, message);
-				messages.getChildren().add(newMessage);
-				messageInput.clear();
-
-				chatScrollPane.setVvalue(1.0);
-
-			}
-		});
+		sendButton.setOnAction(e -> sendMessage());
 
 
 		// Welcome message
@@ -524,6 +507,7 @@ public class Viewer extends Application {
 		expRect.setOnMouseEntered( e -> expRect.setCursor(Cursor.NW_RESIZE));
 
 		expRect.setOnMouseExited( e -> expRect.setCursor(Cursor.DEFAULT));
+		inputBox = new HBox();
 
 		final Delta expand = new Delta();
 		expRect.setOnMousePressed(event -> {
@@ -547,6 +531,31 @@ public class Viewer extends Application {
 				chat.setTranslateY(event.getSceneY() + dragDelta.y);
 			}
 		});
+	}
+	private void sendMessage() {
+		String sender = nickname;
+		String message = messageInput.getText();
+		String receiver = selectReceivers.getValue();
+
+		if (!message.isEmpty()) {
+			if (receiver.equals("everyOne")) {
+				receiver = "all";
+			}
+
+			System.out.println("send to: " + receiver);
+			JSONConverterCtoS jconv = new JSONConverterCtoS();
+			jconv.toJSONChat(receiver, message);
+			if (LaunchClient.getClient() != null) {
+				LaunchClient.getClient().chat(jconv.toString());
+			}
+
+			NewMessage newMessage = new NewMessage(sender, receiver, message);
+			messages.getChildren().add(newMessage);
+			messageInput.clear();
+
+			chatScrollPane.setVvalue(1.0);
+
+		}
 	}
 
 	/**
@@ -1141,11 +1150,10 @@ public class Viewer extends Application {
 	}
 
 	private void addNamesChat() {
-		HBox inputBox = new HBox();
 		inputBox.setPadding(new Insets(10, 0, 10, 0));
 		inputBox.setSpacing(10);
 		inputBox.setAlignment(Pos.CENTER_RIGHT);
-		if (!inputBox.getChildren().contains(selectReceivers)) {
+		if (!inputBox.getChildren().contains(selectReceivers) && !chatContainer.getChildren().contains(inputBox)) {
 			selectReceivers = new ComboBox<>();
 			ArrayList<String> sendTo = new ArrayList<>(names);
 			sendTo.remove(nickname);

@@ -22,22 +22,12 @@ public class Help implements ICommand {
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (comm.size() == 0) {
             for (String s: c.getMessAd().getCommands().keySet()) {
-                switch(s) {
-                    case "select":
-                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [int] [int]"));
-                        break;
-                    case "order":
-                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [int] (at least)"));
-                        break;
-                    case "setplayers", "insert":
-                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [int]"));
-                        break;
-                    case "login":
-                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [string]"));
-                        break;
-                    default:
-                        c.sendMessage(JSONConverterStoC.normalMessage("- " + s));
-                        break;
+                switch (s) {
+                    case "select" -> c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [int] [int]"));
+                    case "order" -> c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [int] (at least)"));
+                    case "setplayers", "insert" -> c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [int]"));
+                    case "login" -> c.sendMessage(JSONConverterStoC.normalMessage("- " + s + " [string]"));
+                    default -> c.sendMessage(JSONConverterStoC.normalMessage("- " + s));
                 }
             }
         } else {

@@ -20,16 +20,14 @@ import java.util.concurrent.Executors;
  */
 public class GameServer implements Runnable {
 
-    private String hostName;
     private int portNumber;
-    private String IPAddress;
     private ServerSocket serverSocket;
-    private Lobby lobby;
+    private final Lobby lobby;
     private static GameServer instance;
-    private ExecutorService pool;
+    private final ExecutorService pool;
     private boolean close;
     private RMIServer rmiserver;
-    private List<ClientHandler> clientHandlers;
+    private final List<ClientHandler> clientHandlers;
 
     /**
      * Constructor of the server
@@ -67,11 +65,6 @@ public class GameServer implements Runnable {
                 System.out.println("Accepted!");
                 ClientHandler c = new ClientHandler(clientSocket, instance);
                 clientHandlers.add(c);
-//                PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-//                out.println("Give nickname: ");
-//                out.flush();
-//                Scanner in = new Scanner(clientSocket.getInputStream());
-//                c.setNickname(in.nextLine());
                 c.setLobby(lobby);
                 c.setLogphase(LoggingPhase.LOGGING);
                 pool.submit(c);
@@ -87,13 +80,10 @@ public class GameServer implements Runnable {
      * It connects the server to the provided ip address and the number of the port, setting also what is necessary for RMI communication
      * @param port the number of the port
      * @param IPAddress the ip address of the server
-     * @param hostName the name of the host
      * @throws IOException
      */
-    public void connect(int port, String IPAddress, String hostName) throws IOException {
+    public void connect(int port, String IPAddress) throws IOException {
         portNumber = port;
-        this.hostName = hostName;
-        this.IPAddress = IPAddress;
         System.setProperty("java.rmi.server.hostname", IPAddress);
         rmiserver = new RMIServer();
         rmiserver.setLobby(lobby);
@@ -128,14 +118,11 @@ public class GameServer implements Runnable {
 
     /**
      * It removes the provided handler because it disconnected
-     * @param clientHandler
+     * @param clientHandler client handler
      */
     public void shutdownHandler(ClientHandler clientHandler) {
         clientHandlers.remove(clientHandler);
     }
 
 
-    public List<ClientHandler> getClientHandlers() {
-        return clientHandlers;
-    }
 }

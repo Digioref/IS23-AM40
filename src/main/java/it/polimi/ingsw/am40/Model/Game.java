@@ -22,7 +22,7 @@ public class Game implements IGame {
     /**
      * Array of the players in game
      */
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
     /**
      * Array of common goals of the game
      */
@@ -48,26 +48,18 @@ public class Game implements IGame {
      */
     private EndToken endToken;
     /**
-     * A boolean which, if it is true, means the game has started
-     */
-    private boolean hasStarted;
-    /**
-     * A boolean which, if it is true, means the game has ended
-     */
-    private boolean hasEnded;
-    /**
      * The player who is carrying out his turn
      */
     private Player currentPlayer;
 
-    private ArrayList<VirtualView> observers;
-    private ParsingJSONManager pJSONm;
+    private final ArrayList<VirtualView> observers;
+    private final ParsingJSONManager pJSONm;
     private TurnPhase turn;
     private Player winner;
-    private GroupChat groupChat;
+    private final GroupChat groupChat;
     private ScheduledExecutorService timer;
     private boolean timerstate;
-    private ArrayList<String> discPlayers;
+    private final ArrayList<String> discPlayers;
 
     /**
      * Constructor which builds the class assigning the number of players and creating the array of players
@@ -129,8 +121,6 @@ public class Game implements IGame {
         board.config(bag);
         assignComGoal();
         assignPersonalGoal();
-        setHasStarted(true);
-        setHasEnded(false);
         turn = TurnPhase.START;
         startTurn();
     }
@@ -224,7 +214,6 @@ public class Game implements IGame {
         timer = Executors.newScheduledThreadPool(1);
         Runnable task = () -> {
             setTurn(TurnPhase.ENDGAME);
-            setHasEnded(true);
             endGame();
         };
         timer.schedule(task, WAIT_TIME, TimeUnit.MILLISECONDS);
@@ -251,11 +240,7 @@ public class Game implements IGame {
      * @return true if the condition of game ending is fulfilled
      */
     public boolean checkEndGame () {
-        if (endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer) && turn == TurnPhase.ENDTURN) {
-            setHasEnded(true);
-            return true;
-        }
-        return false;
+        return endToken.isEnd() && currentPlayer.getNext().equals(firstPlayer) && turn == TurnPhase.ENDTURN;
     }
 
     /**
@@ -286,7 +271,7 @@ public class Game implements IGame {
     }
 
     /**
-     * Removes the tiles selected by a sepcific player
+     * Removes the tiles selected by a specific player
      */
     public void removeSelectedTiles() {
         if (turn == TurnPhase.SELECTION) {
@@ -494,51 +479,35 @@ public class Game implements IGame {
                 ind.add(players.indexOf(p));
             }
             switch (fp) {
-                case 0:
-                   winner = players.get(ind.stream().mapToInt(x->x).max().getAsInt());
-                   break;
-                case 1:
+                case 0 -> winner = players.get(ind.stream().mapToInt(x -> x).max().getAsInt());
+                case 1 -> {
                     if (ind.contains(0)) {
                         winner = players.get(0);
                     } else {
-                        winner = players.get(ind.stream().mapToInt(x->x).max().getAsInt());
+                        winner = players.get(ind.stream().mapToInt(x -> x).max().getAsInt());
                     }
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     if (ind.contains(1)) {
                         winner = players.get(1);
                     } else if (ind.contains(0)) {
                         winner = players.get(0);
                     } else {
-                        winner = players.get(ind.stream().mapToInt(x->x).max().getAsInt());
+                        winner = players.get(ind.stream().mapToInt(x -> x).max().getAsInt());
                     }
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     if (ind.contains(3)) {
-                        ind.remove(ind.indexOf(3));
+                        ind.remove((Integer) 3);
                     }
-                    winner = players.get(ind.stream().mapToInt(x->x).max().getAsInt());
-                    break;
+                    winner = players.get(ind.stream().mapToInt(x -> x).max().getAsInt());
+                }
             }
         }
 
    }
 
-    /**
-     * Sets the feature hasStarted to the provided one
-     * @param hasStarted a provided boolean
-     */
-    public void setHasStarted(boolean hasStarted) {
-        this.hasStarted = hasStarted;
-    }
 
-    /**
-     * Sets the feature hasEnded to the provided one
-     * @param hasEnded a provided boolean
-     */
-    public void setHasEnded(boolean hasEnded) {
-        this.hasEnded = hasEnded;
-    }
 
     /**
      * Returns the current player
@@ -550,7 +519,7 @@ public class Game implements IGame {
 
     /**
      * It returns the players in the game
-     * @return an array containing the players in the game
+     * @return list containing the players in the game
      */
     public ArrayList<Player> getPlayers() {
         return players;
@@ -636,7 +605,6 @@ public class Game implements IGame {
                         v.receiveAllowedPositions(currentPlayer.getSelectedPositions(), board);
                     }
                 }
-                ;
             }
             case PICK -> {
                 for (VirtualView v : observers) {
@@ -645,7 +613,6 @@ public class Game implements IGame {
                         v.receivePickedTiles(currentPlayer);
                     }
                 }
-                ;
             }
             case ORDER -> {
                 for (VirtualView v : observers) {
@@ -653,7 +620,6 @@ public class Game implements IGame {
                         v.receiveDoneOrder(currentPlayer.getTilesPicked());
                     }
                 }
-                ;
             }
             case INSERT -> {
                 for (VirtualView v : observers) {
@@ -664,7 +630,6 @@ public class Game implements IGame {
                     }
                     v.receiveListBookshelves(players);
                 }
-                ;
             }
             case ENDGAME -> {
                 for (VirtualView v : observers) {
@@ -674,7 +639,6 @@ public class Game implements IGame {
                         }
                     }
                 }
-                setHasEnded(true);
             }
         }
 
@@ -682,7 +646,7 @@ public class Game implements IGame {
 
     /**
      * It returns the common goals actually in game
-     * @return an array containing the common goals in game
+     * @return list containing the common goals in game
      */
     public ArrayList<CommonGoal> getCurrentComGoals() {
         return currentComGoals;
@@ -698,7 +662,7 @@ public class Game implements IGame {
 
     /**
      * It returns the observer of the game
-     * @return an array containing the observers of the game
+     * @return list containing the observers of the game
      */
     public ArrayList<VirtualView> getObservers() {
         return observers;
@@ -714,7 +678,7 @@ public class Game implements IGame {
 
     /**
      * It returns the players disconnected from the game
-     * @return an array containing the players disconnected
+     * @return list containing the players disconnected
      */
     public ArrayList<String> getDiscPlayers() {
         return discPlayers;
@@ -843,9 +807,5 @@ public class Game implements IGame {
     public void setFirstPlayer(Player firstPlayer){
         this.firstPlayer = firstPlayer;
     }
-/*
-    public void setCommonGoals(ArrayList<CommonGoal> commonGoals){
-        this.commonGoals.addAll(commonGoals);
-    }
-*/
+
 }

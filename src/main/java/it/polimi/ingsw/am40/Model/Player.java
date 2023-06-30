@@ -8,52 +8,32 @@ import java.util.ArrayList;
  * Represents the player of the game
  */
 public class Player {
-    /**
-     * The nickname of the player used to be identified during the game
-     */
+
     private final String nickname;
-    /**
-     * An array containing the tiles selected and picked by the player
-     */
-    private ArrayList<Tile> tilesPicked;
-    /**
-     * The current score achieved by the player during the game
-     */
+
+    private final ArrayList<Tile> tilesPicked;
+
     private int currentScore;
-    /**
-     * The score achieved at the end of the game
-     */
+
     private int finalScore;
-    /**
-     * The bookshelf of the player
-     */
+
     private Bookshelf bookshelf;
-    /**
-     * The game board
-     */
+
     private Board board;
-    /**
-     * The personal goal assigned to the player
-     */
+
     private PersonalGoal personalGoal;
-    /**
-     * The next player to play his turn, clockwise
-     */
+
     private  Player next;
 
-    /**
-     *  The player has completed the first common goal
-     */
+
     private boolean doneCG1;
 
-    /**
-     *  The player has completed the second common goal
-     */
+
     private boolean doneCG2;
 
-    private ArrayList<Position> selectedPositions;
+    private final ArrayList<Position> selectedPositions;
     private int hiddenScore;
-    private ParsingJSONManager pJSONm;
+    private final ParsingJSONManager pJSONm;
     private boolean disconnected;
     private Game game;
     private int scoreCG1;
@@ -63,7 +43,7 @@ public class Player {
 
     /**
      * Constructor which assigns the nickname, and sets to 0 both current score and final score
-     * @param nickname
+     * @param nickname nickname of the player
      */
     public Player(String nickname) {
         this.nickname = nickname;
@@ -82,7 +62,7 @@ public class Player {
 
     /**
      * Selects a tile in position pos on the board and puts it in the tilesPicked array
-     * @param pos
+     * @param pos position of the tile
      */
     public void pickTile(Position pos) {
         if (board.getGrid().containsKey(pos.getKey())) {
@@ -144,10 +124,6 @@ public class Player {
      * Calculates the final score of the player
      */
     public void calculateScore() {
-        //System.out.println("PUNTEGGIO PERSONAL GOAL: " + personalGoal.calcScore(bookshelf) + "  PUNTEGGIO COMMON GOAL: " + currentScore + "PUNTEGGIO ADIACENZE: " + bookshelf.calcScore());
-        //System.out.println("print update dopo aver chiamato calculateScore");
-        //bookshelf.print();
-        //finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
         bookshelf.setMarkZero();
         finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
 
@@ -220,7 +196,7 @@ public class Player {
 
     /**
      * It returns the tiles picked by the player
-     * @return an array containing the tiles picked by the player
+     * @return list containing the tiles picked by the player
      */
     public ArrayList<Tile> getTilesPicked() {
         return tilesPicked;
@@ -326,46 +302,98 @@ public class Player {
         this.disconnected = disconnected;
     }
 
+    /**
+     * It sets the game
+     * @param game game
+     */
+
     public void setGame(Game game) {
         this.game = game;
     }
+
+    /**
+     * It sets the bookshelf
+     * @param bookshelf bookshelf
+     */
 
     public void setBookshelf(Bookshelf bookshelf) {
         this.bookshelf = bookshelf;
     }
 
+    /**
+     * It sets the current score
+     * @param currentScore score
+     */
+
     public void setCurrentScore(int currentScore) {
         this.currentScore = currentScore;
     }
+
+    /**
+     * It sets the hidden score
+     * @param hiddenScore score
+     */
 
     public void setHiddenScore(int hiddenScore) {
         this.hiddenScore = hiddenScore;
     }
 
+    /**
+     * It returns the game
+     * @return game
+     */
+
     public Game getGame() {
         return game;
     }
+
+    /**
+     * It returns true if the player has done the first common goal
+     * @return true if the player has done the first common goal
+     */
 
     public boolean isDoneCG1() {
         return doneCG1;
     }
 
+    /**
+     * It sets the boolean doneCG1
+     * @param doneCG1 a boolean
+     */
+
     public void setDoneCG1(boolean doneCG1){
         this.doneCG1 = doneCG1;
     }
+    /**
+     * It sets the boolean doneCG2
+     * @param doneCG2 a boolean
+     */
 
     public void setDoneCG2(boolean doneCG2){
         this.doneCG2 = doneCG2;
     }
+    /**
+     * It returns true if the player has done the second common goal
+     * @return true if the player has done the second common goal
+     */
 
     public boolean isDoneCG2() {
         return doneCG2;
     }
 
+    /**
+     * It returns the score obtained from the first common goal
+     * @return score obtained from the first common goal
+     */
+
     public int getScoreCG1() {
         return scoreCG1;
     }
 
+    /**
+     * It returns the score obtained from the second common goal
+     * @return score obtained from the first common goal
+     */
     public int getScoreCG2() {
         return scoreCG2;
     }

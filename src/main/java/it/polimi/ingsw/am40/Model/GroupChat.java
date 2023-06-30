@@ -1,17 +1,14 @@
 package it.polimi.ingsw.am40.Model;
 
-import java.security.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The class representing the chat of the game
  */
 public class GroupChat {
-    private ArrayList<String> publisher;
-    private ArrayList<String> toplayer;
-    private ArrayList<String> message;
+    private final ArrayList<String> publisher;
+    private final ArrayList<String> toplayer;
+    private final ArrayList<String> message;
 
     /**
      * The constructor of the class, it creates all the necessary data structure
@@ -36,7 +33,7 @@ public class GroupChat {
 
     /**
      * It returns the publisher of each message
-     * @return an array containing the names of each publisher of each message
+     * @return list containing the names of each publisher of each message
      */
     public ArrayList<String> getPublisher() {
         return publisher;
@@ -44,7 +41,7 @@ public class GroupChat {
 
     /**
      * It returns the receiver of each message
-     * @return an array containing the names of each receiver of each message
+     * @return list containing the names of each receiver of each message
      */
     public ArrayList<String> getToplayer() {
         return toplayer;
@@ -52,7 +49,7 @@ public class GroupChat {
 
     /**
      * It returns each message
-     * @return an array containing all the messages exchanged
+     * @return list containing all the messages exchanged
      */
     public ArrayList<String> getMessage() {
         return message;

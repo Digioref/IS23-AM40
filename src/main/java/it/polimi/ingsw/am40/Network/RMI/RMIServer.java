@@ -27,12 +27,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     /**
      * Maps the name of the player to its ClientHandler
      */
-    private Map<String,RMIClientHandler> clientHandlers;
+    private final Map<String,RMIClientHandler> clientHandlers;
     /**
      * List of the available commands (to be used with the help command)
      */
-    private ArrayList<String> commands;
-    private ArrayList<RMIClientHandler> rmiHandlers;
+    private final ArrayList<String> commands;
+    private final ArrayList<RMIClientHandler> rmiHandlers;
 
 
     /**
@@ -74,14 +74,16 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
                     r.setLogged(true);
                     clientHandlers.put(s, r);
                     client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
-                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("\n" +
-                            " ____    ____  ____  ____    ______   ____  ____  ________  _____     ________  _____  ________  \n" +
-                            "|_   \\  /   _||_  _||_  _| .' ____ \\ |_   ||   _||_   __  ||_   _|   |_   __  ||_   _||_   __  | \n" +
-                            "  |   \\/   |    \\ \\  / /   | (___ \\_|  | |__| |    | |_ \\_|  | |       | |_ \\_|  | |    | |_ \\_| \n" +
-                            "  | |\\  /| |     \\ \\/ /     _.____`.   |  __  |    |  _| _   | |   _   |  _|     | |    |  _| _  \n" +
-                            " _| |_\\/_| |_    _|  |_    | \\____) | _| |  | |_  _| |__/ | _| |__/ | _| |_     _| |_  _| |__/ | \n" +
-                            "|_____||_____|  |______|    \\______.'|____||____||________||________||_____|   |_____||________| \n" +
-                            "                                                                                                 \n"));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("""
+
+                             ____    ____  ____  ____    ______   ____  ____  ________  _____     ________  _____  ________ \s
+                            |_   \\  /   _||_  _||_  _| .' ____ \\ |_   ||   _||_   __  ||_   _|   |_   __  ||_   _||_   __  |\s
+                              |   \\/   |    \\ \\  / /   | (___ \\_|  | |__| |    | |_ \\_|  | |       | |_ \\_|  | |    | |_ \\_|\s
+                              | |\\  /| |     \\ \\/ /     _.____`.   |  __  |    |  _| _   | |   _   |  _|     | |    |  _| _ \s
+                             _| |_\\/_| |_    _|  |_    | \\____) | _| |  | |_  _| |__/ | _| |__/ | _| |_     _| |_  _| |__/ |\s
+                            |_____||_____|  |______|    \\______.'|____||____||________||________||_____|   |_____||________|\s
+                                                                                                                            \s
+                            """));
                     clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
                     clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Waiting"));
                     lobby.addQueue(r);
@@ -95,20 +97,6 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
                     break;
                 }
             }
-//            rmiClientHandler.setLobby(lobby);
-//            rmiClientHandler.setNickname(s);
-//            rmiClientHandler.setLogged(true);
-//            rmiClientHandler.setRmiClient(client);
-//            clientHandlers.put(s, rmiClientHandler);
-//            client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
-//            clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in! Waiting in the lobby..."));
-//            lobby.addQueue(rmiClientHandler);
-//            lobby.addNickname(s);
-//            if (!lobby.getQueue().isEmpty() && lobby.getQueue().get(0).getNickname().equals(rmiClientHandler.getNickname())) {
-//                rmiClientHandler.setLogphase(LoggingPhase.SETTING);
-//                LoggingPhase.setSETPLAYERS(true);
-//                clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You can set the number of players you want to play with:"));
-//            }
         } else {
             for (RMIClientHandler r: rmiHandlers) {
                 if (r.getRmiClient().equals(client)) {
@@ -151,14 +139,6 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
      */
     @Override
     public void setPlayers(String s, String n) throws RemoteException {
-//        if(!clientHandlers.get(s).getLogphase().equals(LoggingPhase.SETTING) || LoggingPhase.SETPLAYERS) {
-//            clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You can not set the number of players!"));
-//            return;
-//        }
-//        lobby.setNumPlayers(n);
-//        LoggingPhase.setSETPLAYERS(true);
-//        clientHandlers.get(s).setLogphase(LoggingPhase.WAITING);
-//        clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Number of players set!"));
         try {
             clientHandlers.get(s).getMessAd().parserMessage(clientHandlers.get(s), n);
         } catch (IOException | ParseException e) {
@@ -175,22 +155,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
     @Override
     public void help(RMIClientInterface client, String s) throws RemoteException {
         for (String s1: commands) {
-            switch(s1) {
-                case "select":
-                    client.receive(JSONConverterStoC.normalMessage("- " + s1 + " [int] [int]"));
-                    break;
-                case "order":
-                    client.receive(JSONConverterStoC.normalMessage("- " + s1 + " [int] (at least)"));
-                    break;
-                case "setplayers", "insert":
-                    client.receive(JSONConverterStoC.normalMessage("- " + s1 + " [int]"));
-                    break;
-                case "login":
-                    client.receive(JSONConverterStoC.normalMessage("- " + s1 + " [string]"));
-                    break;
-                default:
-                    client.receive(JSONConverterStoC.normalMessage("- " + s1));
-                    break;
+            switch (s1) {
+                case "select" -> client.receive(JSONConverterStoC.normalMessage("- " + s1 + " [int] [int]"));
+                case "order" -> client.receive(JSONConverterStoC.normalMessage("- " + s1 + " [int] (at least)"));
+                case "setplayers", "insert" -> client.receive(JSONConverterStoC.normalMessage("- " + s1 + " [int]"));
+                case "login" -> client.receive(JSONConverterStoC.normalMessage("- " + s1 + " [string]"));
+                default -> client.receive(JSONConverterStoC.normalMessage("- " + s1));
             }
         }
     }
@@ -323,7 +293,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             return false;
         }
         for (String s: lobby.getNicknameInGame()) {
-            if (s.toLowerCase().equals(nickname.toLowerCase())) {
+            if (s.equalsIgnoreCase(nickname)) {
                 return true;
             }
         }

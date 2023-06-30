@@ -1,13 +1,11 @@
 package it.polimi.ingsw.am40.Network;
 
 import it.polimi.ingsw.am40.Client.RMIClientInterface;
-import it.polimi.ingsw.am40.Controller.Controller;
 import it.polimi.ingsw.am40.Controller.Lobby;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Model.Position;
 import it.polimi.ingsw.am40.Network.RMI.RMIServer;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * It's the handler of the player using the RMI communication
  */
 public class RMIClientHandler extends Handlers {
-    private RMIServer server;
+    private final RMIServer server;
     private RMIClientInterface rmiClient;
     private ScheduledExecutorService sendPing;
     private ScheduledExecutorService waitPing;
@@ -36,8 +34,6 @@ public class RMIClientHandler extends Handlers {
         logged = false;
         lobby = new Lobby();
         setLogphase(LoggingPhase.LOGGING);
-//        commands = new ArrayList<>();
-//        ParsingJSONManager.commands(commands);
         messAd= new MessageAdapter();
         messAd.configure();
         nPingLost = 0;
@@ -53,9 +49,7 @@ public class RMIClientHandler extends Handlers {
             waitPing.shutdownNow();
         waitPing = Executors.newSingleThreadScheduledExecutor();
         sendPing = Executors.newScheduledThreadPool(1);
-        Runnable task = () -> {
-            ping();
-        };
+        Runnable task = this::ping;
         sendPing.scheduleAtFixedRate(task, 0, SEND_PING, TimeUnit.MILLISECONDS);
     }
 
@@ -123,24 +117,15 @@ public class RMIClientHandler extends Handlers {
     @Override
     public void executeCommand(ActionType at, ArrayList<Integer> arr) {
         if (logphase.equals(LoggingPhase.INGAME)) {
-            switch(at) {
-                case SELECT:
+            switch (at) {
+                case SELECT -> {
                     Position p = new Position(arr.get(0), arr.get(1));
                     controller.getGameController().selectTile(virtualView, p);
-                    break;
-                case REMOVE:
-                    controller.getGameController().notConfirmSelection(virtualView);
-                    break;
-                case PICK:
-                    controller.getGameController().pickTiles(virtualView);
-                    break;
-                case ORDER:
-                    controller.getGameController().order(virtualView, arr);
-                    break;
-                case INSERT:
-                    controller.getGameController().insert(virtualView, arr.get(0));
-                    break;
-
+                }
+                case REMOVE -> controller.getGameController().notConfirmSelection(virtualView);
+                case PICK -> controller.getGameController().pickTiles(virtualView);
+                case ORDER -> controller.getGameController().order(virtualView, arr);
+                case INSERT -> controller.getGameController().insert(virtualView, arr.get(0));
             }
         } else {
             sendMessage(JSONConverterStoC.createJSONError("You are not playing in any game yet!"));

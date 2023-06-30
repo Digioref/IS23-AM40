@@ -13,7 +13,6 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,7 +23,6 @@ public class ClientHandler extends Handlers implements Runnable {
     private final static int WAIT_PING = 10000;
     private final static int SEND_PING = 4000;
     private final static int NUMLOST = 3;
-    private Socket socket;
     private Scanner in;
     private PrintWriter out;
     private boolean stop;
@@ -41,7 +39,6 @@ public class ClientHandler extends Handlers implements Runnable {
         nPingLost = 0;
         stop = false;
         this.gameServer = gameServer;
-        this.socket = socket;
         logged = false;
         messAd = new MessageAdapter();
         lobby = new Lobby();
@@ -100,28 +97,11 @@ public class ClientHandler extends Handlers implements Runnable {
             messAd.startMessage(this);
 // Leggo e scrivo nella connessione finche' non ricevo "quit"
             while (!stop) {
-//                out.println("Give nickname: ");
-//                out.flush();
-//
-//                out.println("Give command: ");
-//                out.flush();
-//                sendMessage(JSONConverterStoC.normalMessage("Type your command here: "));
                 String line = in.nextLine();
                 messAd.parserMessage(this, line);
-//                if (line.equals("quit")) {
-//                    break;
-//                }
-//                else {
-//                    out.println("Received: " + line);
-//                    out.flush();
-//                }
 
             }
 // Chiudo gli stream e il socket
-//            in.close();
-////            out.close();
-//            System.out.println("ClientHandler " + nickname + " closed!");
-//            socket.close();
         } catch (IOException e) {
             System.out.println("Socket not available");
             close();
@@ -136,9 +116,7 @@ public class ClientHandler extends Handlers implements Runnable {
         if(waitPing != null)
             waitPing.shutdownNow();
         sendPing = Executors.newScheduledThreadPool(1);
-        Runnable task = () -> {
-            ping();
-        };
+        Runnable task = this::ping;
         sendPing.scheduleAtFixedRate(task, 0, SEND_PING, TimeUnit.MILLISECONDS);
     }
 
@@ -201,24 +179,15 @@ public class ClientHandler extends Handlers implements Runnable {
      */
     public void executeCommand(ActionType at, ArrayList<Integer> arr) {
         if (logphase.equals(LoggingPhase.INGAME)) {
-            switch(at) {
-                case SELECT:
+            switch (at) {
+                case SELECT -> {
                     Position p = new Position(arr.get(0), arr.get(1));
                     controller.getGameController().selectTile(virtualView, p);
-                    break;
-                case REMOVE:
-                    controller.getGameController().notConfirmSelection(virtualView);
-                    break;
-                case PICK:
-                    controller.getGameController().pickTiles(virtualView);
-                    break;
-                case ORDER:
-                    controller.getGameController().order(virtualView, arr);
-                    break;
-                case INSERT:
-                    controller.getGameController().insert(virtualView, arr.get(0));
-                    break;
-
+                }
+                case REMOVE -> controller.getGameController().notConfirmSelection(virtualView);
+                case PICK -> controller.getGameController().pickTiles(virtualView);
+                case ORDER -> controller.getGameController().order(virtualView, arr);
+                case INSERT -> controller.getGameController().insert(virtualView, arr.get(0));
             }
         } else {
             try {
@@ -263,20 +232,8 @@ public class ClientHandler extends Handlers implements Runnable {
             controller.getGameController().disconnectPlayer(nickname);
         }
         lobby.removeQuit(this);
-//        try {
-//            sendMessage(JSONConverterStoC.normalMessage("Quit"));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
         stop = true;
         gameServer.shutdownHandler(this);
-//        in.close();
-//        out.close();
-//        try {
-//            socket.close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     /**

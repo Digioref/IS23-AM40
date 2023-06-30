@@ -23,46 +23,46 @@ public class Login implements ICommand {
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
         if (!c.isLogged() && c.getLogphase().equals(LoggingPhase.LOGGING) && comm.size() >= 1) {
-            String s = "";
-            for (int i = 0; i < comm.size(); i++) {
-                if (s.equals("")) {
-                    s = comm.get(i);
+            StringBuilder s = new StringBuilder();
+            for (String value : comm) {
+                if (s.toString().equals("")) {
+                    s = new StringBuilder(value);
                 } else {
-                    s = s + " " + comm.get(i);
+                    s.append(" ").append(value);
                 }
             }
-            if (c.checkNickname(s)) {
-                if ((!c.getLobby().getGames().containsKey(s) && c.getLobby().getNicknameInGame().contains(s)) || (c.getLobby().getGames().containsKey(s) && !c.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s))) {
+            if (c.checkNickname(s.toString())) {
+                if ((!c.getLobby().getGames().containsKey(s.toString()) && c.getLobby().getNicknameInGame().contains(s.toString())) || (c.getLobby().getGames().containsKey(s.toString()) && !c.getLobby().getGames().get(s.toString()).getGame().getDiscPlayers().contains(s.toString()))) {
                     c.sendMessage(JSONConverterStoC.createJSONError("Nickname already used!"));
 //                    c.sendMessage(JSONConverterStoC.normalMessage("What about these nicknames:"));
-                    c.suggestNickname(s);
-                } else if (c.getLobby().getGames().containsKey(s) && c.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s)) {
+                    c.suggestNickname(s.toString());
+                } else if (c.getLobby().getGames().containsKey(s.toString()) && c.getLobby().getGames().get(s.toString()).getGame().getDiscPlayers().contains(s.toString())) {
                     c.sendMessage(JSONConverterStoC.normalMessage("Welcome back " + s + "!\nReconnecting to the game..."));
-                    c.setNickname(s);
+                    c.setNickname(s.toString());
                     c.setLogphase(LoggingPhase.INGAME);
-                    c.sendMessage(JSONConverterStoC.createJSONNickname(s));
-                    c.setController(c.getLobby().getGames().get(s).getController());
+                    c.sendMessage(JSONConverterStoC.createJSONNickname(s.toString()));
+                    c.setController(c.getLobby().getGames().get(s.toString()).getController());
                     c.setLogged(true);
-                    c.setNumPlayers(c.getLobby().getGames().get(s).getGame().getNumPlayers());
-                    for (VirtualView v: c.getLobby().getGames().get(s).getGame().getObservers()) {
-                        if (v.getNickname().equals(s)) {
+                    c.setNumPlayers(c.getLobby().getGames().get(s.toString()).getGame().getNumPlayers());
+                    for (VirtualView v: c.getLobby().getGames().get(s.toString()).getGame().getObservers()) {
+                        if (v.getNickname().equals(s.toString())) {
                             v.setClientHandler(c);
                             c.setVirtualView(v);
                             break;
                         }
                     }
                     c.sendMessage(JSONConverterStoC.normalMessage("RECONNECT"));
-                    c.getController().getGameController().reconnect(s);
+                    c.getController().getGameController().reconnect(s.toString());
                     return;
                 }
             } else {
                 c.setLogged(true);
-                c.setNickname(s);
-                c.getLobby().addNickname(s);
+                c.setNickname(s.toString());
+                c.getLobby().addNickname(s.toString());
                 c.setLogphase(LoggingPhase.WAITING);
                 c.getLobby().addQueue(c);
                 c.sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
-                c.sendMessage(JSONConverterStoC.createJSONNickname(s));
+                c.sendMessage(JSONConverterStoC.createJSONNickname(s.toString()));
                 c.sendMessage(JSONConverterStoC.normalMessage("Waiting"));
             }
             if (!LoggingPhase.SETPLAYERS) {

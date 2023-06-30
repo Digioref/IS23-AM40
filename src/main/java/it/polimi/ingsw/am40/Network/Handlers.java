@@ -110,7 +110,7 @@ public abstract class Handlers {
             return false;
         }
         for (String s: lobby.getNicknameInGame()) {
-            if (s.toLowerCase().equals(nickname.toLowerCase())) {
+            if (s.equalsIgnoreCase(nickname)) {
                 return true;
             }
         }
@@ -161,10 +161,6 @@ public abstract class Handlers {
      * @param s nickname desired by the user
      */
     public abstract void suggestNickname(String s);
-
-//    public ArrayList<String> getCommands() {
-//        return commands;
-//    }
 
     /**
      * It executes the game command by calling the corresponding method of the game controller

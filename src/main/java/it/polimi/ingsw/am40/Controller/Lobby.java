@@ -110,7 +110,7 @@ public class Lobby implements Runnable {
         for (Handlers cl : activePlayers) {
             g.addPlayer(new Player(cl.getNickname()));
             cl.setController(c);
-            VirtualView v = new VirtualView(cl.getNickname(), cl, c);
+            VirtualView v = new VirtualView(cl.getNickname(), cl);
             cl.setVirtualView(v);
             cl.setLogphase(LoggingPhase.INGAME);
             g.register(v);

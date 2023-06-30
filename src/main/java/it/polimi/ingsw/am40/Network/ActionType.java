@@ -12,5 +12,5 @@ package it.polimi.ingsw.am40.Network;
  * </ul>
  */
 public enum ActionType {
-    SELECT, PICK, ORDER, INSERT, REMOVE, CHAT;
+    SELECT, PICK, ORDER, INSERT, REMOVE, CHAT
 }

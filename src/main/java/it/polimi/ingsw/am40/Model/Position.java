@@ -6,13 +6,9 @@ import java.util.ArrayList;
  * Represents the position of a Tile in the bookshelf or in the board
  */
 public class Position {
-    /**
-     * The x coordinate
-     */
+
     private int x;
-    /**
-     * The y coordinate
-     */
+
     private int y;
 
     /**
