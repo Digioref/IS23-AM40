@@ -177,7 +177,6 @@ public class Game implements IGame {
      * Sets the current player to the next player
      */
     public void nextPlayer() {
-        //System.out.println(turn);
         if (checkEndGame() || turn != TurnPhase.ENDTURN) {
             return;
         }
@@ -363,7 +362,6 @@ public class Game implements IGame {
                 currentPlayer.updateCurrScore(currentComGoals);
 
                 endToken.updateScore(currentPlayer);
-//            System.out.println("qui4");
                 currentPlayer.updateHiddenScore();
                 notifyObservers(turn);
                 setTurn(TurnPhase.ENDTURN);

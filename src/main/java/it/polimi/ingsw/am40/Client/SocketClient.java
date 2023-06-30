@@ -112,7 +112,6 @@ public class SocketClient extends Client {
                 LaunchClient.getView().quit(nickname);
             }
             System.exit(0);
-//            LaunchClient.getView().quit(nickname);
         } catch (IOException e) {
             System.exit(0);
         }

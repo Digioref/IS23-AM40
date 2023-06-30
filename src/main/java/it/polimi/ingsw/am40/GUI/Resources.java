@@ -73,19 +73,14 @@ public class Resources {
 	private static final String endGameToken = "end game.jpg";
 
 	private static Image loadImage(String imageFile){
-//		System.out.println(imageFile);
-		//Class<?> clazz = Resources.class;
 
-		// Get the class loader and load the resource using getResourceAsStream
 		InputStream inputStream =Resources.class.getResourceAsStream("/Images/"+imageFile);
 
-		// Check if the resource exists
 		if (inputStream == null) {
 			System.out.println("Resource not found: "+ imageFile);
 			return null;
 		}
 
-		// Create the image from the input stream
 		return new Image(inputStream);
 	}
 

@@ -38,7 +38,6 @@ class BookshelfTest {
         }
         //test out of bound with correct tile
         assertFalse(bookshelf.addTile(tile,7));
-        //bookshelf.print();
         System.out.println("\n");
 
         //test filling each column and also exceed column limit
@@ -54,7 +53,6 @@ class BookshelfTest {
             }
             count++;
         }
-        //bookshelf.print();
 
         //test adding null tile in a filled column
         assertFalse(bookshelf.addTile(null,0));

@@ -34,7 +34,6 @@ public class Board {
      */
     public void config(Bag b) {
         for (String pos : grid.keySet()) {
-//            System.out.println(k+": "+pos); x DEBUG
             Tile t = b.pick();
             t.setPos(grid.get(pos).getPos());
             grid.put(pos, t);
@@ -63,7 +62,6 @@ public class Board {
      */
     public void remove(Bag b) {
         for (String pos : grid.keySet()) {
-//            System.out.println(("k: "+ k)); x DEBUG
             if (grid.get(pos).getType() != TileType.EMPTY) {
                 b.insert(grid.get(pos));
                 Position p = new Position(-20, -20);
@@ -89,7 +87,6 @@ public class Board {
             if(checkFreeSide(tile.getPos())>0 && !(tile.getColor().equals(TileColor.NOCOLOR)) ){
                 pickableTiles.add(tile.getPos());
                 startingPickable.add(tile.getPos());
-//                System.out.println(tile);
             }
         }
     }
@@ -137,7 +134,6 @@ public class Board {
             for (int i = 0; i < pickableTiles.size();) {
                 if ((!(isPickable(pos, pickableTiles.get(i)))) || pos.equals(pickableTiles.get(i))) {
                     pickableTiles.remove(pickableTiles.get(i));
-//                    System.out.println(pickableTiles.remove(pickableTiles.get(i)));
                 }
                 else {
                     i++;

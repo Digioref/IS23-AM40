@@ -23,7 +23,7 @@ class ColumnTest {
         for(int i=0;i<DIM;i++){
             assertTrue(col.addTile(tile));
         }
-        //add tile exced col size limit
+        //add tile exceed col size limit
         assertFalse(col.addTile(tile));
         System.out.println(col.getFreeSpace());
     }

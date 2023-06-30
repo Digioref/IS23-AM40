@@ -38,7 +38,6 @@ public class Lobby implements Runnable {
      * It removes the first player from the queue and puts him in the active players
      */
     public void  removeFromQueue() {
-//        if (activePlayers.size() == 0) {
             synchronized (queue) {
                 Handlers c;
                 c = queue.remove(0);
@@ -53,17 +52,6 @@ public class Lobby implements Runnable {
 
                 }
             }
-//            numPlayers = c.getNumPlayers();
-            //nicknameInGame.add(c.getNickname());
-//        }
-//        else if (numPlayers != 0 && activePlayers.size() != 0) {
-//            ClientHandler c;
-//            synchronized (queue) {
-//                c = queue.remove(0);
-//            }
-//            activePlayers.add(c);
-//            nicknameInGame.add(c.getNickname());
-//        }
     }
 
     /**
@@ -92,12 +80,10 @@ public class Lobby implements Runnable {
     public void addQueue (Handlers clientHandler) {
         synchronized (queue) {
             queue.add(clientHandler);
-//            nicknameInGame.add(clientHandler.getNickname());
             if (queue.size() == 1) {
                 queue.get(0).setLogphase(LoggingPhase.SETTING);
             }
         }
-//        System.out.println("Added " + clientHandler.getNickname());
     }
 
     /**

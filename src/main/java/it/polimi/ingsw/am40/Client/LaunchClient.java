@@ -23,7 +23,6 @@ import java.util.Scanner;
 public class LaunchClient {
     private static View view;
     private static Client client;
-//    private static LaunchGui gui;
     /**
      * It is the main method, it starts the client
      * @param args arguments of the method
@@ -77,7 +76,6 @@ public class LaunchClient {
                     InetAddress ip = InetAddress.getLocalHost();
                     System.out.println( "Exposed Address: " + ip.getHostAddress());
                 } else {
-//                    System.setProperty("java.rmi.server.hostname", serverIp);
                     System.out.println("Exposed address: " + serverIp);
                 }
                 rmiClient = new RMIClient(serverIp);
@@ -91,10 +89,8 @@ public class LaunchClient {
         } else {
             Socket socket;
             try {
-//                String[] args = ServerArgs.ReadServerConfigFromJSON();
-//                socket = new Socket(args[0], Integer.parseInt(args[1]));
+
                 socket = new Socket(serverIp, 1234);
-//                socket = new Socket(LaunchServer.ReadHostFromJSON(), LaunchServer.ReadPortFromJSON());
             } catch (IOException e) {
                 System.out.println("Server not reachable. Closing...");
                 LaunchClient.getView().quit("");

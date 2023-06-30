@@ -68,7 +68,6 @@ public class GameServer implements Runnable {
                 c.setLobby(lobby);
                 c.setLogphase(LoggingPhase.LOGGING);
                 pool.submit(c);
-//                lobby.addQueue(c);
             } catch (IOException e) {
                 System.out.println("Error in accepting client");
                 break;

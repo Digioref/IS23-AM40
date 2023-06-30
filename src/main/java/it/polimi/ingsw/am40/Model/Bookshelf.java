@@ -58,7 +58,6 @@ public class Bookshelf {
     public boolean addTile(Tile newTile, int col){
         if (!((this.isFull(col)) || newTile == null || col >= 5 || col < 0)){
             bookshelf.get(col).addTile( new Tile(newTile.getColor(), newTile.getType(), new Position(col,bookshelf.get(col).getSize())) );
-//            System.out.println(newTile.toString());
             return true;
         }
         return false;
@@ -121,8 +120,8 @@ public class Bookshelf {
      */
     public int calcScore(){
         int result=0;
-        int numMark=markTile(-1,-1); //purely for test coverage
-        TileColor colorTmp=tileColor(-1,-1);    //purely for test coverage
+        int numMark=markTile(-1,-1); //for test coverage
+        TileColor colorTmp=tileColor(-1,-1);    //for test coverage
         for(int i=0; i<5;i++){
             for(int j=0; j<bookshelf.get(i).getSize();j++){
                 if(markTile(i,j)==0){

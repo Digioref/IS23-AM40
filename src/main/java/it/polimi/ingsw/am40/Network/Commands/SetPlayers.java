@@ -21,7 +21,6 @@ public class SetPlayers implements ICommand {
      */
     @Override
     public void execute(Handlers c, ArrayList<String> comm) throws IOException {
-//        c.setNumPlayers(Integer.parseInt(comm.get(0)));
         if (comm.size() == 1) {
             if (LoggingPhase.SETPLAYERS && c.getLogphase().equals(LoggingPhase.SETTING)) {
                 c.setLogphase(LoggingPhase.WAITING);

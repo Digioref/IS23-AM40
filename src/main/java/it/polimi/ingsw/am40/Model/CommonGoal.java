@@ -429,10 +429,10 @@ public class CommonGoal {
     private int check9(Bookshelf bookshelf){
         int[] numcolour = {0,0,0,0,0,0};
         int maxColors = 0;
-        final int TARGET = 7; //before it was 5
+        final int TARGET = 7;
 
-        for (int i = 0; i < NCOL; i++) { //before NCOL-1
-            for (int j = 0; j < NROW; j++) { //before   NROWS-1
+        for (int i = 0; i < NCOL; i++) {
+            for (int j = 0; j < NROW; j++) {
                 if (bookshelf.getTile(i,j) != null) {
                     switch (bookshelf.getTile(i, j).getColor()) {
                         case YELLOW -> maxColors = numcolour[0]++;

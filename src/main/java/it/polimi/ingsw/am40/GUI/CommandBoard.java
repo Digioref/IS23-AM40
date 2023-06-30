@@ -54,13 +54,11 @@ public class CommandBoard extends AnchorPane {
 
 		for (int i = 0; i < TILES; i++) {
 			tiles[i] = new TileRect(i,primaryStage.getWidth(), primaryStage.getHeight());
-			//tiles[i].relocate(((TILE_LEFT_OFFSET + (i * (TILE_LEFT_OFFSET + Metrics.TILE_WIDTH)))/1536.0)* primaryStage.getWidth(), (TILE_TOP_OFFSET/864.0)*primaryStage.getHeight());
 			AnchorPane.setLeftAnchor(tiles[i],(TILE_LEFT_OFFSET + (i *(TILE_LEFT_OFFSET + Metrics.TILE_WIDTH))) * primaryStage.getWidth());
 			AnchorPane.setTopAnchor(tiles[i], (TILE_TOP_OFFSET * primaryStage.getHeight()));
 
 			labels[i] = new LabelPos(primaryStage.getWidth(), primaryStage.getHeight());
 			labels[i].setEmpty();
-			//labels[i].relocate(((LABEL_LEFT_OFFSET + (i * (Metrics.TILE_WIDTH + LABEL_SIZE_WIDTH)))/1536.0)* primaryStage.getWidth(), (LABEL_TOP_OFFSET/864.0)* primaryStage.getHeight());
 			AnchorPane.setLeftAnchor(labels[i], (LABEL_LEFT_OFFSET + (i* 0.0465)) * primaryStage.getWidth());
 			AnchorPane.setTopAnchor(labels[i], (LABEL_TOP_OFFSET * primaryStage.getHeight()));
 
@@ -137,7 +135,6 @@ public class CommandBoard extends AnchorPane {
 			super();
 
 			setPrefSize(width* Metrics.TILE_WIDTH,height* Metrics.TILE_HEIGHT);
-			//setMinSize(Metrics.TILE_WIDTH, Metrics.TILE_HEIGHT);
 
 			Rectangle clip = new Rectangle(width * Metrics.TILE_WIDTH,height* Metrics.TILE_HEIGHT);
 			clip.setArcWidth(Metrics.TILE_ROUND_WIDTH);

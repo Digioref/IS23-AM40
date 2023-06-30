@@ -121,7 +121,6 @@ public class VirtualView implements  IGameObserver, IGameErrorTurn{
             if (clientHandler != null) {
                 clientHandler.sendMessage(JSONConverterStoC.createJSONBoardPickable(board, positions));
             }
-//            System.out.println("qui");
         } catch (IOException e) {
             System.out.println("Socket not available");
             clientHandler.close();

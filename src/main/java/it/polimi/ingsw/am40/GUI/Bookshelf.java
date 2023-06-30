@@ -67,12 +67,10 @@ public class Bookshelf extends AnchorPane {
 		for(int i=0; i<6; i++){
 			if(i==5){
 				rowEnd[i]=rowEnd[i]*primaryStage.getHeight();
-				//System.out.println("ROWEND[" + i + "]:  " + rowEnd[i] + "PRIMARYSTAGE H: "+ primaryStage.getHeight());
 			}
 			else {
 				rowEnd[i] = rowEnd[i] * primaryStage.getHeight();
 				colStart[i] = colStart[i] * primaryStage.getWidth();
-				//System.out.println("ROWEND[" + i + "]:  " + rowEnd[i] + "  COLSTART[" + i + "]:  " + colStart[i] +  "PRIMARYSTAGE W: "+ primaryStage.getWidth()+ "PRIMARYSTAGE H: "+ primaryStage.getHeight());
 			}
 		}
 

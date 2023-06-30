@@ -29,14 +29,6 @@ public class GameTest{
         game.addPlayer(player1);
         game.addPlayer(player2);
         game.configureGame();
-        /*
-        Lobby l = new Lobby();
-        ClientHandler h = new ClientHandler(new Socket(),new GameServer());
-        Controller c = new Controller(game, l);
-        VirtualView v = new VirtualView("pippo", h, c);
-        game.register(v);
-
-         */
 
         ClientHandler clientHandler = new ClientHandler();
         Controller controller = new Controller(game, null);

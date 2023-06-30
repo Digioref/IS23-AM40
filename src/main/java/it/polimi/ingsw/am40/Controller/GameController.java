@@ -71,7 +71,6 @@ public class GameController {
      */
     public void order(VirtualView v, ArrayList<Integer> arr) {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
-//            System.out.println("qui");
             game.setOrder(arr);
         } else {
             v.turnError();
@@ -86,7 +85,6 @@ public class GameController {
      */
     public void insert(VirtualView v, int c) {
         if (game.getCurrentPlayer().getNickname().equals(v.getNickname())) {
-//            System.out.println("qui");
             game.insertInBookshelf(c-1);
             game.endTurn();
             if (game.getTurn() == TurnPhase.ENDGAME) {

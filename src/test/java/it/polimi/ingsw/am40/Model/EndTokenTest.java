@@ -11,10 +11,6 @@ public class EndTokenTest {
     Bookshelf bookshelf = new Bookshelf();
     EndToken endToken = new EndToken();
 
-    // riempire una bookshelf per testare check
-
-    //uso getCurrent o getFinalScore qui sotto?
-
     @Test
     void testUpdateScore(){
         Player p = new Player("DEFAULT");

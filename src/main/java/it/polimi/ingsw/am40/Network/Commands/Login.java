@@ -34,7 +34,6 @@ public class Login implements ICommand {
             if (c.checkNickname(s.toString())) {
                 if ((!c.getLobby().getGames().containsKey(s.toString()) && c.getLobby().getNicknameInGame().contains(s.toString())) || (c.getLobby().getGames().containsKey(s.toString()) && !c.getLobby().getGames().get(s.toString()).getGame().getDiscPlayers().contains(s.toString()))) {
                     c.sendMessage(JSONConverterStoC.createJSONError("Nickname already used!"));
-//                    c.sendMessage(JSONConverterStoC.normalMessage("What about these nicknames:"));
                     c.suggestNickname(s.toString());
                 } else if (c.getLobby().getGames().containsKey(s.toString()) && c.getLobby().getGames().get(s.toString()).getGame().getDiscPlayers().contains(s.toString())) {
                     c.sendMessage(JSONConverterStoC.normalMessage("Welcome back " + s + "!\nReconnecting to the game..."));

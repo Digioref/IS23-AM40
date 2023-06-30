@@ -24,7 +24,6 @@ public abstract class Handlers {
     protected MessageAdapter messAd;
     protected int nPingLost;
     protected boolean disconnected;
-//    protected ArrayList<String> commands;
     /**
      * Sets the attribute nickname to the parameter passed
      * @param nickname a nickname

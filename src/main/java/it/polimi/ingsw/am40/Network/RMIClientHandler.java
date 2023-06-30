@@ -83,7 +83,6 @@ public class RMIClientHandler extends Handlers {
         } catch (RemoteException e) {
             System.out.println("Client not reachable... Disconnecting it...");
             close();
-//            throw new RuntimeException(e);
         }
     }
 
@@ -197,7 +196,6 @@ public class RMIClientHandler extends Handlers {
         waitPing.shutdownNow();
         nPingLost = 0;
         waitPing = Executors.newScheduledThreadPool(1);
-//        startPing();
     }
 
     /**

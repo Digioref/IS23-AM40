@@ -184,7 +184,6 @@ public class JSONConverterStoC {
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 6; j++) {
                     JSONObject obj1 = new JSONObject();
-//                    System.out.println("---" + i + "???" + j + "---");
                     if (p.getBookshelf().getBookshelf().get(i).getTile(j) == null) {
                         obj1.put("color", TileColor.NOCOLOR.toString());
                     }

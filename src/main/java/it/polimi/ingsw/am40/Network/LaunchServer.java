@@ -17,7 +17,6 @@ public class LaunchServer {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-//        System.out.println("Server started!");
         String hostName;
         int portNumber = Integer.parseInt(args[1]);
 
@@ -26,7 +25,6 @@ public class LaunchServer {
         String IPAddress = ip.getHostAddress();
         System.out.println("HostName: " + hostName);
         System.out.println( "Exposed Address: " + IPAddress);
-//        setServerHostname();
         Scanner scanner = new Scanner(System.in);
         GameServer server = null;
         boolean retry;
@@ -47,7 +45,6 @@ public class LaunchServer {
         try {
             server.run();
         } finally {
-//            System.out.println("qui");
             server.close();
         }
     }

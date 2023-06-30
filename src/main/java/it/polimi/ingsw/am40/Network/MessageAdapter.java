@@ -29,7 +29,6 @@ public class MessageAdapter {
      */
     public void configure() {
         pJsonm.configureCommands(commands);
-//        System.out.println(commands.toString());
     }
 
     /**

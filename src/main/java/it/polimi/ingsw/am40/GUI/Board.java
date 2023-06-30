@@ -66,8 +66,7 @@ public class Board extends AnchorPane {
 		int y = (int) pos.getY();
 		String key = hashkey(x, y);
 
-		/* Relocate the tile on the grid */
-		//tile.relocate(ORIGIN_X + (x * STEP_X), ORIGIN_Y - (y * STEP_Y));
+
 		AnchorPane.setLeftAnchor(tile, ORIGIN_X + x*STEP_X);
 		AnchorPane.setTopAnchor(tile, ORIGIN_Y - (y*STEP_Y));
 
@@ -128,7 +127,6 @@ public class Board extends AnchorPane {
 		for (String s: board.keySet()) {
 				Tile t = (Tile) tiles.get(s);
 				if (!board.get(s).equals("NOCOLOR")) {
-//					t.setPosition(s);
 					t.setPickable(map.containsKey(s));
 					Position p = new Position();
 					p.convertKey(s);

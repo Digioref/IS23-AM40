@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class CommonGoalTest {
 
     @Test
-    public void Test() { // GREEN, WHITE, YELLOW, BLUE, CYAN, VIOLET
+    public void Test() {
 
         JSONParser jsonParser = new JSONParser();
 
@@ -84,7 +84,6 @@ public class CommonGoalTest {
                 ArrayList<CommonGoal> cg = new ArrayList<>(12);
                 for (int j = 0; j < 12; j++) {
                     cg.add(new CommonGoal(j+1, 2));
-                    //System.out.println("cg: " + (j+1));
                     assertEquals((int) asserts.get(j), cg.get(j).check(bookshelf));
                 }
 

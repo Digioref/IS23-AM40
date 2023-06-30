@@ -25,7 +25,6 @@ public class Select implements ICommand {
             c.sendMessage(JSONConverterStoC.createJSONError("Incomplete command"));
         }
         else {
-//            System.out.println(("qui"));
             int x, y;
             try {
                 x = Integer.parseInt(comm.get(0));
