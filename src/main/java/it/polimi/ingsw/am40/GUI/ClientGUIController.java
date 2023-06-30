@@ -94,7 +94,6 @@ public class ClientGUIController implements View {
      */
     @Override
     public void showCurrentBookshelf(Map<String, String> map) {
-        System.out.println("qui");
         runLater(()->gui.reconnectBookshelf(map));
     }
 

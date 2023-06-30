@@ -66,38 +66,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
             }
         }
 //        RMIClientHandler rmiClientHandler = null;
-        if(!checkNickname(s)) {
+        if(checkNickname(s)) {
 //            rmiClientHandler = new RMIClientHandler();
-            for (RMIClientHandler r: rmiHandlers) {
-                if (r.getRmiClient().equals(client)) {
-                    r.setNickname(s);
-                    r.setLogged(true);
-                    clientHandlers.put(s, r);
-                    client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
-                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("""
-
-                             ____    ____  ____  ____    ______   ____  ____  ________  _____     ________  _____  ________ \s
-                            |_   \\  /   _||_  _||_  _| .' ____ \\ |_   ||   _||_   __  ||_   _|   |_   __  ||_   _||_   __  |\s
-                              |   \\/   |    \\ \\  / /   | (___ \\_|  | |__| |    | |_ \\_|  | |       | |_ \\_|  | |    | |_ \\_|\s
-                              | |\\  /| |     \\ \\/ /     _.____`.   |  __  |    |  _| _   | |   _   |  _|     | |    |  _| _ \s
-                             _| |_\\/_| |_    _|  |_    | \\____) | _| |  | |_  _| |__/ | _| |__/ | _| |_     _| |_  _| |__/ |\s
-                            |_____||_____|  |______|    \\______.'|____||____||________||________||_____|   |_____||________|\s
-                                                                                                                            \s
-                            """));
-                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
-                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Waiting"));
-                    lobby.addQueue(r);
-                    lobby.addNickname(s);
-                    if (!lobby.getQueue().isEmpty() && lobby.getQueue().get(0).getNickname().equals(r.getNickname())) {
-                        r.setLogphase(LoggingPhase.SETTING);
-                        LoggingPhase.setSETPLAYERS(true);
-                        clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
-                    }
-                    rmiHandlers.remove(r);
-                    break;
-                }
-            }
-        } else {
             for (RMIClientHandler r: rmiHandlers) {
                 if (r.getRmiClient().equals(client)) {
                     if ((!(r.getLobby().getGames().containsKey(s)) && r.getLobby().getNicknameInGame().contains(s)) || (r.getLobby().getGames().containsKey(s) && !r.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s))) {
@@ -127,6 +97,36 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
                 }
             }
 
+        } else {
+            for (RMIClientHandler r: rmiHandlers) {
+                if (r.getRmiClient().equals(client)) {
+                    r.setNickname(s);
+                    r.setLogged(true);
+                    clientHandlers.put(s, r);
+                    client.receiveNickname(JSONConverterStoC.createJSONNickname(s));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("""
+
+                             ____    ____  ____  ____    ______   ____  ____  ________  _____     ________  _____  ________ \s
+                            |_   \\  /   _||_  _||_  _| .' ____ \\ |_   ||   _||_   __  ||_   _|   |_   __  ||_   _||_   __  |\s
+                              |   \\/   |    \\ \\  / /   | (___ \\_|  | |__| |    | |_ \\_|  | |       | |_ \\_|  | |    | |_ \\_|\s
+                              | |\\  /| |     \\ \\/ /     _.____`.   |  __  |    |  _| _   | |   _   |  _|     | |    |  _| _ \s
+                             _| |_\\/_| |_    _|  |_    | \\____) | _| |  | |_  _| |__/ | _| |__/ | _| |_     _| |_  _| |__/ |\s
+                            |_____||_____|  |______|    \\______.'|____||____||________||________||_____|   |_____||________|\s
+                                                                                                                            \s
+                            """));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("You are logged in!"));
+                    clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Waiting"));
+                    lobby.addQueue(r);
+                    lobby.addNickname(s);
+                    if (!lobby.getQueue().isEmpty() && lobby.getQueue().get(0).getNickname().equals(r.getNickname())) {
+                        r.setLogphase(LoggingPhase.SETTING);
+                        LoggingPhase.setSETPLAYERS(true);
+                        clientHandlers.get(s).sendMessage(JSONConverterStoC.normalMessage("Setplayers"));
+                    }
+                    rmiHandlers.remove(r);
+                    break;
+                }
+            }
         }
 
     }

@@ -376,8 +376,7 @@ public class Viewer extends Application {
 	 * @param pane pane where the scene is set
 	 */
 	public void newScene(Pane pane) {
-		double aspectRatio = 16.0/9.0;
-		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getWidth()/aspectRatio);
+		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getWidth());
 		primaryStage.setScene(scene);
 		primaryStage.setFullScreen(false);
 		primaryStage.setFullScreenExitHint("");
@@ -918,7 +917,6 @@ public class Viewer extends Application {
 		bookshelf.setName(nickname);
 		gameBoard.getChildren().add(bookshelf);
 		for (int i = 0; i < ARROWS_DOWN; i++) {
-			System.out.println();
 			Arrow arrowDown = new Arrow(Arrow.DOWN);
 			arrowDown.setUserData(arrowDown);
 			arrowDown.setVisible(false);

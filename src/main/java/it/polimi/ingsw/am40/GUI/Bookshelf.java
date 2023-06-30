@@ -60,9 +60,6 @@ public class Bookshelf extends AnchorPane {
 		bsImage.setGraphic(view);
 		heightStage=primaryStage.getHeight();
 		widthStage=primaryStage.getWidth();
-		System.out.println("WWWWWWW : "+ w + "  HHHHHH: " + h);
-
-
 
 		for(int i=0; i<6; i++){
 			if(i==5){
@@ -166,7 +163,6 @@ public class Bookshelf extends AnchorPane {
 	public void insert(ArrayList<Node> nodeList, int col) {
 		this.node = null;
 		this.nodeList = nodeList;
-		System.out.println("COLSTART[" + col + "] = " + colStart[col]);
 		this.col = colStart[col];
 		this.colIndex = col;
 		animTimer.start();
@@ -180,8 +176,6 @@ public class Bookshelf extends AnchorPane {
 	public void update(ArrayList<Node> nodeList, int cols){
 		double width = this.getWidth();
 		double height = this.getHeight();
-		System.out.println("WWW : "+ width + "  HHH: " + height);
-		System.out.println("COLONNA: "+ col);
 		for (int i = 0; i < nodeList.size();) {
 			node = nodeList.remove(0);
 			AnchorPane.clearConstraints(node);

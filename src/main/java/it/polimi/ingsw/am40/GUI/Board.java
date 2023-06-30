@@ -26,7 +26,7 @@ public class Board extends AnchorPane {
 	private static final int MAX_SELECTABLE = 3;
 
 	private static double ORIGIN_X = 244.0;
-	private static double ORIGIN_Y = 246.0;
+	private static double ORIGIN_Y = 26.0;
 	private static double STEP_X = 55.0;
 	private static double STEP_Y = 55.0;
 
