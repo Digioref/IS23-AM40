@@ -243,6 +243,7 @@ public class GameTest{
     game.getEndToken().setEnd(false);
 
     game.checkEndGame();
+
     }
 
     @Test
@@ -499,13 +500,24 @@ public class GameTest{
         game.setCurrentPlayer(player);
         player.setNext(player2);
 
-        game.setTurn(TurnPhase.ENDGAME);
 
 
         game.getPlayers().add(player);
         game.getPlayers().add(player2);
 
+        game.configureGame();
+        game.startGame();
+        game.setTurn(TurnPhase.ENDGAME);
+
+        game.getPlayers().get(0).setDisconnected(true);
+
         game.endGame();
+
+        game.setTurn(TurnPhase.ENDTURN);
+        game.setFirstPlayer(game.getCurrentPlayer().getNext());
+        System.out.println(game.checkEndGame());
+
+
     }
 
     @Test

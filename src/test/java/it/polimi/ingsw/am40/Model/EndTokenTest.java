@@ -17,9 +17,21 @@ public class EndTokenTest {
 
     @Test
     void testUpdateScore(){
-        player.createBookshelf();
-        endToken.updateScore(player);
-        assertEquals(player.getCurrentScore(), 0);
+        Player p = new Player("DEFAULT");
+        p.createBookshelf();
+
+        endToken.updateScore(p);
+        assertEquals(p.getCurrentScore(), 0);
+
+        Tile t = new Tile(TileColor.CYAN,TileType.CATS);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 6; j++) {
+                p.getBookshelf().addTile(t, i);
+            }
+        }
+        System.out.println(endToken.check(p));
+        endToken.updateScore(p);
+
 
     }
 
