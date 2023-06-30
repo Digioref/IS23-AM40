@@ -492,6 +492,7 @@ public class GameTest{
         Game game = new Game(2);
 
         game.setFirstPlayer(player2);
+        game.setEnd();
         EndToken endToken = new EndToken();
         game.setEndToken(endToken);
         game.getEndToken().setEnd(true);
@@ -499,11 +500,16 @@ public class GameTest{
         game.setCurrentPlayer(player);
         player.setNext(player2);
 
-        game.setTurn(TurnPhase.ENDTURN);
 
 
         game.getPlayers().add(player);
         game.getPlayers().add(player2);
+
+        game.configureGame();
+        game.startGame();
+        game.setTurn(TurnPhase.ENDGAME);
+
+        game.getPlayers().get(0).setDisconnected(true);
 
         game.endGame();
 
