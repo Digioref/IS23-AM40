@@ -396,7 +396,7 @@ public class Game implements IGame {
      * Calculates the score of each player at the end of the game
      */
     public void endGame() {
-        if (checkEndGame() && turn == TurnPhase.ENDGAME) {
+        if (turn == TurnPhase.ENDGAME) {
             for (Player p : players) {
                 p.calculateScore();
                 setWinner();
