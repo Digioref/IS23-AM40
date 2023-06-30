@@ -45,5 +45,5 @@ java -jar AM40.jar --client
 
 from the command line in the jar's folder.
 Supported in Windows and Linux
-For macOS you have to change the settings of the screen, to do it just follow the instructions in the comments in the method (newScene)[https://github.com/Digioref/IS23-AM40/blob/main/src/main/java/it/polimi/ingsw/am40/GUI/Viewer.java] starting at line 378.
+For macOS you have to change the settings of the screen, to do it just follow the instructions in the comments in the method [newScene](https://github.com/Digioref/IS23-AM40/blob/main/src/main/java/it/polimi/ingsw/am40/GUI/Viewer.java) starting at line 378.
 
