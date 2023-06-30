@@ -226,16 +226,30 @@ class GameControllerTest {
     }
 
 
-    @Ignore
-    void disconnectPlayer() {
+    @Test
+    void disconnect_reconnect_Player() {
         Game game = new Game(3);
+        Board board = new Board();
+        game.setBoard(board);
         Player luca = new Player("Luca");
         Player francesco = new Player("Francesco");
         Player giovanni = new Player("Giovanni");
 
+        game.setCurrentPlayer(luca);
+        Position position = new Position(1,1);
+        luca.getSelectedPositions().add(position);
+
         game.addPlayer(luca);
         game.addPlayer(francesco);
         game.addPlayer(giovanni);
+
+        game.startTimer();
+
+        CommonGoal commonGoal1 = new CommonGoal(1,1);
+        CommonGoal commonGoal2 = new CommonGoal(2,1);
+        game.getCurrentComGoals().add(commonGoal1);
+        game.getCurrentComGoals().add(commonGoal2);
+
 
         Lobby lobby = new Lobby();
         Controller controller = new Controller(game, lobby);
