@@ -9,9 +9,6 @@ import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -21,7 +18,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -33,10 +29,11 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 /**
@@ -53,14 +50,11 @@ public class Viewer extends Application {
 	private Scene scene;
 	private Pane pane;
 	private RedCross redCross;
-	private Map<String, Integer> players;
 	private String currentPlayer;
 	private AnchorPane gameBoard;
 	private String nickname;
 	private String firstPlayer;
 	private int numPlayers;
-	private int hiddenScore;
-	private Bag bag;
 	private Board board;
 	private CommonGoalGui c1;
 	private CommonGoalGui c2;
@@ -70,33 +64,27 @@ public class Viewer extends Application {
 	private ArrayList<Bookshelf> bookshelves;
 	private ArrayList<String> names;
 	private Alert alert;
-	private Alert errorAlert;
-	private Button ChatButton;
 	private boolean isVisible;
-	private boolean isNew;
-	private VBox chatContainer = new VBox();
-	private AnchorPane chat = new AnchorPane();
-	private double aspectRatio = 16.0 / 9.0; // Desired aspect ratio
+	private final VBox chatContainer = new VBox();
+	private final AnchorPane chat = new AnchorPane();
 	private Circle dotIndicator;
 
 	private VBox messages;
 
 	private ArrayList<Integer> currentToken;
 
-	private ArrayList<ScoreToken> scoringToken;
 	private int pickedToken;
 
-	private Map<String,ArrayList<ScoreToken>> pickTok;
-	private ArrayList<Integer> prevCommGoalScore;
-
-	private ImageView endToken;
 	private PlayersPointBoard ppboard;
 	private CirclePoints cp;
 
-	private ScrollPane chatScrollPane = new ScrollPane();
+	private final ScrollPane chatScrollPane = new ScrollPane();
 	private ComboBox<String> selectReceivers;
 	private TextField messageInput;
 	private Button sendButton;
+
+	public Viewer() {
+	}
 
 	/**
 	 * It is the main method, used to launch the GUI
@@ -115,7 +103,7 @@ public class Viewer extends Application {
 			return gui;
 		} else {
 			(new Thread(Application::launch)).start();
-			while(gui == null || !gui.isPrimaryStageOn())  //ensures that the gui has been launched before proceeding
+			while(gui == null || !gui.isPrimaryStageOn())
 			{
 				try {
 					Thread.sleep(100);
@@ -128,10 +116,7 @@ public class Viewer extends Application {
 	}
 
 	private boolean isPrimaryStageOn() {
-		if (primaryStage != null) {
-			return true;
-		}
-		return false;
+		return primaryStage != null;
 	}
 
 	/**
@@ -145,125 +130,10 @@ public class Viewer extends Application {
 		arrowRight = new Arrow(Arrow.RIGHT);
 		arrowDownList = new ArrayList<>();
 		redCross = new RedCross();
-//		alert = new Alert(Alert.AlertType.INFORMATION);
-//		errorAlert = new Alert(Alert.AlertType.ERROR);
-//		alert.getDialogPane().getStylesheets().add("Alert.css");
-//		errorAlert.getDialogPane().getStylesheets().add("Error.css");
 		primaryStage.setResizable(true);
-
 		gui = this;
-		//pickedToken=new ArrayList<>();
 		pickedToken=0;
-//
-//		// -----------  setup page  -----------
-//		Pane rootBox = new Pane();
-//
-//		//stage.setMaximized(true);
-//		stage.setFullScreen(true);
-//		stage.setTitle("MyShelfie");
-//		stage.getIcons().add(Resources.icon());
-//		stage.setResizable(true);
-//
-//		//newScene(stage, rootBox);
-//
-//		stage.show();
-//
-//		setBackground(stage, rootBox);
-//
-//		VBox vbox = createVbox(rootBox);
-//
-//		setTitle(vbox);
-//
-//		Text t1 = addDescription(vbox, "Inserisci l'indirizzo ip, L per localHost");
-//
-//		TextField tf = addTextField(vbox);
-//
-//		Text t2 = addDescription(vbox, "Scegli un tipo di connessione");
-//
-//		RadioButton r1 = addToggle(vbox,"RMI", true);
-//		RadioButton r2 = addToggle(vbox,"SOCKET", false);
-//		setToggles(r1,r2);
-//
-//		Button b1 = addButton(vbox, "Ready?", true);
-//		Button b2 = addButton(vbox, "CONTINUA", false);
-//		b1.setOnAction(e -> {
-//			setConnection(vbox, tf, t1, t2, r1, r2, b1, b2);
-//		});
-//
-//		Button b3 = addButton(vbox, "Let's goooo", false);
-//
-//		b2.setOnAction(e -> {
-//			setUsername(vbox, tf, t1, b2, b3);
-//		});
-//
-//		// -----------  From here you go to the play scene  -----------
-//
-//		Pane newRoot = new Pane();
-//		b3.setOnAction(e -> {
-//			newScene(stage, newRoot);
-//		});
-//
-//		newScene(stage, newRoot);
-//		setBackground(stage, newRoot);
-//
-//		StackPane stack = new StackPane();
-//
-//		BorderPane home = new BorderPane();
-//
-//		stack.getChildren().add(home);
-//
-//
-//		//ScrollPane sp = new ScrollPane();   --- Come mai lo scroll pane non va??????
-//
-//		newRoot.getChildren().add(stack);
-//
-//		VBox vLeft = new VBox();
-//		vLeft.setSpacing(Screen.getPrimary().getVisualBounds().getHeight() * 0.05);
-//		VBox vRight = new VBox();
-//		vRight.setSpacing(40);
-//		vRight.setAlignment(Pos.CENTER);
-//		VBox v = new VBox();
-//
-//		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//		Bag b = new Bag();
-//
-//		//aggiunto un metodo per settare board e pg
-//		setBookshelvesAndPG(vLeft, stack);
-//
-//
-//		CommonGoalGui cg1 = new CommonGoalGui(1);
-//		CommonGoalGui cg2 = new CommonGoalGui(2);
-//
-//		CommonGoalGuiZOOMED cg1duplicate = new CommonGoalGuiZOOMED(1);
-//		CommonGoalGuiZOOMED cg2duplicate = new CommonGoalGuiZOOMED(2);
-//
-//		activateZOOM(cg1, cg1duplicate, stack);
-//		activateZOOM(cg2, cg2duplicate, stack);
-//
-//		vRight.getChildren().addAll(cg1, cg2);
-//
-//		Board board = new Board();
-//
-//		home.setRight(vRight);
-//		home.setLeft(vLeft);
-//		home.setCenter(board);
-//		home.setBottom(v);
 
-
-
-		//home.setBottom(v);
-
-		//ScrollPane scrollPane = new ScrollPane(rootBox);
-
-		//scene = new Scene(scrollPane);
-
-
-
-
-
-		/* Test: populate the board */
-		//populateBoard();
 	}
 
 
@@ -272,20 +142,14 @@ public class Viewer extends Application {
 	 * @param pane a pane where to set the background
 	 */
 	public void setBackground(Pane pane) {
-		//pane.setPrefSize(screenWidth, screenHeight);
 		pane.setPrefSize(15.5,8.7);
-
-		//setting the background
 		Image backGroundImage = Resources.background();
 		ImageView backGroundView = new ImageView(backGroundImage);
 		pane.getChildren().add(backGroundView);
-
-		//setting the background
 		AnchorPane.setTopAnchor(backGroundView,0.0);
 		AnchorPane.setRightAnchor(backGroundView,0.0);
 		AnchorPane.setLeftAnchor(backGroundView,0.0);
 		AnchorPane.setBottomAnchor(backGroundView,0.0);
-
 		backGroundView.fitWidthProperty().bind(scene.widthProperty());
 		backGroundView.fitHeightProperty().bind(scene.heightProperty());
 	}
@@ -300,13 +164,7 @@ public class Viewer extends Application {
 		vbox.setSpacing(10);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setMaxWidth(primaryStage.getWidth());
-		primaryStage.widthProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				vbox.setMaxWidth((double) newValue);
-			}
-		});
-//		vbox.autosize();
+		primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> vbox.setMaxWidth((double) newValue));
 		pane.getChildren().add(vbox);
 		return vbox;
 	}
@@ -316,28 +174,14 @@ public class Viewer extends Application {
 	 * @param pane the pane where the title is set
 	 */
 	public void setTitle(Pane pane) {
-		//double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
-		//double sceneWidth = scene.getWindow().getWidth();
 		Image title = Resources.title();
 		ImageView imageView = new ImageView(title);
-//  	imageView.setFitWidth(screenWidth);
-//		imageView.setFitWidth(sceneWidth);
 		imageView.setFitWidth(primaryStage.getWidth());
 		imageView.setFitHeight(primaryStage.getHeight());
 		imageView.setPreserveRatio(true);
 		pane.getChildren().addAll(imageView);
-		primaryStage.widthProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				imageView.setFitWidth((double)newValue);
-			}
-		});
-		primaryStage.heightProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				imageView.setFitHeight((double) newValue);
-			}
-		});
+		primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> imageView.setFitWidth((double)newValue));
+		primaryStage.heightProperty().addListener((observable, oldValue, newValue) -> imageView.setFitHeight((double) newValue));
 	}
 
 	/**
@@ -391,28 +235,23 @@ public class Viewer extends Application {
 
 		connectionType = "SOCKET";
 
-		socket.setOnAction(e -> {
-			connectionType = "SOCKET";
-		});
-		rmi.setOnAction(e -> {
-			connectionType = "RMI";
-		});
+		socket.setOnAction(e -> connectionType = "SOCKET");
+		rmi.setOnAction(e -> connectionType = "RMI");
 
 		socket.setToggleGroup(tg);
 		rmi.setToggleGroup(tg);
 
 	}
 
+	/**
+	 * It adds a button to the provided pane
+	 * @param pane the pane where the button is added
+	 * @param tmp the string inside the button
+	 * @param isVisible if true, the button is set visible
+	 * @return a button
+	 */
 	public Button addButton(Pane pane, String tmp, Boolean isVisible) {
-//		Image background_per_pulsanti = new Image("colore_pulsanti.jpg");
-//		BackgroundImage bgImg_per_pulsanti = new BackgroundImage(background_per_pulsanti, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
-//				BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
-//
-//		Background bg_conferma_pulsante = new Background(bgImg_per_pulsanti);
 
-//		Button button = new Button(tmp);
-//		button.setFont(Font.font(20));
-//		button.setBackground(bg_conferma_pulsante);
 		Button button = new Button(tmp);
 		button.setVisible(isVisible);
 		button.setFont(Font.font(20));
@@ -424,6 +263,11 @@ public class Viewer extends Application {
 
 	}
 
+	/**
+	 * It sets the connection taking the ip address written by the user and calling a method of the LaunchCLient
+	 * @param tf text field where the ip address must be written
+	 * @param t1 text that suggests to the user to write the ip address
+	 */
 	public void setConnection( TextField tf, Text t1) {
 		String connectionIp = tf.getText();
 		Pattern p = Pattern.compile("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
@@ -436,19 +280,12 @@ public class Viewer extends Application {
 			LaunchClient.startConnection(connectionType, connectionIp);
 			setUsername();
 		}
-////		t1.setText("Scegli uno username");
-////		tf.clear();
-//
-//		pane.getChildren().remove(t2);
-//		pane.getChildren().remove(socket);
-//		pane.getChildren().remove(rmi);
-//		pane.getChildren().remove(oldB);
-//
-//		newB.setVisible(true);			//////////////////////////////////////////////////////////////////////////////////////////////////////// da rendere rosso con FONT
 	}
 
+	/**
+	 * It sets the username of the player. It asks the player to write his desired nickname
+	 */
 	public void setUsername() {
-//		primaryStage.close();
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -467,13 +304,9 @@ public class Viewer extends Application {
 		TextField tf = addTextField(vbox);
 
 		Button b1 = addButton(vbox, "Login", true);
-		Text t2 = addDescription(vbox, "");
-//		Button b2 = addButton(vbox, "CONTINUE", false);
-//		primaryStage.setScene(scene);
-//		primaryStage.setFullScreen(true);
+		addDescription(vbox, "");
 		primaryStage.setTitle("MY SHELFIE LOGIN");
 		primaryStage.getIcons().add(Resources.icon());
-//		primaryStage.setResizable(true);
 		primaryStage.show();
 
 		b1.setOnAction(e -> {
@@ -495,32 +328,17 @@ public class Viewer extends Application {
 				}
 			}
 		});
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			public void handle(WindowEvent we) {
-				if (LaunchClient.getClient() != null) {
-					LaunchClient.getClient().sendMessage("Quit");
-					LaunchClient.getClient().close();
-				}
+		primaryStage.setOnCloseRequest(we -> {
+			if (LaunchClient.getClient() != null) {
+				LaunchClient.getClient().sendMessage("Quit");
+				LaunchClient.getClient().close();
 			}
 		});
-//		if (!tf.getText().equals("")) {
-//			String tmp = "Welcome " + tf.getText();
-//			t1.setText(tmp);
-//
-//			pane.getChildren().remove(oldB);
-//			pane.getChildren().remove(tf);
-//
-//			newB.setVisible(true);
-//
-//			waitingAnimation(pane);
-//
-//		} else {
-//			String tmp = t1.getText();
-//			tmp = tmp.concat("!");
-//			t1.setText(tmp);
-//		}
 	}
 
+	/**
+	 * It sets and starts the waiting animation when the player is logged in, and he's waiting in the lobby
+	 */
 	public void waitingAnimation() {
 		Image im = Resources.tile(1,0);
 		ImageView loadImage = new ImageView(im);
@@ -528,9 +346,9 @@ public class Viewer extends Application {
 		loadImage.setPreserveRatio(true);
 
 		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), loadImage);
-		rotateTransition.setByAngle(360); // Rotate by 360 degrees
-		rotateTransition.setCycleCount(Animation.INDEFINITE); // Repeat indefinitely
-		rotateTransition.setAutoReverse(false); // Do not reverse the animation
+		rotateTransition.setByAngle(360);
+		rotateTransition.setCycleCount(Animation.INDEFINITE);
+		rotateTransition.setAutoReverse(false);
 
 		Timeline timeline = new Timeline(
 				new KeyFrame(Duration.ZERO, event -> {
@@ -544,15 +362,18 @@ public class Viewer extends Application {
 
 				})
 		);
-		timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
+		timeline.setCycleCount(Timeline.INDEFINITE);
 
-//		pane.getChildren().add(loadImage);
 		Pane x = (Pane) pane.getChildren().get(1);
 		x.getChildren().add(loadImage);
 		rotateTransition.play();
 		timeline.play();
 	}
 
+	/**
+	 * It sets a new scene for the primary stage
+	 * @param pane pane where the scene is set
+	 */
 	public void newScene(Pane pane) {
 		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
 		primaryStage.setScene(scene);
@@ -561,107 +382,15 @@ public class Viewer extends Application {
 	}
 
 
-
-	public void setBookshelvesAndPG(VBox vLeft, StackPane stack){
-//	    int numPlayers = 4;
-//		for(int i=0; i<numPlayers;i++) {
-//			HBox row = new HBox();
-//			Bookshelf bs1 = new Bookshelf();
-//			BookshelfZOOMED bs1zoomed = new BookshelfZOOMED();
-//			activateZOOM(bs1,bs1zoomed,stack);
-//			PersonalGoal pg = new PersonalGoal(0);
-//			row.getChildren().addAll(bs1, pg);
-//			vLeft.getChildren().add(row);
-//		}
-
-	}
-
-
-	public void activateZOOM(Node notZOOMED, Node zoomedLabel, StackPane stack){
-		notZOOMED.setOnMouseEntered(e -> {
-			System.out.println("entro");
-			stack.getChildren().add(zoomedLabel);
-		});
-
-		notZOOMED.setOnMouseExited(e -> {
-			System.out.println("esco");
-			stack.getChildren().remove(zoomedLabel);
-		});
-	}
-
-
 	/* Test methods */
-/*
-	void populateBoard() {
 
-
-		addTile(Resources.TILE_TYPE_CAT, 0, 0);
-		addTile(Resources.TILE_TYPE_FRAME, 0, 1);
-		addTile(Resources.TILE_TYPE_FLOWER, 0, 2);
-		addTile(Resources.TILE_TYPE_TROPHY, 0, 3);
-		addTile(Resources.TILE_TYPE_CAT, 0, -1);
-		addTile(Resources.TILE_TYPE_GAME, 0, -2);
-		addTile(Resources.TILE_TYPE_BOOK, 0, -3);
-
-		addTile(Resources.TILE_TYPE_CAT, -1, 0);
-		addTile(Resources.TILE_TYPE_FRAME, -1, 1);
-		addTile(Resources.TILE_TYPE_CAT, -1, 2);
-		addTile(Resources.TILE_TYPE_BOOK, -1, 3);
-		addTile(Resources.TILE_TYPE_GAME, -1, -1);
-		addTile(Resources.TILE_TYPE_TROPHY, -1, -2);
-
-		addTile(Resources.TILE_TYPE_TROPHY, -2, 0);
-		addTile(Resources.TILE_TYPE_BOOK, -2, 1);
-		addTile(Resources.TILE_TYPE_CAT, -2, -1);
-		addTile(Resources.TILE_TYPE_FRAME, -3, 0);
-		addTile(Resources.TILE_TYPE_CAT, -3, -1);
-
-		addTile(Resources.TILE_TYPE_FRAME, 1, 0);
-		addTile(Resources.TILE_TYPE_TROPHY, 1, 1);
-		addTile(Resources.TILE_TYPE_GAME, 1, 2);
-		addTile(Resources.TILE_TYPE_TROPHY, 1, -1);
-		addTile(Resources.TILE_TYPE_CAT, 1, -2);
-		addTile(Resources.TILE_TYPE_FRAME, 1, -3);
-
-		addTile(Resources.TILE_TYPE_CAT, 2, 0);
-		addTile(Resources.TILE_TYPE_BOOK, 2, 1);
-		addTile(Resources.TILE_TYPE_GAME, 2, -1);
-
-		addTile(Resources.TILE_TYPE_FLOWER, 3, 0);
-		addTile(Resources.TILE_TYPE_BOOK, 3, 1);
-
-		setTilePickable(3, 1);
-		setTilePickable(3, 0);
-		setTilePickable(2, 1);
-		setTilePickable(1, 2);
-		setTilePickable(1, -2);
-		setTilePickable(0, 3);
-		setTilePickable(-1, 3);
-		setTilePickable(-1, 2);
-		setTilePickable(-2, 1);
-		setTilePickable(-3, 0);
-		setTilePickable(-3, -1);
-		setTilePickable(-2, -1);
-		setTilePickable(-1, -2);
-		setTilePickable(0, -3);
-		setTilePickable(1, -3);
-		setTilePickable(1, -3);
-		setTilePickable(2, -1);
-	}
-
-	void addTile(int type, int x, int y) {
-		Tile tile;
-
-		tile = new Tile(type);
-		tile.setPosition(x, y);
-		viewController.fireEvent(new CustomEvent(CustomEvent.BOARD_ADD_TILE, tile));
-	}
-
-	void setTilePickable(int x, int y) {
-		viewController.fireEvent(new CustomEvent(CustomEvent.BOARD_TILE_PICKABLE, x, y));
-	}
-	*/
-
+	/**
+	 * It sets the messages in the chat
+	 * @param array1 it contains the senders of the messages
+	 * @param array2 it contains the receivers of the messages
+	 * @param array3 it contains the messages
+	 * @param receiver the name of the owner of this GUI, used to notify the correct player
+	 */
 	public void newMessage(ArrayList<String> array1, ArrayList<String> array2, ArrayList<String> array3, String receiver) {
 		if (nickname.equals(receiver)) {
 			if (!isVisible) {
@@ -682,21 +411,20 @@ public class Viewer extends Application {
 	private void createChatContainer() {
 
 		isVisible = false;
-		ChatButton = new Button();
-		ChatButton.getStylesheets().add("Button.css");
-		ChatButton.setFont(Font.font(20));
-		ChatButton.setVisible(true);
-		ChatButton.setText("CHAT");
+		Button chatButton = new Button();
+		chatButton.getStylesheets().add("Button.css");
+		chatButton.setFont(Font.font(20));
+		chatButton.setVisible(true);
+		chatButton.setText("CHAT");
 
-		gameBoard.getChildren().add(ChatButton);
+		gameBoard.getChildren().add(chatButton);
 
-		// Red dot indicator for unread messages
 		dotIndicator = new Circle(5);
 		dotIndicator.setFill(Color.RED);
 		dotIndicator.setVisible(true);
 		gameBoard.getChildren().add(chat);
 		StackPane chatButtonPane = new StackPane();
-		chatButtonPane.getChildren().addAll(ChatButton, dotIndicator);
+		chatButtonPane.getChildren().addAll(chatButton, dotIndicator);
 		StackPane.setAlignment(dotIndicator, Pos.TOP_RIGHT);
 		AnchorPane.setLeftAnchor(chatButtonPane, gameBoard.getWidth()*(1430/1536.0));
 		AnchorPane.setTopAnchor(chatButtonPane, gameBoard.getHeight()*(225/864.0));
@@ -708,7 +436,6 @@ public class Viewer extends Application {
 		chatContainer.setMinHeight(150);
 		chat.setVisible(isVisible);
 
-		// button to close the chat
 		HBox closeButtonPane = new HBox();
 		closeButtonPane.setAlignment(Pos.TOP_LEFT);
 		closeButtonPane.setTranslateX(5);
@@ -724,18 +451,16 @@ public class Viewer extends Application {
 				isVisible = false;
 		});
 
-		// scrollpane to see the messages
 		ScrollPane chatScrollPane = new ScrollPane();
 		chatScrollPane.setFitToWidth(true);
 		chatScrollPane.setFitToHeight(true);
 		chatContainer.getChildren().add(chatScrollPane);
 
-		ChatButton.setOnAction(e -> showChat());
+		chatButton.setOnAction(e -> showChat());
 
 		messages = new VBox();
 		VBox.setVgrow(chatContainer, Priority.ALWAYS);
 		VBox.setVgrow(messages, Priority.ALWAYS);
-		//messages.setSpacing(10);
 		chatScrollPane.setContent(messages);
 
 		// text field to write the message
@@ -743,56 +468,13 @@ public class Viewer extends Application {
 		sendButton = new Button("Send");
 		sendButton.getStylesheets().add("Button.css");
 
-//		HBox inputBox = new HBox();
-//		inputBox.setPadding(new Insets(10, 0, 10, 0));
-//		inputBox.setSpacing(10);
-//		inputBox.setAlignment(Pos.CENTER_RIGHT);
-//		chatContainer.getChildren().add(inputBox);
-//
-//		// drop list to select the receiver
-//		addNamesChat(inputBox);
-//		inputBox.getChildren().add(messageInput);
-//		inputBox.getChildren().add(sendButton);
-
 		// update the full message list, I can add one message at a time if I am notified when I receive one
-//		GroupChat chatClass = new GroupChat();
-//		ArrayList<String> messagesList = chatClass.getMessage();
-//		ArrayList<String> sendersList = chatClass.getPublisher();
-//		ArrayList<String> receiversList = chatClass.getToplayer();
-//		for (int i = 0; i < messagesList.size(); i++) {
-//			String sender = sendersList.get(i);
-//			String m = messagesList.get(i);
-//			String receiver = receiversList.get(i);
-//			NewMessage newMessage = new NewMessage(sender, receiver, m);
-//			messages.getChildren().add(newMessage);
-//
-//		}
-
 		sendButton.setOnAction(e -> {
 			String sender = nickname;
 			String message = messageInput.getText();
 			String receiver = selectReceivers.getValue();
 
 			if (!message.isEmpty()) {
-				/*
-				ArrayList<String> receivers;
-				if (!receiver.equals("everyOne")) {
-					receivers = new ArrayList<>();
-					receivers.add(receiver);
-				} else {
-					receivers = new ArrayList<>(names);
-					receivers.remove(nickname);
-				}
-
-				for (String to: receivers) {
-					System.out.println("send to: " + to);
-					JSONConverterCtoS jconv = new JSONConverterCtoS();
-					jconv.toJSONChat(to, message);
-					if (LaunchClient.getClient() != null) {
-						LaunchClient.getClient().chat(jconv.toString());
-					}
-				}
-				*/
 				if (receiver.equals("everyOne")) {
 					receiver = "all";
 				}
@@ -838,13 +520,9 @@ public class Viewer extends Application {
 		expRect.setHeight(10);
 		expRect.setFill(Color.TRANSPARENT);
 
-		expRect.setOnMouseEntered( e -> {
-			expRect.setCursor(Cursor.NW_RESIZE);
-		});
+		expRect.setOnMouseEntered( e -> expRect.setCursor(Cursor.NW_RESIZE));
 
-		expRect.setOnMouseExited( e -> {
-			expRect.setCursor(Cursor.DEFAULT);
-		});
+		expRect.setOnMouseExited( e -> expRect.setCursor(Cursor.DEFAULT));
 
 		final Delta expand = new Delta();
 		expRect.setOnMousePressed(event -> {
@@ -870,7 +548,13 @@ public class Viewer extends Application {
 		});
 	}
 
-	public void setPickToken(String nickname, int num, int score) {
+	/**
+	 * It sets the token of the common goal near the player who already did the common goal
+	 *
+	 * @param nickname nickname of the player
+	 * @param score score obtained by the player
+	 */
+	public void setPickToken(String nickname, int score) {
 		ScoreToken newToken= new ScoreToken(score,primaryStage);
 		double rotationAngle = 7.5;
 		Rotate rotate = new Rotate(rotationAngle, newToken.getImageview().getFitWidth() / 2, newToken.getImageview().getFitHeight() / 2);
@@ -886,33 +570,54 @@ public class Viewer extends Application {
 
 	}
 
+	/**
+	 * It sets the tiles already inserted in the booskhelf after player's reconnection
+	 * @param map map representing the bookshelf (position -> color)
+	 */
 	public void reconnectBookshelf(Map<String, String> map) {
 		bookshelf.reconnectPlaceTiles(map, primaryStage);
 	}
 
+	/**
+	 * It is called when the player reconnects
+	 */
 	public void reconnect() {
 		startGame();
 	}
 
-	class Delta {
+	private static class Delta {
 		double x, y;
 	}
 
+	/**
+	 * It sets the current player
+	 * @param s name of the current player
+	 */
 	public void setCurrentPlayer(String s) {
 		currentPlayer = s;
 		ppboard.setCurrentPlayer(s);
 	}
 
+	/**
+	 * It sets the scores of the players
+	 * @param map map containing the name and the score of each player
+	 */
 	public void showCurrentScore(Map<String, Integer> map) {
-		this.players = new HashMap<>(map);
 		ppboard.addScores(map);
 	}
 
+	/**
+	 * It sets the hidden score of the player inside the circle
+	 * @param score hidden score of the player
+	 */
 	public void showHiddenScore(int score) {
-		hiddenScore = score;
-		cp.setScore(hiddenScore);
+		cp.setScore(score);
 	}
 
+	/**
+	 * It sets the first player of the game, assigning the chair properly
+	 * @param nickname nickname of the first player
+	 */
 	public void setFirstPlayer(String nickname) {
 		if (firstPlayer == null) {
 			firstPlayer = nickname;
@@ -936,16 +641,19 @@ public class Viewer extends Application {
 		chat.toFront();
 	}
 
+	/**
+	 * It shows the final scores of the players when the game ends
+	 * @param map map between names and final scores
+	 * @param winner winner of the game
+	 */
 	public void showFinalScores(Map<String, Integer> map, String winner) {
 		primaryStage.setTitle("MY SHELFIE END GAME");
 		pane = new Pane();
 		newScene(pane);
 		setBackground(pane);
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			public void handle(WindowEvent we) {
-				if (LaunchClient.getClient() != null) {
-					LaunchClient.getClient().close();
-				}
+		primaryStage.setOnCloseRequest(we -> {
+			if (LaunchClient.getClient() != null) {
+				LaunchClient.getClient().close();
 			}
 		});
 
@@ -954,8 +662,8 @@ public class Viewer extends Application {
 		setTitle(vbox);
 		for (String s: map.keySet()) {
 			HBox hbox = new HBox();
-			Text t1 = addDescription(hbox, s);
-			Text t2 = addDescription(hbox, "Score: " + map.get(s));
+			addDescription(hbox, s);
+			addDescription(hbox, "Score: " + map.get(s));
 			hbox.setSpacing(100);
 			hbox.setVisible(true);
 			hbox.setAlignment(Pos.CENTER);
@@ -973,6 +681,9 @@ public class Viewer extends Application {
 
 	}
 
+	/**
+	 * It closes the GUI
+	 */
 	public void quit() {
 		primaryStage.close();
 		Platform.exit();
@@ -988,7 +699,6 @@ public class Viewer extends Application {
 			}
 			Label messageLabel = new Label(message);
 			messageLabel.setWrapText(true);
-			//messageLabel.setMaxWidth(100);
 
 			getChildren().addAll(senderLabel, messageLabel);
 
@@ -1003,28 +713,15 @@ public class Viewer extends Application {
 		isVisible = true;
 		chat.setVisible(true);
 
-//		if (isVisible) {
-//			button.setText("Hide chat");
-//		} else {
-//			button.setText("Show chat");
-//		}
 	}
 
+	/**
+	 * It shows the scene where the player chooses the type of connection
+	 */
 	public void chooseConnection() {
 		pane = new Pane();
 		newScene(pane);
 		setBackground(pane);
-		//stage.setMaximized(true);
-//		scene.setFullScreen(true);
-//		scene.setTitle("MyShelfie");
-//		stage.getIcons().add(Resources.icon());
-//		stage.setResizable(true);
-//
-//		//newScene(stage, rootBox);
-//
-//		stage.show();
-//
-//		setBackground(stage, rootBox);
 
 		VBox vbox = createVbox(pane);
 
@@ -1034,25 +731,19 @@ public class Viewer extends Application {
 
 		TextField tf = addTextField(vbox);
 
-		Text t2 = addDescription(vbox, "Choose a connection type: ");
+		addDescription(vbox, "Choose a connection type: ");
 
 		RadioButton r1 = addToggle(vbox,"RMI", true);
 		RadioButton r2 = addToggle(vbox,"SOCKET", false);
 		setToggles(r1,r2);
 
 		Button b1 = addButton(vbox, "Connect", true);
-		Text t3 = addDescription(vbox, "");
-//		Button b2 = addButton(vbox, "CONTINUE", false);
-//		primaryStage.setScene(scene);
-//		primaryStage.setFullScreen(true);
+		addDescription(vbox, "");
 		primaryStage.setTitle("MY SHELFIE CONNECTION");
 		primaryStage.getIcons().add(Resources.icon());
-//		primaryStage.setResizable(true);
 		primaryStage.show();
 
-		b1.setOnAction(e -> {
-			setConnection(tf, t1);
-		});
+		b1.setOnAction(e -> setConnection(tf, t1));
 
 		pane.setOnKeyPressed(e -> {
 			if (e.getCode() == KeyCode.ENTER) {
@@ -1060,22 +751,18 @@ public class Viewer extends Application {
 			}
 		});
 
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			public void handle(WindowEvent we) {
-				if (LaunchClient.getClient() != null) {
-					LaunchClient.getClient().sendMessage("Quit");
-					LaunchClient.getClient().close();
-				}
+		primaryStage.setOnCloseRequest(we -> {
+			if (LaunchClient.getClient() != null) {
+				LaunchClient.getClient().sendMessage("Quit");
+				LaunchClient.getClient().close();
 			}
 		});
 
-//		Button b3 = addButton(vbox, "Let's goooo", false);
-//
-//		b2.setOnAction(e -> {
-//			setUsername(vbox, tf, t1, b2, b3);
-//		});
 	}
 
+	/**
+	 * It shows the scene where the player sets the number of players
+	 */
 	public void setplayers() {
 		try {
 			Thread.sleep(1000);
@@ -1089,13 +776,7 @@ public class Viewer extends Application {
 
 		setTitle(vbox);
 
-//		HBox hb = new HBox();
-//		vbox.getChildren().add(hb);
-//		hb.setAlignment(Pos.CENTER);
-
-		Text t1 = addDescription(vbox, "Select the number of Players: ");
-
-		//TextField tf = addTextField(vbox);
+		addDescription(vbox, "Select the number of Players: ");
 
 		ComboBox<String> dropdown = new ComboBox<>();
 		dropdown.getItems().addAll("2", "3", "4");
@@ -1106,13 +787,9 @@ public class Viewer extends Application {
 		vbox.getChildren().add(dropdown);
 
 		Button b1 = addButton(vbox, "SetPlayers", true);
-		Text t2 = addDescription(vbox, "");
-//		Button b2 = addButton(vbox, "CONTINUE", false);
-//		primaryStage.setScene(scene);
-//		primaryStage.setFullScreen(true);
+		addDescription(vbox, "");
 		primaryStage.setTitle("MY SHELFIE SETPLAYERS");
 		primaryStage.getIcons().add(Resources.icon());
-//		primaryStage.setResizable(true);
 		primaryStage.show();
 
 		b1.setOnAction(e -> {
@@ -1121,25 +798,6 @@ public class Viewer extends Application {
 			b1.setDisable(true);
 			numPlayers = Integer.parseInt(dropdown.getValue());
 
-			/*
-			if (tf.getText() != null) {
-				try {
-					Integer.parseInt(tf.getText());
-				} catch (NumberFormatException ex) {
-					t1.setText("Insert an integer, not a string!");
-					return;
-				}
-				if (Integer.parseInt(tf.getText()) < 1 || Integer.parseInt(tf.getText()) > 4) {
-					t1.setText("The number must be between 2 and 4!");
-					return;
-				}
-				LaunchClient.getClient().sendMessage("setplayers " + tf.getText());
-				b1.setDisable(true);
-				numPlayers = Integer.parseInt(tf.getText());
-			}  else {
-				t1.setText("Insert an integer, please!");
-			}
-			*/
 		});
 
 		pane.setOnKeyPressed(e -> {
@@ -1149,17 +807,18 @@ public class Viewer extends Application {
 				numPlayers = Integer.parseInt(dropdown.getValue());
 			}
 		});
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			public void handle(WindowEvent we) {
-				if (LaunchClient.getClient() != null) {
-					LaunchClient.getClient().sendMessage("Quit");
-					LaunchClient.getClient().close();
-				}
+		primaryStage.setOnCloseRequest(we -> {
+			if (LaunchClient.getClient() != null) {
+				LaunchClient.getClient().sendMessage("Quit");
+				LaunchClient.getClient().close();
 			}
 		});
 	}
 
-
+	/**
+	 * It shows a message from the server with a popup
+	 * @param s message shown
+	 */
 	public void showMessage(String s) {
 		alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.getDialogPane().getStylesheets().add("Alert.css");
@@ -1171,23 +830,32 @@ public class Viewer extends Application {
 		alert.showAndWait();
 	}
 
+	/**
+	 * It shows some suggested nicknames in a popup
+	 * @param s nickname desired by the player
+	 * @param array4 nicknames suggested
+	 */
 	public void suggestNicknames(String s, ArrayList<String> array4) {
 		alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.getDialogPane().getStylesheets().add("Alert.css");
 		alert.initModality(Modality.APPLICATION_MODAL);
 		alert.initOwner(primaryStage);
 		alert.setTitle("Information Dialog");
-		String r = s;
+		StringBuilder r = new StringBuilder(s);
 		for (String t: array4) {
-			r = r + "\n"+ t;
+			r.append("\n").append(t);
 		}
-		alert.setContentText(r);
+		alert.setContentText(r.toString());
 		alert.showAndWait();
 
 	}
 
+	/**
+	 * It shows an error message from the server with a popup
+	 * @param error error message
+	 */
 	public void showError(String error) {
-		errorAlert = new Alert(Alert.AlertType.ERROR);
+		Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 		errorAlert.getDialogPane().getStylesheets().add("Error.css");
 		errorAlert.initModality(Modality.APPLICATION_MODAL);
 		errorAlert.initOwner(primaryStage);
@@ -1196,8 +864,9 @@ public class Viewer extends Application {
 		errorAlert.showAndWait();
 	}
 
-
-
+	/**
+	 * When the game is created, It creates and places all the main graphical elements, such as board, common goals, bookshelves,...
+	 */
 	public void startGame() {
 		try {
 			Thread.sleep(1000);
@@ -1208,31 +877,20 @@ public class Viewer extends Application {
 		gameBoard = new AnchorPane();
 		newScene(gameBoard);
 		setBackground(gameBoard);
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			public void handle(WindowEvent we) {
-				if (LaunchClient.getClient() != null) {
-					LaunchClient.getClient().sendMessage("Quit");
-					LaunchClient.getClient().close();
-				}
+		primaryStage.setOnCloseRequest(we -> {
+			if (LaunchClient.getClient() != null) {
+				LaunchClient.getClient().sendMessage("Quit");
+				LaunchClient.getClient().close();
 			}
 		});
 		handleEvent();
 
-		////////////////////////////
-		System.out.println("PRIMARY STAGE W: "+ primaryStage.getWidth());
-		System.out.println("PRIMARY STAGE H: " +primaryStage.getHeight());
-		////////////////////////////
-
-		bag = new Bag(primaryStage);
-		//System.out.println("BAG PERC: top: " + (Metrics.d_y_bag) + "  left: " + (Metrics.d_x_bag));
+		Bag bag = new Bag(primaryStage);
 		AnchorPane.setTopAnchor(bag, gameBoard.getHeight() * Metrics.d_y_bag );
 		AnchorPane.setLeftAnchor(bag, gameBoard.getWidth() * Metrics.d_x_bag);
-		//bag.relocate(primaryStage.getWidth()*Metrics.d_x_bag, primaryStage.getHeight()*Metrics.d_y_bag);
 		gameBoard.getChildren().add(bag);
 
 		board = new Board(primaryStage);
-		//System.out.println("BAG PERC: top: " + (Metrics.d_y_board) + "  left: " + (Metrics.d_x_board) );
-		//board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
 		AnchorPane.setTopAnchor(board, gameBoard.getHeight() * Metrics.d_y_board );
 		AnchorPane.setLeftAnchor(board, gameBoard.getWidth() * Metrics.d_x_board);
 		gameBoard.getChildren().add(board);
@@ -1240,13 +898,10 @@ public class Viewer extends Application {
 		commandBoard = new CommandBoard(primaryStage);
 		AnchorPane.setTopAnchor(commandBoard, gameBoard.getHeight() * Metrics.d_y_comb );
 		AnchorPane.setLeftAnchor(commandBoard, gameBoard.getWidth() * Metrics.d_x_comb);
-		//commandBoard.relocate(primaryStage.getWidth()*Metrics.d_x_comb, primaryStage.getHeight()*Metrics.d_y_comb);
 		gameBoard.getChildren().add(commandBoard);
 		setEndToken();
 
-		System.out.println("PRIMARYSTAGE W: " + primaryStage.getWidth() + " H: "+primaryStage.getHeight());
 		bookshelf = new Bookshelf(Metrics.dim_x_bookpl*primaryStage.getWidth(), Metrics.dim_y_bookpl*primaryStage.getHeight(), primaryStage);
-		//bookshelf.relocate(Metrics.d_x_bookpl*primaryStage.getWidth(), Metrics.d_y_bookpl*primaryStage.getHeight());
 		AnchorPane.setTopAnchor(bookshelf, gameBoard.getHeight() * Metrics.d_y_bookpl );
 		AnchorPane.setLeftAnchor(bookshelf, gameBoard.getWidth() * Metrics.d_x_bookpl);
 		bookshelf.createLabelName(Metrics.dim_x_targetname*primaryStage.getWidth(),Metrics.dim_y_targetname*primaryStage.getHeight(), primaryStage.getWidth()*Metrics.dim_x_bookpl*Metrics.d_x_targetname, primaryStage.getHeight()*Metrics.dim_y_bookpl*Metrics.d_y_targetname);
@@ -1259,18 +914,17 @@ public class Viewer extends Application {
 			arrowDown.setVisible(false);
 			arrowDown.setIndex(i);
 			arrowDown.setSize(gameBoard.getWidth() * Metrics.ARROW_DOWN_WIDTH,gameBoard.getHeight() * Metrics.ARROW_DOWN_HEIGHT);
-			System.out.println("POSIZIONE ARROWDOWN " + i + " -- W: " + (gameBoard.getWidth() * (1026.0/1536.0) + gameBoard.getWidth()* (i*60)/1536.0) + "H: " + gameBoard.getHeight()* 168.0/864.0);
 			AnchorPane.setLeftAnchor(arrowDown, gameBoard.getWidth() * (1026.0/1536.0) + gameBoard.getWidth()* (i*60)/1536.0);
 			AnchorPane.setTopAnchor(arrowDown, gameBoard.getHeight()* 168.0/864.0);
 			arrowDown.setOnMouseClicked(event -> {
 				Arrow ad = (Arrow) event.getSource();
-				String s = "order";
+				StringBuilder s = new StringBuilder("order");
 				for (int j = 0; j < commandBoard.getNextTilePos(); j++) {
-					s += " " + commandBoard.getPickupOrder()[j];
+					s.append(" ").append(commandBoard.getPickupOrder()[j]);
 				}
 				if (commandBoard.checkSequence()) {
-					LaunchClient.getClient().sendMessage(s);
-					handleArrowDown(event, ad.getIndex());
+					LaunchClient.getClient().sendMessage(s.toString());
+					handleArrowDown(ad.getIndex());
 				} else {
 					showError("Two numbers in the order are the same!");
 				}
@@ -1284,8 +938,6 @@ public class Viewer extends Application {
 		AnchorPane.setTopAnchor(arrowRight, gameBoard.getHeight()  * 0.0451);
 		AnchorPane.setLeftAnchor(arrowRight, gameBoard.getWidth() * 0.601);
 
-
-		//arrowRight.relocate(primaryStage.getWidth()*Metrics.d_x_comb-110, 35);
 		arrowRight.setOnMouseClicked(event -> {
 			LaunchClient.getClient().sendMessage("pick");
 			arrowRight.setVisible(false);
@@ -1340,14 +992,16 @@ public class Viewer extends Application {
 				arrowRight.setVisible(board.isSelectedNotEmpty());
 				LaunchClient.getClient().sendMessage("select " + x + " " + y);
 			}
-//			board.select(x, y);
-
 			/* Stop the event here */
 			event.consume();
 		});
 
 	}
 
+	/**
+	 * It places the two common goals with their respective token score
+	 * @param map map representing the common goals (number of the common goal -> score available)
+	 */
 	public void setCommonGoal(Map<Integer, Integer> map) {
 		ArrayList<Integer> arr = new ArrayList<>();
 		currentToken = new ArrayList<>();
@@ -1365,8 +1019,6 @@ public class Viewer extends Application {
 		AnchorPane.setLeftAnchor(c1, gameBoard.getWidth() * Metrics.d_x_comm);
 		AnchorPane.setTopAnchor(c2, gameBoard.getHeight() * Metrics.d_y_comm2);
 		AnchorPane.setLeftAnchor(c2, gameBoard.getWidth() * Metrics.d_x_comm);
-		//c1.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm1*primaryStage.getHeight());
-		//c2.relocate(Metrics.d_x_comm*primaryStage.getWidth(), Metrics.d_y_comm2*primaryStage.getHeight());
 		gameBoard.getChildren().add(c1);
 		gameBoard.getChildren().add(c2);
 		setToken();
@@ -1375,7 +1027,7 @@ public class Viewer extends Application {
 
 	private void setToken(){
 		int t=0;
-		scoringToken = new ArrayList<>();
+		ArrayList<ScoreToken> scoringToken = new ArrayList<>();
 		for(int i = 0; i<currentToken.size(); i++){
 			if(currentToken.get(i)!=0){
 				scoringToken.add(new ScoreToken(currentToken.get(i),primaryStage));
@@ -1389,30 +1041,35 @@ public class Viewer extends Application {
 		}
 	}
 
-
-	public void setPersonalGoal(Map<String, String> map, int number) {
+	/**
+	 * It sets the personal goal of the player
+	 * @param number number of the personal goal
+	 */
+	public void setPersonalGoal(int number) {
 		if(p==null){
 			p = new PersonalGoal(number, primaryStage);
 			AnchorPane.setTopAnchor(p, gameBoard.getHeight() * Metrics.d_y_pers );
 			AnchorPane.setLeftAnchor(p, gameBoard.getWidth() * Metrics.d_x_pers);
-			//p.relocate(Metrics.d_x_pers*primaryStage.getWidth(), primaryStage.getHeight()*Metrics.d_y_pers);
 			gameBoard.getChildren().add(p);
 		}
 	}
 
+	/**
+	 * It sets the board
+	 * @param map map representing the board (position -> tile)
+	 */
 	public void setBoard(Map<String, String> map) {
 		if (board == null) {
 			board = new Board(primaryStage);
 			AnchorPane.setTopAnchor(board, gameBoard.getHeight() * Metrics.d_y_board );
 			AnchorPane.setLeftAnchor(board, gameBoard.getWidth() * Metrics.d_x_board);
-			//board.relocate(primaryStage.getWidth()*Metrics.d_x_board, primaryStage.getHeight()*Metrics.d_y_board);
 			gameBoard.getChildren().add(board);
 		}
 		if (!(nickname.equals(currentPlayer))) {
 			board.getChildren().clear();
 		}
 		for (String s: map.keySet()) {
-			if (!map.get(s).equals("NOCOLOR")) {  //&& !board.getTiles().containsKey(map.get(s))
+			if (!map.get(s).equals("NOCOLOR")) {
 				if (!board.getTiles().containsKey(s)) {
 					Tile t = new Tile(map.get(s), primaryStage);
 					t.setPosition(s);
@@ -1434,7 +1091,7 @@ public class Viewer extends Application {
 		}
 	}
 
-	private void handleArrowDown(MouseEvent event, int column) {
+	private void handleArrowDown(int column) {
 		if (commandBoard.checkSequence()) {
 			ArrayList<Node> nodeList = new ArrayList<>();
 			Node n;
@@ -1464,14 +1121,19 @@ public class Viewer extends Application {
 		}
 	}
 
+	/**
+	 * It sets the number of player
+	 * @param names names of the players
+	 */
 	public void numPlayers(ArrayList<String> names) {
 		this.names = new ArrayList<>(names);
 		if (numPlayers == 0) {
 			numPlayers = names.size();
 		}
-		if (ppboard.getHboxes().size() != numPlayers)
-		for (String s: names) {
-			ppboard.addPlayer(s);
+		if (ppboard.getHboxes().size() != numPlayers) {
+			for (String s: names) {
+				ppboard.addPlayer(s);
+			}
 		}
 		addNamesChat();
 
@@ -1500,11 +1162,20 @@ public class Viewer extends Application {
 
 	}
 
+	/**
+	 * It sets on the board the tiles that can be selected, changing their borders
+	 * @param map a map containing the selectable tiles
+	 * @param arr positions of the tiles already selected
+	 * @param board map representing the board
+	 */
 	public void setPickableTiles(Map<String, String> map, ArrayList<Position> arr, Map<String, String> board) {
 		this.board.clearUpdate(map, arr, board);
 	}
 
-	public void setPicked(Map<String, String> map) {
+	/**
+	 *It adds to the command board the tiles picked, removing them from the board
+	 */
+	public void setPicked() {
 		Tile t;
 		while (board.isSelectedNotEmpty()) {
 			t = (Tile) board.getSelected();
@@ -1515,8 +1186,11 @@ public class Viewer extends Application {
 		}
 	}
 
+	/**
+	 * It sets the end token inside the board
+	 */
 	public void setEndToken(){
-		endToken = new ImageView(Resources.endToken());
+		ImageView endToken = new ImageView(Resources.endToken());
 		endToken.setPreserveRatio(true);
 		endToken.setFitWidth(0.31*Metrics.dim_x_comm*primaryStage.getWidth());
 		endToken.setFitHeight(0.31*Metrics.dim_y_comm*primaryStage.getHeight());
@@ -1530,6 +1204,10 @@ public class Viewer extends Application {
 
 	}
 
+	/**
+	 * It sets properly the bookshelves of the other players, that are slightly different
+	 * @param map map representing the bookshelves of the players (nickname -> (position -> color))
+	 */
 	public void updateBookshelves(Map<String, Map<String, String>> map) {
 		if (bookshelves.size() == 0) {
 			int j = 0;
@@ -1539,27 +1217,24 @@ public class Viewer extends Application {
 				gameBoard.getChildren().add(bookshelves.get(i));
 				bookshelves.get(i).createLabelName(Metrics.dim_x_label*primaryStage.getWidth(),Metrics.dim_y_label*primaryStage.getHeight(), Metrics.dim_x_book*Metrics.d_x_label* primaryStage.getWidth(), Metrics.dim_y_book*Metrics.d_y_label*primaryStage.getHeight());
 				switch (numPlayers) {
-					case 2:
-						AnchorPane.setLeftAnchor(bookshelves.get(i),Metrics.d_x_book2 * primaryStage.getWidth());
+					case 2 -> {
+						AnchorPane.setLeftAnchor(bookshelves.get(i), Metrics.d_x_book2 * primaryStage.getWidth());
 						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
 						bookshelves.get(i).setPos_x(Metrics.d_x_book2 * primaryStage.getWidth());
 						bookshelves.get(i).setPos_y(Metrics.d_y_book2 * primaryStage.getHeight());
-						//bookshelves.get(i).relocate(Metrics.d_x_book2*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
-						break;
-					case 3:
-						AnchorPane.setLeftAnchor(bookshelves.get(i),((329+(329+274)*i)/1536.0)* primaryStage.getWidth());
+					}
+					case 3 -> {
+						AnchorPane.setLeftAnchor(bookshelves.get(i), ((329 + (329 + 274) * i) / 1536.0) * primaryStage.getWidth());
 						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
-						bookshelves.get(i).setPos_x(((329+(329+274)*i)/1536.0)* primaryStage.getWidth());
+						bookshelves.get(i).setPos_x(((329 + (329 + 274) * i) / 1536.0) * primaryStage.getWidth());
 						bookshelves.get(i).setPos_y(Metrics.d_y_book2 * primaryStage.getHeight());
-						//bookshelves.get(i).relocate(((329+(329+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
-						break;
-					case 4:
-						AnchorPane.setLeftAnchor(bookshelves.get(i),((178+(178+274)*i)/1536.0)* primaryStage.getWidth());
+					}
+					case 4 -> {
+						AnchorPane.setLeftAnchor(bookshelves.get(i), ((178 + (178 + 274) * i) / 1536.0) * primaryStage.getWidth());
 						AnchorPane.setTopAnchor(bookshelves.get(i), Metrics.d_y_book2 * primaryStage.getHeight());
-						bookshelves.get(i).setPos_x(((178+(178+274)*i)/1536.0)* primaryStage.getWidth());
+						bookshelves.get(i).setPos_x(((178 + (178 + 274) * i) / 1536.0) * primaryStage.getWidth());
 						bookshelves.get(i).setPos_y(Metrics.d_y_book2 * primaryStage.getHeight());
-						//bookshelves.get(i).relocate(((178+(178+274)*i)/1536.0)*primaryStage.getWidth(), Metrics.d_y_book2*primaryStage.getHeight());
-						break;
+					}
 				}
 				bookshelves.get(i).setPersonalGoal(primaryStage, gameBoard);
 				gameBoard.getChildren().add(bookshelves.get(i).getPgBack());
@@ -1570,20 +1245,18 @@ public class Viewer extends Application {
 				j++;
 			}
 		}
-		for (int i = 0; i < bookshelves.size(); i++) {
-			if (!bookshelves.get(i).getLabelText().getText().equals(nickname)) {
-				Map<String, String > m = map.get(bookshelves.get(i).getLabelText().getText());
+		for (Bookshelf value : bookshelves) {
+			if (!value.getLabelText().getText().equals(nickname)) {
+				Map<String, String> m = map.get(value.getLabelText().getText());
 				ArrayList<Node> nodelist = new ArrayList<>();
-				bookshelves.get(i).resetDepth();
+				value.resetDepth();
 				for (int j = 0; j < 5; j++) {
 					for (int k = 0; k < 6; k++) {
 						if (m.get("(" + j + "," + k + ")").equals("NOCOLOR")) {
-							bookshelves.get(i).modifyDepth(j);
+							value.modifyDepth(j);
 						} else {
-//							System.out.println();
 							nodelist.add(new Tile(m.get("(" + j + "," + k + ")"), primaryStage));
-							bookshelves.get(i).update(nodelist, j);
-							System.out.println(j + " --- "+ k);
+							value.update(nodelist, j);
 							nodelist.clear();
 						}
 					}

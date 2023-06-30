@@ -298,9 +298,7 @@ public class JSONConverterStoC {
         for (Player p: players) {
             JSONObject obj1 = new JSONObject();
             obj1.put("Nickname", p.getNickname());
-            System.out.println("!!!!!!!!! "+p.getNickname());
             obj1.put("Score", p.getFinalScore());
-            System.out.println("XXXXXXXX: "+p.getFinalScore());
             arr1.add(obj1);
         }
         obj.put("FinalScores", arr1);
@@ -402,6 +400,13 @@ public class JSONConverterStoC {
         return obj.toJSONString();
     }
 
+    /**
+     * It creates a JSON file about the achievement of a common goal by a player
+     * @param name name of the player who achieved the common goal
+     * @param index index of the common goal
+     * @param score score obtained
+     * @return a string
+     */
     public static String createJSONCGDone(String name, int index, int score) {
         JSONObject obj = new JSONObject();
         obj.put("Command", "CGDone");

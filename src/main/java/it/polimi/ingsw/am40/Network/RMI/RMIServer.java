@@ -3,7 +3,7 @@ package it.polimi.ingsw.am40.Network.RMI;
 import it.polimi.ingsw.am40.Client.RMIClientInterface;
 import it.polimi.ingsw.am40.Controller.Lobby;
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
-import it.polimi.ingsw.am40.Model.ParsingJSONManager;
+import it.polimi.ingsw.am40.JSONConversion.ParsingJSONManager;
 import it.polimi.ingsw.am40.Network.LoggingPhase;
 import it.polimi.ingsw.am40.Network.RMIClientHandler;
 import it.polimi.ingsw.am40.Network.VirtualView;
@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import static it.polimi.ingsw.am40.Network.Handlers.NSUGGEST;
 

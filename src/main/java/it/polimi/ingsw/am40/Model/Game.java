@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am40.Model;
 
 import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
+import it.polimi.ingsw.am40.JSONConversion.ParsingJSONManager;
 import it.polimi.ingsw.am40.Network.VirtualView;
 
 import java.io.IOException;

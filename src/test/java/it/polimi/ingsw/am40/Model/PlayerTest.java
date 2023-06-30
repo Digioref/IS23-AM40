@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am40.Model;
 
-import it.polimi.ingsw.am40.Controller.Lobby;
+import it.polimi.ingsw.am40.JSONConversion.ParsingJSONManager;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

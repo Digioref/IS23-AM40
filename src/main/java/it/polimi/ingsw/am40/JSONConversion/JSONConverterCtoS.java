@@ -5,6 +5,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * <p>It's a class used to convert:</p>
@@ -14,10 +16,10 @@ import java.util.ArrayList;
  * </ul>
  */
 public class JSONConverterCtoS {
-    private JSONObject obj;
-    private JSONArray arr;
+    private final JSONObject obj;
+    private final JSONArray arr;
     private String command;
-    private ArrayList<String> par;
+    private final ArrayList<String> par;
 
     /**
      * Constructor which initializes all the data structures
@@ -34,13 +36,8 @@ public class JSONConverterCtoS {
      */
     public void toJSON (String s) {
         String[] command = s.split("\\s");
-//        if(command[0].equals("chat") || command[0].equals("chatall")) {
-//            command = s.split("#");
-//        }
         obj.put("Command", command[0]);
-        for (int i = 1; i < command.length; i++) {
-            arr.add(command[i]);
-        }
+        arr.addAll(Arrays.asList(command).subList(1, command.length));
         if (!arr.isEmpty()) {
             obj.put("Params", arr);
         }
@@ -57,8 +54,8 @@ public class JSONConverterCtoS {
         command = object.get("Command").toString();
         JSONArray parameters = (JSONArray) object.get("Params");
         if (parameters != null) {
-            for (int i = 0; i < parameters.size(); i++) {
-                par.add((String) parameters.get(i));
+            for (Object parameter : parameters) {
+                par.add((String) parameter);
             }
         }
     }
@@ -70,15 +67,9 @@ public class JSONConverterCtoS {
      */
     public void toJSONChat(String receiver, String message) {
         obj.put("Command", "chat");
-        if (receiver == null) {
-            arr.add(0, "all");
-        } else {
-            arr.add(0, receiver);
-        }
+        arr.add(0, Objects.requireNonNullElse(receiver, "all"));
         arr.add(1, message);
-        if (!arr.isEmpty()) {
-            obj.put("Params", arr);
-        }
+        obj.put("Params", arr);
     }
 
     /***
@@ -112,7 +103,7 @@ public class JSONConverterCtoS {
 
     /**
      * It returns the array containing the parameters of the command
-     * @return an array of string
+     * @return a list of string
      */
     public ArrayList<String> getPar() {
         return par;

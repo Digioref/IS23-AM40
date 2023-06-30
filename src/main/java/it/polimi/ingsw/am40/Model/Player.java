@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am40.Model;
 
+import it.polimi.ingsw.am40.JSONConversion.ParsingJSONManager;
+
 import java.util.ArrayList;
 
 /**

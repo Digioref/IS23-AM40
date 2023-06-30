@@ -75,7 +75,7 @@ public class ClientGUIController implements View {
      */
     @Override
     public void showPersonalGoal(Map<String, String> map, int number) {
-        runLater(()->gui.setPersonalGoal(map, number));
+        runLater(()->gui.setPersonalGoal(number));
     }
 
     /**
@@ -137,7 +137,7 @@ public class ClientGUIController implements View {
      */
     @Override
     public void showPickedTiles(Map<String, String> map, String s,ArrayList<ArrayList<String>> picked) {
-        runLater(()->gui.setPicked(map));
+        runLater(()->gui.setPicked());
     }
 
     /**
@@ -261,7 +261,7 @@ public class ClientGUIController implements View {
      */
     @Override
     public void showCGDone(String nickname, int num, int score) {
-        runLater(()->gui.setPickToken(nickname, num, score));
+        runLater(()->gui.setPickToken(nickname, score));
     }
 
     /**

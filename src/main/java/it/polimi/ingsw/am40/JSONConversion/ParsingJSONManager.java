@@ -1,15 +1,16 @@
-package it.polimi.ingsw.am40.Model;
+package it.polimi.ingsw.am40.JSONConversion;
 
-import it.polimi.ingsw.am40.JSONConversion.ServerArgs;
+import it.polimi.ingsw.am40.Model.*;
 import it.polimi.ingsw.am40.Network.Commands.*;
 import it.polimi.ingsw.am40.Network.ICommand;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Map;
@@ -101,8 +102,8 @@ public class ParsingJSONManager {
             InputStream is = ServerArgs.class.getClassLoader().getResourceAsStream("Tiles.json");
             JSONObject configs = (JSONObject) jsonParser.parse(new InputStreamReader(is, StandardCharsets.UTF_8));
             JSONArray posArray = (JSONArray) configs.get("Tiles");
-            for (int i = 0; i < posArray.size(); i++) {
-                JSONObject t = (JSONObject) posArray.get(i);
+            for (Object o : posArray) {
+                JSONObject t = (JSONObject) o;
                 String t1 = t.get("color").toString();
                 String t2 = t.get("type").toString();
                 Tile tile = new Tile(TileColor.NOCOLOR, TileType.EMPTY);
