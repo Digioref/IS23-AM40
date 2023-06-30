@@ -10,8 +10,8 @@ public class Bookshelf {
     /**
      * An array made up of columns
      */
-    private ArrayList<Column> bookshelf;
-    private static int DIMCOL = 5;
+    private final ArrayList<Column> bookshelf;
+    private static final int DIMCOL = 5;
 
     /**
      * Constructor which creates the bookshelf and its columns
@@ -190,6 +190,12 @@ public class Bookshelf {
             System.out.println(tmp);
         }
     }
+
+    /**
+     * It checks if there is at least one column with a number of free positions equals to the integer provided
+     * @param num an integer
+     * @return a boolean
+     */
     public boolean checkSpace(int num) {
         for (Column c: bookshelf) {
             if (c.getFreeSpace() >= num) {
@@ -199,6 +205,9 @@ public class Bookshelf {
         return false;
     }
 
+    /**
+     * It sets the mark of the tiles to zero. It is used to calculate the score related to the adjacency
+     */
     public void setMarkZero(){
         for(int i=0; i<DIMCOL;i++){
             bookshelf.get(i).resetMark();

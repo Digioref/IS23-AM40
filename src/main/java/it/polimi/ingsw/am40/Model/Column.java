@@ -5,17 +5,11 @@ import java.util.ArrayList;
  * Represents the column of the bookshelf
  */
 public class Column {
-    /**
-     * Array of Tiles contained in the column
-     */
-    private ArrayList<Tile> column;
-    private static int DIM = 6;
-    /**
-     * Mark as ArrayList of integer is used in the process of checking adjacency
-     * If a position of mark is set to zero, the default case, it means that the tile in the same position is not marked, and it can be counted as adjacent in the check
-     * If a position of mark is set to one it means that the specific tile in the same position as the mark has been already counted as adjacent
-     */
-    private ArrayList<Integer> mark;
+
+    private final ArrayList<Tile> column;
+    private static final int DIM = 6;
+
+    private final ArrayList<Integer> mark;
 
     /**
      * Constructor which sets to null both column and mark arrays
@@ -43,7 +37,7 @@ public class Column {
 
     /**
      * Returns the array column
-     * @return array of the tiles in the column
+     * @return list of the tiles in the column
      */
     public ArrayList<Tile> getColumn() {
         return column;
@@ -140,6 +134,9 @@ public class Column {
         return column.isEmpty();
     }
 
+    /**
+     * It sets the mark of the tiles in the specific column to zero
+     */
     public void resetMark(){
         for(int i=0; i<column.size();i++){
             mark.set(i,0);

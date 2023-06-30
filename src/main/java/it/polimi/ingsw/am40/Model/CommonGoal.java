@@ -7,24 +7,13 @@ import java.util.ArrayList;
  */
 public class CommonGoal {
 
-    /**
-     * The number of the commonGoal selected
-     */
+
     private final int num;
 
-    /**
-     * The token of the specific commonGoal, it keeps track of the points to give to the players
-     */
     private final CommonGoalToken commgoaltok;
 
-    /**
-     * number of rows of the bookshelf
-     */
     private final int NROW = 6;
 
-    /**
-     * number of columns of the bookshelf
-     */
     private final int NCOL = 5;
     private int count = 0;
 
@@ -110,11 +99,9 @@ public class CommonGoal {
 
         for (int i = 0; i < fullSquares.size() - 1; i++) {
             for (int j = i + 1 ; j < fullSquares.size(); j++) {
-                //if (fullSquares.get(i).equals(fullSquares.get(j))) {  check if they are the same colors
                     if (!overlaps(fullSquares.get(i).getPos(), fullSquares.get(j).getPos())) {
                         return commgoaltok.updateScore();
                     }
-                //}
             }
         }
 
@@ -122,13 +109,6 @@ public class CommonGoal {
 
     }
 
-    /**
-     * Checks if the tile with coordinates x,y is at the bottom left of a sqare made of tiles of the same color
-     * @param x coordinate of the tile
-     * @param y coordinate of the tile
-     * @param b bookshelf reference
-     * @return true if there is a square, else false
-     */
     private boolean sameColors(int x, int y, Bookshelf b) {
         if (b.getTile(x,y) != null) {
             return b.getTile(x, y).equals(b.getTile(x + 1, y)) && b.getTile(x, y).equals(b.getTile(x, y + 1)) && b.getTile(x, y).equals(b.getTile(x + 1, y + 1));
@@ -146,11 +126,6 @@ public class CommonGoal {
         return x1 <= x2 + 1 && x2 <= x1 + 1 && y1 <= y2 + 1 && y1 + 1 >= y2;
     }
 
-    /**
-     * Checks if there are two columns full of all different tiles
-     * @param b bookshelf of the player
-     * @return the score if the condition is verified, else it returns 0
-     */
     private int check2 (Bookshelf b) {
 
         final int TARGET = 2;
@@ -162,7 +137,7 @@ public class CommonGoal {
                 equal = 0;
                 for (int j = 1; j < NROW && equal == 0; j++) {
                     for (int k = 0; k < j && equal == 0; k++) {
-                        if (b.getTile(i, j).equals(b.getTile(i, k))) { // se trovo due celle uguali esco
+                        if (b.getTile(i, j).equals(b.getTile(i, k))) { // exit when two equals squares are found
                             equal = 1;
                         }
                     }
@@ -180,14 +155,8 @@ public class CommonGoal {
     }
 
 
-    /**
-     * Checks if there are 4 groups of 4 tiles of the same color with one side in common (not only vertical or orizontal)
-     * @param bookshelf bookshelf of the player
-     * @return the score if the condition is verified, else it returns 0
-     */
-    private int check3(Bookshelf bookshelf) {
 
-        //possibleGroups.clear();
+    private int check3(Bookshelf bookshelf) {
 
         for (int i = 0; i < NCOL - 1; i++) {
             for (int j = 0; j < NROW - 1; j++) {
@@ -324,17 +293,13 @@ public class CommonGoal {
         return  false;
     }
 
-    /**
-     * Checks if there are 6 groups of the tiles aside of the same color
-     * @param bookshelf bookshelf of the player
-     * @return the score if the condition is verified, else it returns 0
-     */
-    private int check4(Bookshelf bookshelf) { // check due tiles vicini in qualunque posizione
+
+    private int check4(Bookshelf bookshelf) { // cheks if two tiles are near in any position
 
         int count = 0;
         final int TARGET = 6;
-        boolean[][] matrice = new boolean[NCOL][NROW]; // matrice di boolean per tenere traccia di dove sono già  stato
-        for (int i = 0; i < NCOL; i++) {               // la inizializzo tutta a true e metto a false dove passo
+        boolean[][] matrice = new boolean[NCOL][NROW]; // boolean matrix to keep track of the place already visited
+        for (int i = 0; i < NCOL; i++) {               // initialized to true and sets to false where
             for (int j = 0; j < NROW; j++) {
                 matrice[i][j] = true;
             }
@@ -362,15 +327,10 @@ public class CommonGoal {
         }
     }
 
-    /**
-     * Checks if there are 3 full columns with no more then 3 different types of tiles
-     * @param bookshelf bookshelf of the player
-     * @return the score if the condition is verified, else it returns 0
-     */
     private int check5(Bookshelf bookshelf) {
         int count = 0;
         final int TARGET = 3;
-        ArrayList<Tile> differentTiles = new ArrayList<Tile>(); // array where I save all the different Tiles
+        ArrayList<Tile> differentTiles = new ArrayList<>(); // array where I save all the different Tiles
 
         for (int i = 0; i < NCOL && count < TARGET; i++) {
             if (bookshelf.getBookshelf().get(i).getColumn().size() == NROW) { // controllo solo quelli con la colonna piena
@@ -393,11 +353,6 @@ public class CommonGoal {
         }
     }
 
-    /**
-     *  Checks if there are 2 rows full of different tiles
-     * @param bookshelf bookshelf of the player
-     * @return the score if the condition is verified, else it returns 0
-     */
     private int check6(Bookshelf bookshelf) {
         int count = 0;
         int equal;
@@ -449,9 +404,6 @@ public class CommonGoal {
             if (differentColours.size() <= 3) {
                 ++count;
             }
-//            if (count == 4) {
-//                return commgoaltok.updateScore();
-//            }
         }
         if (count < 4) {
             return 0;
@@ -459,11 +411,7 @@ public class CommonGoal {
         return commgoaltok.updateScore();
     }
 
-    /**
-     * Checks if the four tiles in the edges of the bookshelf are the same type
-     * @param bookshelf bookshelf of the player
-     * @return the score if the condition is verified, else it returns 0
-     */
+
     private int check8(Bookshelf bookshelf) { // commongoal 8
 
         if (bookshelf.getTile(0,0) != null) {

@@ -12,10 +12,10 @@ public class Board {
     /**
      * A map that maps the positions in the board to a tile
      */
-    private Map<String, Tile> grid;
-    private ArrayList<Position> pickableTiles;
-    private ArrayList<Position> startingPickable;
-    private static int MAX_TILE = 3;
+    private final Map<String, Tile> grid;
+    private final ArrayList<Position> pickableTiles;
+    private final ArrayList<Position> startingPickable;
+    private static final int MAX_TILE = 3;
 
 
 
@@ -234,6 +234,11 @@ public class Board {
     public ArrayList<Position> getPickableTiles() {
         return pickableTiles;
     }
+
+    /**
+     * Returns the array of positions pickable at the beginning of the turn
+     * @return a list of position
+     */
 
     public ArrayList<Position> getStartingPickable() {
         return startingPickable;
