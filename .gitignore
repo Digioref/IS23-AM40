@@ -12,18 +12,35 @@
 target/
 *.iml
 
+#ignore all packages
+*.7z
+*.dmg
+*.iso
+*.rar
+*.rar
+*.tar
+*.zip
+
 # MacOS files
 *.DS_Store
 
 #Log file
 *.log
+*.sql
+*.sqlite
+
+#ignore all compiled sources
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
 
 # BlueJ files
 *.ctxt
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
-/JavaDoc/*
 
 #*jar

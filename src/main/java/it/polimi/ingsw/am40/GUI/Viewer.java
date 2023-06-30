@@ -376,9 +376,16 @@ public class Viewer extends Application {
 	 * @param pane pane where the scene is set
 	 */
 	public void newScene(Pane pane) {
-		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getWidth());
+		/*
+		double aspectRatio = 16.0/9.0
+		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth()*0.95, Screen.getPrimary().getVisualBounds().getWidth()*0.95/aspectRatio);
+		uncomment this if you are in MAC
+
+		 */
+		scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight()); //comment this if you are in MAC
 		primaryStage.setScene(scene);
-		primaryStage.setFullScreen(false);
+		primaryStage.setFullScreen(true); //comment this if you are in MAC
+		//primaryStage.setFullScreen(false); //uncomment this if you are in MAC
 		primaryStage.setFullScreenExitHint("");
 	}
 
