@@ -1,0 +1,105 @@
+Ecco il sequence diagram con l'esempio di una partita tra due giocatori, se ci sono domande a riguardo scrivimi pure. Per ora la chat non è implementata, c'è però la resilienza alla disconnessione, nell'esempio inviato è spiegato come viene gestita. Come vedi quando il client interessato ad un messaggio non invia un ack dopo 60 secondi il turno viene skippato al prossimo utente, e al suo rientro il client diconnesso viene reinserito nella partita e gli viene inviato un messaggio con tutte le info possibili sulla partita.
+Nel caso di disconnessione non totale (l'utente perde qualche messaggio), al suo rientro il server invia le info sullo stato totale (tiene memoria della disconnessione).
+In generale il server invia messaggi strutturati, mentre il client chiamate a funzione.
+Per vederlo bene incolla il testo in sequencediagram.org.
+
+
+--------------------------------------------------------- testo da incollare su sequencediagram.org
+
+title MATCH 01
+
+Client[James]-->Server:"ping"
+Client[James]<--Server:"pong"
+Client[James]-->Server:JSON{”username: james”}
+note over Server:Server checks already used users in GameManager, username already exists
+Client[James]<--Server:JSON[“error: username already in use”]
+Client[James]-->Server:JSON{”username: james01”}
+note over Server:server checks if james01 was in game, in this case he was not
+Client[James]<--Server:"no game"
+note over Server:client gets all current games
+Client[James]<--Server:JSON[loginGameMessage]
+note over Client[James]:client decides to create game
+Client[James]-->Server: createGame(2)
+note over Server:server creates game, client in buffer screen
+Client[James]<--Server: JSON[createGameMessage]
+note over Client[James]:Client gets ID of created game
+note over Client[James], Server:From now every message (json) from client to server has {GID: [String]} with game ID
+note over Client[James]: user enters lobby screen
+Client[James]-->Server:”i am in lobby”
+note over Server: lobby adds user to its count
+note over Client[James]: user waits for other players
+note over Client[Greg]: player enters the lobby
+Client[Greg]-->Server:"ping"
+Client[Greg]<--Server:"pong"
+Client[Greg]-->Server:JSON{”username: greg”}
+Client[Greg]<--Server:"no game"
+Client[Greg]-->Server:"join_[game_id]"
+Client[Greg]<--Server:JSON[joinGameMessage]
+Client[Greg]<--Server: JSON[addedPlayerMessage]
+Client[James]<--Server: JSON[addedPlayerMessage]
+Client[James]-->Server:startMatch()
+Client[Greg]<--Server:JSON[startMatchMessage]
+Client[James]<--Server: JSON[startMatchMessage]
+Client[James]-->Server:”james01 in game [ID]”
+Client[Greg]-->Server:”greg in game [ID]”
+note over Server: Server checks if he received in game message by everyone
+Client[Greg]<--Server:JSON[GameStateMessage]   
+Client[James]<--Server:JSON[GameStateMessage]  
+note over Server:James turn (has the chair)
+Client[James]-->Server:”ack”
+note over Server:server knows that “james” is still connected
+note over Client[James]: james01 chooses the cards
+Client[James]-->Server:“selectedCards(selected)”
+Client[Greg]<--Server:JSON[selectedCardsMessage]
+Client[James]<--Server: JSON[selectedCardsMessage]
+Client[James]-->Server:”ack”
+note over Client[James]: James selects column
+Client[James]-->Server: “selectedColumn(selCards, colIndex)”
+note over Server: James gives not selectable column
+Client[James]<--Server:JSON[selectedColumnMessageError] 
+note over Client[James]: James selects column again
+Client[James]-->Server:“selectedColumn(selCards, colIndex)”
+Client[Greg]<--Server:JSON[selectedColumnMessage]
+Client[James]<--Server: JSON[selectedColumnMessage]
+note over Server: next player turn (”Greg”)
+Client[Greg]-->Server:”ack”
+Client[Greg]-->Server:“selectedCards(selected)”
+Client[Greg]<--Server:JSON[selectedCardsMessage]
+Client[James]<--Server: JSON[selectedCardsMessage]
+Client[Greg]-->Server:”ack”
+Client[Greg]-->Server:“selectedColumn(selCards, colIndex)”
+Client[Greg]<--Server:JSON[selectedColumnMessage]
+Client[James]<--Server: JSON[selectedColumnMessage]
+note over Server: next player “James”
+Client[James]-->Server:”ack”
+Client[James]-->Server:“selectedCards(selected)”
+Client[Greg]<--Server:JSON[selectedCardsMessage]
+Client[James]<--Server: JSON[selectedCardsMessage]
+note over Server: no ack after 60 seconds
+note over Server: James skips his turn
+Client[James]-->Server:JSON[loginGameMessage]
+Client[Greg]-->Server: ”ack”
+Client[Greg]-->Server: "selectedCards"
+Client[James]<--Server:JSON[selectedCardsMessage]
+Client[Greg]<--Server:JSON[selectedCardsMessage]
+Client[Greg]-->Server: ”ack”
+note over Client[James]: James recconects to the game
+Client[James]-->Server:"ping"
+Client[James]<--Server:"pong"
+Client[James]-->Server:JSON{”username: james”}
+note over Server: checks whether James was in the game
+Client[James]<--Server:"gameID:[string]"
+Client[James]-->Server:"[username] in game [ID]"
+Client[James]<--Server:JSON:{gameStateMessage}"accepted"
+Client[Greg]-->Server: “selectedColumn(selCards, colIndex)”
+Client[James]<--Server:JSON[selectedColumnMessage]
+Client[Greg]<--Server:JSON[selectedColumnMessage]
+Client[James]-->Server: "ack"
+note over Server: ...
+note over Client[James]: James plays and completes the board, Greg still needs to play
+note over Server: ...
+Client[James]<--Server:JSON[finishedGameMessage]
+Client[James]<--Server:JSON[finishedGameMessage]
+note over Server: game destroyed
+
+
