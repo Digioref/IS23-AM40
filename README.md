@@ -32,4 +32,4 @@
 | Test Model | 🟢 | 100 % |
 | Test Controller | 🟢 | 100 % |
 
-
+# How to install
