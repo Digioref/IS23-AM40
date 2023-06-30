@@ -1,4 +1,4 @@
-# IS23-AM40
+# MyShelfie (group IS23-AM40)
 ## Members 
 - 10776567 Francesco Di Giore [@Digioref](https://github.com/Digioref) -- 
   francesco.digiore@mail.polimi.it
@@ -33,3 +33,15 @@
 | Test Controller | 🟢 | 100 % |
 
 # How to install
+
+The game consists of a single jar file by the name AM40.jar. It can be found in ... directory after building the project with Maven.
+This file can launch both the Server and the Client (CLI or GUI can be selected in the starting phase)
+
+To run the server, use the command:
+java -jar AM40.jar --server
+
+To run the client, use the command:
+java -jar AM40.jar --client
+
+from the command line in the jar's folder.
+Supported in Windows, Linux and macOS
