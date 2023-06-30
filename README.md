@@ -13,22 +13,23 @@
 
 | Project Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
-| UML | 🟢 | 95 % |
+| UML | 🟢 | 100 % |
 | Basic Rules | 🟢 | 100 % |
 | Complete Rules | 🟢 | 100 % |
-| CLI | 🟢 | 95 % |
-| GUI | 🟢 | 95 % |
+| CLI | 🟢 | 100 % |
+| GUI | 🟢 | 100 % |
 | RMI | 🟢 | 100 % |
 | Socket | 🟢 | 100 % |
 
 | Advanced Features | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
-| Multiple Matches | 🟢 | 95 % |
-| Connections' Resilience | 🟢 | 95 % |
-| Chat | 🟢 | 95 % |
+| Multiple Matches | 🟢 | 100 % |
+| Connections' Resilience | 🟢 | 100 % |
+| Chat | 🟢 | 100 % |
 
 | Test Module | Status | Current | Notes |
 | -------------- | ------ | ------- | ------- |
-| Test Model | 🟢 | 90 % |
-| Test Controller | 🟢 | 90 % |
+| Test Model | 🟢 | 100 % |
+| Test Controller | 🟢 | 100 % |
+
 
