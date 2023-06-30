@@ -146,7 +146,8 @@ public class Player {
         //System.out.println("print update dopo aver chiamato calculateScore");
         //bookshelf.print();
         //finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
-        finalScore = personalGoal.calcScore(bookshelf) + currentScore;
+        bookshelf.setMarkZero();
+        finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
 
     }
 
@@ -236,8 +237,6 @@ public class Player {
      * @return -the feature final score
      */
     public int getFinalScore() {
-        bookshelf.setMarkZero();
-        finalScore = personalGoal.calcScore(bookshelf) + bookshelf.calcScore() + currentScore;
         return finalScore;
     }
 

@@ -39,6 +39,10 @@ import javafx.util.Duration;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * This is the main class of the GUI. It has all the methods called by the GUI Controller to refresh the GUI
+ */
+
 public class Viewer extends Application {
 	private Arrow arrowRight;
 	private ArrayList<Arrow> arrowDownList;
@@ -94,19 +98,23 @@ public class Viewer extends Application {
 	private TextField messageInput;
 	private Button sendButton;
 
-
-
-
-
+	/**
+	 * It is the main method, used to launch the GUI
+	 * @param args arguments
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	/**
+	 * It returns the unique instance of the GUI
+	 * @return instance of the GUI
+	 */
 	public static Viewer getGUI() {
 		if (gui != null) {
 			return gui;
 		} else {
-			(new Thread(() -> launch())).start();
+			(new Thread(Application::launch)).start();
 			while(gui == null || !gui.isPrimaryStageOn())  //ensures that the gui has been launched before proceeding
 			{
 				try {
@@ -126,6 +134,10 @@ public class Viewer extends Application {
 		return false;
 	}
 
+	/**
+	 * It creates the main data structure necessary to handle the graphical elements of the GUI
+	 * @param stage a stage
+	 */
 	@Override
 	public void start(Stage stage) {
 		this.primaryStage = stage;
@@ -255,10 +267,11 @@ public class Viewer extends Application {
 	}
 
 
-
-	public void setBackground(Stage stage, Pane pane) {
-		double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
-		double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
+	/**
+	 * It sets the background image
+	 * @param pane a pane where to set the background
+	 */
+	public void setBackground(Pane pane) {
 		//pane.setPrefSize(screenWidth, screenHeight);
 		pane.setPrefSize(15.5,8.7);
 
@@ -277,7 +290,11 @@ public class Viewer extends Application {
 		backGroundView.fitHeightProperty().bind(scene.heightProperty());
 	}
 
-
+	/**
+	 * It creates a vbox (vertical box) inside a pane
+	 * @param pane the pane where the vbox is created
+	 * @return a vbox
+	 */
 	public VBox createVbox(Pane pane) {
 		VBox vbox = new VBox();
 		vbox.setSpacing(10);
@@ -294,7 +311,10 @@ public class Viewer extends Application {
 		return vbox;
 	}
 
-
+	/**
+	 * It sets the title "MY SHELFIE"
+	 * @param pane the pane where the title is set
+	 */
 	public void setTitle(Pane pane) {
 		//double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
 		//double sceneWidth = scene.getWindow().getWidth();
@@ -320,6 +340,12 @@ public class Viewer extends Application {
 		});
 	}
 
+	/**
+	 * It adds a text to the provided pane
+	 * @param pane pane where the text is added
+	 * @param tmp the content of the text
+	 * @return it returns a Text
+	 */
 	public Text addDescription(Pane pane, String tmp) {
 		Text text = new Text(tmp);
 		text.setFont(Font.font(25));
@@ -327,6 +353,11 @@ public class Viewer extends Application {
 		return text;
 	}
 
+	/**
+	 * It adds a text field to the provided pane
+	 * @param pane a pane where the text field is added
+	 * @return a text field
+	 */
 	public TextField addTextField(Pane pane) {
 		TextField textField = new TextField();
 		textField.setMaxWidth(200);
@@ -335,6 +366,13 @@ public class Viewer extends Application {
 		return textField;
 	}
 
+	/**
+	 * It adds a toggle button to the provided pane
+	 * @param pane a pane where the toggle button is added
+	 * @param tmp the name of the option related to the toggle
+	 * @param isSelected a boolean that, if it is true, the toggle button is selected, false otherwise
+	 * @return the toggle button
+	 */
 	public RadioButton addToggle(Pane pane, String tmp, Boolean isSelected) {
 		RadioButton button = new RadioButton(tmp);
 		button.setFont(Font.font(20));
@@ -343,6 +381,11 @@ public class Viewer extends Application {
 		return button;
 	}
 
+	/**
+	 * It sets the names of the options of the toggle buttons
+	 * @param rmi the radio button in order ot choose the RMI option
+	 * @param socket the radio button in order to select the Socket option
+	 */
 	public void setToggles(RadioButton rmi, RadioButton socket) {
 		ToggleGroup tg = new ToggleGroup();
 
@@ -413,7 +456,7 @@ public class Viewer extends Application {
 		}
 		pane = new Pane();
 		newScene(pane);
-		setBackground(primaryStage, pane);
+		setBackground(pane);
 
 		VBox vbox = createVbox(pane);
 
@@ -897,7 +940,7 @@ public class Viewer extends Application {
 		primaryStage.setTitle("MY SHELFIE END GAME");
 		pane = new Pane();
 		newScene(pane);
-		setBackground(primaryStage, pane);
+		setBackground(pane);
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
 				if (LaunchClient.getClient() != null) {
@@ -970,7 +1013,7 @@ public class Viewer extends Application {
 	public void chooseConnection() {
 		pane = new Pane();
 		newScene(pane);
-		setBackground(primaryStage, pane);
+		setBackground(pane);
 		//stage.setMaximized(true);
 //		scene.setFullScreen(true);
 //		scene.setTitle("MyShelfie");
@@ -1041,7 +1084,7 @@ public class Viewer extends Application {
 		}
 		pane = new Pane();
 		newScene(pane);
-		setBackground(primaryStage, pane);
+		setBackground(pane);
 		VBox vbox = createVbox(pane);
 
 		setTitle(vbox);
@@ -1164,7 +1207,7 @@ public class Viewer extends Application {
 		primaryStage.setTitle("MY SHELFIE");
 		gameBoard = new AnchorPane();
 		newScene(gameBoard);
-		setBackground(primaryStage, gameBoard);
+		setBackground(gameBoard);
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
 				if (LaunchClient.getClient() != null) {
