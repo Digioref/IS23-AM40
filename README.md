@@ -63,8 +63,9 @@ If you want to play using a Graphic User Interface (GUI) press G
 3. REMEMBER! In any moment you can write the command "help" to print a list of the available commands and their functionalities
 4. Write the command "**login nickname**" (substitute nickname with the name you want to use in game, if your nickname is already used the system will provide you some suggestions of similar nicknames!)
 5. The first player sets the number of players of the game, use the command **setPlayers [int]**
-6. When the number of players has been reached, the game starts! when it's written "your turn" you can use in sequence the following commands:
+6. When the number of players has been reached, the game starts! when it's written "your turn" you can use the following commands
 
+### Commands
 Small rules recap: you have to complete your bookshelf picking the tiles on the board
 1. **select [int, int]** (the " , " represents the coordinate of a tile)
 2. You can choose a maximum of 3 tiles that has to be adjacent and with one side free
@@ -98,7 +99,9 @@ Follow these steps:
 1. Select the type of connection
 2. Enter your nickname in game
 3. The first player needs to set the number of the players in the game
-The game starts!
+
+   
+### The game starts!
 
 1. **Select** a maximum of three adjacent tiles with at least one free side each (the tiles that can be selected have dotted borders)
 2. To clear the selection press the **red cross**
