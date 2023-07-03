@@ -87,9 +87,8 @@ Small rules recap: you have to complete your bookshelf picking the tiles on the 
 13. **getcurscore** returns your current score
 14. **gethiddenscore** returns your current score plus the points obtained by your secret personal goal
 
-15. **pong** to see if the server is still online
-16. **chat** to enter the chat -> write "**to [player] message**", if you don't specify the player the message will be broadcasted
-17. **viewchat** to see the previous messages in the chat
+15. **chat** to enter the chat -> write "**to [player] message**", if you don't specify the player the message will be broadcasted
+16. **viewchat** to see the previous messages in the chat
 
 The CLI tutorial ends here, enjoy playing MyShelfie!!
 
