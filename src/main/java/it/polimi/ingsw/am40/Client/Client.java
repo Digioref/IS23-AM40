@@ -20,8 +20,8 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public abstract class Client {
 
-    protected final static int NUMPINGLOST = 5;
-    protected final static int WAIT_PING = 40000;
+    protected final static int NUMPINGLOST = 3;
+    protected final static int WAIT_PING = 20000;
 
     protected String nickname;
     protected ScheduledExecutorService ping;

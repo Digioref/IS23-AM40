@@ -213,6 +213,7 @@ public class Lobby implements Runnable {
                     }
                 }
             }
+            nicknameInGame.remove(c.getNickname());
         }
     }
 

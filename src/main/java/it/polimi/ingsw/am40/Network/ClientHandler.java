@@ -225,6 +225,11 @@ public class ClientHandler extends Handlers implements Runnable {
         nPingLost = 0;
         waitPing.shutdown();
         sendPing.shutdown();
+//        try {
+//            sendMessage(JSONConverterStoC.normalMessage("Quit"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
         if (virtualView != null) {
             virtualView.setClientHandler(null);
         }

@@ -74,7 +74,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
                         client.receive(JSONConverterStoC.createJSONError("The nickname you desire is already in use! Please type another nickname:"));
 //                        client.receive(JSONConverterStoC.normalMessage("You can choose one of the following nicknames, if you want"));
                         suggestNickname(s, client);
-                        break;
+                        return;
                     } else if (r.getLobby().getGames().containsKey(s) && r.getLobby().getGames().get(s).getGame().getDiscPlayers().contains(s)) {
                         r.sendMessage(JSONConverterStoC.normalMessage("Welcome back " + s + "!\nReconnecting to the game..."));
                         r.setNickname(s);

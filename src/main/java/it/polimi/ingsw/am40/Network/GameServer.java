@@ -5,11 +5,13 @@ import it.polimi.ingsw.am40.JSONConversion.JSONConverterStoC;
 import it.polimi.ingsw.am40.Network.RMI.RMIServer;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.AlreadyBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -87,7 +89,13 @@ public class GameServer implements Runnable {
         System.setProperty("java.rmi.server.hostname", IPAddress);
         rmiserver = new RMIServer();
         rmiserver.setLobby(lobby);
-        Registry registry = LocateRegistry.createRegistry(5000);
+        Registry registry = null;
+        try {
+            registry = LocateRegistry.createRegistry(5000);
+        } catch (ExportException e) {
+            System.out.println("Already binded!");
+            System.exit(0);
+        }
         try {
             registry.bind("RMIRegistry", rmiserver);
         } catch (AlreadyBoundException e) {
