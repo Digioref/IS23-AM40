@@ -1,5 +1,9 @@
-# MyShelfie (group IS23-AM40)
-## Members 
+# Software Engineering Project: MyShelfie
+
+
+
+## Members
+Group: **IS23-AM40**
 - 10776567 Francesco Di Giore [@Digioref](https://github.com/Digioref) -- 
   francesco.digiore@mail.polimi.it
 - 10743207 Filippo Maria Bertossi [@filippobertossi](https://github.com/filippobertossi) -- 
